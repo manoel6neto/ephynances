@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="dataSourceStorage">
+  <data-source name="Rails ephynances: development" uuid="02b93c79-c920-41eb-827c-5281ef155410">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+  <data-source name="Rails ephynances: test" uuid="c0fcaf8c-7881-4e74-bc00-e4c07a63fbe2">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+  <data-source name="Rails ephynances: production" uuid="70558949-6565-4d9b-9bb1-ff3cea23c3a1">
+    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+  </data-source>
+</component>
