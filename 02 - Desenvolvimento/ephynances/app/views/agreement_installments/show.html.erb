@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @agreement_installment.value %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @agreement_installment.status %>
+</p>
+
+<p>
+  <strong>Paymentdate:</strong>
+  <%= @agreement_installment.paymentDate %>
+</p>
+
+<p>
+  <strong>Duedate:</strong>
+  <%= @agreement_installment.dueDate %>
+</p>
+
+<p>
+  <strong>Confirmationdate:</strong>
+  <%= @agreement_installment.confirmationDate %>
+</p>
+
+<%= link_to 'Edit', edit_agreement_installment_path(@agreement_installment) %> |
+<%= link_to 'Back', agreement_installments_path %>

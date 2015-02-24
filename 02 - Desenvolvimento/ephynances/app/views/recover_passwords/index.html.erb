@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Recover Passwords</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Token</th>
+      <th>Validity</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @recover_passwords.each do |recover_password| %>
+      <tr>
+        <td><%= recover_password.token %></td>
+        <td><%= recover_password.validity %></td>
+        <td><%= link_to 'Show', recover_password %></td>
+        <td><%= link_to 'Edit', edit_recover_password_path(recover_password) %></td>
+        <td><%= link_to 'Destroy', recover_password, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Recover password', new_recover_password_path %>

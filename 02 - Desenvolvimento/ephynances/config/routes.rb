@@ -1,4 +1,26 @@
 Rails.application.routes.draw do
+  resources :regions
+
+  resources :states
+
+  resources :agreement_documents
+
+  resources :agreement_installments
+
+  resources :agreement_responsibles
+
+  resources :agreement_types
+
+  resources :agreements
+
+  resources :city_organs
+
+  resources :recover_passwords
+
+  resources :user_levels
+
+  resources :users
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

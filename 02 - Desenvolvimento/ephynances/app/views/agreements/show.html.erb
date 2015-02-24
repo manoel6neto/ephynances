@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @agreement.type %>
+</p>
+
+<p>
+  <strong>Contactemail:</strong>
+  <%= @agreement.contactEmail %>
+</p>
+
+<p>
+  <strong>Contactphone:</strong>
+  <%= @agreement.contactPhone %>
+</p>
+
+<p>
+  <strong>Totalprice:</strong>
+  <%= @agreement.totalPrice %>
+</p>
+
+<p>
+  <strong>Contractoragreementnumber:</strong>
+  <%= @agreement.contractorAgreementNumber %>
+</p>
+
+<p>
+  <strong>Physisagreementnumber:</strong>
+  <%= @agreement.physisAgreementNumber %>
+</p>
+
+<p>
+  <strong>Expirydate:</strong>
+  <%= @agreement.expiryDate %>
+</p>
+
+<p>
+  <strong>Status:</strong>
+  <%= @agreement.status %>
+</p>
+
+<p>
+  <strong>Cnpjamount:</strong>
+  <%= @agreement.cnpjAmount %>
+</p>
+
+<%= link_to 'Edit', edit_agreement_path(@agreement) %> |
+<%= link_to 'Back', agreements_path %>

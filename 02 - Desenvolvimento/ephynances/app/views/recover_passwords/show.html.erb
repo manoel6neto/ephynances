@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Token:</strong>
+  <%= @recover_password.token %>
+</p>
+
+<p>
+  <strong>Validity:</strong>
+  <%= @recover_password.validity %>
+</p>
+
+<%= link_to 'Edit', edit_recover_password_path(@recover_password) %> |
+<%= link_to 'Back', recover_passwords_path %>

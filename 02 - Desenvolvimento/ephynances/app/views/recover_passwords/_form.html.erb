@@ -1,0 +1,25 @@
+<%= form_for(@recover_password) do |f| %>
+  <% if @recover_password.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@recover_password.errors.count, "error") %> prohibited this recover_password from being saved:</h2>
+
+      <ul>
+      <% @recover_password.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :token %><br>
+    <%= f.text_field :token %>
+  </div>
+  <div class="field">
+    <%= f.label :validity %><br>
+    <%= f.text_field :validity %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

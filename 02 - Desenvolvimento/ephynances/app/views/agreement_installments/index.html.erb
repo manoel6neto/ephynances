@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Agreement Installments</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Value</th>
+      <th>Status</th>
+      <th>Paymentdate</th>
+      <th>Duedate</th>
+      <th>Confirmationdate</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @agreement_installments.each do |agreement_installment| %>
+      <tr>
+        <td><%= agreement_installment.value %></td>
+        <td><%= agreement_installment.status %></td>
+        <td><%= agreement_installment.paymentDate %></td>
+        <td><%= agreement_installment.dueDate %></td>
+        <td><%= agreement_installment.confirmationDate %></td>
+        <td><%= link_to 'Show', agreement_installment %></td>
+        <td><%= link_to 'Edit', edit_agreement_installment_path(agreement_installment) %></td>
+        <td><%= link_to 'Destroy', agreement_installment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Agreement installment', new_agreement_installment_path %>

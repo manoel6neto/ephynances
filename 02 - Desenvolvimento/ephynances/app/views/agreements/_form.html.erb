@@ -1,0 +1,53 @@
+<%= form_for(@agreement) do |f| %>
+  <% if @agreement.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@agreement.errors.count, "error") %> prohibited this agreement from being saved:</h2>
+
+      <ul>
+      <% @agreement.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :type %><br>
+    <%= f.text_field :type %>
+  </div>
+  <div class="field">
+    <%= f.label :contactEmail %><br>
+    <%= f.text_field :contactEmail %>
+  </div>
+  <div class="field">
+    <%= f.label :contactPhone %><br>
+    <%= f.text_field :contactPhone %>
+  </div>
+  <div class="field">
+    <%= f.label :totalPrice %><br>
+    <%= f.text_field :totalPrice %>
+  </div>
+  <div class="field">
+    <%= f.label :contractorAgreementNumber %><br>
+    <%= f.text_field :contractorAgreementNumber %>
+  </div>
+  <div class="field">
+    <%= f.label :physisAgreementNumber %><br>
+    <%= f.text_field :physisAgreementNumber %>
+  </div>
+  <div class="field">
+    <%= f.label :expiryDate %><br>
+    <%= f.text_field :expiryDate %>
+  </div>
+  <div class="field">
+    <%= f.label :status %><br>
+    <%= f.text_field :status %>
+  </div>
+  <div class="field">
+    <%= f.label :cnpjAmount %><br>
+    <%= f.text_field :cnpjAmount %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

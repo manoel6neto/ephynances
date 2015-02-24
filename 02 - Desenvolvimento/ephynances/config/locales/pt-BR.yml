@@ -1,0 +1,27 @@
+pt-BR:
+  activerecord:
+    models:
+      user: Usuário
+      user_level: Nível de usuário
+      state: Estado
+      region: Região
+      recover_password: Recuperação de Senha
+      city_organ: Orgãos das Cidades
+      agreement: Contrato
+      agreement_document: Documentos do Contrato
+      agreement_installment: Parcelas do Contrato
+      agreement_responsible: Responsáveis pelo Contrato
+      agreement_type: Tipos de Contrato
+    attributes:
+      user:
+        name: Nome
+        email: Email
+        phone: Telefone
+        cellPhone: Celular
+        login: Login
+        status: Estatus
+        cpf: CPF
+        maxSalesAmount: Quantidade de CNPJ's
+        isVerified: Validado
+        password: Senha
+        password_confirmation: Confirmação de Senha

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Cnpj:</strong>
+  <%= @city_organ.cnpj %>
+</p>
+
+<p>
+  <strong>Cityname:</strong>
+  <%= @city_organ.cityName %>
+</p>
+
+<p>
+  <strong>Statename:</strong>
+  <%= @city_organ.stateName %>
+</p>
+
+<p>
+  <strong>Regionname:</strong>
+  <%= @city_organ.regionName %>
+</p>
+
+<p>
+  <strong>Organname:</strong>
+  <%= @city_organ.organName %>
+</p>
+
+<%= link_to 'Edit', edit_city_organ_path(@city_organ) %> |
+<%= link_to 'Back', city_organs_path %>

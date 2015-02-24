@@ -1,0 +1,37 @@
+<%= form_for(@agreement_responsible) do |f| %>
+  <% if @agreement_responsible.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@agreement_responsible.errors.count, "error") %> prohibited this agreement_responsible from being saved:</h2>
+
+      <ul>
+      <% @agreement_responsible.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </div>
+  <div class="field">
+    <%= f.label :email %><br>
+    <%= f.text_field :email %>
+  </div>
+  <div class="field">
+    <%= f.label :phone %><br>
+    <%= f.text_field :phone %>
+  </div>
+  <div class="field">
+    <%= f.label :cellPhone %><br>
+    <%= f.text_field :cellPhone %>
+  </div>
+  <div class="field">
+    <%= f.label :cpf %><br>
+    <%= f.text_field :cpf %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

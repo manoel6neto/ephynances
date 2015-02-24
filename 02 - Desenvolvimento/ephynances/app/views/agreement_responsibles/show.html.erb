@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @agreement_responsible.name %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @agreement_responsible.email %>
+</p>
+
+<p>
+  <strong>Phone:</strong>
+  <%= @agreement_responsible.phone %>
+</p>
+
+<p>
+  <strong>Cellphone:</strong>
+  <%= @agreement_responsible.cellPhone %>
+</p>
+
+<p>
+  <strong>Cpf:</strong>
+  <%= @agreement_responsible.cpf %>
+</p>
+
+<%= link_to 'Edit', edit_agreement_responsible_path(@agreement_responsible) %> |
+<%= link_to 'Back', agreement_responsibles_path %>

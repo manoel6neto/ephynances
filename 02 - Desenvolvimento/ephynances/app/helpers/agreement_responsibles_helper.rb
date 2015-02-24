@@ -1,0 +1,2 @@
+module AgreementResponsiblesHelper
+end

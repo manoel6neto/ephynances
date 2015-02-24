@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Agreement Responsibles</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone</th>
+      <th>Cellphone</th>
+      <th>Cpf</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @agreement_responsibles.each do |agreement_responsible| %>
+      <tr>
+        <td><%= agreement_responsible.name %></td>
+        <td><%= agreement_responsible.email %></td>
+        <td><%= agreement_responsible.phone %></td>
+        <td><%= agreement_responsible.cellPhone %></td>
+        <td><%= agreement_responsible.cpf %></td>
+        <td><%= link_to 'Show', agreement_responsible %></td>
+        <td><%= link_to 'Edit', edit_agreement_responsible_path(agreement_responsible) %></td>
+        <td><%= link_to 'Destroy', agreement_responsible, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Agreement responsible', new_agreement_responsible_path %>
