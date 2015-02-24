@@ -3,18 +3,18 @@
   <component name="dataSourceStorageLocal">
     <data-source name="Rails ephynances: development" uuid="02b93c79-c920-41eb-827c-5281ef155410">
       <user-name>root</user-name>
-      <user-password>dfebdf9ddfc9dfc8dfcedfcedf92df98dfeadf9b</user-password>
+      <user-password>dffadfc2dfd3dfd9dfc3dfd9dff5df98df9adf9bdf99</user-password>
       <schema-pattern>ephynances_development.*</schema-pattern>
       <default-schemas>ephynances_development.*</default-schemas>
     </data-source>
     <data-source name="Rails ephynances: test" uuid="c0fcaf8c-7881-4e74-bc00-e4c07a63fbe2">
       <first-sync>true</first-sync>
       <user-name>root</user-name>
-      <user-password>dfebdf9ddfc9dfc8dfcedfcedf92df98dfeadf9b</user-password>
+      <user-password>dffadfc2dfd3dfd9dfc3dfd9dff5df98df9adf9bdf99</user-password>
     </data-source>
     <data-source name="Rails ephynances: production" uuid="70558949-6565-4d9b-9bb1-ff3cea23c3a1">
       <first-sync>true</first-sync>
-      <user-name>ephynances</user-name>
+      <user-name>root</user-name>
       <user-password>df96df8fdf97df8adfefdfe4dffcdff1df8ddfefdffadfe2dff3dfe4dfebdfe4dfe9dfefdff9dff5dfeedfebdffedfebdfe8dfebdff9dfefdff5dffadfebdff9dff9dffddfe5dff8dfeedf8ddff7df8adf8fdf94</user-password>
     </data-source>
   </component>

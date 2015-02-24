@@ -14,7 +14,7 @@ default: &default
   encoding: utf8
   pool: 5
   username: root
-  password: A7cbdd82@1
+  password: Physis_2013
   host: localhost
 
 development:

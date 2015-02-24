@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy, :change_status]
 
   # GET /users
   # GET /users.json
@@ -61,6 +61,20 @@ class UsersController < ApplicationController
     end
   end
 
+  # ENABLE/DISABLE /users/1
+  # ENABLE/DISABLE /users/1.json
+  def change_status
+    if @user.status
+      @user.update_attribute(:status, false)
+    else
+      @user.update_attribute(:status, true)
+    end
+
+    respond_to do |format|
+      format.html { redirect_to @user, notice: 'Status was successfully changed.' }
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
@@ -69,6 +83,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:name, :email, :phone, :cellPhone, :login, :cpf, :password, :status)
+      params.require(:user).permit(:name, :email, :phone, :cellPhone, :login, :cpf, :password, :password_confirmation, :maxSalesAmount)
     end
 end

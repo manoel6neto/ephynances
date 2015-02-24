@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
+  <strong>Nome:</strong>
   <%= @user.name %>
 </p>
 
@@ -11,12 +11,12 @@
 </p>
 
 <p>
-  <strong>Phone:</strong>
+  <strong>Telefone:</strong>
   <%= @user.phone %>
 </p>
 
 <p>
-  <strong>Cellphone:</strong>
+  <strong>Celular:</strong>
   <%= @user.cellPhone %>
 </p>
 
@@ -31,8 +31,8 @@
 </p>
 
 <p>
-  <strong>Password:</strong>
-  <%= @user.password %>
+  <strong>Número de CNPJ's:</strong>
+  <%= @user.maxSalesAmount %>
 </p>
 
 <p>
@@ -40,5 +40,5 @@
   <%= @user.status %>
 </p>
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<%= link_to 'Editar', edit_user_path(@user) %> |
+<%= link_to 'Voltar', users_path %>
