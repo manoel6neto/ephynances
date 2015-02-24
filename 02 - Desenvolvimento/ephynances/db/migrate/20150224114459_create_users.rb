@@ -15,7 +15,7 @@ class CreateUsers < ActiveRecord::Migration
       t.index :cpf, unique:true
       t.index :login, unique:true
 
-      t.timestamps null: false
+      t.timestamps null: false;
     end
   end
 end

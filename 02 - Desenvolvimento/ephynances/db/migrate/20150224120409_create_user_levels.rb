@@ -5,7 +5,7 @@ class CreateUserLevels < ActiveRecord::Migration
 
       t.index :levelType, unique:true
 
-      t.timestamps null: false
+      t.timestamps null: false;
     end
   end
 end

@@ -5,7 +5,7 @@ class CreateAgreementTypes < ActiveRecord::Migration
 
       t.index :type, unique:true
 
-      t.timestamps null: false
+      t.timestamps null: false;
     end
   end
 end

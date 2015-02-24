@@ -14,7 +14,7 @@ class CreateAgreements < ActiveRecord::Migration
       t.index :contractorAgreementNumber, unique:true
       t.index :physisAgreementNumber, unique:true
 
-      t.timestamps null: false
+      t.timestamps null: false;
     end
   end
 end

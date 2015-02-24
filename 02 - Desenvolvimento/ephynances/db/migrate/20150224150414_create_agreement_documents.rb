@@ -6,7 +6,7 @@ class CreateAgreementDocuments < ActiveRecord::Migration
       t.integer :size
       t.binary :file
 
-      t.timestamps null: false
+      t.timestamps null: false;
     end
   end
 end

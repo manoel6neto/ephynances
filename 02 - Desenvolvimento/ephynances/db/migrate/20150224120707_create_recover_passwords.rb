@@ -6,7 +6,7 @@ class CreateRecoverPasswords < ActiveRecord::Migration
 
       t.index :token, unique:true
 
-      t.timestamps null: false
+      t.timestamps null: false;
     end
   end
 end

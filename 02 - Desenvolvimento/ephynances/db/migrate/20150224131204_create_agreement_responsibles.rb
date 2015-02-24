@@ -7,7 +7,7 @@ class CreateAgreementResponsibles < ActiveRecord::Migration
       t.string :cellPhone
       t.string :cpf
 
-      t.timestamps null: false
+      t.timestamps null: false;
     end
   end
 end

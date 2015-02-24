@@ -7,7 +7,7 @@ class CreateAgreementInstallments < ActiveRecord::Migration
       t.date :dueDate
       t.date :confirmationDate
 
-      t.timestamps null: false
+      t.timestamps null: false;
     end
   end
 end

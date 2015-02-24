@@ -7,7 +7,7 @@ class CreateRegions < ActiveRecord::Migration
       t.index :name, unique:true
       t.index :acronym, unique:true
 
-      t.timestamps null: false
+      t.timestamps null: false;
     end
   end
 end

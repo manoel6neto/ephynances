@@ -7,7 +7,7 @@ class CreateCityOrgans < ActiveRecord::Migration
 
       t.index :cnpj, unique:true
 
-      t.timestamps null: false
+      t.timestamps null: false;
     end
   end
 end
