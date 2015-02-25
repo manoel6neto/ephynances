@@ -1,6 +1,7 @@
 class CreateAgreementDocuments < ActiveRecord::Migration
   def change
     create_table :agreement_documents do |t|
+      t.belongs_to :agreement, index:true
       t.string :name
       t.text :description, limit: 500
       t.integer :size

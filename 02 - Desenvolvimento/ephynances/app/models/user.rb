@@ -7,4 +7,6 @@ class User < ActiveRecord::Base
   validates_length_of :cpf, minimum: 11, maximum: 11
 
   has_secure_password
+  belongs_to :user_level
+  has_many :agreements
 end

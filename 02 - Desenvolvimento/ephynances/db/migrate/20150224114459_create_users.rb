@@ -1,6 +1,8 @@
 class CreateUsers < ActiveRecord::Migration
   def change
     create_table :users do |t|
+      t.belongs_to :user_level, index:true
+      t.belongs_to :city_organ, index:true
       t.string :name
       t.string :email
       t.string :phone

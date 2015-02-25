@@ -1,6 +1,7 @@
 class CreateStates < ActiveRecord::Migration
   def change
     create_table :states do |t|
+      t.belongs_to :region, index:true
       t.string :name
       t.string :acronym
 

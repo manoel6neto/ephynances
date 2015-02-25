@@ -1,6 +1,10 @@
 class CreateAgreements < ActiveRecord::Migration
   def change
     create_table :agreements do |t|
+      t.belongs_to :city_organ, index:true
+      t.belongs_to :user, index:true
+      t.belongs_to :agreement_responsible, index:true
+      t.belongs_to :agreement_type, index:true
       t.string :contactEmail
       t.string :contactPhone
       t.decimal :totalPrice, scale: 2, precision: 10

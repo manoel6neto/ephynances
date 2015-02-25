@@ -11,18 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150224160810) do
+ActiveRecord::Schema.define(version: 20150225143053) do
 
   create_table "agreement_documents", force: :cascade do |t|
-    t.string   "name",        limit: 255
-    t.text     "description", limit: 65535
-    t.integer  "size",        limit: 4
-    t.binary   "file",        limit: 65535
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.integer  "agreement_id", limit: 4
+    t.string   "name",         limit: 255
+    t.text     "description",  limit: 65535
+    t.integer  "size",         limit: 4
+    t.binary   "file",         limit: 65535
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
+  add_index "agreement_documents", ["agreement_id"], name: "index_agreement_documents_on_agreement_id", using: :btree
+
   create_table "agreement_installments", force: :cascade do |t|
+    t.integer  "agreement_id",     limit: 4
     t.decimal  "value",                      precision: 10, scale: 2
     t.boolean  "status",           limit: 1
     t.date     "paymentDate"
@@ -31,6 +35,8 @@ ActiveRecord::Schema.define(version: 20150224160810) do
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
   end
+
+  add_index "agreement_installments", ["agreement_id"], name: "index_agreement_installments_on_agreement_id", using: :btree
 
   create_table "agreement_responsibles", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -51,6 +57,10 @@ ActiveRecord::Schema.define(version: 20150224160810) do
   add_index "agreement_types", ["type"], name: "index_agreement_types_on_type", unique: true, using: :btree
 
   create_table "agreements", force: :cascade do |t|
+    t.integer  "city_organ_id",             limit: 4
+    t.integer  "user_id",                   limit: 4
+    t.integer  "agreement_responsible_id",  limit: 4
+    t.integer  "agreement_type_id",         limit: 4
     t.string   "contactEmail",              limit: 255
     t.string   "contactPhone",              limit: 255
     t.decimal  "totalPrice",                            precision: 10, scale: 2
@@ -64,10 +74,15 @@ ActiveRecord::Schema.define(version: 20150224160810) do
     t.datetime "updated_at",                                                                     null: false
   end
 
+  add_index "agreements", ["agreement_responsible_id"], name: "index_agreements_on_agreement_responsible_id", using: :btree
+  add_index "agreements", ["agreement_type_id"], name: "index_agreements_on_agreement_type_id", using: :btree
+  add_index "agreements", ["city_organ_id"], name: "index_agreements_on_city_organ_id", using: :btree
   add_index "agreements", ["contractorAgreementNumber"], name: "index_agreements_on_contractorAgreementNumber", unique: true, using: :btree
   add_index "agreements", ["physisAgreementNumber"], name: "index_agreements_on_physisAgreementNumber", unique: true, using: :btree
+  add_index "agreements", ["user_id"], name: "index_agreements_on_user_id", using: :btree
 
   create_table "city_organs", force: :cascade do |t|
+    t.integer  "state_id",   limit: 4
     t.string   "cnpj",       limit: 255
     t.string   "cityName",   limit: 255
     t.string   "organName",  limit: 255
@@ -76,6 +91,7 @@ ActiveRecord::Schema.define(version: 20150224160810) do
   end
 
   add_index "city_organs", ["cnpj"], name: "index_city_organs_on_cnpj", unique: true, using: :btree
+  add_index "city_organs", ["state_id"], name: "index_city_organs_on_state_id", using: :btree
 
   create_table "recover_passwords", force: :cascade do |t|
     t.string   "token",      limit: 255
@@ -97,6 +113,7 @@ ActiveRecord::Schema.define(version: 20150224160810) do
   add_index "regions", ["name"], name: "index_regions_on_name", unique: true, using: :btree
 
   create_table "states", force: :cascade do |t|
+    t.integer  "region_id",  limit: 4
     t.string   "name",       limit: 255
     t.string   "acronym",    limit: 255
     t.datetime "created_at",             null: false
@@ -105,6 +122,17 @@ ActiveRecord::Schema.define(version: 20150224160810) do
 
   add_index "states", ["acronym"], name: "index_states_on_acronym", unique: true, using: :btree
   add_index "states", ["name"], name: "index_states_on_name", unique: true, using: :btree
+  add_index "states", ["region_id"], name: "index_states_on_region_id", using: :btree
+
+  create_table "user_has_contributors", id: false, force: :cascade do |t|
+    t.integer  "vendor_user_id",      limit: 4
+    t.integer  "contributor_user_id", limit: 4
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+  end
+
+  add_index "user_has_contributors", ["contributor_user_id"], name: "index_user_has_contributors_on_contributor_user_id", using: :btree
+  add_index "user_has_contributors", ["vendor_user_id"], name: "index_user_has_contributors_on_vendor_user_id", using: :btree
 
   create_table "user_levels", force: :cascade do |t|
     t.string   "levelType",  limit: 255
@@ -115,6 +143,8 @@ ActiveRecord::Schema.define(version: 20150224160810) do
   add_index "user_levels", ["levelType"], name: "index_user_levels_on_levelType", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
+    t.integer  "user_level_id",   limit: 4
+    t.integer  "city_organ_id",   limit: 4
     t.string   "name",            limit: 255
     t.string   "email",           limit: 255
     t.string   "phone",           limit: 255
@@ -129,8 +159,20 @@ ActiveRecord::Schema.define(version: 20150224160810) do
     t.string   "password_digest", limit: 255
   end
 
+  add_index "users", ["city_organ_id"], name: "index_users_on_city_organ_id", using: :btree
   add_index "users", ["cpf"], name: "index_users_on_cpf", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["login"], name: "index_users_on_login", unique: true, using: :btree
+  add_index "users", ["user_level_id"], name: "index_users_on_user_level_id", using: :btree
 
+  add_foreign_key "agreement_documents", "agreements", name: "agreement_documents_agreement_id_fk"
+  add_foreign_key "agreement_installments", "agreements", name: "agreement_installments_agreement_id_fk"
+  add_foreign_key "agreements", "agreement_responsibles", name: "agreements_agreement_responsible_id_fk"
+  add_foreign_key "agreements", "agreement_types", name: "agreements_agreement_type_id_fk"
+  add_foreign_key "agreements", "city_organs", name: "agreements_city_organ_id_fk"
+  add_foreign_key "agreements", "users", name: "agreements_user_id_fk"
+  add_foreign_key "city_organs", "states", name: "city_organs_state_id_fk"
+  add_foreign_key "states", "regions", name: "states_region_id_fk"
+  add_foreign_key "users", "city_organs", name: "users_city_organ_id_fk"
+  add_foreign_key "users", "user_levels", name: "users_user_level_id_fk"
 end
