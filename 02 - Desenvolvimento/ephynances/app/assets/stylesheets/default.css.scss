@@ -30,16 +30,17 @@ header {
     margin: 0 auto;
   }
   height: $header-height;
-  background-color: #9ECE71;
+  background-color: #468bce;
   h1 {
     float: left;
     a {
-      color: #333;
+      color: #fff;
       font-family: $serif-families;
       font-weight: 400;
       font-size: 2.5em;
+      text-decoration: none;
       &:hover {
-        color: #000;
+        color: #ec3531;
       }
     }
   }
@@ -55,16 +56,20 @@ header nav {
   li {
     display: inline-block;
     line-height: 24px;
-    background-color: #546f3c;
+    background-color: #fffdfd;
     padding: 3px 10px;
     -moz-border-radius: 5px;
     border-radius: 5px;
     vertical-align: middle;
     a {
       display: block;
+      font-family: Verdana, Arial, Helvetica, sans-serif;
       font-size: 12px;
       font-weight: 600;
-      color: #fff;
+      color: #787878;
+      &:hover {
+        color: #ec3531;
+      }
     }
   }
 }
