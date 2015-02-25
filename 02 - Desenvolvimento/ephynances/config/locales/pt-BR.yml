@@ -6,7 +6,7 @@ pt-BR:
       state: Estado
       region: Região
       recover_password: Recuperação de Senha
-      city_organ: Orgãos das Cidades
+      city_organ: Orgãos/Instituições das Cidades
       agreement: Contrato
       agreement_document: Documentos do Contrato
       agreement_installment: Parcelas do Contrato
@@ -25,3 +25,47 @@ pt-BR:
         isVerified: Validado
         password: Senha
         password_confirmation: Confirmação de Senha
+      user_level:
+        levelType: Tipo de nível
+      state:
+        name: Nome
+        acronym: Sigla
+      region:
+        name: Nome
+        acronym: Sigla
+      recover_password:
+        token: Token
+        validity: Validade
+      city_organ:
+        cnpj: CNPJ
+        cityName: Nome da Cidade
+        organName: Nome do Orgão/Instituição
+      agreement:
+        contactEmail: Email do contato
+        contactPhone: Telefone do contato
+        totalPrice: Valor total do contrato
+        contractorAgreementNumber: Número do contrato (Contratante)
+        physisAgreementNumber: Número do contrato (Physis)
+        expiryDate: Data de vencimento
+        status: Status
+        cnpjAmount: Quantidade de CNPJ's
+        documentNumber: Número do documento (CNPJ/CPF)
+      agreement_document:
+        name: Name
+        description: Descrição
+        size: Tamanho
+        file: Binario do arquivo
+      agreement_installment:
+        value: Valor da parcela
+        status: Status do pagamento
+        paymentDate: Data do pagamento
+        dueDate: Data do vencimento
+        confirmationDate: Data da confirmação
+      agreement_responsible:
+        name: Nome
+        email: Email
+        phone: Telefone
+        cellPhone: Celular
+        cpf: CPF
+      agreement_type:
+        type: Tipo
