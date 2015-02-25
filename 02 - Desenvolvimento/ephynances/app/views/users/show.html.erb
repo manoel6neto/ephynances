@@ -1,44 +1,23 @@
-<p id="notice"><%= notice %></p>
+<h2>Nome: <%= @user.name %></h2>
 
-<p>
-  <strong>Nome:</strong>
-  <%= @user.name %>
-</p>
+<ul>
+  <li>Login: <%= @user.login %></li>
+  <li>CPF: <%= @user.cpf %></li>
+  <li>Email: <%= @user.email %></li>
+  <li>Telefone: <%= @user.phone %></li>
+  <li>Celular: <%= @user.cellPhone %></li>
+  <li>Número de CNPJ's: <%= @user.maxSalesAmount %></li>
+  <% if @user.status %>
+    <li>Status: Ativo</li>
+  <% else %>
+    <li>Status: Inativo</li>
+  <% end %>
+  <% if @user.isVerified %>
+      <li>Verificado: Sim</li>
+  <% else %>
+      <li>Verificado: Não</li>
+  <% end %>
+</ul>
 
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
-
-<p>
-  <strong>Telefone:</strong>
-  <%= @user.phone %>
-</p>
-
-<p>
-  <strong>Celular:</strong>
-  <%= @user.cellPhone %>
-</p>
-
-<p>
-  <strong>Login:</strong>
-  <%= @user.login %>
-</p>
-
-<p>
-  <strong>CPF:</strong>
-  <%= @user.cpf %>
-</p>
-
-<p>
-  <strong>Número de CNPJ's:</strong>
-  <%= @user.maxSalesAmount %>
-</p>
-
-<p>
-  <strong>Status:</strong>
-  <%= @user.status %>
-</p>
-
-<%= link_to 'Editar', edit_user_path(@user) %> |
+<%= link_to 'Editar Usuário', edit_user_path(@user) %> |
 <%= link_to 'Voltar', users_path %>
