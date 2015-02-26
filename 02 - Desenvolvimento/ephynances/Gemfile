@@ -31,6 +31,10 @@ gem 'unicorn'
 
 gem 'immigrant'
 
+gem 'mailcatcher'
+
+gem 'actionmailer'
+
 # Use Capistrano for deployment
 gem 'capistrano-rails', group: :development
 
