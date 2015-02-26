@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class CreateUserLevels < ActiveRecord::Migration
   def change
     create_table :user_levels do |t|

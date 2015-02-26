@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class CreateRecoverPasswords < ActiveRecord::Migration
   def change
     create_table :recover_passwords do |t|

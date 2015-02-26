@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class CreateCityOrgans < ActiveRecord::Migration
   def change
     create_table :city_organs do |t|

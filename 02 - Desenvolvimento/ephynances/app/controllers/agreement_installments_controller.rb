@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class AgreementInstallmentsController < ApplicationController
   before_action :set_agreement_installment, only: [:show, :edit, :update, :destroy]
 

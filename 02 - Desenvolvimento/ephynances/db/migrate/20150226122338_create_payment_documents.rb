@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class CreatePaymentDocuments < ActiveRecord::Migration
   def change
     create_table :payment_documents do |t|

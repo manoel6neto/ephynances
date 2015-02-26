@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Agreement < ActiveRecord::Base
 
   validates_presence_of :totalPrice, :contractorAgreementNumber, :physisAgreementNumber, :expiryDate, :status

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class AddForeignKeys < ActiveRecord::Migration
   def change
     add_foreign_key "agreement_documents", "agreements", name: "agreement_documents_agreement_id_fk"

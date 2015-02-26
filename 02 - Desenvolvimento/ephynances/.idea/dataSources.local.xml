@@ -15,7 +15,7 @@
     </data-source>
     <data-source name="Rails ephynances: production" uuid="70558949-6565-4d9b-9bb1-ff3cea23c3a1">
       <first-sync>true</first-sync>
-      <user-name>root</user-name>
+      <user-name>ephynances</user-name>
       <user-password>df96df8fdf97df8adfefdfe4dffcdff1df8ddfefdffadfe2dff3dfe4dfebdfe4dfe9dfefdff9dff5dfeedfebdffedfebdfe8dfebdff9dfefdff5dffadfebdff9dff9dffddfe5dff8dfeedf8ddff7df8adf8fdf94</user-password>
     </data-source>
   </component>

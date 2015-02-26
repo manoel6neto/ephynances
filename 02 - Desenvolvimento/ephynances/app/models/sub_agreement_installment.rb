@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class SubAgreementInstallment < ActiveRecord::Base
 
   validates_presence_of :value, :status

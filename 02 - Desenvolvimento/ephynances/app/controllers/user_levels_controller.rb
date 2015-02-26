@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class UserLevelsController < ApplicationController
   before_action :set_user_level, only: [:show, :edit, :update, :destroy]
 

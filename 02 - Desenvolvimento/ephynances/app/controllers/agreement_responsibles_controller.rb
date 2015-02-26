@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class AgreementResponsiblesController < ApplicationController
   before_action :set_agreement_responsible, only: [:show, :edit, :update, :destroy]
 

@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class AgreementDocument < ActiveRecord::Base
 
   validates_presence_of :name, :description, :size, :file

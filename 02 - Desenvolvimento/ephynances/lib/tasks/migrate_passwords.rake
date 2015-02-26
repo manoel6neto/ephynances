@@ -1,4 +1,4 @@
-# encoding: utf-8
+# encoding: UTF-8
 namespace :app do
   desc 'Encrypt ao passwords in plain text on database'
   task migrate_passwords: :environment do

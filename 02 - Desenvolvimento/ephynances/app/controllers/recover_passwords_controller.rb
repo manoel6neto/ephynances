@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class RecoverPasswordsController < ApplicationController
   before_action :set_recover_password, only: [:show, :edit, :update, :destroy]
 

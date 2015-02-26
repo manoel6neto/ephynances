@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class PaymentDocument < ActiveRecord::Base
 
   validates_presence_of :name, :file, :extension, :description, :size

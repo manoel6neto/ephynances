@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class AgreementTypesController < ApplicationController
   before_action :set_agreement_type, only: [:show, :edit, :update, :destroy]
 

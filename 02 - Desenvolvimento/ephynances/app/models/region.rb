@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class Region < ActiveRecord::Base
 
   validates_presence_of :name, :acronym

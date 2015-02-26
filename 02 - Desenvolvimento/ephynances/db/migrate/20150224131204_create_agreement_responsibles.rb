@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class CreateAgreementResponsibles < ActiveRecord::Migration
   def change
     create_table :agreement_responsibles do |t|

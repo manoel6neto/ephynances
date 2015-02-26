@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class CreateAgreementInstallments < ActiveRecord::Migration
   def change
     create_table :agreement_installments do |t|

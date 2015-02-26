@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class UserHasContributor < ActiveRecord::Migration
   def change
     create_table :user_has_contributors, id:false do |t|

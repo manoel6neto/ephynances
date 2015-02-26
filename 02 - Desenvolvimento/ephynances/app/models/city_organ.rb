@@ -1,3 +1,4 @@
+# encoding: UTF-8
 class CityOrgan < ActiveRecord::Base
 
   validates_presence_of :cnpj, :cityName, :organName

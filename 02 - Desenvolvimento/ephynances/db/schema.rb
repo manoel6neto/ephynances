@@ -52,12 +52,12 @@ ActiveRecord::Schema.define(version: 20150226125940) do
   end
 
   create_table "agreement_types", force: :cascade do |t|
-    t.string   "type",       limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+    t.string   "agreementType", limit: 255
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
-  add_index "agreement_types", ["type"], name: "index_agreement_types_on_type", unique: true, using: :btree
+  add_index "agreement_types", ["agreementType"], name: "index_agreement_types_on_agreementType", unique: true, using: :btree
 
   create_table "agreements", force: :cascade do |t|
     t.integer  "city_organ_id",             limit: 4
