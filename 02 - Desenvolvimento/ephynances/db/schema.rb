@@ -11,11 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150225143053) do
+ActiveRecord::Schema.define(version: 20150226125940) do
 
   create_table "agreement_documents", force: :cascade do |t|
     t.integer  "agreement_id", limit: 4
     t.string   "name",         limit: 255
+    t.string   "extension",    limit: 255
     t.text     "description",  limit: 65535
     t.integer  "size",         limit: 4
     t.binary   "file",         limit: 65535
@@ -27,16 +28,18 @@ ActiveRecord::Schema.define(version: 20150225143053) do
 
   create_table "agreement_installments", force: :cascade do |t|
     t.integer  "agreement_id",     limit: 4
+    t.integer  "payment_id",       limit: 4
     t.decimal  "value",                      precision: 10, scale: 2
-    t.boolean  "status",           limit: 1
+    t.boolean  "status",           limit: 1,                          default: false
     t.date     "paymentDate"
     t.date     "dueDate"
     t.date     "confirmationDate"
-    t.datetime "created_at",                                          null: false
-    t.datetime "updated_at",                                          null: false
+    t.datetime "created_at",                                                          null: false
+    t.datetime "updated_at",                                                          null: false
   end
 
   add_index "agreement_installments", ["agreement_id"], name: "index_agreement_installments_on_agreement_id", using: :btree
+  add_index "agreement_installments", ["payment_id"], name: "index_agreement_installments_on_payment_id", using: :btree
 
   create_table "agreement_responsibles", force: :cascade do |t|
     t.string   "name",       limit: 255
@@ -93,6 +96,28 @@ ActiveRecord::Schema.define(version: 20150225143053) do
   add_index "city_organs", ["cnpj"], name: "index_city_organs_on_cnpj", unique: true, using: :btree
   add_index "city_organs", ["state_id"], name: "index_city_organs_on_state_id", using: :btree
 
+  create_table "payment_documents", force: :cascade do |t|
+    t.integer  "payment_id",  limit: 4
+    t.string   "name",        limit: 255
+    t.binary   "file",        limit: 65535
+    t.string   "extension",   limit: 255
+    t.text     "description", limit: 65535
+    t.integer  "size",        limit: 4
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "payment_documents", ["payment_id"], name: "index_payment_documents_on_payment_id", using: :btree
+
+  create_table "payments", force: :cascade do |t|
+    t.decimal  "value",                      precision: 10, scale: 2
+    t.date     "paymentDate"
+    t.date     "confirmationDate"
+    t.boolean  "status",           limit: 1,                          default: false
+    t.datetime "created_at",                                                          null: false
+    t.datetime "updated_at",                                                          null: false
+  end
+
   create_table "recover_passwords", force: :cascade do |t|
     t.string   "token",      limit: 255
     t.date     "validity"
@@ -123,6 +148,18 @@ ActiveRecord::Schema.define(version: 20150225143053) do
   add_index "states", ["acronym"], name: "index_states_on_acronym", unique: true, using: :btree
   add_index "states", ["name"], name: "index_states_on_name", unique: true, using: :btree
   add_index "states", ["region_id"], name: "index_states_on_region_id", using: :btree
+
+  create_table "sub_agreement_installments", force: :cascade do |t|
+    t.integer  "agreement_installment_id", limit: 4
+    t.integer  "payment_id",               limit: 4
+    t.decimal  "value",                              precision: 10, scale: 2
+    t.boolean  "status",                   limit: 1,                          default: false
+    t.datetime "created_at",                                                                  null: false
+    t.datetime "updated_at",                                                                  null: false
+  end
+
+  add_index "sub_agreement_installments", ["agreement_installment_id"], name: "index_sub_agreement_installments_on_agreement_installment_id", using: :btree
+  add_index "sub_agreement_installments", ["payment_id"], name: "index_sub_agreement_installments_on_payment_id", using: :btree
 
   create_table "user_has_contributors", id: false, force: :cascade do |t|
     t.integer  "vendor_user_id",      limit: 4
@@ -167,12 +204,16 @@ ActiveRecord::Schema.define(version: 20150225143053) do
 
   add_foreign_key "agreement_documents", "agreements", name: "agreement_documents_agreement_id_fk"
   add_foreign_key "agreement_installments", "agreements", name: "agreement_installments_agreement_id_fk"
+  add_foreign_key "agreement_installments", "payments", name: "agreement_installments_payment_id_fk"
   add_foreign_key "agreements", "agreement_responsibles", name: "agreements_agreement_responsible_id_fk"
   add_foreign_key "agreements", "agreement_types", name: "agreements_agreement_type_id_fk"
   add_foreign_key "agreements", "city_organs", name: "agreements_city_organ_id_fk"
   add_foreign_key "agreements", "users", name: "agreements_user_id_fk"
   add_foreign_key "city_organs", "states", name: "city_organs_state_id_fk"
+  add_foreign_key "payment_documents", "payments", name: "payment_documents_payment_id_fk"
   add_foreign_key "states", "regions", name: "states_region_id_fk"
+  add_foreign_key "sub_agreement_installments", "agreement_installments", name: "sub_agreement_installments_agreement_installment_id_fk"
+  add_foreign_key "sub_agreement_installments", "payments", name: "sub_agreement_installments_payment_id_fk"
   add_foreign_key "users", "city_organs", name: "users_city_organ_id_fk"
   add_foreign_key "users", "user_levels", name: "users_user_level_id_fk"
 end

@@ -9,6 +9,7 @@
     <schema name="" catalog="ephynances_development"/>
     <table name="agreement_documents" schema="" catalog="ephynances_development" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="agreement_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="description" sqlType="TEXT" precision="65535" scale="0" nullable="true" jdbcType="-1"/>
       <column name="size" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
@@ -16,9 +17,12 @@
       <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="agreement_documents_agreement_id_fk" columns="agreement_id" ref-table="agreements" ref-schema="" ref-catalog="ephynances_development" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="index_agreement_documents_on_agreement_id" unique="false" columns="agreement_id"/>
     </table>
     <table name="agreement_installments" schema="" catalog="ephynances_development" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="agreement_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="value" sqlType="DECIMAL" precision="10" scale="2" nullable="true" jdbcType="3"/>
       <column name="status" sqlType="TINYINT" precision="3" scale="0" nullable="true" jdbcType="-6"/>
       <column name="paymentDate" sqlType="DATE" precision="10" scale="0" nullable="true" jdbcType="91"/>
@@ -27,6 +31,8 @@
       <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="agreement_installments_agreement_id_fk" columns="agreement_id" ref-table="agreements" ref-schema="" ref-catalog="ephynances_development" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <index name="index_agreement_installments_on_agreement_id" unique="false" columns="agreement_id"/>
     </table>
     <table name="agreement_responsibles" schema="" catalog="ephynances_development" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -38,6 +44,7 @@
       <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="agreements_agreement_responsible_id_fk" table="agreements" schema="" catalog="ephynances_development" columns="agreement_responsible_id"/>
     </table>
     <table name="agreement_types" schema="" catalog="ephynances_development" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -45,10 +52,15 @@
       <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="agreements_agreement_type_id_fk" table="agreements" schema="" catalog="ephynances_development" columns="agreement_type_id"/>
       <index name="index_agreement_types_on_type" unique="true" columns="type"/>
     </table>
     <table name="agreements" schema="" catalog="ephynances_development" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="city_organ_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="agreement_responsible_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="agreement_type_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="contactEmail" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="contactPhone" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="totalPrice" sqlType="DECIMAL" precision="10" scale="2" nullable="true" jdbcType="3"/>
@@ -61,18 +73,33 @@
       <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="agreements_agreement_responsible_id_fk" columns="agreement_responsible_id" ref-table="agreement_responsibles" ref-schema="" ref-catalog="ephynances_development" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="agreements_agreement_type_id_fk" columns="agreement_type_id" ref-table="agreement_types" ref-schema="" ref-catalog="ephynances_development" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="agreements_city_organ_id_fk" columns="city_organ_id" ref-table="city_organs" ref-schema="" ref-catalog="ephynances_development" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="agreements_user_id_fk" columns="user_id" ref-table="users" ref-schema="" ref-catalog="ephynances_development" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="agreement_documents_agreement_id_fk" table="agreement_documents" schema="" catalog="ephynances_development" columns="agreement_id"/>
+      <exported-key name="agreement_installments_agreement_id_fk" table="agreement_installments" schema="" catalog="ephynances_development" columns="agreement_id"/>
       <index name="index_agreements_on_contractorAgreementNumber" unique="true" columns="contractorAgreementNumber"/>
       <index name="index_agreements_on_physisAgreementNumber" unique="true" columns="physisAgreementNumber"/>
+      <index name="index_agreements_on_agreement_responsible_id" unique="false" columns="agreement_responsible_id"/>
+      <index name="index_agreements_on_agreement_type_id" unique="false" columns="agreement_type_id"/>
+      <index name="index_agreements_on_city_organ_id" unique="false" columns="city_organ_id"/>
+      <index name="index_agreements_on_user_id" unique="false" columns="user_id"/>
     </table>
     <table name="city_organs" schema="" catalog="ephynances_development" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="state_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="cnpj" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="cityName" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="organName" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="city_organs_state_id_fk" columns="state_id" ref-table="states" ref-schema="" ref-catalog="ephynances_development" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="agreements_city_organ_id_fk" table="agreements" schema="" catalog="ephynances_development" columns="city_organ_id"/>
+      <exported-key name="users_city_organ_id_fk" table="users" schema="" catalog="ephynances_development" columns="city_organ_id"/>
       <index name="index_city_organs_on_cnpj" unique="true" columns="cnpj"/>
+      <index name="index_city_organs_on_state_id" unique="false" columns="state_id"/>
     </table>
     <table name="recover_passwords" schema="" catalog="ephynances_development" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -90,6 +117,7 @@
       <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="states_region_id_fk" table="states" schema="" catalog="ephynances_development" columns="region_id"/>
       <index name="index_regions_on_acronym" unique="true" columns="acronym"/>
       <index name="index_regions_on_name" unique="true" columns="name"/>
     </table>
@@ -99,13 +127,25 @@
     </table>
     <table name="states" schema="" catalog="ephynances_development" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="region_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="acronym" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="states_region_id_fk" columns="region_id" ref-table="regions" ref-schema="" ref-catalog="ephynances_development" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="city_organs_state_id_fk" table="city_organs" schema="" catalog="ephynances_development" columns="state_id"/>
       <index name="index_states_on_acronym" unique="true" columns="acronym"/>
       <index name="index_states_on_name" unique="true" columns="name"/>
+      <index name="index_states_on_region_id" unique="false" columns="region_id"/>
+    </table>
+    <table name="user_has_contributors" schema="" catalog="ephynances_development" type="TABLE">
+      <column name="vendor_user_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="contributor_user_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
+      <index name="index_user_has_contributors_on_contributor_user_id" unique="false" columns="contributor_user_id"/>
+      <index name="index_user_has_contributors_on_vendor_user_id" unique="false" columns="vendor_user_id"/>
     </table>
     <table name="user_levels" schema="" catalog="ephynances_development" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
@@ -113,10 +153,13 @@
       <column name="created_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <exported-key name="users_user_level_id_fk" table="users" schema="" catalog="ephynances_development" columns="user_level_id"/>
       <index name="index_user_levels_on_levelType" unique="true" columns="levelType"/>
     </table>
     <table name="users" schema="" catalog="ephynances_development" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="user_level_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="city_organ_id" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="name" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="phone" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -130,13 +173,23 @@
       <column name="updated_at" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
       <column name="password_digest" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="users_city_organ_id_fk" columns="city_organ_id" ref-table="city_organs" ref-schema="" ref-catalog="ephynances_development" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="users_user_level_id_fk" columns="user_level_id" ref-table="user_levels" ref-schema="" ref-catalog="ephynances_development" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="agreements_user_id_fk" table="agreements" schema="" catalog="ephynances_development" columns="user_id"/>
       <index name="index_users_on_cpf" unique="true" columns="cpf"/>
       <index name="index_users_on_email" unique="true" columns="email"/>
       <index name="index_users_on_login" unique="true" columns="login"/>
+      <index name="index_users_on_city_organ_id" unique="false" columns="city_organ_id"/>
+      <index name="index_users_on_user_level_id" unique="false" columns="user_level_id"/>
     </table>
   </data-source>
   <data-source name="Rails ephynances: test" uuid="c0fcaf8c-7881-4e74-bc00-e4c07a63fbe2">
-    <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
+    <database-info product="MySQL" version="5.5.41-0ubuntu0.14.10.1" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.34 ( Revision: jess.balint@oracle.com-20141014163213-wqbwpf1ok2kvo1om )">
+      <extra-name-characters>#@</extra-name-characters>
+      <identifier-quote-string>`</identifier-quote-string>
+    </database-info>
+    <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact"/>
+    <schema name="" catalog="ephynances_test"/>
   </data-source>
   <data-source name="Rails ephynances: production" uuid="70558949-6565-4d9b-9bb1-ff3cea23c3a1">
     <database-info product="" version="" jdbc-version="" driver-name="" driver-version=""/>
