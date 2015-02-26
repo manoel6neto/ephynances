@@ -1,4 +1,3 @@
-# encoding: UTF-8
 pt-BR:
   date:
     abbr_day_names:
@@ -126,7 +125,7 @@ pt-BR:
       wrong_length: não possui o tamanho esperado (%{count} caracteres)
       other_than: "deve ser diferente de %{count}"
     template:
-      body: ! 'Por favor, verifique o(s) seguinte(s) campo(s):'
+      body: ! 'Por favor, verifique o(s) seguinte(s) campo(s):\'
       header:
         one: ! 'Não foi possível gravar %{model}: 1 erro'
         other: ! 'Não foi possível gravar %{model}: %{count} erros.'
@@ -143,14 +142,14 @@ pt-BR:
         delimiter: .
         format: ! '%u %n'
         precision: 2
-        separator: ! ','
+        separator: ! ',\'
         significant: false
         strip_insignificant_zeros: false
         unit: R$
     format:
       delimiter: .
       precision: 3
-      separator: ! ','
+      separator: ! ',\'
       significant: false
       strip_insignificant_zeros: false
     human:
@@ -192,12 +191,12 @@ pt-BR:
         format: "%n%"
     precision:
       format:
-        delimiter: .
+        delimiter:
   support:
     array:
       last_word_connector: ! ' e '
       two_words_connector: ! ' e '
-      words_connector: ! ', '
+      words_connector: ! ', \'
   time:
     am: ''
     formats:

@@ -1,8 +1,7 @@
-# encoding: UTF-8
 Rails.application.routes.draw do
-  resources :regions, only: [:show]
+  resources :regions, only: [:index]
 
-  resources :states, only: [:show]
+  resources :states, only: [:index]
 
   resources :agreement_documents
 
@@ -10,13 +9,13 @@ Rails.application.routes.draw do
 
   resources :agreement_responsibles
 
-  resources :agreement_types, only: [:show]
+  resources :agreement_types, only: [:index]
 
   resources :agreements
 
   resources :city_organs
 
-  resources :user_levels, only: [:show]
+  resources :user_levels, only: [:index]
 
   resources :users
 

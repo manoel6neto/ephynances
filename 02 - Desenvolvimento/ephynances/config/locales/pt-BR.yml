@@ -1,6 +1,11 @@
-# encoding: UTF-8
 pt-BR:
   activerecord:
+    errors:
+      template:
+        header:
+          one: "1 erro impediu o %{model} de ser salvo"
+          other: "%{count} erros impediram o %{model} de ser salvo"
+          body: "Os seguintes campos apresentam erros"
     models:
       user: Usuário
       user_level: Nível de usuário
