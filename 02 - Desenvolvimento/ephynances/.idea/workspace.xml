@@ -1,104 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b6c468c9-810e-43f4-91fc-b82f05645a54" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/dao/DAO.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/dao/DAO.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/AgilityFileBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/AgilityFileBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/ConfigBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/ConfigBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/ConfigurationBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/ConfigurationBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryAlertBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryAlertBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryAudioBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryAudioBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryAudioHistoryBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryAudioHistoryBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryBackuptBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryBackuptBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryDiskBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryDiskBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryDiskHistoryBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryDiskHistoryBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryGPUBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryGPUBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryGPUHistoryBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryGPUHistoryBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryLogTasksBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryLogTasksBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryLogTestesBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryLogTestesBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryMachineBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryMachineBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryMachineGroupBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryMachineGroupBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryMachineMacBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryMachineMacBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryMemoryBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryMemoryBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryMemoryHistoryBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryMemoryHistoryBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryMotherboardBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryMotherboardBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryMotherboardHistoryBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryMotherboardHistoryBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryNetworkBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryNetworkBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryNetworkHistoryBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryNetworkHistoryBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryProcessorBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryProcessorBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventoryProcessorHistoryBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventoryProcessorHistoryBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/InventorySoftwareBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/InventorySoftwareBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/ScheduledTaskBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/ScheduledTaskBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/UploadDriveBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/UploadDriveBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/UploadImageBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/UploadImageBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/UploadSoftwareBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/UploadSoftwareBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/ejb/UserBean.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/ejb/UserBean.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/jsf/BaseController.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/jsf/BaseController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/jsf/ConfigController.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/jsf/ConfigController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/jsf/ConfigurationController.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/jsf/ConfigurationController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/jsf/InventoryMachineController.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/jsf/InventoryMachineController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/jsf/InventoryMachineGroupController.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/jsf/InventoryMachineGroupController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/jsf/LoginController.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/jsf/LoginController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/jsf/ScheduledTaskController.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/jsf/ScheduledTaskController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/jsf/UploadDriveController.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/jsf/UploadDriveController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/jsf/UploadImageController.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/jsf/UploadImageController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/jsf/UploadSoftwareController.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/jsf/UploadSoftwareController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/jsf/UserController.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/jsf/UserController.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/AgilityFile.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/AgilityFile.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/BaseModel.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/BaseModel.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/Config.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/Config.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/Configuration.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/Configuration.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryAlert.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryAlert.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryAudio.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryAudio.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryAudioHistory.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryAudioHistory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryBackup.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryBackup.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryDisk.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryDisk.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryDiskHistory.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryDiskHistory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryGPU.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryGPU.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryGPUHistory.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryGPUHistory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryLogTasks.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryLogTasks.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryLogTestes.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryLogTestes.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryMachine.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryMachine.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryMachineGroup.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryMachineGroup.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryMachineMac.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryMachineMac.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryMemory.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryMemory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryMemoryHistory.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryMemoryHistory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryMotherboard.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryMotherboard.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryMotherboardHistory.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryMotherboardHistory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryNetwork.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryNetwork.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryNetworkHistory.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryNetworkHistory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryProcessor.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryProcessor.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventoryProcessorHistory.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventoryProcessorHistory.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/InventorySoftware.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/InventorySoftware.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/ScheduledTask.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/ScheduledTask.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/UploadDrive.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/UploadDrive.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/UploadImage.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/UploadImage.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/UploadSoftware.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/UploadSoftware.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/model/User.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/model/User.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/service/AuthFilter.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/service/AuthFilter.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/service/JsonObjectMapper.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/service/JsonObjectMapper.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/service/MyApplication.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/service/MyApplication.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/service/ValidationErrors.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/service/ValidationErrors.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/servlet/AbstractFilter.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/servlet/AbstractFilter.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/servlet/SecurityFilter.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/servlet/SecurityFilter.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/util/Comunicacao.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/util/Comunicacao.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/util/Criptografia.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/util/Criptografia.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/util/FileUtil.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/util/FileUtil.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/util/ImageUtil.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/util/ImageUtil.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/util/JsfUtil.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/util/JsfUtil.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/util/Mail.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/util/Mail.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/util/PaginationCompleteItens.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/util/PaginationCompleteItens.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/util/PaginationHelper.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/util/PaginationHelper.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/ipsoftbrasil/web/agility/util/Utils.java" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/java/br/com/physisbrasil/web/ephynances/util/Utils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/webapp/WEB-INF/create-database.sql" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/webapp/WEB-INF/create-database.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/setup/glassfish-resources.xml" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/setup/glassfish-resources.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/webapp/WEB-INF/glassfish-web.xml" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/webapp/WEB-INF/glassfish-web.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/webapp/WEB-INF/init-database.sql" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/webapp/WEB-INF/init-database.sql" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/resources/mail.properties" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/resources/mail.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/resources/main.properties" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/resources/main.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/pom.xml" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/pom.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/webapp/template.xhtml" afterPath="$PROJECT_DIR$/../ephynances_java/appweb/src/main/webapp/template.xhtml" />
-    </list>
+    <list default="true" id="b6c468c9-810e-43f4-91fc-b82f05645a54" name="Default" comment="" />
     <ignored path="ephynances.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -132,7 +35,48 @@
     <favorites_list name="ephynances" />
   </component>
   <component name="FileEditorManager">
-    <leaf />
+    <leaf>
+      <file leaf-file-name="20150224114459_create_users.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/db/migrate/20150224114459_create_users.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
+              <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="seeds.rb" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/db/seeds.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.15906681" vertical-offset="0" max-vertical-offset="943">
+              <caret line="10" column="86" selection-start-line="10" selection-start-column="78" selection-end-line="10" selection-end-column="86" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="20150225123317_user_has_contributor.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/db/migrate/20150225123317_user_has_contributor.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="300">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="20150224120409_create_user_levels.rb" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/db/migrate/20150224120409_create_user_levels.rb">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="270">
+              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="GeneratorOptions">
     <option name="ENVIRONMENT" value="development" />
@@ -208,8 +152,10 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="1912" />
-    <option name="height" value="1045" />
+    <option name="x" value="-2" />
+    <option name="y" value="-3" />
+    <option name="width" value="1924" />
+    <option name="height" value="1052" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -263,6 +209,38 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="lib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ephynances" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ephynances" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="db" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ephynances" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ephynances" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="db" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="migrate" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -752,8 +730,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1912" height="1045" extended-state="4" />
-    <editor active="false" />
+    <frame x="-2" y="-3" width="1924" height="1052" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
@@ -761,7 +739,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25209644" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25052083" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5952869" sideWeight="0.45506793" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -800,20 +778,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/db/migrate/20150224114459_create_users.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="949">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/controllers/agreement_documents_controller.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1215">
-          <caret line="0" column="17" selection-start-line="0" selection-start-column="17" selection-end-line="0" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/agreement_installments_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1215">
@@ -975,17 +939,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/db/migrate/20150224120409_create_user_levels.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="949">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/db/migrate/20150224130325_create_agreements.rb">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="949">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -993,6 +951,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="949">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1007,13 +966,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.09483667" vertical-offset="0" max-vertical-offset="949">
           <caret line="6" column="28" selection-start-line="6" selection-start-column="28" selection-end-line="6" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/db/seeds.rb">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.52884614" vertical-offset="0" max-vertical-offset="936">
-          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1134,6 +1087,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="949">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1156,6 +1110,38 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.11064278" vertical-offset="0" max-vertical-offset="1230">
           <caret line="7" column="54" selection-start-line="7" selection-start-column="54" selection-end-line="7" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/migrate/20150224120409_create_user_levels.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="949">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/migrate/20150225123317_user_has_contributor.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="956">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/migrate/20150224114459_create_users.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="450">
+          <caret line="18" column="33" selection-start-line="18" selection-start-column="33" selection-end-line="18" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/db/seeds.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.15906681" vertical-offset="0" max-vertical-offset="943">
+          <caret line="10" column="86" selection-start-line="10" selection-start-column="78" selection-end-line="10" selection-end-column="86" />
+          <folding />
         </state>
       </provider>
     </entry>

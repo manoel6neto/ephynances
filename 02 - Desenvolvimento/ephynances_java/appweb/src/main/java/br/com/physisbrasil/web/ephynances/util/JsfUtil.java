@@ -216,7 +216,7 @@ public class JsfUtil {
     public static void ruleCheck(List<String> profileRule) {
         LoginController l = new LoginController();
         
-        if (!profileRule.contains(l.getLoggedUser().getProfileRule().toString())) {
+        if (!profileRule.contains(l.getLoggedUser().getProfileRule())) {
             redirectUser();
         }
     }

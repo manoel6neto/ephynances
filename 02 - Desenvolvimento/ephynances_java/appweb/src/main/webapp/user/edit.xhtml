@@ -11,33 +11,64 @@
             <h:outputText  value="Editar usuário"/>
         </ui:define>
         <ui:define name="body"  >
-            <f:event type="preRenderView" listener="#{userController.ruleCheck(['ADMIN'])}" />
+            <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER])}" />
             <h:form id="formUser" styleClass="form" >
                 <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
                 
                 <div class="grid_4 alpha" >
                     <p:selectOneMenu id="menu" value="#{userController.user.profileRule}" required="true" >
                         <f:selectItem itemLabel="Selecione um perfil: " noSelectionOption="true" />                        
-                        <f:selectItem itemLabel="#{userController.RULER_ADMIN}" itemValue="#{userController.RULER_ADMIN}" />
-                        <f:selectItem itemLabel="#{userController.RULER_USER}" itemValue="#{userController.RULER_USER}" />
+                        <f:selectItem itemLabel="#{userController.RULER_ADMIN}" itemValue="#{userController.RULER_ADMIN}" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>
+                        <f:selectItem itemLabel="#{userController.RULER_CONTRIBUTOR}" itemValue="#{userController.RULER_CONTRIBUTOR}" />
+                        <f:selectItem itemLabel="#{userController.RULER_SELLER}" itemValue="#{userController.RULER_SELLER}" />
                     </p:selectOneMenu>
                 </div>
                 
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Nome: " for="name"  />
-                    <p:inputText id="name" value="#{userController.user.name}" required="true" requiredMessage="Nome: campo é necessário"/> 
+                    <p:inputText id="name" value="#{userController.user.name}" required="true" requiredMessage="Nome é necessário"/> 
+                </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Email: " for="email"  />
+                    <p:inputText id="email" value="#{userController.user.email}" required="true" requiredMessage="Email é necessário"/> 
+                </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="CPF: " for="cpf"  />
+                    <p:inputText id="cpf" value="#{userController.user.cpf}" required="true" requiredMessage="CPF é necessário"/> 
+                </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Telefone: " for="phone"  />
+                    <p:inputMask id="phone" value="#{userController.user.phone}" mask="(99) 999-9999" required="false"/> 
+                </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Celular: " for="cellphone"  />
+                    <p:inputMask id="cellphone" value="#{userController.user.cellPhone}" mask="(99) 999-9999" required="false"/> 
+                </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="N. Contratos Venda (Máx): " for="maxsalesamount"  />
+                    <p:inputText id="maxsalesamount" value="#{userController.user.maxSalesAmount}" required="true" requiredMessage="Necessário informar limite para criação de contratos."/> 
                 </div>
                
                 <br class="clear" />
                 <div class="grid_2 alpha" >
                     <p:outputLabel  value="Nova Senha: " for="formPassword" />
                     <p:password styleClass="grid_2" autocomplete="off" id="formPassword" value="#{userController.user.password}" match="confPassword"
-                                feedback="true" promptLabel="6 à 40 caracteres" weakLabel="fraca" goodLabel="média" strongLabel="forte" required="true" requiredMessage="Senha: campo é necessário"/> 
+                                feedback="true" promptLabel="6 à 40 caracteres" weakLabel="fraca" goodLabel="média" strongLabel="forte" required="true" requiredMessage="Senha é necessária"/> 
                 </div>
                 <div class="grid_2" >
                     <p:outputLabel value="Confirmação Senha: " for="confPassword"/>
-                    <p:password styleClass="grid_2" autocomplete="off" id="confPassword" value="#{userController.user.password}" /> 
+                    <p:password styleClass="grid_2" autocomplete="off"  id="confPassword" value="#{userController.user.password}"  /> 
                 </div>
 
                 <br class="clear" />

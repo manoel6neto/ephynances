@@ -44,7 +44,7 @@
                                         <span class="user" >
                                             <h:link style="font-size: 1.0em" outcome="/user/password" value="#{loginController.loggedUser.name}" />
                                         </span>
-                                        <h:panelGroup styleClass="user" rendered="#{loginController.isUserInRuller('ADMIN')}" >
+                                        <h:panelGroup styleClass="user" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}" >
                                             ( ADMIN )
                                         </h:panelGroup>
                                         | <p:commandLink ajax="false" action="#{loginController.logout}" value="sair" style="color: #F03A3A" />
@@ -64,8 +64,8 @@
                                 <ui:insert name="header">
                                     <p:menubar style="margin-top: 4px" >  
                                         <p:menuitem value="HOME" outcome="/machine/list"/>  
-                                        <p:menuitem value="CONFIGURAÇÕES" outcome="/admin/form" rendered="#{loginController.isUserInRuller('ADMIN')}"/>                                        
-                                        <p:menuitem value="USUÁRIOS" outcome="/user/list" rendered="#{loginController.isUserInRuller('ADMIN')}"/>  
+                                        <p:menuitem value="CONFIGURAÇÕES" outcome="/admin/form" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}"/>                                        
+                                        <p:menuitem value="USUÁRIOS" outcome="/user/list" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}"/>  
                                         <p:menuitem value="GRUPOS" outcome="/machineGroup/list" />
                                         <p:submenu label="REMOTO">
                                             <p:menuitem value="LIGAR, DESLIGAR, REINICIAR" outcome="/machine/list" />

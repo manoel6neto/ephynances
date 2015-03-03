@@ -12,7 +12,7 @@
         </ui:define>
 
         <ui:define name="body">
-            <f:event type="preRenderView" listener="#{userController.ruleCheck(['ADMIN'])}" />
+            <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER])}" />
             <h:form id="form">
                 <p:dataTable id="table" widgetVar="table" value="#{userController.listUsers}" var="item" lazy="false" 
                              rows="25" paginator="true"  paginatorPosition="bottom" 
@@ -58,7 +58,6 @@
                     <p:commandButton value="Sim" action="#{userController.active}" ajax="false" />
                     <p:commandButton value="Cancelar" onclick="cdA.hide();" type="button" /> 
                 </p:confirmDialog>
-                
                 <br />
 
                 <div class="alpha grid_2" >

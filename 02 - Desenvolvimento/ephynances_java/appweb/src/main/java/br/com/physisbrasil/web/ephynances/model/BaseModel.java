@@ -5,6 +5,7 @@ import java.io.Serializable;
 public interface BaseModel extends Serializable {
 
     public static final String EMAIL_REGEX = ".+@.+\\.[a-z]+";
+    public static final String CPF_REGEX = ".+@.+\\.[a-z]+";
 
     Long getId();
 }

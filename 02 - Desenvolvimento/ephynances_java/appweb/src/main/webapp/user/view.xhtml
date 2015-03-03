@@ -11,7 +11,7 @@
             <h:outputText  value="Dados do usuário" rendered="#{not empty userController.user.id}"/>
         </ui:define>
         <ui:define name="body"  >
-            <f:event type="preRenderView" listener="#{userController.ruleCheck(['ADMIN'])}" />
+            <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER, userController.RULER_CONTRIBUTOR])}" />
             <h:form id="formUser" styleClass="form" >
                 <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
                 
@@ -32,6 +32,31 @@
                     <p:outputLabel value="Email: " for="email"  />
                     <p:inputText id="email" value="#{userController.user.email}" disabled="true" /> 
                 </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="CPF: " for="cpf"  />
+                    <p:inputText id="cpf" value="#{userController.user.cpf}" disabled="true" /> 
+                </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Telefone: " for="phone"  />
+                    <p:inputText id="phone" value="#{userController.user.phone}" disabled="true" /> 
+                </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Celular: " for="cellphone"  />
+                    <p:inputText id="cellphone" value="#{userController.user.cellPhone}" disabled="true" /> 
+                </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="N. Contratos Venda (Máx): " for="maxsalesamount"  />
+                    <p:inputText id="maxsalesamount" value="#{userController.user.maxSalesAmount}" disabled="true" /> 
+                </div>
+                
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >
                     <h:link styleClass="grid_1"  outcome="list" value="Voltar"  />

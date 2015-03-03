@@ -9,9 +9,8 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 USE `physis_ephynances`;
 
 -- User --
-insert into `user`(email, name, password, profile_rule, delete_date) 
-values ('admin@physisbrasil.com.br', 'admin', '43878f448874a92faccfc79cef39b669', 'ADMIN', null),
-('user@physisbrasil.com.br', 'user', '43878f448874a92faccfc79cef39b669', 'USER', null);
+insert into `user`(email, name, password, cpf, phone, cellphone, max_sales_amount, profile_rule, delete_date) 
+values ('admin@physisbrasil.com.br', 'Administrador', '43878f448874a92faccfc79cef39b669', '84093587515', '(73) 9119-2425', '(73) 9119-2425', 0, 'Administrador', null);
 
 -------- Configuration ---------
 insert into configuration(smtp_server, user_name, password, smtp_port, email)

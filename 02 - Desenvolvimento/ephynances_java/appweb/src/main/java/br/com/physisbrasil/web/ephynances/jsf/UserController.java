@@ -14,7 +14,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.event.ValueChangeEvent;
 
 /**
  *
@@ -65,7 +64,7 @@ public class UserController extends BaseController {
         try {
             user.setPassword(Criptografia.criptografar(user.getPassword()));
             if (user.getId() != null && user.getId() > 0) {
-                if (user.getProfileRule().equals(getRULER_USER())) {
+                if (user.getProfileRule().equals(getRULER_ADMIN())) {
                     for (User usuarioTemp : usuarioBean.findAll()) {
                         if (usuarioTemp.getProfileRule().equals(getRULER_ADMIN())
                          && usuarioTemp.getDeleteDate() == null) {
@@ -285,12 +284,12 @@ public class UserController extends BaseController {
         return User.getRULER_ADMIN();
     }
 
-    public String getRULER_OWNER() {
-        return User.getRULER_OWNER();
+    public String getRULER_CONTRIBUTOR() {
+        return User.getRULER_CONTRIBUTOR();
     }
 
-    public String getRULER_USER() {
-        return User.getRULER_USER();
+    public String getRULER_SELLER() {
+        return User.getRULER_SELLER();
     }
 
     public void ruleCheck(List<String> profileRule) {
@@ -305,12 +304,7 @@ public class UserController extends BaseController {
                 if (loggedUser.getProfileRule().equalsIgnoreCase(getRULER_ADMIN())) {
                     this.listUser = usuarioBean.findAll();
                 } else {
-                    for (User user : usuarioBean.findAll()) {
-                        if (user.getProfileRule().equalsIgnoreCase(getRULER_OWNER())
-                                || user.getProfileRule().equalsIgnoreCase(getRULER_USER())) {
-                            this.listUser.add(user);
-                        }
-                    }
+                    //Pegar apenas os Colaboradores em caso de vendedor
                 }
             }
         } catch (Exception e) {
