@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class Criptografia {
 
-    private static final String chave = "agility";
+    private static final String chave = "ephynances";
 
     public static final String SENHA_PADRAO = "123456";
 

@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Thomas
  */
-@Table(name = "agility_inventory_machine_mac", uniqueConstraints = @UniqueConstraint(columnNames = {"mac"}))
+@Table(name = "ephynances_inventory_machine_mac", uniqueConstraints = @UniqueConstraint(columnNames = {"mac"}))
 @Entity
 public class InventoryMachineMac implements BaseModel {
 

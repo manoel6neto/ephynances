@@ -223,7 +223,7 @@ public class JsfUtil {
 
     private static void redirectUser() {
         try {
-            FacesContext.getCurrentInstance().getExternalContext().redirect("/agility/acesso_negado.xhtml");
+            FacesContext.getCurrentInstance().getExternalContext().redirect("/ephynances/acesso_negado.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(JsfUtil.class.getName()).log(Level.SEVERE, null, ex);
         }

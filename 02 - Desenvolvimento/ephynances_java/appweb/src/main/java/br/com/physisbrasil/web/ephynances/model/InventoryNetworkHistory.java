@@ -19,7 +19,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Thomas
  */
-@Table(name = "agility_inventory_network_history")
+@Table(name = "ephynances_inventory_network_history")
 @Entity
 public class InventoryNetworkHistory implements BaseModel {
 

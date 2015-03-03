@@ -60,9 +60,9 @@ public class UploadDriveController extends BaseController {
                     try {
                         String filePath = "";
                         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                            filePath = System.getenv("SystemDrive") + "/agility/" + UploadDrive.FILE_URL + uploadedFile.getFileName().toString();
+                            filePath = System.getenv("SystemDrive") + "/ephynances/" + UploadDrive.FILE_URL + uploadedFile.getFileName().toString();
                         } else {
-                            filePath = "/agility/" + UploadDrive.FILE_URL + uploadedFile.getFileName().toString();
+                            filePath = "/ephynances/" + UploadDrive.FILE_URL + uploadedFile.getFileName().toString();
                         }
 
                         File destFile = new File(filePath);

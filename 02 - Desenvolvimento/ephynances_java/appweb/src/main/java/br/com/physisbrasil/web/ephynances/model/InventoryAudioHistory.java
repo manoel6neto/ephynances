@@ -17,7 +17,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Thomas
  */
-@Table(name = "agility_inventory_audio_history")
+@Table(name = "ephynances_inventory_audio_history")
 @Entity
 public class InventoryAudioHistory implements BaseModel {
 

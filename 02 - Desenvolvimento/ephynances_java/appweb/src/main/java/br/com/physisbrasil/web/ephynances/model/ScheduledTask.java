@@ -23,7 +23,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Thomas
  */
-@Table(name = "agility_scheduled_task")
+@Table(name = "ephynances_scheduled_task")
 @Entity
 public class ScheduledTask implements BaseModel {
 

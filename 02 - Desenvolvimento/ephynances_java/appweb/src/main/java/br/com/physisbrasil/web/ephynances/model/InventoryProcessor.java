@@ -16,7 +16,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Thomas
  */
-@Table(name = "agility_inventory_processor")
+@Table(name = "ephynances_inventory_processor")
 @Entity
 public class InventoryProcessor implements BaseModel {
 

@@ -65,9 +65,9 @@ public class UploadSoftwareController extends BaseController {
                     try {
                         String filePath = "";
                         if (System.getProperty("os.name").toLowerCase().contains("windows")) {
-                            filePath = System.getenv("SystemDrive") + "/agility/" + UploadSoftware.FILE_URL + uploadedFile.getFileName().toString();
+                            filePath = System.getenv("SystemDrive") + "/ephynances/" + UploadSoftware.FILE_URL + uploadedFile.getFileName().toString();
                         } else {
-                            filePath = "/agility/" + UploadSoftware.FILE_URL + uploadedFile.getFileName().toString();
+                            filePath = "/ephynances/" + UploadSoftware.FILE_URL + uploadedFile.getFileName().toString();
                         }
 
                         File destFile = new File(filePath);

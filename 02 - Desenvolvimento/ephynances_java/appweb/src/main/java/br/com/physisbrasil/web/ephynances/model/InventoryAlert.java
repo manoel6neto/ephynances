@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Thomas
  */
-@Table(name = "agility_inventory_alert")
+@Table(name = "ephynances_inventory_alert")
 @Entity
 public class InventoryAlert implements BaseModel {
 

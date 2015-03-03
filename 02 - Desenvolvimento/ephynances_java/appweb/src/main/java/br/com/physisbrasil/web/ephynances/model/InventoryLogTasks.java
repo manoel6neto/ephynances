@@ -20,7 +20,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Thomas
  */
-@Table(name = "agility_inventory_log_tasks")
+@Table(name = "ephynances_inventory_log_tasks")
 @Entity
 public class InventoryLogTasks implements BaseModel {
 

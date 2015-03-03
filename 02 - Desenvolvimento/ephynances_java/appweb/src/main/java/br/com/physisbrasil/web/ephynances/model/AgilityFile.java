@@ -24,7 +24,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
  * @author Thadeu
  */
 @Entity
-@Table(name = "agility_file")
+@Table(name = "ephynances_file")
 public class AgilityFile implements BaseModel {
 
     public static final int IMAGE = 1;

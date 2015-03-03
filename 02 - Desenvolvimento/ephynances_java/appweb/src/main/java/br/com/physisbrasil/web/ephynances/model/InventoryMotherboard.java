@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Thomas
  */
-@Table(name = "agility_inventory_motherboard")
+@Table(name = "ephynances_inventory_motherboard")
 @Entity
 public class InventoryMotherboard implements BaseModel {
 

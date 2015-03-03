@@ -21,7 +21,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  *
  * @author Malvadeza
  */
-@Table(name = "agility_inventory_machine")
+@Table(name = "ephynances_inventory_machine")
 @Entity
 @CascadeOnDelete
 public class InventoryMachine implements BaseModel {
