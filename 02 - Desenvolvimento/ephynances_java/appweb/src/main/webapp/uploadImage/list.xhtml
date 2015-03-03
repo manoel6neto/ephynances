@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Imagens de SO"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <f:event type="preRenderView" listener="#{userController.ruleCheck(['ADMIN', 'USER'])}" />
+            <h:form id="form">
+                <p:dataTable id="table" widgetVar="table" value="#{uploadImageController.pagination}" var="item" lazy="true" 
+                             rows="25" paginator="true"  paginatorPosition="bottom" 
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}" emptyMessage="Nenhum registro encontrado!">
+
+                    <f:facet name="header" >  
+                        <p:outputPanel>           
+                            <h:outputText value="Busca global: " />
+                            <p:inputText id="globalFilter" onkeyup="table.filter();" valueChangeListener="#{uploadImageController.globalFilterChanged}" style="width:150px" />  
+                        </p:outputPanel>  
+                    </f:facet>   
+
+                    <p:column style="text-align: center" headerText="Código*" sortBy="id">
+                        <h:outputText value="#{item.id}" />
+                    </p:column> 
+                    
+                    <p:column style="text-align: center" headerText="SO*" sortBy="os">
+                        <h:outputText value="#{item.os}" />
+                    </p:column> 
+
+                    <p:column style="text-align: center" headerText="Nome*" sortBy="name">
+                        <h:outputText value="#{item.name}" />
+                    </p:column>   
+
+                    <p:column style="text-align: center" headerText="Descrição" sortBy="description">
+                        <h:outputText value="#{item.description}" />
+                    </p:column>  
+
+                    <p:column width="60" style="text-align: center" headerText="Ações">
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{uploadImageController.edit(item)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar" title="Editar"/></p:commandLink>                       
+                        <h:outputText value="   " />
+                        <p:commandLink oncomplete="cd.show()" update="@form">
+                            <img src="../resources/img/remove.png" width="16" height="16" alt="Remover" title="Remover"/>
+                            <f:setPropertyActionListener target="#{uploadImageController.uploadImage}" value="#{item}" />
+                        </p:commandLink>                        
+                    </p:column>                                       
+                </p:dataTable>
+                <p:confirmDialog message="Tem certeza que deseja remover a imagem '${uploadImageController.uploadImage.name}'?"
+                                 header="Confirmar remoção" severity="alert" widgetVar="cd">
+                    <p:commandButton value="Sim" action="#{uploadImageController.delete}" ajax="false" />
+                    <p:commandButton value="Cancelar" onclick="cd.hide();" type="button" /> 
+                </p:confirmDialog>
+                <br />
+                <div class="alpha grid_2" >
+                    <p:commandButton ajax="false" action="#{uploadImageController.create}" value="Nova Imagem" />
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

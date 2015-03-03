@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml" >
+
+        <ui:define name="title" ></ui:define>
+        <ui:define name="title2" >LOGIN - AGILITY</ui:define>
+
+        <ui:define name="body" >
+            <h:form class="form loginForm" >
+                <h:outputText value="Usuário ou senha inválidos!"
+                              rendered="#{param.error}"
+                              style="color:darkred; font-size: 12px; margin-top: 5px;" />
+                <h:outputText value="Usuário está inativo!"
+                              rendered="#{param.userInactive}"
+                              style="color:darkred; font-size: 12px; margin-top: 5px;" />
+                <h:outputText value="Usuário ativado com sucesso!"
+                              rendered="#{param.activated eq true}"
+                              style="color:darkgreen; font-size: 12px; margin-top: 5px;" />
+                <h:outputText value="Tentativa inválida de ativação de usuário!"
+                              rendered="#{param.activated eq false}"
+                              style="color:darkred; font-size: 12px; margin-top: 5px;" />
+                
+                <div class="grid_3" >
+                    <label for="loginEmail">Email:</label>
+                    <h:inputText id="loginEmail" value="#{loginController.email}" maxlength="60" />
+                </div>
+                <br class="clear" />
+                <div class="grid_3" >
+                    <label for="loginPass">Senha:</label>
+                    <h:inputSecret id="loginPass" value="#{loginController.senha}" maxlength="20" />
+                </div>
+                <br class="clear" />
+
+                <div class="grid_3" >
+                    <h:commandButton action="#{loginController.login}" value="Login" class="grid_1 alpha" />
+                    <a onclick="cd.show()" href="#">Esqueci minha senha</a>
+                </div>                
+            </h:form>
+
+            <p:dialog id="confirmDialog" header="Recuperação de senha" widgetVar="cd" resizable="false" width="300" >
+                <h:form styleClass="form">
+                    <div class="grid_3 alpha" >
+                        <p:outputLabel value="Email" for="formEmail"/>
+                        <p:inputText id="formEmail" autocomplete="off" value="#{usuarioController.recoverEmail}" 
+                                     /> 
+                        <p:message for="formEmail" />
+                    </div>
+
+                    <br class="clear" />
+                    <p:separator/>
+                    <p:commandButton value="Enviar" action="#{usuarioController.recoverPassword}" 
+                                     icon="ui-icon-closethick" update="@all" />
+                    <p:commandButton value="Cancelar" onclick="cd.hide();" type="button" /> 
+                </h:form>
+            </p:dialog>
+
+        </ui:define>
+    </ui:composition>
+
+</html>
+

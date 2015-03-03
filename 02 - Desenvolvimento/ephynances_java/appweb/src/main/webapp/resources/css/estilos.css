@@ -1,0 +1,248 @@
+/* --------  HEDAR STYLES -----------*/
+
+.title1{
+    font-family: Verdana;
+    font-size: 2.4em;
+    color: white;
+    font-weight: bold;
+}
+.title2{
+    font-family: Verdana;
+    font-size: 2.4em;
+    color: #508CAA;
+    font-weight: bold;
+}
+.accountInfo, .accountInfo a, .accountInfo a:visited, .accountInfo a:active{
+    font-size: 1.1em;
+    color: white;
+}
+.accountInfo .user{
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+/* ---------- BODY STYLES ------------------------------------------------------ */
+
+h1{
+    color: #508CAA;
+    font-family: Verdana;
+}
+h2{
+    color:#6A6A6A;
+    font-family: Verdana;
+    font-variant: small-caps;
+}
+h3{
+    color:#6A6A6A;
+    font-family: Verdana;
+    font-variant: small-caps;
+    margin-top: 0.7em;
+    margin-bottom: 0.2em;
+}
+
+.tableLink:hover{
+    text-decoration: underline;
+}
+.tableLink, .tableLink:active, .tableLink:visited{
+    text-decoration: none;
+}
+.tableLink img{
+    vertical-align: bottom;
+    margin-left: 10px;
+}
+
+/* ---------- ----------- ------------------------------------------------------ */
+
+
+/* ---------- FORM STYLES ------------------------------------------------------ */
+.form label, .form input, .form select, .form textArea{
+    font-size: 1.3em;
+    margin: inherit;
+    display: inherit;
+    float: inherit;
+    width: inherit;
+
+    margin-left: 0px !important;
+}
+.form label{
+    margin-top: 3px !important;
+    font-family: Verdana, Arial, sans-serif;
+}
+.form .ui-message-error{
+    clear: both;
+    width: inherit;
+    margin: 0px 0px;
+}
+.form label.ui-state-error{
+    color: inherit;
+}
+.form .ui-inputfield{
+    margin: 0px 10px; 
+}
+
+label.ui-state-error{
+    background: none !important;
+}
+
+.view{
+    /*background: white;
+    padding: 10px;*/
+    font-size: 1.2em;
+}
+.view .ui-widget{
+    font-size: 1em !important;
+}
+.view label, .view h2, .view h3{
+    margin-top: 12px !important;
+    font-weight: bold;
+    color: #6A6A6A;
+}
+.form input[type="text"][readonly="readonly"]{
+    background: #E0E0E0;
+    font-weight: bold;
+}
+/* ---------- ----------- ------------------------------------------------------ */
+
+
+
+/* ------------------- LOGIN STYLES ---------------------- */
+.loginForm{
+    background: white;
+    border: #D2D2D2 1px solid;
+    padding: 20px;
+    margin-top: 80px;
+    margin-left: 50%;
+    width: 350px;
+    left: -175px;
+    position: absolute;
+}
+.loginForm label{
+    margin-top: 10px;
+}
+
+/* ---------------- OTHER STYLES --------------- */
+
+.ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+    -moz-binding: url('assets/xml/ellipsis.xml#ellipsis');
+}
+
+.ui-messages-info, .ui-messages-warn, .ui-messages-error, .ui-messages-fatal{
+    margin: 2px 0px !important;
+}
+
+.link-rodape, .link-rodape:visited, .link-rodape:active{
+    color: white;
+}
+
+.listObjetivos li{
+    margin: 5px;
+}
+
+.center{
+    text-align: center;
+}
+.left{
+    text-align: left;
+}
+.right{
+    text-align: right;
+}
+.justify{
+    text-align: justify;
+}
+
+/* ------------PRIME FACES -----------*/
+.ui-datatable tr.ui-datatable-even:hover, .ui-datatable tr.ui-datatable-odd:hover {
+    background: #F0F0F0;
+}
+.ui-datatable tr.ui-datatable-even{
+    background: #FAFAFA;
+}
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield{
+    -moz-box-shadow: inset 0px 1px 1px #8f8f8f;
+    -webkit-box-shadow: inset 0px 1px 2px #8f8f8f;
+    box-shadow: inset 0px 1px 1px #8f8f8f;
+}
+
+.ui-progressbar-label{
+    color: gray !important;
+}
+
+.ui-selectonemenu{
+    padding-right: 28px;
+}
+
+.ui-selectonemenu label.ui-selectonemenu-label {
+    width: 100% !important;
+    text-align: left;
+    margin: 0px !important;
+}
+.ui-selectonemenu-panel{
+    min-width: 120px;
+}
+
+.form .ui-spinner, .form .ui-spinner-input{
+    width: inherit;
+}
+.form .ui-spinner-input{
+    width: 85% !important;
+
+}
+
+.ui-state-highlight{
+    background-color: #EBE9DE !important;
+    background: url('../img/ui-state-hightlight-bg.png.jsf') repeat-x !important;
+}
+
+.ui-progressbar .ui-progressbar-value{    
+    background-color: #EBE9DE !important;
+    background: url('../img/ui-state-hightlight-bg.png.jsf') repeat-x !important;
+}
+.ui-selectmanycheckbox tbody tr td label{
+    margin-right: 20px;
+}
+.form .fileinput-button{
+    display: inline-block !important;
+    margin-top: 0px !important;
+}
+
+.ui-selectmanymenu .ui-chkbox{
+    vertical-align: middle;
+    margin-right: 4px;
+
+}
+.ui-selectmanymenu {
+    width: 100% !important;
+}
+
+
+
+#dropzone {
+    background: #cccccc !important;
+    width: 150px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+#dropzone.in {
+    width: 600px;
+    height: 200px;
+    line-height: 200px;
+    font-size: larger;
+}
+#dropzone.hover {
+    background: lawngreen;
+}
+#dropzone.fade {
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+    opacity: 1;
+}

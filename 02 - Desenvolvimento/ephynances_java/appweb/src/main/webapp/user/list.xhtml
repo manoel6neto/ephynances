@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Usuários"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <f:event type="preRenderView" listener="#{userController.ruleCheck(['ADMIN'])}" />
+            <h:form id="form">
+                <p:dataTable id="table" widgetVar="table" value="#{userController.listUsers}" var="item" lazy="false" 
+                             rows="25" paginator="true"  paginatorPosition="bottom" 
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
+                             emptyMessage="Nenhum registro encontrado!">
+                    
+                    <p:column style="text-align: center" headerText="Nome" sortBy="name">                       
+                        <h:outputText value="#{item.name}" />
+                    </p:column>
+                    <p:column style="text-align: center" headerText="Email" sortBy="email">
+                        <h:outputText value="#{item.email}" />
+                    </p:column>                  
+                    <p:column width="30" style="text-align: center" headerText="Perfil" >                      
+                        <h:outputText value="#{item.profileRule}" />
+                    </p:column>   
+                    <p:column width="30" style="text-align: center" headerText="Status" >                      
+                        <p:graphicImage cache="off" alt="Ativo" title="Ativo" url="../resources/img/on.png" height="16" width="16" rendered="#{empty item.deleteDate}" />
+                        <p:graphicImage cache="off" alt="Inativo" title="Inativo" url="../resources/img/off.png" height="16" width="16" rendered="#{not empty item.deleteDate}" />
+                    </p:column>
+                    <p:column width="70" style="text-align: center" headerText="Ações">
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.edit(item)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar" title="Editar"/></p:commandLink>
+                        <h:outputText value="   " />
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.view(item)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Detalhes" title="Detalhes"/></p:commandLink>
+                        <h:outputText value="   " />
+                        <p:commandLink oncomplete="cd.show()" update="@form" rendered="#{empty item.deleteDate}">
+                            <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Desativar" title="Desativar"/>
+                            <f:setPropertyActionListener target="#{userController.user}" value="#{item}" />
+                        </p:commandLink>
+                        <p:commandLink oncomplete="cdA.show()" update="@form" rendered="#{not empty item.deleteDate}">
+                            <img src="../resources/img/activate_power.png" width="16" height="16" alt="Ativar" title="Ativar"/>
+                            <f:setPropertyActionListener target="#{userController.user}" value="#{item}" />
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+                <p:confirmDialog message="Tem certeza que deseja desativar o usuário '${userController.user.name}'?"
+                                 header="Confirmar desativação" severity="alert" widgetVar="cd">
+                    <p:commandButton value="Sim" action="#{userController.delete}" ajax="false" />
+                    <p:commandButton value="Cancelar" onclick="cd.hide();" type="button" /> 
+                </p:confirmDialog>
+                <p:confirmDialog message="Tem certeza que deseja reativar o usuário '${userController.user.name}'?"
+                                 header="Confirmar reativação" severity="alert" widgetVar="cdA">
+                    <p:commandButton value="Sim" action="#{userController.active}" ajax="false" />
+                    <p:commandButton value="Cancelar" onclick="cdA.hide();" type="button" /> 
+                </p:confirmDialog>
+                
+                <br />
+
+                <div class="alpha grid_2" >
+                    <p:commandButton ajax="false" action="#{userController.create}" value="Novo usuário" />
+                </div>
+
+            </h:form>
+        </ui:define>
+        
+    </ui:composition>
+
+</html>

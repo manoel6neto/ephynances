@@ -1,0 +1,124 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:ui="http://java.sun.com/jsf/facelets" xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui" xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="browserTitle"> :: AGILITY :: </ui:insert></title>
+        <link rel="icon" href="${request.contextPath}/resources/img/favicon.ico" type="image/x-icon"/>
+        <link rel="shortcut icon" href="${request.contextPath}/resources/img/favicon.ico" type="image/x-icon" />
+        <h:outputStylesheet name="css/layout.css"  />
+        <h:outputStylesheet name="css/960.css" />
+        <h:outputStylesheet name="css/estilos.css" />
+        <h:outputScript name="js/jquery.maskMoney.js"  />
+        <script type="text/javascript" language="javascript">
+            jQuery(document).ready(function() {
+                updateMasks();
+            });
+            function updateMasks() {
+                jQuery('.maskMoney').each(function() {
+                    jQuery(this).maskMoney({thousands: '.', decimal: ','});
+                });
+                jQuery('.maskGPS').each(function() {
+                    jQuery(this).maskMoney({thousands: '', decimal: ',', precision: 6, allowNegative: true, allowZero: true});
+                });
+                jQuery('.maskInt').each(function() {
+                    jQuery(this).maskMoney({thousands: '', decimal: '', precision: 0, allowZero: true});
+                });
+            }
+        </script>     
+    </h:head>
+    <h:body>
+        <div id="geral" class="container_12" >
+            <div id="header" class="grid_12">
+                <div class="container_12">
+                    <h:form>
+                        <div class="grid_4 alpha" align="left">
+                            <span class="title1">AGILITY</span>
+                            <br class="clear" />
+                            <div class="grid_4 alpha" align="left">
+                                <h:panelGroup rendered="#{loginController.loggedUser != null}" >
+                                    <span class="accountInfo">
+                                        Bem vindo, 
+                                        <span class="user" >
+                                            <h:link style="font-size: 1.0em" outcome="/user/password" value="#{loginController.loggedUser.name}" />
+                                        </span>
+                                        <h:panelGroup styleClass="user" rendered="#{loginController.isUserInRuller('ADMIN')}" >
+                                            ( ADMIN )
+                                        </h:panelGroup>
+                                        | <p:commandLink ajax="false" action="#{loginController.logout}" value="sair" style="color: #F03A3A" />
+                                    </span>
+                                </h:panelGroup>
+                                <h:panelGroup rendered="#{loginController.loggedUser == null}" >
+                                    <span class="accountInfo">
+                                        [
+                                        <h:link styleClass="user" outcome="/login" value="entrar" />
+                                        ]
+                                    </span>
+                                </h:panelGroup>
+                            </div>
+                        </div>
+                        <h:panelGroup rendered="#{loginController.loggedUser != null}" >
+                            <div class="grid_8 omega "  >
+                                <ui:insert name="header">
+                                    <p:menubar style="margin-top: 4px" >  
+                                        <p:menuitem value="HOME" outcome="/machine/list"/>  
+                                        <p:menuitem value="CONFIGURAÇÕES" outcome="/admin/form" rendered="#{loginController.isUserInRuller('ADMIN')}"/>                                        
+                                        <p:menuitem value="USUÁRIOS" outcome="/user/list" rendered="#{loginController.isUserInRuller('ADMIN')}"/>  
+                                        <p:menuitem value="GRUPOS" outcome="/machineGroup/list" />
+                                        <p:submenu label="REMOTO">
+                                            <p:menuitem value="LIGAR, DESLIGAR, REINICIAR" outcome="/machine/list" />
+                                            <p:menuitem value="INSTALAR" outcome="/machine/installRemote" />
+                                            <p:menuitem value="TESTAR HARDWARE" outcome="/machine/testHardware" />
+                                            <p:menuitem value="BACKUP" outcome="/machine/backup" />
+                                        </p:submenu>                                                                              
+                                        <p:submenu label="UPLOAD">
+                                            <p:menuitem value="SOFTWARES" outcome="/uploadSoftware/list" />
+                                            <p:menuitem value="DRIVES" outcome="/uploadDrive/list" />
+                                            <p:menuitem value="IMAGENS" outcome="/uploadImage/list" />
+                                        </p:submenu>
+                                        <p:menuitem value="AGENDAMENTOS" outcome="/scheduledTask/list" />
+                                        <p:menuitem value="RELATÓRIOS" outcome="/machine/report" />
+                                    </p:menubar>
+                                </ui:insert>
+                            </div>
+                        </h:panelGroup>
+                    </h:form>
+                </div>
+            </div>
+            <div class="grid_12 content"  >
+                <p:ajaxStatus style="width:208px;" id="ajaxStatusPanel"  >
+                    <f:facet name="start">
+                        <h:graphicImage name="img/loading.gif" style="position: fixed; top: 50px" />
+                    </f:facet>
+                    <f:facet name="complete">
+                        <h:outputText value="" />
+                    </f:facet>
+                </p:ajaxStatus>
+                <h1 style="text-align: left; margin-bottom: 4px" class="grid_12 alpha">
+                    <ui:insert name="title"></ui:insert>
+                </h1>
+                <br class="clear" />
+                <div id="DIV_MESSAGES" class="grid_12 alpha">
+                    <p:messages id="globalMessages" closable="true" globalOnly="true" autoUpdate="true" />
+                </div>
+                <div class="grid_12 alpha" >
+                    <ui:insert name="body">
+                        Default Body
+                    </ui:insert>
+                </div>
+            </div>
+        </div>
+        <div id="rodape_ext">
+            <div id="rodape_geral" class="container_12">
+                <div id="rodape" class="grid_12">
+                    <p>© 2013 BY IPSOFT | Conheça nossos produtos em 
+                        <b><a class="link-rodape" href="http://www.ipsoftbrasil.com.br" target="ipsoft">www.ipsoftbrasil.com.br</a></b>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </h:body>
+</html>
+

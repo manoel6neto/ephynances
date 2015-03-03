@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml"> 
+        <ui:define name="title"> 
+            <h:outputText  value="Configurações do Sistema" />
+        </ui:define>
+        <ui:define name="body">
+            <f:event type="preRenderView" listener="#{userController.ruleCheck(['ADMIN'])}" />
+            <h:form id="form" styleClass="form">
+                
+                <br class="clear" />
+                <br/>
+                <p:fieldset legend="Envio de email" toggleable="false" collapsed="false">
+
+                    <br class="clear" />                    
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel  value="SMTP HostName: " />
+                        <p:inputText value="#{configurationController.configuration.smtpServer}" required="false" />
+                    </div>
+
+                    <br class="clear" />
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel  value="Usuário: "/>
+                        <p:inputText value="#{configurationController.configuration.userName}" required="false" />
+                    </div>
+
+                    <br class="clear" />
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel  value="Senha: "/>
+                        <p:password value="#{configurationController.configuration.password}" required="false" />
+                    </div>
+
+                    <br class="clear" />
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel  value="SMTP Port: "/>
+                        <p:inputText value="#{configurationController.configuration.smtpPort}" required="false" />
+                    </div>
+
+                    <br class="clear" />
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel  value="Email de envio: " />
+                        <p:inputText value="#{configurationController.configuration.email}" required="false" />
+                    </div>
+
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_12 alpha" style="line-height: 30px;" >
+                        <p:commandButton styleClass="grid_1 alpha" action="#{configurationController.save}" ajax="false" value="Salvar"/>
+                        <h:link styleClass="grid_1" outcome="/index" value="Voltar" />
+                    </div>
+                </p:fieldset>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

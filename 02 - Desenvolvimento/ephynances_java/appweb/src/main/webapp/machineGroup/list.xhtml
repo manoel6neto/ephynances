@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Grupos de Máquinas"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <f:event type="preRenderView" listener="#{userController.ruleCheck(['ADMIN', 'USER'])}" />
+            <h:form id="form">
+                <p:dataTable id="table" widgetVar="table" value="#{inventoryMachineGroupController.pagination}" var="item" lazy="true" 
+                             rows="25" paginator="true"  paginatorPosition="bottom" 
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}" emptyMessage="Nenhum registro encontrado!">
+
+                    <f:facet name="header" >  
+                        <p:outputPanel>      
+                            <h:outputText value="Busca global: " />
+                            <p:inputText id="globalFilter" onkeyup="table.filter();" valueChangeListener="#{inventoryMachineGroupController.globalFilterChanged}" style="width:150px" />  
+                        </p:outputPanel>  
+                    </f:facet>   
+
+                    <p:column style="text-align: center" headerText="Nome do grupo*" sortBy="name">
+                        <h:outputText value="#{item.name}" />
+                    </p:column>    
+                    <p:column width="80" style="text-align: center" headerText="Máquinas">
+                        <h:outputText value="#{item.machines.size()}" />
+                    </p:column>                     
+                    <p:column width="80" style="text-align: center" headerText="Ações">
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{inventoryMachineController.manage(item)}" ><img src="../resources/img/add.png" width="16" height="16" alt="Manipular grupos" title="Manipular grupos"/></p:commandLink>
+                        <h:outputText value="   " />
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{inventoryMachineGroupController.edit(item)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar" title="Editar"/></p:commandLink>
+                        <h:outputText value="   " />
+                        <p:commandLink oncomplete="cd.show()" update="@form">
+                            <img src="../resources/img/remove.png" width="16" height="16" alt="Remover" title="Remover"/>
+                            <f:setPropertyActionListener target="#{inventoryMachineGroupController.inventoryMachineGroup}" value="#{item}" />
+                        </p:commandLink>                         
+                    </p:column>                                       
+                </p:dataTable>
+                <p:confirmDialog message="Tem certeza que deseja remover o grupo '${inventoryMachineGroupController.inventoryMachineGroup.name}'?"
+                                 header="Confirmar remoção" severity="alert" widgetVar="cd">
+                    <p:commandButton value="Sim" action="#{inventoryMachineGroupController.remove}" ajax="false" />
+                    <p:commandButton value="Cancelar" onclick="cd.hide();" type="button" /> 
+                </p:confirmDialog>                
+                <br />
+                <div class="alpha grid_2" >
+                    <p:commandButton ajax="false" action="#{inventoryMachineGroupController.create}" value="Novo grupo" />
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:composition template="/template.xhtml" >
+
+        <ui:define name="browserTitle" >Página Inicial</ui:define>
+
+        <ui:define name="body">
+            <h:form id="formDefault" rendered="#{not empty inventoryMachineController.inventoryMachineBean.findAll()}">
+                <div style="float: left">
+                    <p:pieChart id="chartMachinesOS" value="#{inventoryMachineController.machinesOS}" fill="true" legendPosition="nw" showDataLabels="true"  
+                                title="Máquinas Windows x Máquinas Linux" style="width:500px;height:270px" sliceMargin="05" diameter="185" shadow="true"/>                
+                    <p:effect for="chartMachinesOS" type="shake" speed="250" event="load"/>
+                </div>
+
+                <div style="float: right">
+                    <p:barChart id="chartComponents" value="#{inventoryMachineController.components}" legendPosition="nw"
+                                title="Quantidade total de cada componente" min="0" max="#{inventoryMachineController.maxComponents}" style="width:500px;height:270px" animate="true"/>  
+                    <h:outputText value="Ainda não existem maquinas cadastradas" rendered="#{empty inventoryMachineController.inventoryMachineBean.findAll()}"/>
+                </div>
+
+                <div style="float: left">
+                    <p:pieChart id="chartMachinesGroups" value="#{inventoryMachineController.machinesGroups}" fill="true" legendPosition="nw" showDataLabels="true"  
+                                title="Quantidade de máquinas em cada grupo" style="width:500px;height:270px" sliceMargin="05" diameter="185" shadow="true"/>                 
+                    <p:effect for="chartMachinesGroups" type="shake" speed="250" event="load"/> 
+                </div>     
+
+                <div style="float: right">
+                    <p:pieChart id="chartMachinesAlerts" value="#{inventoryMachineController.machinesAlerts}" fill="true" legendPosition="nw" showDataLabels="true"  
+                                title="Máquinas Originais x Máquinas Alteradas" style="width:500px;height:270px" sliceMargin="05" diameter="185" shadow="true"/>                
+                    <p:effect for="chartMachinesAlerts" type="shake" speed="250" event="load"/> 
+                </div>  
+            </h:form>
+            <h:form rendered="#{empty inventoryMachineController.inventoryMachineBean.findAll()}">
+                <div style="float: right">               
+                    <h:outputText value="Ainda não existem maquinas cadastradas"/>
+                </div>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

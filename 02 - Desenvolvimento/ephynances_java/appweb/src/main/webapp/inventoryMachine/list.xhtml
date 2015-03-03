@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Máquina: #{inventoryMachineController.inventoryMachine.hostName}"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <f:event type="preRenderView" listener="#{userController.ruleCheck(['ADMIN', 'USER'])}" />
+            <h:form id="form">
+                <p:tabView activeIndex="#{inventoryMachineController.tabID.toString()}">
+                    <p:tab id="Hardware" title="Hardware">
+                        <h:panelGrid>
+                            <div id="left" style="float:left; width:40%; overflow:hidden;">                        
+                                <!-- Header -->                        
+                                <p:panelGrid id="gridHardware" style="width: auto">
+                                    <f:facet name="header" transient="false">
+                                        <p:row>                           
+                                            <p:column colspan="1">Configuração de Hardware Atual</p:column>                            
+                                        </p:row>
+                                    </f:facet>
+                                    <f:facet name="header" transient="false">
+                                        <p:row>
+                                            <p:column colspan="1">Componente</p:column>                            
+                                            <p:column colspan="1">Descrição</p:column>                            
+                                        </p:row>
+                                    </f:facet>
+                                    <p:row>
+                                        <p:column colspan="1">Placa Mãe</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listMotherboard}</p:column>                            
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="1">Processador</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listProcessors}</p:column>                            
+                                    </p:row>  
+                                    <p:row>
+                                        <p:column colspan="1">Memória</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listMemories}</p:column>                            
+                                    </p:row>  
+                                    <p:row>
+                                        <p:column colspan="1">HD</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listDisks}</p:column>                            
+                                    </p:row>  
+                                    <p:row>
+                                        <p:column colspan="1">Audio</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listAudios}</p:column>                            
+                                    </p:row>  
+                                    <p:row>
+                                        <p:column colspan="1">Vídeo</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listGpus}</p:column>                            
+                                    </p:row>  
+                                    <p:row>
+                                        <p:column colspan="1">Rede</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listNetworks}</p:column>                            
+                                    </p:row>                       
+                                </p:panelGrid>
+                            </div>
+                            <div id="right" style="float:right; width:40%; overflow:hidden;">                      
+                                <p:panelGrid id="gridHardwareOriginal" style="width: auto">
+                                    <f:facet name="header" transient="false">
+                                        <p:row>                           
+                                            <p:column colspan="1">Configuração de Hardware Original</p:column>                            
+                                        </p:row>
+                                    </f:facet>
+                                    <f:facet name="header" transient="false">
+                                        <p:row>
+                                            <p:column colspan="1">Componente</p:column>                            
+                                            <p:column colspan="1">Descrição</p:column>                            
+                                        </p:row>
+                                    </f:facet>
+                                    <p:row>
+                                        <p:column colspan="1">Placa Mãe</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listDefaultMotherboard}</p:column>                            
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="1">Processador</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listDefaultProcessors}</p:column>                            
+                                    </p:row>  
+                                    <p:row>
+                                        <p:column colspan="1">Memória</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listDefaultMemories}</p:column>                            
+                                    </p:row>  
+                                    <p:row>
+                                        <p:column colspan="1">HD</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listDefaultDisks}</p:column>                            
+                                    </p:row>  
+                                    <p:row>
+                                        <p:column colspan="1">Audio</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listDefaultAudios}</p:column>                            
+                                    </p:row>  
+                                    <p:row>
+                                        <p:column colspan="1">Vídeo</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listDefaultGpus}</p:column>                            
+                                    </p:row>  
+                                    <p:row>
+                                        <p:column colspan="1">Rede</p:column>                            
+                                        <p:column colspan="1">#{inventoryMachineController.listDefaultNetworks}</p:column>                            
+                                    </p:row>                         
+                                </p:panelGrid>
+                            </div>
+                            <div id="center" style="float:right; width:100%; overflow:hidden;">
+                                <p:panel id="panelChangeHardware" header="Configuração de Hardware Alterada" style="text-align: center;" toggleable="true">
+                                    <p:dataTable id="table" widgetVar="table" value="#{inventoryMachineController.listChangesHardware}" var="item" lazy="true" selection="#{inventoryMachineController.selectedMachines}" rowKey="#{item}"
+                                                 rows="10" paginator="true"  paginatorPosition="bottom" 
+                                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                                 currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
+                                                 emptyMessage="Nenhum registro encontrado!" >                    
+
+                                        <p:column style="text-align: center" headerText="Componente">
+                                            <h:outputText value="#{item.get(0)}" rendered="#{not empty item.get(1)}"/>
+                                        </p:column>  
+                                        <p:column style="text-align: center" headerText="Detalhes">
+                                            <h:outputText value="#{item.get(1)}" rendered="#{not empty item.get(1)}"/>
+                                        </p:column>                             
+                                    </p:dataTable>
+                                </p:panel>
+                            </div> 
+                        </h:panelGrid>
+                    </p:tab>
+                    <p:tab id="Software" title="Software">
+                        <p:dataTable id="tableSoftwares" widgetVar="tableSoftware" value="#{inventoryMachineController.listSoftware}" var="item" lazy="true"
+                                     rows="15" paginator="true"  paginatorPosition="bottom" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
+                                     emptyMessage="Nenhum registro encontrado!" >                    
+
+                            <p:column style="text-align: center" headerText="Softwares instalados">
+                                <h:outputText value="#{item}" rendered="#{not empty item}"/>
+                            </p:column>                           
+                        </p:dataTable>
+                    </p:tab>   
+                    <p:tab id="LogTasks" title="Log tarefas">
+                        <p:dataTable id="tableLogTasks" widgetVar="tableLogTasks" value="#{inventoryMachineController.inventoryMachine.logsTasks}" var="item" lazy="true"
+                                     rows="15" paginator="true"  paginatorPosition="bottom" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
+                                     emptyMessage="Nenhum registro encontrado!" >                    
+
+                            <p:column width="100" style="text-align: center" headerText="Data do teste">
+                                <h:outputText value="#{item.insertDate}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>   
+                            <p:column style="text-align: center" headerText="Resumo">
+                                <h:outputText value="#{item.log}" />
+                            </p:column>                              
+                        </p:dataTable>
+                    </p:tab>  
+                    <p:tab id="LogTests" title="Log testes de hardware">
+                        <p:dataTable id="tableLogTests" widgetVar="tableLogTests" value="#{inventoryMachineController.inventoryMachine.logsTestes}" var="item" lazy="true"
+                                     rows="15" paginator="true"  paginatorPosition="bottom" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
+                                     emptyMessage="Nenhum registro encontrado!" >                    
+
+                            <p:column width="100" style="text-align: center" headerText="Data do teste">
+                                <h:outputText value="#{item.insertDate}" >
+                                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                                </h:outputText>
+                            </p:column>   
+                            <p:column style="text-align: center" headerText="Resumo">
+                                <h:outputText value="#{item.log}" />
+                            </p:column>                              
+                        </p:dataTable>
+                    </p:tab>                     
+                </p:tabView>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
