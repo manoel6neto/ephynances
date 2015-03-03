@@ -8,7 +8,7 @@
     <ui:composition template="/template.xhtml" >
 
         <ui:define name="title" ></ui:define>
-        <ui:define name="title2" >LOGIN - AGILITY</ui:define>
+        <ui:define name="title2" >Login - Ephynances</ui:define>
 
         <ui:define name="body" >
             <h:form class="form loginForm" >
@@ -24,7 +24,7 @@
                 <h:outputText value="Tentativa inválida de ativação de usuário!"
                               rendered="#{param.activated eq false}"
                               style="color:darkred; font-size: 12px; margin-top: 5px;" />
-                
+
                 <div class="grid_3" >
                     <label for="loginEmail">Email:</label>
                     <h:inputText id="loginEmail" value="#{loginController.email}" maxlength="60" />
@@ -46,15 +46,13 @@
                 <h:form styleClass="form">
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Email" for="formEmail"/>
-                        <p:inputText id="formEmail" autocomplete="off" value="#{usuarioController.recoverEmail}" 
-                                     /> 
+                        <p:inputText id="formEmail" autocomplete="off" value="#{usuarioController.recoverEmail}" /> 
                         <p:message for="formEmail" />
                     </div>
 
                     <br class="clear" />
                     <p:separator/>
-                    <p:commandButton value="Enviar" action="#{usuarioController.recoverPassword}" 
-                                     icon="ui-icon-closethick" update="@all" />
+                    <p:commandButton value="Enviar" action="#{usuarioController.recoverPassword}" icon="ui-icon-closethick" update="@all" />
                     <p:commandButton value="Cancelar" onclick="cd.hide();" type="button" /> 
                 </h:form>
             </p:dialog>
