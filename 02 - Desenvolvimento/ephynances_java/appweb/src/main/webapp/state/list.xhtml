@@ -21,14 +21,14 @@
                     <p:column style="text-align: center" headerText="Nome" sortBy="name" filterBy="name">                       
                         <h:outputText value="#{item.name}" />
                     </p:column>
-                    <p:column width="30" style="text-align: center" headerText="Sigla" sortBy="acronym" filterBy="acronym">
+                    <p:column style="text-align: center" headerText="Sigla" sortBy="acronym" filterBy="acronym">
                         <h:outputText value="#{item.acronym}" />
                     </p:column>     
-                    <p:column width="30" style="text-align: center" headerText="Região" sortBy="region.acronym" filterBy="region.acronym">
+                    <p:column style="text-align: center" headerText="Região" sortBy="region.acronym" filterBy="region.acronym">
                         <h:outputText value="#{item.region.acronym}" />
                     </p:column> 
-                    <p:column width="30" style="text-align: center" headerText="Quant. OC" sortBy="cityOrgans.size">                      
-                        <h:outputText value="#{item.cityOrgans.size}" />
+                    <p:column style="text-align: center" headerText="Quant. OC" sortBy="cityOrgans.size">                      
+                        <h:outputText value="#{item.cityOrgans.size()}" />
                     </p:column>   
                 </p:dataTable>
             </h:form>

@@ -7,7 +7,7 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="Cidades & Orgãos"></h:outputText>
+            <h:outputText value="Cidades e orgãos"></h:outputText>
         </ui:define>
 
         <ui:define name="body">
@@ -18,7 +18,7 @@
                              currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                              emptyMessage="Nenhum registro encontrado!">
 
-                    <p:column width="60" style="text-align: center" headerText="Cnpj" sortBy="cnpj" filterBy="cnpj">                       
+                    <p:column style="text-align: center" headerText="Cnpj" sortBy="cnpj" filterBy="cnpj">                       
                         <h:outputText value="#{item.cnpj}" />
                     </p:column>
                     <p:column style="text-align: center" headerText="Cidade" sortBy="cityName" filterBy="cityName">
@@ -27,7 +27,7 @@
                     <p:column style="text-align: center" headerText="Orgão" sortBy="organName" filterBy="organName">
                         <h:outputText value="#{item.organName}" />
                     </p:column> 
-                    <p:column width="30" style="text-align: center" headerText="Estado" sortBy="state.acronym" filterBy="state.acronym">                      
+                    <p:column style="text-align: center" headerText="Estado" sortBy="state.acronym" filterBy="state.acronym">                      
                         <h:outputText value="#{item.state.acronym}" />
                     </p:column>   
                 </p:dataTable>

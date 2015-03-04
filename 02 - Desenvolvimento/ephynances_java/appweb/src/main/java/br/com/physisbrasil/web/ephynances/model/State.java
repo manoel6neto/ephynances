@@ -40,10 +40,6 @@ public class State implements BaseModel {
     @JoinColumn(name = "region_id", referencedColumnName = "id", nullable = false)
     private Region region;
     
-    public State() {
-        
-    }
-    
     /**
      *
      * @return

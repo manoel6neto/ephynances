@@ -30,7 +30,6 @@ public class CityOrganController extends BaseController {
     public void init() {
         if (cityOrgans == null) {
             cityOrgans = new ArrayList<CityOrgan>();
-            cityOrganBean = new CityOrganBean();
             setCityOrgans(cityOrganBean.findAll());
         }
     }
@@ -45,7 +44,6 @@ public class CityOrganController extends BaseController {
     
     public void filteredList(State state) {
         if(state != null && state.getId() > 0) {
-            stateBean = new StateBean();
             setCityOrgans(stateBean.findByProperty("id", state.getId()).getCityOrgans());
         }
     }

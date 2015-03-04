@@ -1,10 +1,6 @@
 package br.com.physisbrasil.web.ephynances.util;
 
-//import br.com.physisbrasil.web.kia.jsf.ConfigController;
-import br.com.physisbrasil.web.ephynances.jsf.ConfigController;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.xml.bind.DatatypeConverter;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.SimpleEmail;
@@ -80,42 +76,5 @@ public class Utils {
         //  - the first one is login,
         //  - the second one password
         return new String(decodedBytes).split(":", 2);
-    }
-
-    public static String getApnsEnvironment() {
-
-        try {
-            return ConfigController.properties.getProperty(ConfigController.PROP_APNS_ENVIROMENT);
-        } catch (Exception ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    public static String getApnsCertificateName() {
-        try {
-            if (getApnsEnvironment().equals("production")) {
-                return ConfigController.properties.getProperty(ConfigController.PROP_APNS_CERT_PROD_NAME);
-            } else {
-                return ConfigController.properties.getProperty(ConfigController.PROP_APNS_CERT_DEV_NAME);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
-    }
-
-    public static String getApnsCertificatePassword() {
-
-        try {
-            if (getApnsEnvironment().equals("production")) {
-                return ConfigController.properties.getProperty(ConfigController.PROP_APNS_CERT_PROD_PASS);
-            } else {
-                return ConfigController.properties.getProperty(ConfigController.PROP_APNS_CERT_DEV_PASS);
-            }
-        } catch (Exception ex) {
-            Logger.getLogger(Utils.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return null;
     }
 }

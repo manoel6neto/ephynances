@@ -25,7 +25,6 @@ public class RegionController extends BaseController {
     public void init() {
         if (regions == null) {
             regions = new ArrayList<Region>();
-            regionBean = new RegionBean();
             setRegions(regionBean.findAll());
         }
     }

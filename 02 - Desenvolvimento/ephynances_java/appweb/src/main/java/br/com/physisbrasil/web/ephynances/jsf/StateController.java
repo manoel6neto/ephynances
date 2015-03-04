@@ -30,7 +30,6 @@ public class StateController extends BaseController {
     public void init() {
         if (states == null) {
             states = new ArrayList<State>();
-            stateBean = new StateBean();
             setStates(stateBean.findAll());
         }
     }
@@ -45,7 +44,6 @@ public class StateController extends BaseController {
     
     public void filteredList(Region region) {
         if(region != null && region.getId() > 0) {
-            regionBean = new RegionBean();
             setStates(regionBean.findByProperty("id", region.getId()).getStates());
         }
     }

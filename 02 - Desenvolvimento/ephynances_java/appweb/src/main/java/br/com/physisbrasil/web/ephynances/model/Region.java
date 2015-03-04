@@ -32,10 +32,6 @@ public class Region implements BaseModel {
     @OneToMany(mappedBy = "region", orphanRemoval = true)
     private List<State> states;
     
-    public Region() {
-        
-    }
-    
     /**
      *
      * @return

@@ -49,10 +49,6 @@ public class CityOrgan implements BaseModel {
     @OneToMany(mappedBy = "cityOrgan", orphanRemoval = true)
     private List<User> users;
     
-    public CityOrgan() {
-        
-    }
-    
     /**
      *
      * @return
@@ -123,7 +119,7 @@ public class CityOrgan implements BaseModel {
 
     @Override
     public String toString() {
-        return id.toString();
+        return organName;
     }
     
 }

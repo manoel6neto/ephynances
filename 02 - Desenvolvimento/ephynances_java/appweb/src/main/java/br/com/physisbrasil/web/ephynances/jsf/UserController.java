@@ -1,6 +1,8 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
+import br.com.physisbrasil.web.ephynances.ejb.RegionBean;
+import br.com.physisbrasil.web.ephynances.ejb.StateBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.Region;
@@ -35,7 +37,13 @@ public class UserController extends BaseController {
     
     @EJB
     private ConfigurationBean configurationBean;
+    
+    @EJB
+    private RegionBean regionBean;
     private Region region;
+    
+    @EJB
+    private StateBean stateBean;
     private State state;
     
     @PostConstruct
