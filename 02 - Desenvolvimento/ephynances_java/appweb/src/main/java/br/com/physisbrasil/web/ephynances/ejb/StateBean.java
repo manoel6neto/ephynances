@@ -1,7 +1,7 @@
 package br.com.physisbrasil.web.ephynances.ejb;
 
 import br.com.physisbrasil.web.ephynances.dao.DAO;
-import br.com.physisbrasil.web.ephynances.model.Config;
+import br.com.physisbrasil.web.ephynances.model.State;
 import javax.ejb.Stateless;
 
 /**
@@ -9,5 +9,6 @@ import javax.ejb.Stateless;
  * @author Thomas
  */
 @Stateless
-public class ConfigBean extends DAO<Config> {
+public class StateBean extends DAO<State> {
+
 }

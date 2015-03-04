@@ -6,7 +6,7 @@ import javax.ejb.Stateless;
 
 /**
  *
- * @author Thomas Castro
+ * @author Thomas
  */
 @Stateless
 public class AgilityFileBean extends DAO<AgilityFile> {

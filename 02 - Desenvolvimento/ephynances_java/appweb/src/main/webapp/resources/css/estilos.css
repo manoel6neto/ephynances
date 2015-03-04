@@ -1,13 +1,13 @@
 /* --------  HEDAR STYLES -----------*/
 
 .title1{
-    font-family: Verdana;
+    font-family: cursive;
     font-size: 2.4em;
     color: white;
     font-weight: bold;
 }
 .title2{
-    font-family: Verdana;
+    font-family: cursive;
     font-size: 2.4em;
     color: #508CAA;
     font-weight: bold;
@@ -25,16 +25,16 @@
 
 h1{
     color: #508CAA;
-    font-family: Verdana;
+    font-family: cursive;
 }
 h2{
     color:#6A6A6A;
-    font-family: Verdana;
+    font-family: cursive;
     font-variant: small-caps;
 }
 h3{
     color:#6A6A6A;
-    font-family: Verdana;
+    font-family: cursive;
     font-variant: small-caps;
     margin-top: 0.7em;
     margin-bottom: 0.2em;
@@ -66,7 +66,7 @@ h3{
 }
 .form label{
     margin-top: 3px !important;
-    font-family: Verdana, Arial, sans-serif;
+    font-family: cursive, Verdana, Arial, sans-serif;
 }
 .form .ui-message-error{
     clear: both;

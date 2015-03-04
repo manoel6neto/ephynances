@@ -42,12 +42,12 @@
                                     <span class="accountInfo">
                                         Bem vindo, 
                                         <span class="user" >
-                                            <h:link style="font-size: 1.0em" outcome="/user/password" value="#{loginController.loggedUser.name}" />
+                                            <h:link style="font-size: 1.0em" outcome="/user/password" value="#{loginController.loggedUser.name.split(' ')[0]}" />
                                         </span>
                                         <h:panelGroup styleClass="user" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}" >
                                             ( ADMIN )
                                         </h:panelGroup>
-                                        | <p:commandLink ajax="false" action="#{loginController.logout}" value="sair" style="color: #F03A3A" />
+                                        | <p:commandLink ajax="false" action="#{loginController.logout}" value="sair" style="color: #FF0000" />
                                     </span>
                                 </h:panelGroup>
                                 <h:panelGroup rendered="#{loginController.loggedUser == null}" >
@@ -66,20 +66,11 @@
                                         <p:menuitem value="HOME" outcome="/machine/list"/>  
                                         <p:menuitem value="CONFIGURAÇÕES" outcome="/admin/form" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}"/>                                        
                                         <p:menuitem value="USUÁRIOS" outcome="/user/list" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}"/>  
-                                        <p:menuitem value="GRUPOS" outcome="/machineGroup/list" />
-                                        <p:submenu label="REMOTO">
-                                            <p:menuitem value="LIGAR, DESLIGAR, REINICIAR" outcome="/machine/list" />
-                                            <p:menuitem value="INSTALAR" outcome="/machine/installRemote" />
-                                            <p:menuitem value="TESTAR HARDWARE" outcome="/machine/testHardware" />
-                                            <p:menuitem value="BACKUP" outcome="/machine/backup" />
+                                        <p:submenu label="REGIÔES/ESTADOS/CIDADES">
+                                            <p:menuitem value="REGIÕES" outcome="/region/list" />
+                                            <p:menuitem value="ESTADOS" outcome="/state/list" />
+                                            <p:menuitem value="CIDADES & ORGÃOS" outcome="/cityorgan/list" />
                                         </p:submenu>                                                                              
-                                        <p:submenu label="UPLOAD">
-                                            <p:menuitem value="SOFTWARES" outcome="/uploadSoftware/list" />
-                                            <p:menuitem value="DRIVES" outcome="/uploadDrive/list" />
-                                            <p:menuitem value="IMAGENS" outcome="/uploadImage/list" />
-                                        </p:submenu>
-                                        <p:menuitem value="AGENDAMENTOS" outcome="/scheduledTask/list" />
-                                        <p:menuitem value="RELATÓRIOS" outcome="/machine/report" />
                                     </p:menubar>
                                 </ui:insert>
                             </div>

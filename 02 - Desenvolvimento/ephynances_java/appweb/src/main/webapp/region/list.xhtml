@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Regiões"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="form">
+                <p:dataTable id="table" widgetVar="table" value="#{regionController.regions}" var="item" lazy="false" 
+                             rows="25" paginator="true"  paginatorPosition="bottom" 
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
+                             emptyMessage="Nenhum registro encontrado!">
+
+                    <p:column style="text-align: center" headerText="Nome" sortBy="name" filterBy="name">                       
+                        <h:outputText value="#{item.name}" />
+                    </p:column>
+                    <p:column width="30" style="text-align: center" headerText="Sigla" sortBy="acronym" filterBy="acronym">
+                        <h:outputText value="#{item.acronym}" />
+                    </p:column>                  
+                    <p:column width="30" style="text-align: center" headerText="Quant. Estados" sortBy="states.size">                      
+                        <h:outputText value="#{item.states.size}" />
+                    </p:column>   
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+
+</html>
