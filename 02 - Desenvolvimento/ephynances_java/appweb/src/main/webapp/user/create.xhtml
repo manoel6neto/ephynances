@@ -16,7 +16,7 @@
                 <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
                 
                 <div class="grid_4 alpha" >
-                    <p:selectOneMenu id="menu" value="#{userController.user.profileRule}" required="true" >
+                    <p:selectOneMenu id="menu" value="#{userController.user.profileRule}" required="true" effect="fade">
                         <f:selectItem itemLabel="Selecione um perfil: " noSelectionOption="true" />                        
                         <f:selectItem itemLabel="#{userController.RULER_ADMIN}" itemValue="#{userController.RULER_ADMIN}" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>
                         <f:selectItem itemLabel="#{userController.RULER_CONTRIBUTOR}" itemValue="#{userController.RULER_CONTRIBUTOR}" />
@@ -71,6 +71,32 @@
                 <div class="grid_2" >
                     <p:outputLabel value="Confirmação Senha: " for="confPassword"/>
                     <p:password styleClass="grid_2" autocomplete="off"  id="confPassword" value="#{userController.user.password}"  /> 
+                </div>
+                
+                <div class="grid_4 alpha" >
+                    <p:outputLabel for="menuRegions" value="Regiões: "  />
+                    <p:selectOneMenu id="menuRegions" value="#{userController.region}" required="true" filter="true" filterMatchMode="startsWith" effect="fade">
+                        <f:selectItem itemLabel="Todas" noSelectionOption="true" />                        
+                        <f:selectItems value="#{regionController.regions}" />
+                        <p:ajax listener="#{stateController.filteredList(userController.region)}" update="menuStates" />
+                    </p:selectOneMenu>
+                </div>
+                
+                <div class="grid_4 alpha" >
+                    <p:outputLabel for="menuStates" value="Estados: "  />
+                    <p:selectOneMenu id="menuStates" value="#{userController.state}" required="true" filter="true" filterMatchMode="startsWith" effect="fade">
+                        <f:selectItem itemLabel="Todos" noSelectionOption="true" />                        
+                        <f:selectItems value="#{stateController.states}" />
+                        <p:ajax listener="#{cityOrganController.filteredList(userController.state)}" update="menuCityOrgans" />
+                    </p:selectOneMenu>
+                </div>
+                
+                <div class="grid_4 alpha" >
+                    <p:outputLabel for="menuCityOrgans" value="Cidades: "  />
+                    <p:selectOneMenu id="menuCityOrgans" value="#{userController.user.cityOrgan}" required="true" filter="true" filterMatchMode="startsWith" effect="fade">
+                        <f:selectItem itemLabel="Todos" noSelectionOption="true" />                        
+                        <f:selectItems value="#{cityOrganController.cityOrgans}" />
+                    </p:selectOneMenu>
                 </div>
                 
                 <br class="clear" />

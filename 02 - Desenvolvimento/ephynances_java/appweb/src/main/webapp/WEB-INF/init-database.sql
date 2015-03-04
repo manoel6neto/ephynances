@@ -28,14 +28,14 @@ values ('Norte', 'N'),
 insert into `state`(region_id, name, acronym)
 values (1, 'Acre', 'AC'), (1, 'Amapá', 'AP'), (1, 'Amazonas', 'AM'), (1, 'Pará', 'PA'), (1, 'Rondônia', 'RO'), (1, 'Roraima', 'RR'), (1, 'Tocantins', 'TO'),
 (2, 'Alagoas', 'AL'), (2, 'Bahia', 'BA'), (2, 'Ceará', 'CE'), (2, 'Maranhão', 'MA'), (2, 'Paraíba', 'PB'), (2, 'Piauí', 'PI'), (2, 'Pernambuco', 'PE'), (2, 'Rio Grande do Norte', 'RN'), (2, 'Sergipe', 'SE'),
-(3, '', ''), (3, '', ''), (3, '', ''),  (3, '', ''),
-(4, '', ''), (4, '', ''), (4, '', ''), (4, '', ''),
-(5, '', ''), (5, '', ''), (5, '', '');
+(3, 'São Paulo', 'SP'), (3, 'Minas Gerais', 'MG'), (3, 'Rio de Janeiro', 'RJ'),  (3, 'Espírito Santo', 'ES'),
+(4, 'Goiás', 'GO'), (4, 'Distrito Federal', 'DF'), (4, 'Mato Grosso', 'MT'), (4, 'Mato Grosso do Sul', 'MS'),
+(5, 'Paraná', 'PR'), (5, 'Santa Catarina', 'SC'), (5, 'Rio Grande do Sul', 'RS');
 
 --- CityOrgans ---
-insert into city_organ()
-values (),
-();
+insert into city_organ(city_name, organ_name, cnpj, state_id)
+values ('Itabuna', 'Prefeitura Municipal', '12345678912365478', 9),
+('Itabuna', 'Fundação Marimbeta', '12345678912365479', 9);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

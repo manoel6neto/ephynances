@@ -1,12 +1,13 @@
 package br.com.physisbrasil.web.ephynances.model;
 
-import static br.com.physisbrasil.web.ephynances.model.BaseModel.CPF_REGEX;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -35,7 +36,7 @@ public class CityOrgan implements BaseModel {
     
     @Column(name="cnpj", length = 11, nullable = false)
     @NotEmpty
-    @Size(min = 11, max = 11, message = "Deve conter xx dígitos.")
+    @Size(min = 17, max = 17, message = "Deve conter 17 dígitos.")
     @Pattern(regexp = CNPJ_REGEX)
     private String cnpj;
     
@@ -44,6 +45,9 @@ public class CityOrgan implements BaseModel {
     @NotNull    
     @JoinColumn(name = "state_id", referencedColumnName = "id", nullable = false)
     private State state;
+    
+    @OneToMany(mappedBy = "cityOrgan", orphanRemoval = true)
+    private List<User> users;
     
     public CityOrgan() {
         
@@ -88,6 +92,14 @@ public class CityOrgan implements BaseModel {
 
     public void setState(State state) {
         this.state = state;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
     
     @Override

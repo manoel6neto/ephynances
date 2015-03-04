@@ -7,8 +7,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
@@ -81,6 +83,12 @@ public class User implements BaseModel {
     @Column(name="delete_date", nullable = true)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date deleteDate;
+    
+    //References
+    @OneToOne(optional = false)
+    @NotNull    
+    @JoinColumn(name = "city_organ_id", referencedColumnName = "id", nullable = false)
+    private CityOrgan cityOrgan;
     
     public User() {
     }
@@ -172,6 +180,14 @@ public class User implements BaseModel {
 
     public void setDeleteDate(Date deleteDate) {
         this.deleteDate = deleteDate;
+    }
+
+    public CityOrgan getCityOrgan() {
+        return cityOrgan;
+    }
+
+    public void setCityOrgan(CityOrgan cityOrgan) {
+        this.cityOrgan = cityOrgan;
     }
     
     @Override

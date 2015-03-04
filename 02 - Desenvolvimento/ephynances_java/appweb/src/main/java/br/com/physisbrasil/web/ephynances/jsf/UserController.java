@@ -3,6 +3,8 @@ package br.com.physisbrasil.web.ephynances.jsf;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
+import br.com.physisbrasil.web.ephynances.model.Region;
+import br.com.physisbrasil.web.ephynances.model.State;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
@@ -30,9 +32,12 @@ public class UserController extends BaseController {
     private String oldPass;
     private String recoverEmail;
     private List<User> listUser;
+    
     @EJB
     private ConfigurationBean configurationBean;
-
+    private Region region;
+    private State state;
+    
     @PostConstruct
     public void init() {
         if (listUser == null) {
@@ -220,6 +225,30 @@ public class UserController extends BaseController {
 
     public String getRecoverEmail() {
         return recoverEmail;
+    }
+
+    public List<User> getListUser() {
+        return listUser;
+    }
+
+    public void setListUser(List<User> listUser) {
+        this.listUser = listUser;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public State getState() {
+        return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     public void recoverPassword() {
