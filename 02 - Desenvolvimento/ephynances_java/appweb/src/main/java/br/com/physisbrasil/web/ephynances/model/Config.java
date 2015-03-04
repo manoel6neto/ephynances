@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Thadeu
+ * @author Thomas
  */
 @Entity
 @Table(name = "config")

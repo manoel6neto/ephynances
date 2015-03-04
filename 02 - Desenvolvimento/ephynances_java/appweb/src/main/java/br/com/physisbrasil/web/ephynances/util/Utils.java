@@ -11,7 +11,7 @@ import org.apache.commons.mail.SimpleEmail;
 
 /**
  *
- * @author Thadeu
+ * @author Thomas
  */
 public class Utils {
 

@@ -6,7 +6,7 @@ package br.com.physisbrasil.web.ephynances.util;
 
 /**
  *
- * @author Thadeu
+ * @author Thomas
  */
 public interface PaginationCompleteItens<T> {
 

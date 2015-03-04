@@ -12,7 +12,7 @@ import org.codehaus.jackson.map.SerializationConfig.Feature;
 
 /**
  *
- * @author thadeu
+ * @author Thomas
  */
 //@Provider
 public class JsonObjectMapper implements ContextResolver<ObjectMapper> {

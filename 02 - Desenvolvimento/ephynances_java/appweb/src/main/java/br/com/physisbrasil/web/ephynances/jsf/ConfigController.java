@@ -16,7 +16,7 @@ import javax.faces.bean.ManagedBean;
 
 /**
  *
- * @author Thadeu
+ * @author Thomas
  */
 @ManagedBean(eager = true)
 @ApplicationScoped

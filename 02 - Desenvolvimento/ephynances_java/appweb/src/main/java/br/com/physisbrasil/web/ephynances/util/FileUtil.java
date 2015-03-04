@@ -14,7 +14,7 @@ import java.nio.channels.FileChannel;
 
 /**
  *
- * @author Thadeu
+ * @author Thomas
  */
 public class FileUtil {
 

@@ -24,7 +24,7 @@ import javax.persistence.criteria.Root;
 
 /**
  *
- * @author Thadeu
+ * @author Thomas
  */
 public abstract class DAO<T> {
 

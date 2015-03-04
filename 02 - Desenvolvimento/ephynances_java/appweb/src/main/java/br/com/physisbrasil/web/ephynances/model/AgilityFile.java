@@ -21,7 +21,7 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 /**
  *
- * @author Thadeu
+ * @author Thomas
  */
 @Entity
 @Table(name = "ephynances_file")

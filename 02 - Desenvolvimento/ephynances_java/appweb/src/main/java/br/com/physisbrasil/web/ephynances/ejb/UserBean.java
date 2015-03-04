@@ -7,7 +7,7 @@ import javax.persistence.TypedQuery;
 
 /**
  *
- * @author Thadeu
+ * @author Thomas
  */
 @Stateless
 public class UserBean extends DAO<User> {

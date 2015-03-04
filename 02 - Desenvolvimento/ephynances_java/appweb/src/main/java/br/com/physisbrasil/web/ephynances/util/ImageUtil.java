@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 
 /**
  *
- * @author Thadeu
+ * @author Thomas
  */
 public class ImageUtil {
 

@@ -6,7 +6,7 @@ import javax.ejb.Stateless;
 
 /**
  *
- * @author Thadeu Castro
+ * @author Thomas Castro
  */
 @Stateless
 public class ScheduledTaskBean extends DAO<ScheduledTask> {

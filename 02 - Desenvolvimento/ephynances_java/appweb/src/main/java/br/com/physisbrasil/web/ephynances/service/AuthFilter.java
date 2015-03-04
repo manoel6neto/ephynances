@@ -10,7 +10,7 @@ import javax.ws.rs.container.ContainerRequestFilter;
 
 /**
  *
- * @author Thadeu
+ * @author Thomas
  */
 //@ManagedBean
 //@Provider

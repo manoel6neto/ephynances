@@ -13,7 +13,7 @@ import org.glassfish.jersey.server.ServerProperties;
 
 /**
  *
- * @author thadeu
+ * @author Thomas
  */
 //@ApplicationPath("/rest")
 public class MyApplication extends ResourceConfig {

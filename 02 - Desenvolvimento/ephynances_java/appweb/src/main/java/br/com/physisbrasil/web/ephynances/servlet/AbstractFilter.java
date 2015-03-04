@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author Thadeu
+ * @author Thomas
  */
 public class AbstractFilter {
 
