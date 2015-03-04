@@ -10,9 +10,9 @@ table, caption, tbody, tfoot, thead, tr, th, td{
     vertical-align: middle;
 }
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: cursive, Arial, Helvetica, sans-serif;
     font-size: 10px;
-    background: #F8F8F8 url('../img/body_bg.png.jsf') repeat-x top left;
+    background: #F8F8F8 url('../img/body_bg_blue.png.jsf') repeat-x top left;
     margin-bottom: 55px;
 }
 
@@ -26,19 +26,21 @@ ol, ul
     display: table;
 }
 #header {
+    font-family: cursive, Arial, Helvetica, sans-serif;
     height: 47px;
     margin-bottom: 20px;
 }
 #rodape_ext {
     display: table;
-    background: #373736 url('../img/footer_bg.png.jsf') repeat-x top left; 
+    background: #F8F8F8 url('../img/body_bg_blue.png.jsf') repeat-x top left; 
     width: 100%;
     position: fixed;
     bottom: 0px;
 }
 #rodape {
+    font-family: cursive, Arial, Helvetica, sans-serif;
     text-align: center;
-    color: #FFF;
+    color: #F8F8F8;
     margin-top: 15px;
     height: 30px;
 }
@@ -58,7 +60,7 @@ ul.mainMenu li{
     display: inline;
 }
 ul.mainMenu li a{
-    font-family: Verdana;
+    font-family: cursive;
     display: inline-block;
     font-size: 1.5em;
     margin-left: 10px;

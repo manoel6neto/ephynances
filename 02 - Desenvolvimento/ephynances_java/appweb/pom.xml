@@ -95,7 +95,7 @@
         </dependency>
         <dependency>
             <groupId>org.primefaces.themes</groupId>
-            <artifactId>home</artifactId>
+            <artifactId>redmond</artifactId>
             <version>1.0.10</version>
         </dependency>
         
