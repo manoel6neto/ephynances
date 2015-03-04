@@ -30,7 +30,7 @@ public abstract class DAO<T> {
 
     public static final String PERSISTENCE_UNIT_NAME = "ephynancesPU";
 
-    @PersistenceContext(unitName = PERSISTENCE_UNIT_NAME)
+    @PersistenceContext(name = PERSISTENCE_UNIT_NAME)
     protected EntityManager em;
 
     protected EntityManager getEntityManager() {

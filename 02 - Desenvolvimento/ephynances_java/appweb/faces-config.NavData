@@ -2,38 +2,38 @@
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
-        <Node id="machineGroup/list.xhtml" x="900" y="450" zoom="true"/>
         <Node id="uploadSoftware/create.xhtml" x="1400" y="300" zoom="true"/>
+        <Node id="machineGroup/list.xhtml" x="900" y="450" zoom="true"/>
         <Node id="uploadImage/edit.xhtml" x="150" y="150" zoom="true"/>
         <Node id="uploadDrive/list.xhtml" x="150" y="600" zoom="true"/>
         <Node id="scheduledTask/list.xhtml" x="1400" y="450" zoom="true"/>
         <Node id="user/list.xhtml" x="650" y="750" zoom="true"/>
         <Node id="user/create.xhtml" x="650" y="450" zoom="true"/>
-        <Node id="uploadImage/list.xhtml" x="400" y="150" zoom="true"/>
         <Node id="machineGroup/create.xhtml" x="400" y="300" zoom="true"/>
+        <Node id="uploadImage/list.xhtml" x="400" y="150" zoom="true"/>
         <Node id="machine/installRemote.xhtml" x="150" y="1050" zoom="true"/>
+        <Node id="user/view.xhtml" x="150" y="750" zoom="true"/>
         <Node id="uploadSoftware/edit.xhtml" x="900" y="300" zoom="true"/>
         <Node id="uploadSoftware/list.xhtml" x="1900" y="150" zoom="true"/>
-        <Node id="user/view.xhtml" x="150" y="750" zoom="true"/>
         <Node id="machine/backup.xhtml" x="400" y="750" zoom="true"/>
         <Node id="template.xhtml" x="400" y="600" zoom="true"/>
         <Node id="machine/testHardware.xhtml" x="650" y="300" zoom="true"/>
         <Node id="inventoryMachine/list.xhtml" x="900" y="150" zoom="true"/>
         <Node id="scheduledTask/create.xhtml" x="400" y="900" zoom="true"/>
         <Node id="uploadDrive/edit.xhtml" x="900" y="600" zoom="true"/>
-        <Node id="user/edit.xhtml" x="150" y="450" zoom="true"/>
         <Node id="scheduledTask/edit.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="user/edit.xhtml" x="150" y="450" zoom="true"/>
         <Node id="index.xhtml" x="400" y="450" zoom="true"/>
-        <Node id="user/password.xhtml" x="150" y="900" zoom="true"/>
         <Node id="machine/report.xhtml" x="650" y="600" zoom="true"/>
-        <Node id="machine/machines.xhtml" x="1650" y="150" zoom="true"/>
+        <Node id="user/password.xhtml" x="150" y="900" zoom="true"/>
         <Node id="machineGroup/edit.xhtml" x="1650" y="300" zoom="true"/>
+        <Node id="machine/machines.xhtml" x="1650" y="150" zoom="true"/>
         <Node id="machine/list.xhtml" x="1150" y="450" zoom="true"/>
         <Node id="uploadImage/create.xhtml" x="1150" y="150" zoom="true"/>
         <Node id="login.xhtml" x="1400" y="150" zoom="true"/>
         <Node id="machineGroup/manage.xhtml" x="1150" y="300" zoom="true"/>
-        <Node id="admin/form.xhtml" x="1150" y="600" zoom="true"/>
         <Node id="acesso_negado.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="admin/form.xhtml" x="1150" y="600" zoom="true"/>
         <Node id="uploadDrive/create.xhtml" x="900" y="750" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>

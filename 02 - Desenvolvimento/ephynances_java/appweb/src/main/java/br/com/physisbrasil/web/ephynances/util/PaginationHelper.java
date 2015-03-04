@@ -15,7 +15,7 @@ public class PaginationHelper<T extends BaseModel> extends LazyDataModel<T> impl
 
     private List<T> itens;
 
-    private DAO<T> dao;
+    private final DAO<T> dao;
 
     private PaginationCompleteItens completeItens;
 
@@ -29,31 +29,31 @@ public class PaginationHelper<T extends BaseModel> extends LazyDataModel<T> impl
         this.dao = dao;
     }
 
-    @Override
-    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
-
-        boolean asc = (sortOrder == SortOrder.ASCENDING);
-
-        if (sortField == null) {
-            sortField = defaultSortField;
-        }
-
-        if (defaultFilters != null) {
-            filters = defaultFilters;
-        }
-
-        if (filters.containsKey("globalFilter")) {
-            filters.remove("globalFilter");
-        }
-
-        itens = dao.findRange(first, pageSize, sortField, asc, filters, globalFilters);
-
-        completeItens(itens);
-
-        setRowCount(dao.count(filters, globalFilters));
-
-        return itens;
-    }
+//    @Override
+//    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, String> filters) {
+//
+//        boolean asc = (sortOrder == SortOrder.ASCENDING);
+//
+//        if (sortField == null) {
+//            sortField = defaultSortField;
+//        }
+//
+//        if (defaultFilters != null) {
+//            filters = defaultFilters;
+//        }
+//
+//        if (filters.containsKey("globalFilter")) {
+//            filters.remove("globalFilter");
+//        }
+//
+//        itens = dao.findRange(first, pageSize, sortField, asc, filters, globalFilters);
+//
+//        completeItens(itens);
+//
+//        setRowCount(dao.count(filters, globalFilters));
+//
+//        return itens;
+//    }
 
     public List<T> getDatasource() {
         return itens;

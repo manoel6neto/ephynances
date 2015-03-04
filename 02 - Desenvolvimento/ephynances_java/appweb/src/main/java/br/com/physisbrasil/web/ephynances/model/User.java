@@ -65,7 +65,7 @@ public class User implements BaseModel {
     @Pattern(regexp = CPF_REGEX)
     private String cpf;
     
-    @Column(name="max_sales_amount", nullable = false, columnDefinition="default 1")
+    @Column(name="max_sales_amount", nullable = false)
     @NotEmpty
     private int maxSalesAmount;
     
@@ -74,7 +74,7 @@ public class User implements BaseModel {
     @Size(min = 6, max = 40, message = "Tamanho deve ser entre 6 e 40 caracteres.")
     private String password;
     
-    @Column(name="is_verified", nullable = false, columnDefinition="default 0")
+    @Column(name="is_verified", nullable = false)
     @NotEmpty
     private boolean isVerified;
     
