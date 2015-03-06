@@ -69,12 +69,16 @@ public class SecurityFilter extends AbstractFilter implements Filter {
             if (!redirected) {
                 chain.doFilter(request, response);
             }
-        } catch (Throwable t) {
+        } catch (IOException t) {
             // If an exception is thrown somewhere down the filter chain,
             // we still want to execute our after processing, and then
             // rethrow the problem after that.
             problem = t;
-            t.printStackTrace();
+        } catch (ServletException t) {
+            // If an exception is thrown somewhere down the filter chain,
+            // we still want to execute our after processing, and then
+            // rethrow the problem after that.
+            problem = t;
         }
 
         doAfterProcessing(request, response);
@@ -94,6 +98,7 @@ public class SecurityFilter extends AbstractFilter implements Filter {
 
     /**
      * Return the filter configuration object for this filter.
+     * @return 
      */
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);

@@ -6,8 +6,8 @@
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <title><ui:insert name="browserTitle"> :: Ephynances :: </ui:insert></title>
-        <link rel="icon" href="${request.contextPath}/resources/img/favicon.ico" type="image/x-icon"/>
-        <link rel="shortcut icon" href="${request.contextPath}/resources/img/favicon.ico" type="image/x-icon" />
+        <link rel="icon" href="${request.contextPath}/resources/img/favicon.png" type="image/x-icon"/>
+        <link rel="shortcut icon" href="${request.contextPath}/resources/img/favicon.png" type="image/x-icon" />
         <h:outputStylesheet name="css/layout.css"  />
         <h:outputStylesheet name="css/960.css" />
         <h:outputStylesheet name="css/estilos.css" />
@@ -62,15 +62,23 @@
                         <h:panelGroup rendered="#{loginController.loggedUser != null}" >
                             <div class="grid_8 omega "  >
                                 <ui:insert name="header">
-                                    <p:menubar style="margin-top: 4px" >  
-                                        <p:menuitem value="HOME" outcome="/machine/list"/>  
-                                        <p:menuitem value="CONFIGURAÇÕES" outcome="/admin/form" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}"/>                                        
-                                        <p:menuitem value="USUÁRIOS" outcome="/user/list" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}"/>  
-                                        <p:submenu label="REGIÔES/ESTADOS/CIDADES">
+                                    <p:menubar style="margin-top: 4px">  
+                                        <p:menuitem value="HOME" outcome="/index.xhtml" />  
+                                        <p:menuitem value="USUÁRIOS" outcome="/user/list" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}" />  
+                                        <p:submenu label="CONTRATOS">
+                                            <p:menuitem value="REPRESENTANTES" outcome="/index.xhtml" />
+                                            <p:menuitem value="CONTRATOS" outcome="/index.xhtml" />
+                                        </p:submenu>
+                                        <p:submenu label="FINANCEIRO">
+                                            <p:menuitem value="PARCELAS" outcome="/index.xhtml" />
+                                            <p:menuitem value="PAGAMENTOS" outcome="/index.xhtml" />
+                                        </p:submenu>
+                                        <p:submenu label="ENDEREÇO">
                                             <p:menuitem value="REGIÕES" outcome="/region/list" />
                                             <p:menuitem value="ESTADOS" outcome="/state/list" />
                                             <p:menuitem value="CIDADES" outcome="/cityorgan/list" />
-                                        </p:submenu>                                                                              
+                                        </p:submenu>     
+                                        <p:menuitem value="CONFIGURAÇÕES" outcome="/index.xhtml" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}"/>                                        
                                     </p:menubar>
                                 </ui:insert>
                             </div>
@@ -96,7 +104,6 @@
                 </div>
                 <div class="grid_12 alpha" >
                     <ui:insert name="body">
-                        Default Body
                     </ui:insert>
                 </div>
             </div>

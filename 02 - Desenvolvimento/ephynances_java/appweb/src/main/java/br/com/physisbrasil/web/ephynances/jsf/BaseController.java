@@ -4,7 +4,6 @@ import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.servlet.SecurityFilter;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *

@@ -23,6 +23,8 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class UserController extends BaseController {
 
+    private static final long serialVersionUID = 9848454652211L;
+    
     @EJB
     private UserBean usuarioBean;
     private User user;
@@ -62,10 +64,16 @@ public class UserController extends BaseController {
     public String save() {
         try {
             if (user != null) {
-                user.setIsVerified(false);
-                usuarioBean.create(user);
-                usuarioBean.clearCache();
-                JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
+                if (user.getId() != null) {
+                    usuarioBean.edit(user);
+                    usuarioBean.clearCache();
+                    JsfUtil.addSuccessMessage("Usuário atualizado com sucesso!");
+                } else {
+                    user.setIsVerified(false);
+                    usuarioBean.create(user);
+                    usuarioBean.clearCache();
+                    JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
+                }
             } else {
                 throw new Exception("Falha ao carregar dados do formulário.");
             }

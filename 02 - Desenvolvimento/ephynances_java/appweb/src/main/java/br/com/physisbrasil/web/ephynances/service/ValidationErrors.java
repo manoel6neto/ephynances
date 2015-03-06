@@ -10,7 +10,6 @@ import javax.ejb.EJBException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
-import javax.ws.rs.ext.Provider;
 
 //@Provider
 public final class ValidationErrors implements ExceptionMapper<EJBException> {

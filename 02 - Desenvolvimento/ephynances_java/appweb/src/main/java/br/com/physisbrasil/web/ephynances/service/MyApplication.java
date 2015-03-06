@@ -5,7 +5,6 @@
  */
 package br.com.physisbrasil.web.ephynances.service;
 
-import javax.ws.rs.ApplicationPath;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;

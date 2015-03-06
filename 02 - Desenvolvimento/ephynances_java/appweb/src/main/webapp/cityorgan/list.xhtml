@@ -18,16 +18,16 @@
                              currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                              emptyMessage="Nenhum registro encontrado!">
 
-                    <p:column style="text-align: center" headerText="Cnpj" sortBy="cnpj" filterBy="cnpj">                       
+                    <p:column style="text-align: center" headerText="Cnpj" sortBy="#{item.cnpj}" filterBy="#{item.cnpj}">                       
                         <h:outputText value="#{item.cnpj}" />
                     </p:column>
-                    <p:column style="text-align: center" headerText="Cidade" sortBy="cityName" filterBy="cityName">
+                    <p:column style="text-align: center" headerText="Cidade" sortBy="#{item.cityName}" filterBy="#{item.cityName}">
                         <h:outputText value="#{item.cityName}" />
                     </p:column>     
-                    <p:column style="text-align: center" headerText="Orgão" sortBy="organName" filterBy="organName">
+                    <p:column style="text-align: center" headerText="Orgão" sortBy="#{item.organName}" filterBy="#{item.organName}">
                         <h:outputText value="#{item.organName}" />
                     </p:column> 
-                    <p:column style="text-align: center" headerText="Estado" sortBy="state.acronym" filterBy="state.acronym">                      
+                    <p:column style="text-align: center" headerText="Estado" sortBy="#{item.state.acronym}" filterBy="#{item.state.acronym}">                      
                         <h:outputText value="#{item.state.acronym}" />
                     </p:column>   
                 </p:dataTable>

@@ -41,7 +41,7 @@ public class JsfUtil {
         HttpServletRequest req = (HttpServletRequest) externalContext.getRequest();
         StringBuffer requestURL = req.getRequestURL();
 
-        return requestURL.toString().replace(req.getRequestURI().toString(), "") + req.getContextPath();
+        return requestURL.toString().replace(req.getRequestURI(), "") + req.getContextPath();
     }
 
     public static String getRealPath() {

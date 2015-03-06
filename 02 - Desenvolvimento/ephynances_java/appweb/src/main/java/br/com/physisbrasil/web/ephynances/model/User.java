@@ -44,24 +44,23 @@ public class User implements BaseModel {
     @Column(name="id")
     private Long id;
 
-    @Column(name="name", length = 100, nullable = false)
+    @Column(name="name", length = 150, nullable = false)
     private String name;
         
-    @Column(name="email", length = 80, unique = true, nullable = false)
+    @Column(name="email", length = 200, unique = true, nullable = false)
     @NotEmpty
     @Pattern(regexp = EMAIL_REGEX, message = "Email mal formatado")
-    @Size(max = 80)
+    @Size(max = 200)
     private String email;
     
-    @Column(name="phone", length = 20, nullable = true)
+    @Column(name="phone", length = 30, nullable = true)
     private String phone;
     
-    @Column(name="cell_phone", length = 20, nullable = true)
+    @Column(name="cell_phone", length = 30, nullable = true)
     private String cellPhone;
     
-    @Column(name="cpf", length = 11, nullable = false)
+    @Column(name="cpf", length = 16, nullable = false)
     @NotEmpty
-    @Size(min = 14, max = 14, message = "Deve conter 11 dígitos mais os pontos e o hifen.")
     private String cpf;
     
     @Column(name="max_sales_amount")
@@ -73,7 +72,6 @@ public class User implements BaseModel {
     private String password;
     
     @Column(name="is_verified", nullable = false)
-    @NotEmpty
     private boolean isVerified;
     
     @Column(name="delete_date", nullable = true)
@@ -170,25 +168,6 @@ public class User implements BaseModel {
 
     public void setDeleteDate(Date deleteDate) {
         this.deleteDate = deleteDate;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 31 * hash + (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final User other = (User) obj;
-        return !(!this.id.equals(other.id) && (this.id == null || !this.id.equals(other.id)));
     }
 
     @Override

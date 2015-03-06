@@ -6,7 +6,6 @@
 package br.com.physisbrasil.web.ephynances.service;
 
 import javax.ws.rs.ext.ContextResolver;
-import javax.ws.rs.ext.Provider;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig.Feature;
 

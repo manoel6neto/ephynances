@@ -25,9 +25,13 @@ import javax.persistence.criteria.Root;
 /**
  *
  * @author Thomas
+ * @param <T>
  */
 public abstract class DAO<T> {
 
+    /**
+     *
+     */
     public static final String PERSISTENCE_UNIT_NAME = "ephynancesPU";
 
     @PersistenceContext(name = PERSISTENCE_UNIT_NAME)
