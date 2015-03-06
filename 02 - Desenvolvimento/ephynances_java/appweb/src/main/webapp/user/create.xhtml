@@ -14,54 +14,52 @@
             <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER])}" />
             <h:form id="formUser" styleClass="form" >
                 <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
-                
+
                 <div class="grid_4 alpha" >
-                    <p:selectOneMenu id="menu" value="#{userController.user.profileRule}" required="true" effect="fade">
-                        <f:selectItem itemLabel="Selecione um perfil: " noSelectionOption="true" />                        
+                    <p:outputLabel value="Perfil: " for="menu"  />
+                    <p:selectOneMenu id="menu" style="width: auto" value="#{userController.user.profileRule}" required="true" effect="fade">
                         <f:selectItem itemLabel="#{userController.RULER_ADMIN}" itemValue="#{userController.RULER_ADMIN}" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>
                         <f:selectItem itemLabel="#{userController.RULER_CONTRIBUTOR}" itemValue="#{userController.RULER_CONTRIBUTOR}" />
                         <f:selectItem itemLabel="#{userController.RULER_SELLER}" itemValue="#{userController.RULER_SELLER}" />
                     </p:selectOneMenu>
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Nome: " for="name"  />
                     <p:inputText id="name" value="#{userController.user.name}" required="true" requiredMessage="Nome é necessário"/> 
-                    <p:watermark for="name" value="Nome Completo"/>
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Email: " for="email"  />
-                    <p:inputText id="email" value="#{userController.user.email}" required="true" requiredMessage="Email é necessário"/> 
+                    <p:inputText id="email" value="#{userController.user.email}" required="true" requiredMessage="Email é necessário" validatorMessage="Email mal formatado !!"/> 
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="CPF: " for="cpf"  />
-                    <p:inputText id="cpf" value="#{userController.user.cpf}" required="true" requiredMessage="CPF é necessário"/> 
+                    <p:inputMask id="cpf" value="#{userController.user.cpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"/> 
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Telefone: " for="phone"  />
-                    <p:inputMask id="phone" value="#{userController.user.phone}" mask="(99) 999-9999" required="false"/> 
+                    <p:inputMask id="phone" value="#{userController.user.phone}" required="false" mask="(99) 9999-9999" />
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Celular: " for="cellphone"  />
-                    <p:inputMask id="cellphone" value="#{userController.user.cellPhone}" mask="(99) 999-9999" required="false"/> 
+                    <p:inputMask id="cellphone" value="#{userController.user.cellPhone}" required="false" mask="(99) 9999-9999"/> 
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="N. Contratos Venda (Máx): " for="maxsalesamount"  />
-                    <p:inputText id="maxsalesamount" value="#{userController.user.maxSalesAmount}" required="true" requiredMessage="Necessário informar limite para criação de contratos."/> 
-                    <p:watermark for="maxsalesamount" value="1"/>
+                    <p:inputText id="maxsalesamount" value="#{userController.user.maxSalesAmount}" required="true" requiredMessage="Necessário informar limite para criação de contratos." validatorMessage="Não pode ser em branco."/> 
                 </div>
-               
+
                 <br class="clear" />
                 <div class="grid_2 alpha" >
                     <p:outputLabel  value="Nova Senha: " for="formPassword" />
@@ -72,37 +70,11 @@
                     <p:outputLabel value="Confirmação Senha: " for="confPassword"/>
                     <p:password styleClass="grid_2" autocomplete="off"  id="confPassword" value="#{userController.user.password}"  /> 
                 </div>
-                
-                <div class="grid_4 alpha" >
-                    <p:outputLabel for="menuRegions" value="Regiões: "  />
-                    <p:selectOneMenu id="menuRegions" value="#{userController.region}" required="true" filter="true" filterMatchMode="startsWith" effect="fade">
-                        <f:selectItem itemLabel="Todas" noSelectionOption="true" />                        
-                        <f:selectItems value="#{regionController.regions}" />
-                        <p:ajax listener="#{stateController.filteredList(userController.region)}" update="menuStates" />
-                    </p:selectOneMenu>
-                </div>
-                
-                <div class="grid_4 alpha" >
-                    <p:outputLabel for="menuStates" value="Estados: "  />
-                    <p:selectOneMenu id="menuStates" value="#{userController.state}" required="true" filter="true" filterMatchMode="startsWith" effect="fade">
-                        <f:selectItem itemLabel="Todos" noSelectionOption="true" />                        
-                        <f:selectItems value="#{stateController.states}" />
-                        <p:ajax listener="#{cityOrganController.filteredList(userController.state)}" update="menuCityOrgans" />
-                    </p:selectOneMenu>
-                </div>
-                
-                <div class="grid_4 alpha" >
-                    <p:outputLabel for="menuCityOrgans" value="Cidades: "  />
-                    <p:selectOneMenu id="menuCityOrgans" value="#{userController.user.cityOrgan}" required="true" filter="true" filterMatchMode="startsWith" effect="fade">
-                        <f:selectItem itemLabel="Todos" noSelectionOption="true" />                        
-                        <f:selectItems value="#{cityOrganController.cityOrgans}" />
-                    </p:selectOneMenu>
-                </div>
-                
+
                 <br class="clear" />
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >
-                    <p:commandButton styleClass="grid_1 alpha" action="#{userController.save}" value="Salvar" update="formUser" />
+                    <p:commandButton styleClass="grid_1 alpha" action="#{userController.save}" value="Salvar" update="formUser" ajax="false"/>
                     <h:link styleClass="grid_1" outcome="list" value="Voltar"  />
                 </div>
             </h:form>

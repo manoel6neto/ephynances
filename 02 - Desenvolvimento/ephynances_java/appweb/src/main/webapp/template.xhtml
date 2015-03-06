@@ -13,17 +13,17 @@
         <h:outputStylesheet name="css/estilos.css" />
         <h:outputScript name="js/jquery.maskMoney.js"  />
         <script type="text/javascript" language="javascript">
-            jQuery(document).ready(function() {
+            jQuery(document).ready(function () {
                 updateMasks();
             });
             function updateMasks() {
-                jQuery('.maskMoney').each(function() {
+                jQuery('.maskMoney').each(function () {
                     jQuery(this).maskMoney({thousands: '.', decimal: ','});
                 });
-                jQuery('.maskGPS').each(function() {
+                jQuery('.maskGPS').each(function () {
                     jQuery(this).maskMoney({thousands: '', decimal: ',', precision: 6, allowNegative: true, allowZero: true});
                 });
-                jQuery('.maskInt').each(function() {
+                jQuery('.maskInt').each(function () {
                     jQuery(this).maskMoney({thousands: '', decimal: '', precision: 0, allowZero: true});
                 });
             }

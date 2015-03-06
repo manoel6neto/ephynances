@@ -20,13 +20,16 @@
                              currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                              emptyMessage="Nenhum registro encontrado!">
                     
-                    <p:column style="text-align: center" headerText="Nome" sortBy="name">                       
+                    <p:column style="text-align: center" headerText="Nome" sortBy="name" filterBy="name">                       
                         <h:outputText value="#{item.name}" />
                     </p:column>
-                    <p:column style="text-align: center" headerText="Email" sortBy="email">
+                    <p:column style="text-align: center" headerText="Email" sortBy="email" filterBy="email">
                         <h:outputText value="#{item.email}" />
-                    </p:column>                  
-                    <p:column width="30" style="text-align: center" headerText="Perfil" >                      
+                    </p:column>   
+                    <p:column style="text-align: center" headerText="N. Cnpj's" sortBy="maxSalesAmount">
+                        <h:outputText value="#{item.maxSalesAmount}" />
+                    </p:column>
+                    <p:column style="text-align: center" headerText="Perfil" >                      
                         <h:outputText value="#{item.profileRule}" />
                     </p:column>   
                     <p:column width="30" style="text-align: center" headerText="Status" >                      

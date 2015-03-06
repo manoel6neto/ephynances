@@ -1,12 +1,8 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
-import br.com.physisbrasil.web.ephynances.ejb.RegionBean;
-import br.com.physisbrasil.web.ephynances.ejb.StateBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
-import br.com.physisbrasil.web.ephynances.model.Region;
-import br.com.physisbrasil.web.ephynances.model.State;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
@@ -29,23 +25,14 @@ public class UserController extends BaseController {
 
     @EJB
     private UserBean usuarioBean;
-    //private PaginationHelper<User> pagination;
     private User user;
     private String oldPass;
     private String recoverEmail;
     private List<User> listUser;
-    
+
     @EJB
     private ConfigurationBean configurationBean;
-    
-    @EJB
-    private RegionBean regionBean;
-    private Region region;
-    
-    @EJB
-    private StateBean stateBean;
-    private State state;
-    
+
     @PostConstruct
     public void init() {
         if (listUser == null) {
@@ -73,40 +60,17 @@ public class UserController extends BaseController {
     }
 
     public String save() {
-        Integer activeAdmins = 0;
         try {
-            user.setPassword(Criptografia.criptografar(user.getPassword()));
-            if (user.getId() != null && user.getId() > 0) {
-                if (user.getProfileRule().equals(getRULER_ADMIN())) {
-                    for (User usuarioTemp : usuarioBean.findAll()) {
-                        if (usuarioTemp.getProfileRule().equals(getRULER_ADMIN())
-                         && usuarioTemp.getDeleteDate() == null) {
-                            activeAdmins++;
-                        }
-                    }
-
-                    if (activeAdmins > 1 || user.getDeleteDate() != null) {
-                        usuarioBean.edit(user);
-                        JsfUtil.addSuccessMessage("Usuário atualizado com sucesso!!");
-                    } else {
-                        JsfUtil.addErrorMessage("Não é possível atualizar o usuário pois ele é o único 'Administrador' ativo no sistema.");
-                    }
-                } else {
-                    usuarioBean.edit(user);
-                    JsfUtil.addSuccessMessage("Usuário atualizado com sucesso!!");
-                }
-            } else {
+            if (user != null) {
+                user.setIsVerified(false);
                 usuarioBean.create(user);
-                JsfUtil.addSuccessMessage("Usuário criado com sucesso!!");
-            }
-            usuarioBean.clearCache();
-            LoginController l = new LoginController();
-            if (l.getLoggedUser().equals(user)) {
-                l.getLoggedUser().setProfileRule(user.getProfileRule());
+                usuarioBean.clearCache();
+                JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
+            } else {
+                throw new Exception("Falha ao carregar dados do formulário.");
             }
         } catch (Throwable e) {
-            JsfUtil.addErrorMessage("Falha ao criar/atualizar usuário.");
-            return "create";
+            JsfUtil.addErrorMessage(e.getMessage());
         }
 
         return "list";
@@ -243,22 +207,6 @@ public class UserController extends BaseController {
         this.listUser = listUser;
     }
 
-    public Region getRegion() {
-        return region;
-    }
-
-    public void setRegion(Region region) {
-        this.region = region;
-    }
-
-    public State getState() {
-        return state;
-    }
-
-    public void setState(State state) {
-        this.state = state;
-    }
-
     public void recoverPassword() {
         try {
             User usr = usuarioBean.findByEmail(recoverEmail);
@@ -269,13 +217,13 @@ public class UserController extends BaseController {
 
             String decriptedPass = Utils.randomPassword();
             usr.setPassword(Criptografia.criptografar(decriptedPass));
-            
-            if(sendMail(usr, decriptedPass, true)) {
+
+            if (sendMail(usr, decriptedPass, true)) {
                 usuarioBean.edit(usr);
                 JsfUtil.addSuccessMessage("E-mail de recuperação de senha enviado com sucesso!");
-            }else {
+            } else {
                 JsfUtil.addErrorMessage("Falha ao enviar e-mail de recuperação de senha!");
-            }          
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha resetar senha!");
 

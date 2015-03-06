@@ -7,10 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
@@ -51,7 +49,7 @@ public class User implements BaseModel {
         
     @Column(name="email", length = 80, unique = true, nullable = false)
     @NotEmpty
-    @Pattern(regexp = EMAIL_REGEX)
+    @Pattern(regexp = EMAIL_REGEX, message = "Email mal formatado")
     @Size(max = 80)
     private String email;
     
@@ -63,12 +61,10 @@ public class User implements BaseModel {
     
     @Column(name="cpf", length = 11, nullable = false)
     @NotEmpty
-    @Size(min = 11, max = 11, message = "Deve conter 11 dígitos.")
-    @Pattern(regexp = CPF_REGEX)
+    @Size(min = 14, max = 14, message = "Deve conter 11 dígitos mais os pontos e o hifen.")
     private String cpf;
     
-    @Column(name="max_sales_amount", nullable = false)
-    @NotEmpty
+    @Column(name="max_sales_amount")
     private int maxSalesAmount;
     
     @Column(name="password", length = 40, nullable = false)
@@ -83,12 +79,6 @@ public class User implements BaseModel {
     @Column(name="delete_date", nullable = true)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date deleteDate;
-    
-    //References
-    @OneToOne(optional = false)
-    @NotNull    
-    @JoinColumn(name = "city_organ_id", referencedColumnName = "id", nullable = false)
-    private CityOrgan cityOrgan;
     
     public User() {
     }
@@ -182,14 +172,6 @@ public class User implements BaseModel {
         this.deleteDate = deleteDate;
     }
 
-    public CityOrgan getCityOrgan() {
-        return cityOrgan;
-    }
-
-    public void setCityOrgan(CityOrgan cityOrgan) {
-        this.cityOrgan = cityOrgan;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 7;

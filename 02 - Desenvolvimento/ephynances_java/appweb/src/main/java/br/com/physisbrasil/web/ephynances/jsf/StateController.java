@@ -1,8 +1,6 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
-import br.com.physisbrasil.web.ephynances.ejb.RegionBean;
 import br.com.physisbrasil.web.ephynances.ejb.StateBean;
-import br.com.physisbrasil.web.ephynances.model.Region;
 import br.com.physisbrasil.web.ephynances.model.State;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,9 +21,6 @@ public class StateController extends BaseController {
     private StateBean stateBean;
     private List<State> states;
     
-    @EJB
-    private RegionBean regionBean;
-
     @PostConstruct
     public void init() {
         if (states == null) {
@@ -40,11 +35,5 @@ public class StateController extends BaseController {
 
     public void setStates(List<State> states) {
         this.states = states;
-    }
-    
-    public void filteredList(Region region) {
-        if(region != null && region.getId() > 0) {
-            setStates(regionBean.findByProperty("id", region.getId()).getStates());
-        }
     }
 }
