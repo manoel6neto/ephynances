@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,18 +32,26 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "agreement")
 public class Agreement implements BaseModel {
 
-    private static final List<String> AGREEMENT_TYPES = new ArrayList<String>() {{
-        add("Município");
-        add("Parlamentar");
-        add("Fundação");
-        add("Consórcio");
-        add("Entidades privadas sem fins lucrativos");            
-    }};
-    
+    private static final List<String> AGREEMENT_TYPES = new ArrayList<String>() {
+        {
+            add("Município");
+            add("Parlamentar");
+            add("Fundação");
+            add("Consórcio");
+            add("Entidades privadas sem fins lucrativos");
+        }
+    };
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "agreement_type", nullable = false)
+    private String agreementType;
 
     @Column(name = "contact_email", length = 200, unique = true, nullable = false)
     @NotEmpty
@@ -61,25 +71,25 @@ public class Agreement implements BaseModel {
     @Size(max = 100)
     @Column(name = "contact_agreement_number", length = 100, unique = true, nullable = false)
     private String contactAgreementNumber;
-    
+
     @NotEmpty
     @Size(max = 100)
     @Column(name = "physis_agreement_number", length = 100, unique = true, nullable = false)
     private String physisAgreementNumber;
-    
+
     @NotNull
     @Column(name = "expire_date", nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date expireDate;
-    
+
     @DefaultValue(value = "0")
-    @Column(name="status", nullable = false)
+    @Column(name = "status", nullable = false)
     private boolean status;
-    
+
     @NotNull
-    @Column(name="cnpj_amount", nullable = false)
+    @Column(name = "cnpj_amount", nullable = false)
     private int cnpjAmount;
-    
+
     @NotEmpty
     @Size(max = 100)
     @Column(name = "document_number", length = 100, nullable = false)
@@ -87,21 +97,27 @@ public class Agreement implements BaseModel {
 
     //References
     @OneToOne(optional = false)
-    @NotNull    
+    @NotNull
     @JoinColumn(name = "agreement_responsible_id", referencedColumnName = "id", nullable = false)
     private AgreementResponsible agreementResponsible;
-    
+
     @OneToOne(optional = false)
-    @NotNull    
+    @NotNull
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
-    
+
     @JoinTable(name = "agreement_city_organ", joinColumns = {
         @JoinColumn(name = "agreement_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "city_organ_id", referencedColumnName = "id")})
     @ManyToMany()
     private List<CityOrgan> cityOrgans;
     
+    @OneToMany(mappedBy = "agreement", orphanRemoval = true)
+    private List<AgreementInstallment> agreementInstallments;
+    
+    @OneToMany(mappedBy = "agreement", orphanRemoval = true)
+    private List<AgreementDocument> agreementDocuments;
+
     /**
      *
      * @return
@@ -111,6 +127,14 @@ public class Agreement implements BaseModel {
         return id;
     }
 
+    public String getAgreementType() {
+        return agreementType;
+    }
+
+    public void setAgreementType(String agreementType) {
+        this.agreementType = agreementType;
+    }
+    
     public String getContactEmail() {
         return contactEmail;
     }
@@ -209,6 +233,22 @@ public class Agreement implements BaseModel {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<AgreementInstallment> getAgreementInstallments() {
+        return agreementInstallments;
+    }
+
+    public void setAgreementInstallments(List<AgreementInstallment> agreementInstallments) {
+        this.agreementInstallments = agreementInstallments;
+    }
+
+    public List<AgreementDocument> getAgreementDocuments() {
+        return agreementDocuments;
+    }
+
+    public void setAgreementDocuments(List<AgreementDocument> agreementDocuments) {
+        this.agreementDocuments = agreementDocuments;
     }
     
     @Override

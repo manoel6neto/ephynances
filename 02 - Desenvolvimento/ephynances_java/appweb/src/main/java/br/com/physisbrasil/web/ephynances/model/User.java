@@ -21,66 +21,66 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Thomas
  */
 @Entity
-@Table(name="user")
+@Table(name = "user")
 @NamedQueries({
     @NamedQuery(name = "Usuario.findByEmailSenha",
-    query = "SELECT u FROM User u WHERE u.email = :email AND u.password = :password"),
+            query = "SELECT u FROM User u WHERE u.email = :email AND u.password = :password"),
     @NamedQuery(name = "Usuario.findByEmail",
-    query = "SELECT u FROM User u WHERE u.email = :email")})
+            query = "SELECT u FROM User u WHERE u.email = :email")})
 public class User implements BaseModel {
-    
+
     private static final String RULER_ADMIN = "Administrador";
     private static final String RULER_SELLER = "Vendedor";
     private static final String RULER_CONTRIBUTOR = "Colaborador";
-    
+
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
     @Column(name = "profile_rule", nullable = false)
-    private String profileRule;       
-    
+    private String profileRule;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
 
-    @Column(name="name", length = 150, nullable = false)
+    @Column(name = "name", length = 150, nullable = false)
     private String name;
-        
+
     @Column(name = "email", length = 200, unique = true, nullable = false)
     @NotEmpty
     @Pattern(regexp = EMAIL_REGEX, message = "Email mal formatado")
     @Size(max = 200)
     private String email;
-    
-    @Column(name="phone", length = 30, nullable = true)
+
+    @Column(name = "phone", length = 30, nullable = true)
     private String phone;
-    
-    @Column(name="cell_phone", length = 30, nullable = true)
+
+    @Column(name = "cell_phone", length = 30, nullable = true)
     private String cellPhone;
-    
-    @Column(name="cpf", length = 16, nullable = false)
+
+    @Column(name = "cpf", length = 16, nullable = false)
     @NotEmpty
     private String cpf;
-    
-    @Column(name="max_sales_amount")
+
+    @Column(name = "max_sales_amount")
     private int maxSalesAmount;
-    
-    @Column(name="password", length = 40, nullable = false)
+
+    @Column(name = "password", length = 40, nullable = false)
     @NotEmpty
     @Size(min = 6, max = 40, message = "Tamanho deve ser entre 6 e 40 caracteres.")
     private String password;
-    
-    @Column(name="is_verified", nullable = false)
+
+    @Column(name = "is_verified", nullable = false)
     private boolean isVerified;
-    
+
     //References
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Agreement> agreements;
-    
+
     public User() {
     }
-    
+
     /**
      *
      * @return
@@ -174,7 +174,7 @@ public class User implements BaseModel {
     public String toString() {
         return id.toString();
     }
-    
+
     public static String getRULER_ADMIN() {
         return RULER_ADMIN;
     }
@@ -186,5 +186,5 @@ public class User implements BaseModel {
     public static String getRULER_CONTRIBUTOR() {
         return RULER_CONTRIBUTOR;
     }
-    
+
 }

@@ -1,7 +1,7 @@
 package br.com.physisbrasil.web.ephynances.ejb;
 
 import br.com.physisbrasil.web.ephynances.dao.DAO;
-import br.com.physisbrasil.web.ephynances.model.InventoryMemory;
+import br.com.physisbrasil.web.ephynances.model.AgreementDocument;
 import javax.ejb.Stateless;
 
 /**
@@ -9,6 +9,6 @@ import javax.ejb.Stateless;
  * @author Thomas
  */
 @Stateless
-public class InventoryMemoryBean extends DAO<InventoryMemory> {
-    
+public class AgreementDocumentBean extends DAO<AgreementDocument> {
+
 }

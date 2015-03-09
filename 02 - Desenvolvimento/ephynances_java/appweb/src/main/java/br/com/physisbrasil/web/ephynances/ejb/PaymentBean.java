@@ -1,7 +1,7 @@
 package br.com.physisbrasil.web.ephynances.ejb;
 
 import br.com.physisbrasil.web.ephynances.dao.DAO;
-import br.com.physisbrasil.web.ephynances.model.InventoryMachineGroup;
+import br.com.physisbrasil.web.ephynances.model.Payment;
 import javax.ejb.Stateless;
 
 /**
@@ -9,6 +9,6 @@ import javax.ejb.Stateless;
  * @author Thomas
  */
 @Stateless
-public class InventoryMachineGroupBean extends DAO<InventoryMachineGroup> {
-    
+public class PaymentBean extends DAO<Payment> {
+
 }

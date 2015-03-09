@@ -36,15 +36,12 @@ public class Configuration implements BaseModel {
     @NotNull
     private Integer smtpPort;
     
-    @Column(name = "email", length = 80, unique = true, nullable = false)
+    @Column(name = "email", length = 200, unique = true, nullable = false)
     @NotEmpty
     @Pattern(regexp = EMAIL_REGEX)
-    @Size(min = 10, max = 80)
+    @Size(min = 10, max = 200)
     private String email;      
    
-    public Configuration() {
-    }
-
     @Override
     public Long getId() {
         return id;
@@ -90,28 +87,6 @@ public class Configuration implements BaseModel {
         this.email = email;
     }
         
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 17 * hash + (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Configuration other = (Configuration) obj;
-        if (!this.id.equals(other.id) && (this.id == null || !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public String toString() {
         return id.toString();

@@ -108,6 +108,6 @@ public class AgreementResponsible implements BaseModel {
 
     @Override
     public String toString() {
-        return name;
+        return id.toString();
     }
 }

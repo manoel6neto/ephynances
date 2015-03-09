@@ -1,7 +1,7 @@
 package br.com.physisbrasil.web.ephynances.ejb;
 
 import br.com.physisbrasil.web.ephynances.dao.DAO;
-import br.com.physisbrasil.web.ephynances.model.InventoryBackup;
+import br.com.physisbrasil.web.ephynances.model.AgreementResponsible;
 import javax.ejb.Stateless;
 
 /**
@@ -9,6 +9,6 @@ import javax.ejb.Stateless;
  * @author Thomas
  */
 @Stateless
-public class InventoryBackuptBean extends DAO<InventoryBackup> {
-    
+public class AgreementResponsibleBean extends DAO<AgreementResponsible> {
+
 }
