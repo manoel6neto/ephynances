@@ -5,7 +5,7 @@
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title><ui:insert name="browserTitle"> :: Ephynances :: </ui:insert></title>
+        <title><ui:insert name="browserTitle"> :#: Ephynances :#: </ui:insert></title>
         <link rel="icon" href="${request.contextPath}/resources/img/favicon.png" type="image/x-icon"/>
         <link rel="shortcut icon" href="${request.contextPath}/resources/img/favicon.png" type="image/x-icon" />
         <h:outputStylesheet name="css/layout.css"  />
@@ -78,7 +78,7 @@
                                             <p:menuitem value="ESTADOS" outcome="/state/list" />
                                             <p:menuitem value="CIDADES" outcome="/cityorgan/list" />
                                         </p:submenu>     
-                                        <p:menuitem value="CONFIGURAÇÕES" outcome="/index.xhtml" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}"/>                                        
+                                        <p:menuitem value="CONFIGURAÇÕES" outcome="/admin/form" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}"/>                                        
                                     </p:menubar>
                                 </ui:insert>
                             </div>

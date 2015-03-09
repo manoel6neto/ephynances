@@ -5,18 +5,18 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
-
+konsole
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
             <h:outputText  value="Configurações do Sistema" />
         </ui:define>
         <ui:define name="body">
-            <f:event type="preRenderView" listener="#{userController.ruleCheck(['ADMIN'])}" />
+            <f:event type="preRenderView" listener="#{loginController.isUserInRuller(userController.RULER_ADMIN)}" />
             <h:form id="form" styleClass="form">
                 
                 <br class="clear" />
                 <br/>
-                <p:fieldset legend="Envio de email" toggleable="false" collapsed="false">
+                <p:fieldset legend="Envio de email" toggleable="true" collapsed="false">
 
                     <br class="clear" />                    
                     <div class="grid_4 alpha" >
@@ -52,7 +52,7 @@
                     <br/>
                     <div class="grid_12 alpha" style="line-height: 30px;" >
                         <p:commandButton styleClass="grid_1 alpha" action="#{configurationController.save}" ajax="false" value="Salvar"/>
-                        <h:link styleClass="grid_1" outcome="/index" value="Voltar" />
+                        <h:link styleClass="grid_1" outcome="/index.xhtml" value="Voltar" />
                     </div>
                 </p:fieldset>
             </h:form>

@@ -12,40 +12,44 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@Table(name="configuration")
-public class Configuration implements BaseModel {        
-        
+@Table(name = "configuration")
+public class Configuration implements BaseModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    
-    @Column(name = "smtp_server", length = 100, nullable = false)    
+
+    @NotNull
+    @Column(name = "smtp_server", length = 150, nullable = false)
     @NotEmpty
-    private String smtpServer;      
-    
-    @Column(name = "user_name", length = 100, nullable = false)
+    private String smtpServer;
+
+    @NotNull
+    @Column(name = "user_name", length = 150, nullable = false)
     @NotEmpty
     private String userName;
-    
-    @Column(name = "password", length = 100, nullable = false)
+
+    @NotNull
+    @Column(name = "password", length = 150, nullable = false)
     @NotEmpty
-    private String password;  
-            
+    private String password;
+
     @Column(name = "smtp_port", nullable = false)
     @NotNull
     private Integer smtpPort;
-    
+
+    @NotNull
     @Column(name = "email", length = 200, unique = true, nullable = false)
     @NotEmpty
     @Pattern(regexp = EMAIL_REGEX)
     @Size(min = 10, max = 200)
-    private String email;      
-   
+    private String email;
+
     @Override
     public Long getId() {
         return id;
-    }    
+    }
 
     public String getSmtpServer() {
         return smtpServer;
@@ -86,10 +90,9 @@ public class Configuration implements BaseModel {
     public void setEmail(String email) {
         this.email = email;
     }
-        
+
     @Override
     public String toString() {
         return id.toString();
     }
-        
 }

@@ -34,7 +34,7 @@ public class ConfigurationController extends BaseController {
             return "edit";
         }
 
-        return "/machine/list";
+        return "/admin/form";
     }  
 
     public Configuration getConfiguration() {
@@ -44,12 +44,4 @@ public class ConfigurationController extends BaseController {
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
     }
-
-    public ConfigurationBean getConfigurationBean() {
-        return configurationBean;
-    }
-
-    public void setConfigurationBean(ConfigurationBean configurationBean) {
-        this.configurationBean = configurationBean;
-    }       
 }

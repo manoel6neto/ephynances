@@ -6,4 +6,5 @@ import javax.ejb.Stateless;
 
 @Stateless
 public class ConfigurationBean extends DAO<Configuration> {
+    
 }
