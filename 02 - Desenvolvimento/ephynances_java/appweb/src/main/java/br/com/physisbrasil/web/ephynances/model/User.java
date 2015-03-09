@@ -1,5 +1,6 @@
 package br.com.physisbrasil.web.ephynances.model;
 
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -45,7 +47,7 @@ public class User implements BaseModel {
     @Column(name="name", length = 150, nullable = false)
     private String name;
         
-    @Column(name="email", length = 200, unique = true, nullable = false)
+    @Column(name = "email", length = 200, unique = true, nullable = false)
     @NotEmpty
     @Pattern(regexp = EMAIL_REGEX, message = "Email mal formatado")
     @Size(max = 200)
@@ -71,6 +73,10 @@ public class User implements BaseModel {
     
     @Column(name="is_verified", nullable = false)
     private boolean isVerified;
+    
+    //References
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Agreement> agreements;
     
     public User() {
     }
@@ -154,6 +160,14 @@ public class User implements BaseModel {
 
     public void setIsVerified(boolean isVerified) {
         this.isVerified = isVerified;
+    }
+
+    public List<Agreement> getAgreements() {
+        return agreements;
+    }
+
+    public void setAgreements(List<Agreement> agreements) {
+        this.agreements = agreements;
     }
 
     @Override

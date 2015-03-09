@@ -1,11 +1,14 @@
 package br.com.physisbrasil.web.ephynances.model;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -43,6 +46,12 @@ public class CityOrgan implements BaseModel {
     @NotNull    
     @JoinColumn(name = "state_id", referencedColumnName = "id", nullable = false)
     private State state;
+    
+    @JoinTable(name = "agreement_city_organ", joinColumns = {
+        @JoinColumn(name = "city_organ_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "agreement_id", referencedColumnName = "id")})
+    @ManyToMany()
+    private List<Agreement> agreements;
     
     /**
      *
@@ -85,28 +94,17 @@ public class CityOrgan implements BaseModel {
         this.state = state;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 31 * hash + (this.id != null ? this.id.hashCode() : 0);
-        return hash;
+    public List<Agreement> getAgreements() {
+        return agreements;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final CityOrgan other = (CityOrgan) obj;
-        return !(!this.id.equals(other.id) && (this.id == null || !this.id.equals(other.id)));
+    public void setAgreements(List<Agreement> agreements) {
+        this.agreements = agreements;
     }
-
+    
     @Override
     public String toString() {
-        return organName;
+        return id.toString();
     }
     
 }

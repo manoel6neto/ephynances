@@ -66,27 +66,8 @@ public class Region implements BaseModel {
     }
     
     @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 31 * hash + (this.id != null ? this.id.hashCode() : 0);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Region other = (Region) obj;
-        return !(!this.id.equals(other.id) && (this.id == null || !this.id.equals(other.id)));
-    }
-
-    @Override
     public String toString() {
-        return name;
+        return id.toString();
     }
     
 }
