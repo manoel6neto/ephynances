@@ -8,7 +8,6 @@ import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.Utils;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -24,7 +23,7 @@ import javax.faces.bean.ViewScoped;
 public class UserController extends BaseController {
 
     private static final long serialVersionUID = 9848454652211L;
-    
+
     @EJB
     private UserBean usuarioBean;
     private User user;
@@ -39,7 +38,7 @@ public class UserController extends BaseController {
     public void init() {
         if (listUser == null) {
             listUser = new ArrayList<User>();
-            this.loadUsers();
+            loadUsers();
         }
 
         User requestUser = (User) getFlash("user");
@@ -54,8 +53,8 @@ public class UserController extends BaseController {
     }
 
     public String create() {
-        if (this.user == null) {
-            this.user = new User();
+        if (user == null) {
+            user = new User();
         }
 
         return "create";
@@ -87,11 +86,10 @@ public class UserController extends BaseController {
     public String edit(User user) {
         try {
             if (user.getId() != null && user.getId() > 0) {
-                this.user = usuarioBean.find(user.getId());
-
-                putFlash("user", this.user);
+                user = usuarioBean.find(user.getId());
+                putFlash("user", user);
             } else {
-                JsfUtil.addErrorMessage("Objeto não encontrado!!");
+                JsfUtil.addErrorMessage("Usuário não encontrado!!");
                 return "list";
             }
         } catch (Throwable e) {
@@ -104,11 +102,10 @@ public class UserController extends BaseController {
     public String view(User user) {
         try {
             if (user.getId() != null && user.getId() > 0) {
-                this.user = usuarioBean.find(user.getId());
-
-                putFlash("user", this.user);
+                user = usuarioBean.find(user.getId());
+                putFlash("user", user);
             } else {
-                JsfUtil.addErrorMessage("Objeto não encontrado!!");
+                JsfUtil.addErrorMessage("Usuário não encontrado!!");
                 return "list";
             }
         } catch (Throwable e) {
@@ -118,50 +115,37 @@ public class UserController extends BaseController {
         return "view";
     }
 
-    public String delete() {
-        Integer activeAdmins = 0;
-
+    public String delete(Long id) {
         try {
-            if (this.user.getId() != null && this.user.getId() > 0) {
+            user = usuarioBean.find(id);
+            if (user.getId() != null && user.getId() > 0) {
                 LoginController l = new LoginController();
-                if (!l.getLoggedUser().equals(this.user)) {
-                    for (User usuarioTemp : usuarioBean.findAll()) {
-                        if (usuarioTemp.getProfileRule().equals(getRULER_ADMIN())
-                                && usuarioTemp.getDeleteDate() == null) {
-                            activeAdmins++;
-                        }
-                    }
-
-                    if (activeAdmins > 1) {
-                        this.user.setDeleteDate(new Date());
-                        usuarioBean.edit(this.user);
-                        usuarioBean.clearCache();
-                        JsfUtil.addSuccessMessage("Desativado com sucesso!!");
-                    } else {
-                        JsfUtil.addErrorMessage("Não é possível desativar o usuário pois ele é o único 'Administrador' ativo no sistema.");
-                    }
+                if (user.equals(l.getLoggedUser())) {
+                    JsfUtil.addErrorMessage("Impossível apagar sua própria conta.");
                 } else {
-                    JsfUtil.addErrorMessage("Impossível desativar um usuário logado.");
+                    usuarioBean.remove(user);
+                    usuarioBean.clearCache();
+                    JsfUtil.addSuccessMessage("Usuário apagado com sucesso!");
                 }
             }
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Exception: Falha ao apagar registro.");
+            JsfUtil.addErrorMessage(e, "Falha ao apagar registro.");
         }
 
         return "list";
     }
 
-    public String active() {
+    public String active_desactive(Long id) {
         try {
-            if (this.user.getId() != null && this.user.getId() > 0) {
-
-                this.user.setDeleteDate(null);
-                usuarioBean.edit(this.user);
+            user = usuarioBean.find(id);
+            if (user.getId() != null && user.getId() > 0) {
+                user.setIsVerified(!user.isIsVerified());
+                usuarioBean.edit(user);
                 usuarioBean.clearCache();
-                JsfUtil.addSuccessMessage("Reativado com sucesso!!");
+                JsfUtil.addSuccessMessage("Status alterado com sucesso!");
             }
         } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Exception: Falha ao apagar registro.");
+            JsfUtil.addErrorMessage(e, "Falha ao alterar registro.");
         }
 
         return "list";
@@ -234,7 +218,6 @@ public class UserController extends BaseController {
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha resetar senha!");
-
         }
     }
 
@@ -258,7 +241,7 @@ public class UserController extends BaseController {
             Configuration config = configurationBean.find(1);
 
             return Utils.sendEmail(user.getEmail(), user.getName(), message, config.getSmtpServer(), config.getEmail(), "Nova senha", config.getUserName(), config.getPassword(),
-                    config.getSmtpPort(), "Academia WEB");
+                    config.getSmtpPort(), "Physis Ephynances");
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Falha ao enviar email. Solicite ajuda do Administrador.");
             return false;

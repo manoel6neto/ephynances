@@ -31,12 +31,12 @@ public class LoginController implements Serializable {
         try {
             User user = usuarioBean.findByEmailSenha(email, Criptografia.criptografar(senha));
 
-            if (user.getDeleteDate() == null) {
+            if (user.isIsVerified()) {
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                 session.setAttribute(AbstractFilter.USER_KEY, user);
                 return "index";
             } else {
-                JsfUtil.addErrorMessage("Usuário inativo. Procure um administrador.");
+                JsfUtil.addErrorMessage("Usuário não ativado. Procure um administrador.");
                 return "login";
             }
 

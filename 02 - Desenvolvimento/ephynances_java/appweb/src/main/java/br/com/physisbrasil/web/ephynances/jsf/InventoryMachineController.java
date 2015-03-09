@@ -1,38 +1,20 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
-import br.com.physisbrasil.web.ephynances.ejb.InventoryAlertBean;
-import br.com.physisbrasil.web.ephynances.ejb.InventoryAudioBean;
-import br.com.physisbrasil.web.ephynances.ejb.InventoryDiskBean;
 import br.com.physisbrasil.web.ephynances.ejb.InventoryGPUBean;
-import br.com.physisbrasil.web.ephynances.ejb.InventoryLogTasksBean;
 import br.com.physisbrasil.web.ephynances.ejb.InventoryMachineBean;
 import br.com.physisbrasil.web.ephynances.ejb.InventoryMachineGroupBean;
 import br.com.physisbrasil.web.ephynances.ejb.InventoryMemoryBean;
-import br.com.physisbrasil.web.ephynances.ejb.InventoryMotherboardBean;
 import br.com.physisbrasil.web.ephynances.ejb.InventoryNetworkBean;
-import br.com.physisbrasil.web.ephynances.ejb.InventoryProcessorBean;
 import br.com.physisbrasil.web.ephynances.ejb.UploadDriveBean;
 import br.com.physisbrasil.web.ephynances.ejb.UploadImageBean;
 import br.com.physisbrasil.web.ephynances.ejb.UploadSoftwareBean;
-import br.com.physisbrasil.web.ephynances.model.InventoryAlert;
-import br.com.physisbrasil.web.ephynances.model.InventoryAudio;
-import br.com.physisbrasil.web.ephynances.model.InventoryAudioHistory;
 import br.com.physisbrasil.web.ephynances.model.InventoryGPU;
-import br.com.physisbrasil.web.ephynances.model.InventoryMotherboard;
-import br.com.physisbrasil.web.ephynances.model.InventoryProcessor;
 import br.com.physisbrasil.web.ephynances.model.InventoryMemory;
-import br.com.physisbrasil.web.ephynances.model.InventoryDisk;
-import br.com.physisbrasil.web.ephynances.model.InventoryDiskHistory;
-import br.com.physisbrasil.web.ephynances.model.InventoryGPUHistory;
-import br.com.physisbrasil.web.ephynances.model.InventoryLogTasks;
 import br.com.physisbrasil.web.ephynances.model.InventoryMachine;
 import br.com.physisbrasil.web.ephynances.model.InventoryMachineGroup;
 import br.com.physisbrasil.web.ephynances.model.InventoryMemoryHistory;
-import br.com.physisbrasil.web.ephynances.model.InventoryMotherboardHistory;
 import br.com.physisbrasil.web.ephynances.model.InventoryNetwork;
 import br.com.physisbrasil.web.ephynances.model.InventoryNetworkHistory;
-import br.com.physisbrasil.web.ephynances.model.InventoryProcessorHistory;
-import br.com.physisbrasil.web.ephynances.model.InventorySoftware;
 import br.com.physisbrasil.web.ephynances.model.UploadDrive;
 import br.com.physisbrasil.web.ephynances.model.UploadImage;
 import br.com.physisbrasil.web.ephynances.model.UploadSoftware;
@@ -105,31 +87,13 @@ public class InventoryMachineController extends BaseController {
     private InventoryMachineGroupBean inventoryMachineGroupBean;
 
     @EJB
-    private InventoryAlertBean inventoryAlertBean;
-
-    @EJB
-    private InventoryMotherboardBean inventoryMotherboardBean;
-
-    @EJB
-    private InventoryProcessorBean inventoryProcessorBean;
-
-    @EJB
     private InventoryMemoryBean inventoryMemoryBean;
-
-    @EJB
-    private InventoryDiskBean inventoryDiskBean;
 
     @EJB
     private InventoryGPUBean inventoryGPUBean;
 
     @EJB
-    private InventoryAudioBean inventoryAudioBean;
-
-    @EJB
     private InventoryNetworkBean inventoryNetworkBean;
-
-    @EJB
-    private InventoryLogTasksBean inventoryLogTasksBean;
 
     private String globalFilter;
 
@@ -313,116 +277,6 @@ public class InventoryMachineController extends BaseController {
         return ips;
     }
 
-    public String getListMotherboard() {
-        String listMotherboard = "";
-
-        for (InventoryMotherboard inventoryMotherboard : inventoryMachine.getMachineMotherboard()) {
-            listMotherboard += " Fabricante: " + inventoryMotherboard.getManufacturer();
-            listMotherboard += " Modelo: " + inventoryMotherboard.getModel();
-            listMotherboard += " Versão: " + inventoryMotherboard.getVersion() + "  |  ";
-        }
-
-        return listMotherboard;
-    }
-
-    public String getListDefaultMotherboard() {
-        try {
-            String listDefaultMotherboard = "";
-            Date defaultDate = inventoryMachine.getMachineMotherboardsHistory().get(0).getInsertDate();
-
-            for (InventoryMotherboardHistory inventoryMotherboardHistory : inventoryMachine.getMachineMotherboardsHistory()) {
-                if (inventoryMotherboardHistory.getInsertDate().equals(defaultDate)) {
-                    listDefaultMotherboard += " Fabricante: " + inventoryMotherboardHistory.getManufacturer();
-                    listDefaultMotherboard += " Modelo: " + inventoryMotherboardHistory.getModel();
-                    listDefaultMotherboard += " Versão: " + inventoryMotherboardHistory.getVersion() + "  |  ";
-                } else {
-                    break;
-                }
-            }
-
-            return listDefaultMotherboard;
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    public String getListChangesMotherboard() {
-        try {
-            String listChangesMotherboard = "";
-            Date defaultDate = inventoryMachine.getMachineMotherboardsHistory().get(0).getInsertDate();
-
-            for (InventoryMotherboardHistory inventoryMotherboardHistory : inventoryMachine.getMachineMotherboardsHistory()) {
-                if (!inventoryMotherboardHistory.getInsertDate().equals(defaultDate)) {
-                    listChangesMotherboard += " Fabricante: " + inventoryMotherboardHistory.getManufacturer();
-                    listChangesMotherboard += " Modelo: " + inventoryMotherboardHistory.getModel();
-                    listChangesMotherboard += " Versão: " + inventoryMotherboardHistory.getVersion() + "  |  ";
-                }
-            }
-
-            return listChangesMotherboard;
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    public String getListProcessors() {
-        String listProcessors = "";
-
-        for (InventoryProcessor inventoryProcessors : inventoryMachine.getMachineProcessors()) {
-            listProcessors += " Fabricante: " + inventoryProcessors.getManufacturer();
-            listProcessors += " Modelo: " + inventoryProcessors.getModel();
-            listProcessors += " Clock: " + String.valueOf(inventoryProcessors.getClock());
-            listProcessors += " Núcleos: " + String.valueOf(inventoryProcessors.getCores());
-            listProcessors += " Arquitetura: " + inventoryProcessors.getArchitecture() + "  |  ";
-        }
-
-        return listProcessors;
-    }
-
-    public String getListDefaultProcessors() {
-        try {
-            String listDefaultProcessors = "";
-            Date defaultDate = inventoryMachine.getMachineProcessorsHistory().get(0).getInsertDate();
-
-            for (InventoryProcessorHistory inventoryProcessorHistory : inventoryMachine.getMachineProcessorsHistory()) {
-                if (inventoryProcessorHistory.getInsertDate().equals(defaultDate)) {
-                    listDefaultProcessors += " Fabricante: " + inventoryProcessorHistory.getManufacturer();
-                    listDefaultProcessors += " Modelo: " + inventoryProcessorHistory.getModel();
-                    listDefaultProcessors += " Clock: " + String.valueOf(inventoryProcessorHistory.getClock());
-                    listDefaultProcessors += " Núcleos: " + String.valueOf(inventoryProcessorHistory.getCores());
-                    listDefaultProcessors += " Arquitetura: " + inventoryProcessorHistory.getArchitecture() + "  |  ";
-                } else {
-                    break;
-                }
-            }
-
-            return listDefaultProcessors;
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    public String getListChangesProcessors() {
-        try {
-            String listChangesProcessors = "";
-            Date defaultDate = inventoryMachine.getMachineProcessorsHistory().get(0).getInsertDate();
-
-            for (InventoryProcessorHistory inventoryProcessorHistory : inventoryMachine.getMachineProcessorsHistory()) {
-                if (!inventoryProcessorHistory.getInsertDate().equals(defaultDate)) {
-                    listChangesProcessors += " Fabricante: " + inventoryProcessorHistory.getManufacturer();
-                    listChangesProcessors += " Modelo: " + inventoryProcessorHistory.getModel();
-                    listChangesProcessors += " Clock: " + String.valueOf(inventoryProcessorHistory.getClock());
-                    listChangesProcessors += " Núcleos: " + String.valueOf(inventoryProcessorHistory.getCores());
-                    listChangesProcessors += " Arquitetura: " + inventoryProcessorHistory.getArchitecture() + "  |  ";
-                }
-            }
-
-            return listChangesProcessors;
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
     public String getListMemories() {
         String listMemories = "";
 
@@ -478,110 +332,6 @@ public class InventoryMachineController extends BaseController {
         }
     }
 
-    public String getListDisks() {
-        String listDisks = "";
-
-        for (InventoryDisk inventoryDisk : inventoryMachine.getMachineDisks()) {
-            listDisks += " Fabricante: " + inventoryDisk.getManufacturer();
-            listDisks += " Modelo: " + inventoryDisk.getModel();
-            listDisks += " Tamanho: " + String.valueOf(inventoryDisk.getSizeDisk());
-            listDisks += " Serial: " + inventoryDisk.getSerial() + "  |  ";
-        }
-
-        return listDisks;
-    }
-
-    public String getListDefaultDisks() {
-        try {
-            String listDefaultDisks = "";
-            Date defaultDate = inventoryMachine.getMachineDisksHistory().get(0).getInsertDate();
-
-            for (InventoryDiskHistory inventoryDiskHistory : inventoryMachine.getMachineDisksHistory()) {
-                if (inventoryDiskHistory.getInsertDate().equals(defaultDate)) {
-                    listDefaultDisks += " Fabricante: " + inventoryDiskHistory.getManufacturer();
-                    listDefaultDisks += " Modelo: " + inventoryDiskHistory.getModel();
-                    listDefaultDisks += " Tamanho: " + String.valueOf(inventoryDiskHistory.getSizeDisk());
-                    listDefaultDisks += " Serial: " + inventoryDiskHistory.getSerial() + "  |  ";
-                } else {
-                    break;
-                }
-            }
-
-            return listDefaultDisks;
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    public String getListChangesDisks() {
-        try {
-            String listChangesDisks = "";
-            Date defaultDate = inventoryMachine.getMachineDisksHistory().get(0).getInsertDate();
-
-            for (InventoryDiskHistory inventoryDiskHistory : inventoryMachine.getMachineDisksHistory()) {
-                if (!inventoryDiskHistory.getInsertDate().equals(defaultDate)) {
-                    listChangesDisks += " Fabricante: " + inventoryDiskHistory.getManufacturer();
-                    listChangesDisks += " Modelo: " + inventoryDiskHistory.getModel();
-                    listChangesDisks += " Tamanho: " + String.valueOf(inventoryDiskHistory.getSizeDisk());
-                    listChangesDisks += " Serial: " + inventoryDiskHistory.getSerial() + "  |  ";
-                }
-            }
-
-            return listChangesDisks;
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    public String getListAudios() {
-        String listAudios = "";
-
-        for (InventoryAudio inventoryAudio : inventoryMachine.getMachineAudios()) {
-            listAudios += " Fabricante: " + inventoryAudio.getManufacturer();
-            listAudios += " Modelo: " + inventoryAudio.getModel() + "  |  ";
-        }
-
-        return listAudios;
-    }
-
-    public String getListDefaultAudios() {
-        try {
-            String listDefaultAudios = "";
-            Date defaultDate = inventoryMachine.getMachineAudiosHistory().get(0).getInsertDate();
-
-            for (InventoryAudioHistory inventoryAudioHistory : inventoryMachine.getMachineAudiosHistory()) {
-                if (inventoryAudioHistory.getInsertDate().equals(defaultDate)) {
-                    listDefaultAudios += " Fabricante: " + inventoryAudioHistory.getManufacturer();
-                    listDefaultAudios += " Modelo: " + inventoryAudioHistory.getModel() + "  |  ";
-                } else {
-                    break;
-                }
-            }
-
-            return listDefaultAudios;
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    public String getListChangesAudios() {
-        try {
-            String listChangesAudios = "";
-            Date defaultDate = inventoryMachine.getMachineAudiosHistory().get(0).getInsertDate();
-
-            for (InventoryAudioHistory inventoryAudioHistory : inventoryMachine.getMachineAudiosHistory()) {
-                if (!inventoryAudioHistory.getInsertDate().equals(defaultDate)) {
-                    listChangesAudios += " Fabricante: " + inventoryAudioHistory.getManufacturer();
-                    listChangesAudios += " Modelo: " + inventoryAudioHistory.getModel() + "  |  ";
-                }
-            }
-
-            return listChangesAudios;
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
     public String getListGpus() {
         String listGpus = "";
 
@@ -592,46 +342,6 @@ public class InventoryMachineController extends BaseController {
         }
 
         return listGpus;
-    }
-
-    public String getListDefaultGpus() {
-        try {
-            String listDefaultGpus = "";
-            Date defaultDate = inventoryMachine.getMachineGpusHistory().get(0).getInsertDate();
-
-            for (InventoryGPUHistory inventoryGPUHistory : inventoryMachine.getMachineGpusHistory()) {
-                if (inventoryGPUHistory.getInsertDate().equals(defaultDate)) {
-                    listDefaultGpus += " Fabricante: " + inventoryGPUHistory.getManufacturer();
-                    listDefaultGpus += " Modelo: " + inventoryGPUHistory.getModel();
-                    listDefaultGpus += " Versão: " + inventoryGPUHistory.getVersion() + "  |  ";
-                } else {
-                    break;
-                }
-            }
-
-            return listDefaultGpus;
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-    public String getListChangesGpus() {
-        try {
-            String listChangesGpus = "";
-            Date defaultDate = inventoryMachine.getMachineGpusHistory().get(0).getInsertDate();
-
-            for (InventoryGPUHistory inventoryGPUHistory : inventoryMachine.getMachineGpusHistory()) {
-                if (!inventoryGPUHistory.getInsertDate().equals(defaultDate)) {
-                    listChangesGpus += " Fabricante: " + inventoryGPUHistory.getManufacturer();
-                    listChangesGpus += " Modelo: " + inventoryGPUHistory.getModel();
-                    listChangesGpus += " Versão: " + inventoryGPUHistory.getVersion() + "  |  ";
-                }
-            }
-
-            return listChangesGpus;
-        } catch (Exception e) {
-            return "";
-        }
     }
 
     public String getListNetworks() {
@@ -701,28 +411,8 @@ public class InventoryMachineController extends BaseController {
     public List<List<String>> getListChangesHardware() {
         try {
             List<List<String>> listChangesHardware = new ArrayList<List<String>>();
-            if (!this.getListChangesMotherboard().isEmpty()) {
-                listChangesHardware.add(new ArrayList<String>(asList("Placa mãe", this.getListChangesMotherboard())));
-            }
-
-            if (!this.getListChangesProcessors().isEmpty()) {
-                listChangesHardware.add(new ArrayList<String>(asList("Processador", this.getListChangesProcessors())));
-            }
-
             if (!this.getListChangesMemories().isEmpty()) {
                 listChangesHardware.add(new ArrayList<String>(asList("Memória", this.getListChangesMemories())));
-            }
-
-            if (!this.getListChangesDisks().isEmpty()) {
-                listChangesHardware.add(new ArrayList<String>(asList("HD", this.getListChangesDisks())));
-            }
-
-            if (!this.getListChangesAudios().isEmpty()) {
-                listChangesHardware.add(new ArrayList<String>(asList("Audio", this.getListChangesAudios())));
-            }
-
-            if (!this.getListChangesGpus().isEmpty()) {
-                listChangesHardware.add(new ArrayList<String>(asList("Vídeo", this.getListChangesGpus())));
             }
 
             if (!this.getListChangesNetworks().isEmpty()) {
@@ -732,19 +422,6 @@ public class InventoryMachineController extends BaseController {
             return listChangesHardware;
         } catch (Exception e) {
             return new ArrayList<List<String>>();
-        }
-    }
-
-    public List<String> getListSoftware() {
-        try {
-            List<String> listSoftwares = new ArrayList<String>();
-            for (InventorySoftware inventorySoftware : inventoryMachine.getMachineSoftwares()) {
-                listSoftwares.add(inventorySoftware.getNome());
-            }
-
-            return listSoftwares;
-        } catch (Exception e) {
-            return new ArrayList<String>();
         }
     }
 
@@ -762,16 +439,6 @@ public class InventoryMachineController extends BaseController {
             listMachinesWindowsAux.add(inventoryMachineBean.find(inventoryMachine.getId()));
         }
         listMachinesWindows = listMachinesWindowsAux;
-    }
-
-    public void LogTasks(List<InventoryMachine> selectedMachines, String log) {
-        for (InventoryMachine inventoryMachine : selectedMachines) {
-            InventoryLogTasks inventoryLogTasks = new InventoryLogTasks();
-            inventoryLogTasks.setInsertDate(new Date());
-            inventoryLogTasks.setLog(log);
-            inventoryLogTasks.setMachine(inventoryMachine);
-            inventoryLogTasksBean.create(inventoryLogTasks);
-        }
     }
 
     public void poweron() {
@@ -799,7 +466,6 @@ public class InventoryMachineController extends BaseController {
                         JSONObject jSONObject = new JSONObject(dicInfoMachine);
                         retorno = co.sendToken(jSONObject.toString());
                         if (retorno.get(0).equalsIgnoreCase("ok")) {
-                            this.LogTasks(selectedMachines, "Enviando comando para ligar equipamento.");
                             JsfUtil.addSuccessMessage("Comando enviado para servidor.");
                         } else {
                             JsfUtil.addErrorMessage("Falha no envio do comando para servidor.");
@@ -847,7 +513,6 @@ public class InventoryMachineController extends BaseController {
                         JSONObject jSONObject = new JSONObject(dicInfoMachine);
                         retorno = co.sendToken(jSONObject.toString());
                         if (retorno.get(0).equalsIgnoreCase("ok")) {
-                            this.LogTasks(selectedMachines, "Enviando comando para desligar equipamento.");
                             JsfUtil.addSuccessMessage("Comando enviado para servidor.");
                         } else {
                             JsfUtil.addErrorMessage("Falha no envio do comando para servidor.");
@@ -897,7 +562,6 @@ public class InventoryMachineController extends BaseController {
                         JSONObject jSONObject = new JSONObject(dicInfoMachine);
                         retorno = co.sendToken(jSONObject.toString());
                         if (retorno.get(0).equalsIgnoreCase("ok")) {
-                            this.LogTasks(selectedMachines, "Enviando comando para reiniciar equipamento.");
                             JsfUtil.addSuccessMessage("Comando enviado para servidor.");
                         } else {
                             JsfUtil.addErrorMessage("Falha no envio do comando para servidor.");
@@ -945,7 +609,6 @@ public class InventoryMachineController extends BaseController {
                         JSONObject jSONObject = new JSONObject(dicInfoMachine);
                         retorno = co.sendToken(jSONObject.toString());
                         if (retorno.get(0).equalsIgnoreCase("ok")) {
-                            this.LogTasks(selectedMachines, "Enviando comando para iniciar o equipamento com vnc.");
                             JsfUtil.addSuccessMessage("Comando enviado para servidor.");
                         } else {
                             JsfUtil.addErrorMessage("Falha no envio do comando para servidor.");
@@ -1002,7 +665,6 @@ public class InventoryMachineController extends BaseController {
                             JSONObject jSONObject = new JSONObject(dicInfoMachine);
                             retorno = co.sendToken(jSONObject.toString());
                             if (retorno.get(0).equalsIgnoreCase("ok")) {
-                                this.LogTasks(selectedMachinesInstallSoftware, "Enviando comando para instalar software no equipamento.");
                                 JsfUtil.addSuccessMessage("Comando enviado para servidor.");
                             } else {
                                 JsfUtil.addErrorMessage("Falha no envio do comando para servidor.");
@@ -1056,7 +718,6 @@ public class InventoryMachineController extends BaseController {
                             JSONObject jSONObject = new JSONObject(dicInfoMachine);
                             retorno = co.sendToken(jSONObject.toString());
                             if (retorno.get(0).equalsIgnoreCase("ok")) {
-                                this.LogTasks(selectedMachinesInstallDrive, "Enviando comando para instalar drive no equipamento.");
                                 JsfUtil.addSuccessMessage("Comando enviado para servidor.");
                             } else {
                                 JsfUtil.addErrorMessage("Falha no envio do comando para servidor.");
@@ -1111,7 +772,6 @@ public class InventoryMachineController extends BaseController {
                             JSONObject jSONObject = new JSONObject(dicInfoMachine);
                             retorno = co.sendToken(jSONObject.toString());
                             if (retorno.get(0).equalsIgnoreCase("ok")) {
-                                this.LogTasks(selectedMachinesInstallImage, "Enviando comando para instalar imagem no equipamento.");
                                 JsfUtil.addSuccessMessage("Comando enviado para servidor.");
                             } else {
                                 JsfUtil.addErrorMessage("Falha no envio do comando para servidor.");
@@ -1180,7 +840,6 @@ public class InventoryMachineController extends BaseController {
                                 jSONObject = new JSONObject(dicInfoMachine);
                                 retorno = co.sendToken(jSONObject.toString());
                                 if (retorno.get(0).equalsIgnoreCase("ok")) {
-                                    this.LogTasks(selectedMachinesTestHardware, "Enviando comando para testar hardware do equipamento.");
                                     JsfUtil.addSuccessMessage("Comando enviado para servidor.");
                                 } else {
                                     JsfUtil.addErrorMessage("Falha no envio do comando para servidor.");
@@ -1236,7 +895,6 @@ public class InventoryMachineController extends BaseController {
                         JSONObject jSONObject = new JSONObject(dicInfoMachine);
                         retorno = co.sendToken(jSONObject.toString());
                         if (retorno.get(0).equalsIgnoreCase("ok")) {
-                            this.LogTasks(selectedMachinesBackup, "Enviando comando para criar backup do equipamento.");
                             JsfUtil.addSuccessMessage("Comando enviado para servidor.");
                         } else {
                             JsfUtil.addErrorMessage("Falha no envio do comando para servidor.");
@@ -1286,7 +944,6 @@ public class InventoryMachineController extends BaseController {
                         JSONObject jSONObject = new JSONObject(dicInfoMachine);
                         retorno = co.sendToken(jSONObject.toString());
                         if (retorno.get(0).equalsIgnoreCase("ok")) {
-                            this.LogTasks(selectedMachinesBackup, "Enviando comando para restaurar backup do equipamento.");
                             JsfUtil.addSuccessMessage("Comando enviado para servidor.");
                         } else {
                             JsfUtil.addErrorMessage("Falha no envio do comando para servidor.");
@@ -1392,14 +1049,7 @@ public class InventoryMachineController extends BaseController {
         PieChartModel chart = new PieChartModel();
         List<String> idsAlteradas = new ArrayList<String>();
 
-        inventoryAlertBean.clearCache();
         inventoryMachineBean.clearCache();
-
-        for (InventoryAlert inventoryAlert : inventoryAlertBean.findAll()) {
-            if (!idsAlteradas.contains(inventoryAlert.getMachine().getId().toString())) {
-                idsAlteradas.add(inventoryAlert.getMachine().getId().toString());
-            }
-        }
 
         chart.set("Originais", inventoryMachineBean.findAll().size() - idsAlteradas.size());
         chart.set("Alteradas", idsAlteradas.size());
@@ -1412,23 +1062,11 @@ public class InventoryMachineController extends BaseController {
         ChartSeries chartComponents = new ChartSeries();
         chartComponents.setLabel("Componentes");
 
-        inventoryMotherboardBean.clearCache();
-        chartComponents.set("Placa mãe", inventoryMotherboardBean.findAll().size());
-
-        inventoryProcessorBean.clearCache();
-        chartComponents.set("Processador", inventoryProcessorBean.findAll().size());
-
         inventoryMemoryBean.clearCache();
         chartComponents.set("Memória", inventoryMemoryBean.findAll().size());
 
-        inventoryDiskBean.clearCache();
-        chartComponents.set("HD", inventoryDiskBean.findAll().size());
-
         inventoryGPUBean.clearCache();
         chartComponents.set("Vídeo", inventoryGPUBean.findAll().size());
-
-        inventoryAudioBean.clearCache();
-        chartComponents.set("Audio", inventoryAudioBean.findAll().size());
 
         inventoryNetworkBean.clearCache();
         chartComponents.set("Rede", inventoryNetworkBean.findAll().size());
@@ -1441,28 +1079,12 @@ public class InventoryMachineController extends BaseController {
     public int getMaxComponents() {
         int maxComponent = 0;
 
-        if (inventoryMotherboardBean.findAll().size() > maxComponent) {
-            maxComponent = inventoryMotherboardBean.findAll().size();
-        }
-
-        if (inventoryProcessorBean.findAll().size() > maxComponent) {
-            maxComponent = inventoryProcessorBean.findAll().size();
-        }
-
         if (inventoryMemoryBean.findAll().size() > maxComponent) {
             maxComponent = inventoryMemoryBean.findAll().size();
         }
 
-        if (inventoryDiskBean.findAll().size() > maxComponent) {
-            maxComponent = inventoryDiskBean.findAll().size();
-        }
-
         if (inventoryGPUBean.findAll().size() > maxComponent) {
             maxComponent = inventoryGPUBean.findAll().size();
-        }
-
-        if (inventoryAudioBean.findAll().size() > maxComponent) {
-            maxComponent = inventoryAudioBean.findAll().size();
         }
 
         if (inventoryNetworkBean.findAll().size() > maxComponent) {
@@ -1688,22 +1310,6 @@ public class InventoryMachineController extends BaseController {
         this.selectedMachinesBackup = selectedMachinesBackup;
     }
 
-    public InventoryMotherboardBean getInventoryMotherboardBean() {
-        return inventoryMotherboardBean;
-    }
-
-    public void setInventoryMotherboardBean(InventoryMotherboardBean inventoryMotherboardBean) {
-        this.inventoryMotherboardBean = inventoryMotherboardBean;
-    }
-
-    public InventoryProcessorBean getInventoryProcessorBean() {
-        return inventoryProcessorBean;
-    }
-
-    public void setInventoryProcessorBean(InventoryProcessorBean inventoryProcessorBean) {
-        this.inventoryProcessorBean = inventoryProcessorBean;
-    }
-
     public InventoryMemoryBean getInventoryMemoryBean() {
         return inventoryMemoryBean;
     }
@@ -1712,28 +1318,12 @@ public class InventoryMachineController extends BaseController {
         this.inventoryMemoryBean = inventoryMemoryBean;
     }
 
-    public InventoryDiskBean getInventoryDiskBean() {
-        return inventoryDiskBean;
-    }
-
-    public void setInventoryDiskBean(InventoryDiskBean inventoryDiskBean) {
-        this.inventoryDiskBean = inventoryDiskBean;
-    }
-
     public InventoryGPUBean getInventoryGPUBean() {
         return inventoryGPUBean;
     }
 
     public void setInventoryGPUBean(InventoryGPUBean inventoryGPUBean) {
         this.inventoryGPUBean = inventoryGPUBean;
-    }
-
-    public InventoryAudioBean getInventoryAudioBean() {
-        return inventoryAudioBean;
-    }
-
-    public void setInventoryAudioBean(InventoryAudioBean inventoryAudioBean) {
-        this.inventoryAudioBean = inventoryAudioBean;
     }
 
     public InventoryNetworkBean getInventoryNetworkBean() {
@@ -1774,22 +1364,6 @@ public class InventoryMachineController extends BaseController {
 
     public void setSelectedMachinesRemove(List<InventoryMachine> selectedMachinesRemove) {
         this.selectedMachinesRemove = selectedMachinesRemove;
-    }
-
-    public InventoryAlertBean getInventoryAlertBean() {
-        return inventoryAlertBean;
-    }
-
-    public void setInventoryAlertBean(InventoryAlertBean inventoryAlertBean) {
-        this.inventoryAlertBean = inventoryAlertBean;
-    }
-
-    public InventoryLogTasksBean getInventoryLogTasksBean() {
-        return inventoryLogTasksBean;
-    }
-
-    public void setInventoryLogTasksBean(InventoryLogTasksBean inventoryLogTasksBean) {
-        this.inventoryLogTasksBean = inventoryLogTasksBean;
     }
 
     public String getTabID() {

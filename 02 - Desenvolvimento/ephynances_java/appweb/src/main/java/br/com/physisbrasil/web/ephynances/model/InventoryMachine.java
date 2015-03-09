@@ -59,12 +59,6 @@ public class InventoryMachine implements BaseModel {
 
     //References    
     @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryProcessor> machineProcessors;
-
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryProcessorHistory> machineProcessorsHistory;
-
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
     private List<InventoryNetwork> machineNetworks;
 
     @OneToMany(mappedBy = "machine", orphanRemoval = true)
@@ -80,46 +74,13 @@ public class InventoryMachine implements BaseModel {
     private List<InventoryGPU> machineGpus;
 
     @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryGPUHistory> machineGpusHistory;
-
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryDisk> machineDisks;
-
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryDiskHistory> machineDisksHistory;
-
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryAudio> machineAudios;
-
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryAudioHistory> machineAudiosHistory;
-
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryMotherboard> machineMotherboard;
-
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryMotherboardHistory> machineMotherboardsHistory;
-
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
     private List<InventoryMachineMac> listMacs;
-
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryAlert> listAlerts;
 
     @JoinTable(name = "schedule_task_machine", joinColumns = {
         @JoinColumn(name = "machine_id", referencedColumnName = "id")}, inverseJoinColumns = {
         @JoinColumn(name = "schedule_task_id", referencedColumnName = "id")})
     @ManyToMany
     private List<ScheduledTask> scheduleTaskList;
-    
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventorySoftware> machineSoftwares;
-    
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryLogTestes> logsTestes;
-    
-    @OneToMany(mappedBy = "machine", orphanRemoval = true)
-    private List<InventoryLogTasks> logsTasks;  
     
     @JoinColumn(name = "group_id", referencedColumnName = "id", nullable = false)
     @ManyToOne(optional = false)
@@ -172,14 +133,6 @@ public class InventoryMachine implements BaseModel {
     }
 
     //Get & set for references
-    public List<InventoryProcessor> getMachineProcessors() {
-        return machineProcessors;
-    }
-
-    public void setMachineProcessors(List<InventoryProcessor> machineProcessors) {
-        this.machineProcessors = machineProcessors;
-    }
-
     public List<InventoryNetwork> getMachineNetworks() {
         return machineNetworks;
     }
@@ -204,44 +157,12 @@ public class InventoryMachine implements BaseModel {
         this.machineGpus = machineGpus;
     }
 
-    public List<InventoryDisk> getMachineDisks() {
-        return machineDisks;
-    }
-
-    public void setMachineDisks(List<InventoryDisk> machineDisks) {
-        this.machineDisks = machineDisks;
-    }
-
-    public List<InventoryAudio> getMachineAudios() {
-        return machineAudios;
-    }
-
-    public void setMachineAudios(List<InventoryAudio> machineAudios) {
-        this.machineAudios = machineAudios;
-    }
-
-    public List<InventoryMotherboard> getMachineMotherboard() {
-        return machineMotherboard;
-    }
-
-    public void setMachineMotherboard(List<InventoryMotherboard> machineMotherboard) {
-        this.machineMotherboard = machineMotherboard;
-    }
-
     public List<InventoryMachineMac> getListMacs() {
         return listMacs;
     }
 
     public void setListMacs(List<InventoryMachineMac> listMacs) {
         this.listMacs = listMacs;
-    }
-
-    public List<InventoryProcessorHistory> getMachineProcessorsHistory() {
-        return machineProcessorsHistory;
-    }
-
-    public void setMachineProcessorsHistory(List<InventoryProcessorHistory> machineProcessorsHistory) {
-        this.machineProcessorsHistory = machineProcessorsHistory;
     }
 
     public List<InventoryNetworkHistory> getMachineNetworksHistory() {
@@ -260,45 +181,6 @@ public class InventoryMachine implements BaseModel {
         this.machineMemoriesHistory = machineMemoriesHistory;
     }
 
-    public List<InventoryGPUHistory> getMachineGpusHistory() {
-        return machineGpusHistory;
-    }
-
-    public void setMachineGpusHistory(List<InventoryGPUHistory> machineGpusHistory) {
-        this.machineGpusHistory = machineGpusHistory;
-    }
-
-    public List<InventoryDiskHistory> getMachineDisksHistory() {
-        return machineDisksHistory;
-    }
-
-    public void setMachineDisksHistory(List<InventoryDiskHistory> machineDisksHistory) {
-        this.machineDisksHistory = machineDisksHistory;
-    }
-
-    public List<InventoryAudioHistory> getMachineAudiosHistory() {
-        return machineAudiosHistory;
-    }
-
-    public void setMachineAudiosHistory(List<InventoryAudioHistory> machineAudiosHistory) {
-        this.machineAudiosHistory = machineAudiosHistory;
-    }
-
-    public List<InventoryMotherboardHistory> getMachineMotherboardsHistory() {
-        return machineMotherboardsHistory;
-    }
-
-    public void setMachineMotherboardsHistory(List<InventoryMotherboardHistory> machineMotherboardsHistory) {
-        this.machineMotherboardsHistory = machineMotherboardsHistory;
-    }
-
-    public List<InventoryAlert> getListAlerts() {
-        return listAlerts;
-    }
-
-    public void setListAlerts(List<InventoryAlert> listAlerts) {
-        this.listAlerts = listAlerts;
-    }
 
     public InventoryMachineGroup getGroup() {
         return group;
@@ -315,30 +197,6 @@ public class InventoryMachine implements BaseModel {
     public void setScheduleTaskList(List<ScheduledTask> scheduleTaskList) {
         this.scheduleTaskList = scheduleTaskList;
     }   
-
-    public List<InventorySoftware> getMachineSoftwares() {
-        return machineSoftwares;
-    }
-
-    public void setMachineSoftwares(List<InventorySoftware> machineSoftwares) {
-        this.machineSoftwares = machineSoftwares;
-    }
-
-    public List<InventoryLogTestes> getLogsTestes() {
-        return logsTestes;
-    }
-
-    public void setLogsTestes(List<InventoryLogTestes> logsTestes) {
-        this.logsTestes = logsTestes;
-    }
-
-    public List<InventoryLogTasks> getLogsTasks() {
-        return logsTasks;
-    }
-
-    public void setLogsTasks(List<InventoryLogTasks> logsTasks) {
-        this.logsTasks = logsTasks;
-    }
 
     @Override
     public int hashCode() {

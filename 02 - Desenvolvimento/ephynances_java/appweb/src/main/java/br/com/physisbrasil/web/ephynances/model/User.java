@@ -1,6 +1,5 @@
 package br.com.physisbrasil.web.ephynances.model;
 
-import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -73,10 +71,6 @@ public class User implements BaseModel {
     
     @Column(name="is_verified", nullable = false)
     private boolean isVerified;
-    
-    @Column(name="delete_date", nullable = true)
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date deleteDate;
     
     public User() {
     }
@@ -160,14 +154,6 @@ public class User implements BaseModel {
 
     public void setIsVerified(boolean isVerified) {
         this.isVerified = isVerified;
-    }
-
-    public Date getDeleteDate() {
-        return deleteDate;
-    }
-
-    public void setDeleteDate(Date deleteDate) {
-        this.deleteDate = deleteDate;
     }
 
     @Override

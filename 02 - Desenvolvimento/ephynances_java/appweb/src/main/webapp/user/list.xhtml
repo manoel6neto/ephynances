@@ -33,36 +33,28 @@
                         <h:outputText value="#{item.profileRule}" />
                     </p:column>   
                     <p:column width="30" style="text-align: center" headerText="Status" >                      
-                        <p:graphicImage cache="off" alt="Ativo" title="Ativo" url="../resources/img/on.png" height="16" width="16" rendered="#{empty item.deleteDate}" />
-                        <p:graphicImage cache="off" alt="Inativo" title="Inativo" url="../resources/img/off.png" height="16" width="16" rendered="#{not empty item.deleteDate}" />
+                        <p:graphicImage cache="off" alt="Ativo" title="Ativo" url="../resources/img/on.png" height="16" width="16" rendered="#{item.isVerified}" />
+                        <p:graphicImage cache="off" alt="Inativo" title="Inativo" url="../resources/img/off.png" height="16" width="16" rendered="#{!item.isVerified}" />
                     </p:column>
-                    <p:column width="70" style="text-align: center" headerText="Ações">
+                    <p:column width="100" style="text-align: center" headerText="Ações">
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.edit(item)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar" title="Editar"/></p:commandLink>
                         <h:outputText value="   " />
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.view(item)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Detalhes" title="Detalhes"/></p:commandLink>
                         <h:outputText value="   " />
-                        <p:commandLink oncomplete="cd.show()" update="@form" rendered="#{empty item.deleteDate}">
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.active_desactive(item.id)}" rendered="#{item.isVerified}">
                             <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Desativar" title="Desativar"/>
-                            <f:setPropertyActionListener target="#{userController.user}" value="#{item}" />
                         </p:commandLink>
-                        <p:commandLink oncomplete="cdA.show()" update="@form" rendered="#{not empty item.deleteDate}">
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.active_desactive(item.id)}" rendered="#{!item.isVerified}">
                             <img src="../resources/img/activate_power.png" width="16" height="16" alt="Ativar" title="Ativar"/>
-                            <f:setPropertyActionListener target="#{userController.user}" value="#{item}" />
+                        </p:commandLink>
+                        <h:outputText value="   " />
+                        <p:commandLink ajax="false" action="#{userController.delete(item.id)}">
+                            <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Apagar" title="Apagar"/>
                         </p:commandLink>
                     </p:column>
                 </p:dataTable>
-                <p:confirmDialog message="Tem certeza que deseja desativar o usuário '${userController.user.name}'?"
-                                 header="Confirmar desativação" severity="alert" widgetVar="cd">
-                    <p:commandButton value="Sim" action="#{userController.delete}" ajax="false" />
-                    <p:commandButton value="Cancelar" onclick="cd.hide();" type="button" /> 
-                </p:confirmDialog>
-                <p:confirmDialog message="Tem certeza que deseja reativar o usuário '${userController.user.name}'?"
-                                 header="Confirmar reativação" severity="alert" widgetVar="cdA">
-                    <p:commandButton value="Sim" action="#{userController.active}" ajax="false" />
-                    <p:commandButton value="Cancelar" onclick="cdA.hide();" type="button" /> 
-                </p:confirmDialog>
-                <br />
 
+                <br />
                 <div class="alpha grid_2" >
                     <p:commandButton ajax="false" action="#{userController.create}" value="Novo usuário" />
                 </div>
