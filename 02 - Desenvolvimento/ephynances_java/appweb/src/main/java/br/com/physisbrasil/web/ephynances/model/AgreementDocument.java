@@ -27,7 +27,7 @@ public class AgreementDocument implements BaseModel {
     @Column(name = "name", length = 150, nullable = false)
     private String name;
 
-    @Column(name = "name", length = 5, nullable = false)
+    @Column(name = "extension", length = 5, nullable = false)
     private String extension;
 
     @Lob

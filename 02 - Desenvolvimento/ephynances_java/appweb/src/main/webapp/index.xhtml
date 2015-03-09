@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" 
-      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:ui="http://java.sun.com/jsf/facelets" >
 
     <ui:composition template="/template.xhtml">
-        <h:outputLabel>Conteúdo do index</h:outputLabel>
+        <ui:define name="body">
+            <h:form id="formDefault">
+                <div style="float: left">
+                    <p:pieChart id="chartUsers" value="#{chartController.chartActiveUsers}" fill="true" legendPosition="nw" showDataLabels="true"  
+                                title="Usuários Ativos x Usuários Inativos" style="width:500px;height:270px" sliceMargin="05" diameter="185" shadow="true"/>                
+                    <p:effect for="chartUsers" type="shake" speed="250" event="load"/>
+                </div>
+            </h:form>
+        </ui:define>
     </ui:composition>
 </html>

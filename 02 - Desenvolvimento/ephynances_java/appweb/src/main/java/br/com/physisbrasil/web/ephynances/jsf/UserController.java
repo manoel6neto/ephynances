@@ -7,6 +7,7 @@ import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.Utils;
+import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -64,10 +65,23 @@ public class UserController extends BaseController {
         try {
             if (user != null) {
                 if (user.getId() != null) {
+                    if (user.getCpf() != null && !user.getCpf().equals("")) {
+                        if (!ValidaCpf.isCPF(user.getCpf().replace(".", "").replace("-", ""))) {
+                            JsfUtil.addErrorMessage("Cpf inválido!");
+                            putFlash("user", user);
+                            return "edit";
+                        }
+                    }
                     usuarioBean.edit(user);
                     usuarioBean.clearCache();
                     JsfUtil.addSuccessMessage("Usuário atualizado com sucesso!");
                 } else {
+                    if (user.getCpf() != null && !user.getCpf().equals("")) {
+                        if (!ValidaCpf.isCPF(user.getCpf().replace(".", "").replace("-", ""))) {
+                            JsfUtil.addErrorMessage("Cpf inválido!");
+                            return "list";
+                        }
+                    }
                     user.setIsVerified(false);
                     usuarioBean.create(user);
                     usuarioBean.clearCache();
