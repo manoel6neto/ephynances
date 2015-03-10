@@ -34,8 +34,8 @@ values (1, 'Acre', 'AC'), (1, 'Amapá', 'AP'), (1, 'Amazonas', 'AM'), (1, 'Pará
 
 --- CityOrgans ---
 insert into city_organ(city_name, organ_name, cnpj, state_id)
-values ('Itabuna', 'Prefeitura Municipal', '12345678912365478', 9),
-('Itabuna', 'Fundação Marimbeta', '12345678912365479', 9);
+values ('Itabuna', 'Prefeitura Municipal', '12345678912', 9),
+('Itabuna', 'Fundação Marimbeta', '12345678913', 9);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -54,7 +54,7 @@ public class UserController extends BaseController {
         }
 
         this.oldPass = "";
-        putFlash("user", user);
+        putFlash("user", null);
     }
 
     public String create() {
