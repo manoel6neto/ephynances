@@ -19,7 +19,7 @@
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                              currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                              emptyMessage="Nenhum registro encontrado!">
-                    
+
                     <p:column style="text-align: center" headerText="Nome" sortBy="#{item.name}" filterBy="#{item.name}">                       
                         <h:outputText value="#{item.name}" />
                     </p:column>
@@ -48,11 +48,14 @@
                             <img src="../resources/img/activate_power.png" width="16" height="16" alt="Ativar" title="Ativar"/>
                         </p:commandLink>
                         <h:outputText value="   " />
-                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.delete(item.id)}">
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.delete(item.id)}" rendered="#{item.profileRule.equals(userController.RULER_SELLER)}">
                             <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Apagar" title="Apagar"/>
                         </p:commandLink>
-                        <h:outputText value="   " />
-                        <p:commandLink ajax="false" action="#{sellerContributorController.listBySeller(item.id)}">
+                        <p:commandLink ajax="false" action="#{userController.delete(item.id)}" rendered="#{not item.profileRule.equals(userController.RULER_SELLER)}">
+                            <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Apagar" title="Apagar"/>
+                        </p:commandLink>
+                        <h:outputText value="   " rendered="#{item.profileRule.equals(userController.RULER_SELLER)}"/>
+                        <p:commandLink ajax="false" action="#{sellerContributorController.listBySeller(item.id)}" rendered="#{item.profileRule.equals(userController.RULER_SELLER)}">
                             <img src="../resources/img/activate_power.png" width="16" height="16" alt="Colaboradores" title="Colaboradores"/>
                         </p:commandLink>
                     </p:column>
@@ -65,7 +68,7 @@
 
             </h:form>
         </ui:define>
-        
+
     </ui:composition>
 
 </html>

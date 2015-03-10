@@ -7,7 +7,7 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="Cadastrar novo responsável"/>
+            <h:outputText  value="Dados do responsável" />
         </ui:define>
         <ui:define name="body"  >
             <h:form id="form" styleClass="form" >
@@ -16,37 +16,35 @@
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Nome: " for="name"  />
-                    <p:inputText id="name" value="#{agreementResponsibleController.agreementResponsible.name}" required="true" requiredMessage="Nome é necessário"/> 
+                    <p:inputText id="name" value="#{agreementResponsibleController.agreementResponsible.name}" disabled="true" /> 
                 </div>
 
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Email: " for="email"  />
-                    <p:inputText id="email" value="#{agreementResponsibleController.agreementResponsible.email}" required="true" requiredMessage="Email é necessário" validatorMessage="Email mal formatado !!"/> 
+                    <p:inputText id="email" value="#{agreementResponsibleController.agreementResponsible.email}" disabled="true" /> 
                 </div>
 
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="CPF: " for="cpf"  />
-                    <p:inputMask id="cpf" value="#{agreementResponsibleController.agreementResponsible.cpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"/> 
+                    <p:inputText id="cpf" value="#{agreementResponsibleController.agreementResponsible.cpf}" disabled="true" /> 
                 </div>
 
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Telefone: " for="phone"  />
-                    <p:inputMask id="phone" value="#{agreementResponsibleController.agreementResponsible.phone}" required="false" mask="(99) 9999-9999" />
+                    <p:inputText id="phone" value="#{agreementResponsibleController.agreementResponsible.phone}" disabled="true" /> 
                 </div>
 
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Celular: " for="cellphone"  />
-                    <p:inputMask id="cellphone" value="#{agreementResponsibleController.agreementResponsible.cellPhone}" required="false" mask="(99) 9999-9999"/> 
+                    <p:inputText id="cellphone" value="#{agreementResponsibleController.agreementResponsible.cellPhone}" disabled="true" /> 
                 </div>
 
-                <br class="clear" />
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >
-                    <p:commandButton styleClass="grid_1 alpha" action="#{agreementResponsibleController.save}" value="Salvar" update="form" ajax="false"/>
                     <h:link styleClass="grid_1" outcome="list" value="Voltar" />
                 </div>
             </h:form>
