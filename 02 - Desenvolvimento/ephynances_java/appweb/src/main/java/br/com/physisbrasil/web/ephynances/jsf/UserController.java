@@ -107,7 +107,7 @@ public class UserController extends BaseController {
 
         return "list";
     }
-
+    
     public String edit(User user) {
         try {
             if (user.getId() != null && user.getId() > 0) {
@@ -303,9 +303,10 @@ public class UserController extends BaseController {
                 User loggedUser = usuarioBean.find(getUsuarioLogado().getId());
 
                 if (loggedUser.getProfileRule().equalsIgnoreCase(getRULER_ADMIN())) {
-                    this.listUser = usuarioBean.findAll();
+                    listUser = usuarioBean.findAll();
                 } else {
-                    //Pegar apenas os Colaboradores em caso de vendedor
+                    listUser = new ArrayList<User>();
+                    listUser.add(loggedUser);
                 }
             }
         } catch (Exception e) {
