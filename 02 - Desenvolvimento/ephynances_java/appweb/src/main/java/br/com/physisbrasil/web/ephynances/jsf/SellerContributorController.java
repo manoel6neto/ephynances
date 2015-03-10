@@ -88,6 +88,10 @@ public class SellerContributorController extends BaseController {
     public void delete(Long id) {
 
     }
+    
+    public void create () {
+        
+    }
 
     public String listBySeller(Long userId) {
         sellerContributors = sellerContributorBean.findBySellerId(userId);

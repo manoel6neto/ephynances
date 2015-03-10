@@ -7,13 +7,11 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="Colaboradores"></h:outputText>
+            <h:outputText value="Colaboradores do vendedor: #{sellerContributorController.seller.name}"></h:outputText>
         </ui:define>
 
         <ui:define name="body">
             <h:form id="form">
-                <h:outputText value="Colaboradores do vendedor: #{sellerContributorController.seller.name}"></h:outputText>
-                <br></br>
                 <p:dataTable id="table" widgetVar="table" value="#{sellerContributorController.contributors}" var="item" lazy="false" 
                              rows="25" paginator="true"  paginatorPosition="bottom" 
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -50,14 +48,13 @@
                         </p:commandLink>
                     </p:column>
                 </p:dataTable>
-
-                <br />
-                <div class="alpha grid_2" >
-                    <p:commandButton ajax="false" action="#{sellerContributorController.create}" value="Novo colaborador" />
+                <br class="clear" />
+                <br/>
+                <div class="grid_12 alpha" style="line-height: 30px;" >
+                    <p:commandButton styleClass="grid_1 alpha" style="width: 120px" ajax="false" action="#{sellerContributorController.create}" value="Novo colaborador" />
+                    <h:link styleClass="grid_1" outcome="/user/list" value="Voltar" />
                 </div>
-
             </h:form>
         </ui:define>
-
     </ui:composition>
 </html>
