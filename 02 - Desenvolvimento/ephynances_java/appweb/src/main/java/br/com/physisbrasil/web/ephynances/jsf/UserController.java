@@ -1,6 +1,7 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
+import br.com.physisbrasil.web.ephynances.ejb.SellerContributorBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.User;
@@ -35,6 +36,9 @@ public class UserController extends BaseController {
     @EJB
     private ConfigurationBean configurationBean;
 
+    @EJB
+    private SellerContributorBean sellerContributorBean;
+
     @PostConstruct
     public void init() {
         if (listUser == null) {
@@ -50,7 +54,7 @@ public class UserController extends BaseController {
         }
 
         this.oldPass = "";
-        putFlash("user", null);
+        putFlash("user", user);
     }
 
     public String create() {
@@ -72,6 +76,13 @@ public class UserController extends BaseController {
                             return "edit";
                         }
                     }
+
+                    if (!user.getProfileRule().equals(User.getRULER_SELLER())) {
+                        if (sellerContributorBean.findBySellerId(user.getId()).size() > 0) {
+                            JsfUtil.addErrorMessage("Impossível alterar o nível de acesso do vendedor. Primeiro remova os colaboradores!");
+                        }
+                    }
+
                     usuarioBean.edit(user);
                     usuarioBean.clearCache();
                     JsfUtil.addSuccessMessage("Usuário atualizado com sucesso!");

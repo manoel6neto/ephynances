@@ -36,7 +36,7 @@
                         <p:graphicImage cache="off" alt="Ativo" title="Ativo" url="../resources/img/on.png" height="16" width="16" rendered="#{item.isVerified}" />
                         <p:graphicImage cache="off" alt="Inativo" title="Inativo" url="../resources/img/off.png" height="16" width="16" rendered="#{!item.isVerified}" />
                     </p:column>
-                    <p:column width="130" style="text-align: center" headerText="Ações">
+                    <p:column width="100" style="text-align: center" headerText="Ações">
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.edit(item)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar" title="Editar"/></p:commandLink>
                         <h:outputText value="   " />
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.view(item)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Detalhes" title="Detalhes"/></p:commandLink>
@@ -48,10 +48,9 @@
                             <img src="../resources/img/activate_power.png" width="16" height="16" alt="Ativar" title="Ativar"/>
                         </p:commandLink>
                         <h:outputText value="   " />
-                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.delete(item.id)}">
+                        <p:commandLink ajax="false" action="#{userController.delete(item.id)}">
                             <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Apagar" title="Apagar"/>
                         </p:commandLink>
-                        <h:outputText value="   " />
                         <p:commandLink ajax="false" action="#{sellerContributorController.listBySeller(item.id)}">
                             <img src="../resources/img/activate_power.png" width="16" height="16" alt="Colaboradores" title="Colaboradores"/>
                         </p:commandLink>

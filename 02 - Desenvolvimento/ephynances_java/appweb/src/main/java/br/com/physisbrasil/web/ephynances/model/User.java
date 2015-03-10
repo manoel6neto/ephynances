@@ -11,6 +11,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -21,7 +22,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Thomas
  */
 @Entity
-@Table(name = "user")
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = {"cpf"}))
 @NamedQueries({
     @NamedQuery(name = "Usuario.findByEmailSenha",
             query = "SELECT u FROM User u WHERE u.email = :email AND u.password = :password"),
@@ -59,7 +60,7 @@ public class User implements BaseModel {
     @Column(name = "cell_phone", length = 30, nullable = true)
     private String cellPhone;
 
-    @Column(name = "cpf", length = 16, nullable = false)
+    @Column(name = "cpf", length = 16, nullable = false, unique = true)
     @NotEmpty
     private String cpf;
 
@@ -77,9 +78,12 @@ public class User implements BaseModel {
     //References
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Agreement> agreements;
-
-    public User() {
-    }
+    
+    @OneToMany(mappedBy = "contributor", orphanRemoval = true)
+    private List<SellerContributor> contributors;
+    
+    @OneToMany(mappedBy = "seller", orphanRemoval = true)
+    private List<SellerContributor> sellers;
 
     /**
      *
@@ -168,6 +172,22 @@ public class User implements BaseModel {
 
     public void setAgreements(List<Agreement> agreements) {
         this.agreements = agreements;
+    }
+
+    public List<SellerContributor> getContributors() {
+        return contributors;
+    }
+
+    public void setContributors(List<SellerContributor> contributors) {
+        this.contributors = contributors;
+    }
+
+    public List<SellerContributor> getSellers() {
+        return sellers;
+    }
+
+    public void setSellers(List<SellerContributor> sellers) {
+        this.sellers = sellers;
     }
 
     @Override
