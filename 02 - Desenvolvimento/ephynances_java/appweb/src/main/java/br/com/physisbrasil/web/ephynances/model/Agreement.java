@@ -18,6 +18,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -29,7 +30,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Thomas
  */
 @Entity
-@Table(name = "agreement")
+@Table(name = "agreement", uniqueConstraints = @UniqueConstraint(columnNames = {"contact_email", "contact_agreement_number", "physis_agreement_number"}))
 public class Agreement implements BaseModel {
 
     private static final List<String> AGREEMENT_TYPES = new ArrayList<String>() {

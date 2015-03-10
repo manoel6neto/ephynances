@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -18,7 +19,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Thomas
  */
 @Entity
-@Table(name = "agreement_responsible")
+@Table(name = "agreement_responsible", uniqueConstraints = @UniqueConstraint(columnNames = {"email", "cpf"}))
 public class AgreementResponsible implements BaseModel {
 
     @Id
@@ -41,7 +42,7 @@ public class AgreementResponsible implements BaseModel {
     @Column(name = "cell_phone", length = 30, nullable = true)
     private String cellPhone;
 
-    @Column(name = "cpf", length = 16, nullable = false)
+    @Column(name = "cpf", length = 16, unique = true, nullable = false)
     @NotEmpty
     private String cpf;
 

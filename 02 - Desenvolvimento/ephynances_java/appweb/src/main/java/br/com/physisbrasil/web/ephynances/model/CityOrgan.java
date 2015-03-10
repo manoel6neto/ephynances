@@ -11,6 +11,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -21,7 +22,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Thomas
  */
 @Entity
-@Table(name="city_organ")
+@Table(name="city_organ", uniqueConstraints = @UniqueConstraint(columnNames = {"cnpj"}))
 public class CityOrgan implements BaseModel {
     
     @Id
@@ -35,7 +36,7 @@ public class CityOrgan implements BaseModel {
     @Column(name="organ_name", length = 100, nullable = false)
     private String organName;
     
-    @Column(name="cnpj", length = 11, nullable = false)
+    @Column(name="cnpj", length = 11, nullable = false, unique = true)
     @NotEmpty
     @Size(min = 17, max = 17, message = "Deve conter 17 dígitos.")
     @Pattern(regexp = CNPJ_REGEX)

@@ -22,7 +22,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Thomas
  */
 @Entity
-@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = {"cpf"}))
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = {"cpf", "email"}))
 @NamedQueries({
     @NamedQuery(name = "Usuario.findByEmailSenha",
             query = "SELECT u FROM User u WHERE u.email = :email AND u.password = :password"),
