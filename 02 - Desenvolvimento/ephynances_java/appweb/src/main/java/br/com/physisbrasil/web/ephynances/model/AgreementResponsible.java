@@ -49,7 +49,7 @@ public class AgreementResponsible implements BaseModel {
     //References
     @OneToMany(mappedBy = "agreementResponsible", orphanRemoval = true)
     private List<Agreement> agreements;
-    
+
     /**
      *
      * @return

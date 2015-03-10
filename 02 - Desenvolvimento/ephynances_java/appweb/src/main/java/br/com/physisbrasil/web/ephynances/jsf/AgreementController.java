@@ -20,13 +20,17 @@ public class AgreementController extends BaseController {
     @EJB
     private AgreementBean agreementBean;
     private List<Agreement> agreements;
-    
+
     @PostConstruct
     public void init() {
         if (agreements == null) {
             agreements = new ArrayList<Agreement>();
             setAgreements(agreementBean.findAll());
         }
+    }
+
+    public void listByResponsibleId(int id) {
+
     }
 
     public List<Agreement> getAgreements() {

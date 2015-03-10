@@ -90,6 +90,7 @@ public class UserController extends BaseController {
                     if (user.getCpf() != null && !user.getCpf().equals("")) {
                         if (!ValidaCpf.isCPF(user.getCpf().replace(".", "").replace("-", ""))) {
                             JsfUtil.addErrorMessage("Cpf inválido!");
+                            putFlash("user", null);
                             return "list";
                         }
                     }
@@ -107,7 +108,7 @@ public class UserController extends BaseController {
 
         return "list";
     }
-    
+
     public String edit(User user) {
         try {
             if (user.getId() != null && user.getId() > 0) {
