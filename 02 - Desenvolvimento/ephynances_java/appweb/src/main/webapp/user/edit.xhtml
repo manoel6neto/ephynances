@@ -60,17 +60,6 @@
                 </div>
                
                 <br class="clear" />
-                <div class="grid_2 alpha" >
-                    <p:outputLabel  value="Nova Senha: " for="formPassword" />
-                    <p:password styleClass="grid_2" autocomplete="off" id="formPassword" value="#{userController.user.password}" match="confPassword"
-                                feedback="true" promptLabel="6 à 40 caracteres" weakLabel="fraca" goodLabel="média" strongLabel="forte" required="true" requiredMessage="Senha é necessária"/> 
-                </div>
-                <div class="grid_2" >
-                    <p:outputLabel value="Confirmação Senha: " for="confPassword"/>
-                    <p:password styleClass="grid_2" autocomplete="off"  id="confPassword" value="#{userController.user.password}"  /> 
-                </div>
-
-                <br class="clear" />
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >
                     <p:commandButton styleClass="grid_1 alpha" action="#{userController.save}" value="Atualizar" update="formUser" ajax="false"/>

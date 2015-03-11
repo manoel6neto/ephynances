@@ -30,7 +30,7 @@
                     <p:column style="text-align: center" headerText="CPF" >                      
                         <h:outputText value="#{item.cpf}" />
                     </p:column>   
-                    <p:column width="70" style="text-align: center" headerText="Ações">
+                    <p:column width="100" style="text-align: center" headerText="Ações">
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementResponsibleController.edit(item)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar" title="Editar"/></p:commandLink>
                         <h:outputText value="   " />
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementResponsibleController.view(item)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Detalhes" title="Detalhes"/></p:commandLink>

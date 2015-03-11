@@ -12,8 +12,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -107,11 +105,10 @@ public class Agreement implements BaseModel {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @JoinTable(name = "agreement_city_organ", joinColumns = {
-        @JoinColumn(name = "agreement_id", referencedColumnName = "id")}, inverseJoinColumns = {
-        @JoinColumn(name = "city_organ_id", referencedColumnName = "id")})
-    @ManyToMany()
-    private List<CityOrgan> cityOrgans;
+    @OneToOne(optional = false)
+    @NotNull
+    @JoinColumn(name = "proponente_siconv_id", referencedColumnName = "id_proponente_siconv", nullable = false)
+    private ProponentSiconv proponenteSiconv;
     
     @OneToMany(mappedBy = "agreement", orphanRemoval = true)
     private List<AgreementInstallment> agreementInstallments;
@@ -220,12 +217,12 @@ public class Agreement implements BaseModel {
         this.agreementResponsible = agreementResponsible;
     }
 
-    public List<CityOrgan> getCityOrgans() {
-        return cityOrgans;
+    public ProponentSiconv getProponenteSiconv() {
+        return proponenteSiconv;
     }
 
-    public void setCityOrgans(List<CityOrgan> cityOrgans) {
-        this.cityOrgans = cityOrgans;
+    public void setProponenteSiconv(ProponentSiconv proponenteSiconv) {
+        this.proponenteSiconv = proponenteSiconv;
     }
 
     public User getUser() {

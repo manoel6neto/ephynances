@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="Proponente Siconv"></h:outputText>
+        </ui:define>
+
+        <ui:define name="body">
+            <h:form id="form">
+                <p:dataTable id="table" widgetVar="table" value="#{proponentSiconvController.proponentSiconvs}" var="item" lazy="false" 
+                             rows="30" paginator="true"  paginatorPosition="bottom" 
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
+                             emptyMessage="Nenhum registro encontrado!">
+
+                    <p:column style="text-align: center" headerText="Cnpj" sortBy="#{item.cnpj}" filterBy="#{item.cnpj}">                       
+                        <h:outputText value="#{item.cnpj}" />
+                    </p:column>
+                    <p:column style="text-align: center" headerText="Nome" sortBy="#{item.nome}" filterBy="#{item.nome}">
+                        <h:outputText value="#{item.nome}" />
+                    </p:column>     
+                    <p:column style="text-align: center" headerText="Esfera" sortBy="#{item.esferaAdministrativa}" filterBy="#{item.esferaAdministrativa}">
+                        <h:outputText value="#{item.esferaAdministrativa}" />
+                    </p:column> 
+                    <p:column style="text-align: center" headerText="Municipio" sortBy="#{item.municipio}" filterBy="#{item.municipio}">                      
+                        <h:outputText value="#{item.municipio}" />
+                    </p:column>   
+                    <p:column style="text-align: center; width: 30px" headerText="UF" sortBy="#{item.municipioUfSigla}" filterBy="#{item.municipioUfSigla}">                      
+                        <h:outputText value="#{item.municipioUfSigla}" />
+                    </p:column>
+                    <p:column style="text-align: center; width: 100px" headerText="Cod. Municipio" sortBy="#{item.codigoMunicipio}" filterBy="#{item.codigoMunicipio}">                      
+                        <h:outputText value="#{item.codigoMunicipio}" />
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+
+    </ui:composition>
+
+</html>
