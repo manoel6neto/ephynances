@@ -7,13 +7,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.ws.rs.DefaultValue;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@Table(name = "configuration", uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
+@Table(name = "configuration")
 public class Configuration implements BaseModel {
 
     @Id
@@ -41,11 +43,16 @@ public class Configuration implements BaseModel {
     private Integer smtpPort;
 
     @NotNull
-    @Column(name = "email", length = 200, unique = true, nullable = false)
+    @Column(name = "email", length = 200, nullable = false)
     @NotEmpty
     @Pattern(regexp = EMAIL_REGEX)
-    @Size(min = 10, max = 200)
+    @Size(max = 200)
     private String email;
+    
+    @Column(name = "iss", nullable = false)
+    @Max(100)
+    @DefaultValue(value = "0")
+    private int iss;
 
     @Override
     public Long getId() {

@@ -28,32 +28,42 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Thomas
  */
 @Entity
-@Table(name = "agreement", uniqueConstraints = @UniqueConstraint(columnNames = {"contact_email", "contact_agreement_number", "physis_agreement_number"}))
+@Table(name = "agreement", uniqueConstraints = @UniqueConstraint(columnNames = {"physis_agreement_number", "manager_email", "manager_cpf"}))
 public class Agreement implements BaseModel {
 
     private static final List<String> AGREEMENT_TYPES = new ArrayList<String>() {
         {
-            add("Municipal");
-            add("Parlamentar");
-            add("Fundação");
-            add("Consórcio");
-            add("Entidades privadas sem fins lucrativos");
+            add(getTYPE_MUNICIPAL());
+            add(getTYPE_PARLAMENTAR());
+            add(getTYPE_FUNDACAO());
+            add(getTYPE_CONSORCIO());
+            add(getTYPE_ENTIDADE_PRIVADA());
         }
     };
+
+    private static final String TYPE_MUNICIPAL = "Municipal";
+    private static final String TYPE_PARLAMENTAR = "Parlamentar";
+    private static final String TYPE_FUNDACAO = "Fundação";
+    private static final String TYPE_CONSORCIO = "Consórcio";
+    private static final String TYPE_ENTIDADE_PRIVADA = "Entidades privadas sem fins lucrativos";
+
+    private static final String STATE_ATIVO = "Ativo";
+    private static final String STATE_CANCELADO = "Cancelado";
+    private static final String STATE_SUSPENSO = "Suspenso por falta de pagamento";
+    private static final String STATE_FINALIZADO = "Finalizado";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    
+
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 100)
-    @Column(name = "agreement_type", nullable = false)
+    @Size(max = 100)
+    @Column(name = "agreement_type", length = 100, nullable = false)
     private String agreementType;
 
-    @Column(name = "contact_email", length = 200, unique = true, nullable = false)
-    @NotEmpty
+    @Column(name = "contact_email", length = 200, nullable = true)
     @Pattern(regexp = EMAIL_REGEX, message = "Email mal formatado")
     @Size(max = 200)
     private String contactEmail;
@@ -66,9 +76,8 @@ public class Agreement implements BaseModel {
     @Column(nullable = false, name = "total_price")
     private BigDecimal totalPrice;
 
-    @NotEmpty
     @Size(max = 100)
-    @Column(name = "contact_agreement_number", length = 100, unique = true, nullable = false)
+    @Column(name = "contact_agreement_number", length = 100, nullable = true)
     private String contactAgreementNumber;
 
     @NotEmpty
@@ -80,24 +89,63 @@ public class Agreement implements BaseModel {
     @Column(name = "expire_date", nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date expireDate;
+    
+    @NotNull
+    @Column(name = "period", nullable = false)
+    @DefaultValue(value = "12")
+    private int period;
 
-    @DefaultValue(value = "0")
-    @Column(name = "status", nullable = false)
-    private boolean status;
+    @DefaultValue(value = "Ativo")
+    @NotNull
+    @Column(name = "status", length = 100, nullable = false)
+    private String status;
 
     @NotNull
     @Column(name = "cnpj_amount", nullable = false)
     private int cnpjAmount;
+
+    @NotNull
+    @Column(name = "authority_amount", nullable = false)
+    private int authorityAmount;
 
     @NotEmpty
     @Size(max = 100)
     @Column(name = "document_number", length = 100, nullable = false)
     private String documentNumber;
 
-    //References
-    @OneToOne(optional = false)
+    //Manager Data
     @NotNull
-    @JoinColumn(name = "agreement_responsible_id", referencedColumnName = "id", nullable = false)
+    @Column(name = "manager_email", length = 200, nullable = false, unique = true)
+    @Pattern(regexp = EMAIL_REGEX, message = "Email mal formatado")
+    @Size(max = 200)
+    private String managerEmail;
+
+    @NotNull
+    @Column(name = "manager_name", length = 200, nullable = false)
+    @Size(max = 200)
+    private String managerName;
+
+    @NotNull
+    @Column(name = "manager_cpf", length = 16, nullable = false, unique = true)
+    @Size(max = 16)
+    private String managerCpf;
+    
+    @NotNull
+    @Column(name = "manager_phone", length = 30, nullable = true)
+    private String managerPhone;
+    
+    @NotNull
+    @Column(name = "manager_cell_phone", length = 30, nullable = true)
+    private String managerCellPhone;
+
+    @Column(name = "manager_entity", length = 100, nullable = false)
+    @NotEmpty
+    @Size(max = 100)
+    private String managerEntity;
+    
+    //References
+    @OneToOne(optional = true)
+    @JoinColumn(name = "agreement_responsible_id", referencedColumnName = "id", nullable = true)
     private AgreementResponsible agreementResponsible;
 
     @OneToOne(optional = false)
@@ -107,9 +155,12 @@ public class Agreement implements BaseModel {
 
     @OneToMany(mappedBy = "agreement", orphanRemoval = true)
     private List<AgreementInstallment> agreementInstallments;
-    
+
     @OneToMany(mappedBy = "agreement", orphanRemoval = true)
     private List<AgreementDocument> agreementDocuments;
+    
+    @OneToMany(mappedBy = "agreement")
+    private List<ProponentSiconv> proponents;
 
     /**
      *
@@ -127,7 +178,7 @@ public class Agreement implements BaseModel {
     public void setAgreementType(String agreementType) {
         this.agreementType = agreementType;
     }
-    
+
     public String getContactEmail() {
         return contactEmail;
     }
@@ -174,14 +225,6 @@ public class Agreement implements BaseModel {
 
     public void setExpireDate(Date expireDate) {
         this.expireDate = expireDate;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public int getCnpjAmount() {
@@ -235,7 +278,123 @@ public class Agreement implements BaseModel {
     public void setAgreementDocuments(List<AgreementDocument> agreementDocuments) {
         this.agreementDocuments = agreementDocuments;
     }
-    
+
+    public int getAuthorityAmount() {
+        return authorityAmount;
+    }
+
+    public void setAuthorityAmount(int authorityAmount) {
+        this.authorityAmount = authorityAmount;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getManagerEmail() {
+        return managerEmail;
+    }
+
+    public void setManagerEmail(String managerEmail) {
+        this.managerEmail = managerEmail;
+    }
+
+    public String getManagerName() {
+        return managerName;
+    }
+
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
+
+    public String getManagerCpf() {
+        return managerCpf;
+    }
+
+    public void setManagerCpf(String managerCpf) {
+        this.managerCpf = managerCpf;
+    }
+
+    public List<ProponentSiconv> getProponents() {
+        return proponents;
+    }
+
+    public void setProponents(List<ProponentSiconv> proponents) {
+        this.proponents = proponents;
+    }
+
+    public int getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(int period) {
+        this.period = period;
+    }
+
+    public String getManagerPhone() {
+        return managerPhone;
+    }
+
+    public void setManagerPhone(String managerPhone) {
+        this.managerPhone = managerPhone;
+    }
+
+    public String getManagerCellPhone() {
+        return managerCellPhone;
+    }
+
+    public void setManagerCellPhone(String managerCellPhone) {
+        this.managerCellPhone = managerCellPhone;
+    }
+
+    public String getManagerEntity() {
+        return managerEntity;
+    }
+
+    public void setManagerEntity(String managerEntity) {
+        this.managerEntity = managerEntity;
+    }
+
+    public static String getSTATE_ATIVO() {
+        return STATE_ATIVO;
+    }
+
+    public static String getSTATE_CANCELADO() {
+        return STATE_CANCELADO;
+    }
+
+    public static String getSTATE_SUSPENSO() {
+        return STATE_SUSPENSO;
+    }
+
+    public static String getSTATE_FINALIZADO() {
+        return STATE_FINALIZADO;
+    }
+
+    public static String getTYPE_MUNICIPAL() {
+        return TYPE_MUNICIPAL;
+    }
+
+    public static String getTYPE_PARLAMENTAR() {
+        return TYPE_PARLAMENTAR;
+    }
+
+    public static String getTYPE_FUNDACAO() {
+        return TYPE_FUNDACAO;
+    }
+
+    public static String getTYPE_CONSORCIO() {
+        return TYPE_CONSORCIO;
+    }
+
+    public static String getTYPE_ENTIDADE_PRIVADA() {
+        return TYPE_ENTIDADE_PRIVADA;
+    }
+
     @Override
     public String toString() {
         return id.toString();

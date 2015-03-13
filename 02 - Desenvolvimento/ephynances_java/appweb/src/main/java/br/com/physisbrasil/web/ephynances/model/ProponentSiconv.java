@@ -101,6 +101,10 @@ public class ProponentSiconv implements BaseModel {
     @OneToOne(optional = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
+    
+    @OneToOne(optional = true)
+    @JoinColumn(name = "agreement_id", referencedColumnName = "id", nullable = true)
+    private Agreement agreement;
 
     /**
      *
@@ -266,5 +270,13 @@ public class ProponentSiconv implements BaseModel {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Agreement getAgreement() {
+        return agreement;
+    }
+
+    public void setAgreement(Agreement agreement) {
+        this.agreement = agreement;
     }
 }
