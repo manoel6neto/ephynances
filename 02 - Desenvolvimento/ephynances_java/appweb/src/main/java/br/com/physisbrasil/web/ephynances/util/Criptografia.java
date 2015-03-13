@@ -8,6 +8,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.mail.EmailException;
 
 /**
  *
@@ -24,7 +25,6 @@ public class Criptografia {
      *
      * @param s string a ser criptografada
      * @return s criptografado
-     * @throws NoSuchAlgorithmException
      */
     public static String criptografar(String s) {
         try {

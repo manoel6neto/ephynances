@@ -12,13 +12,13 @@ import org.apache.commons.mail.SimpleEmail;
 public class Utils {
 
     public static boolean sendEmail(String toEmail, String toName, String message, String smtpServer,
-            String sender, String subject, String user, String passwd, Integer smtpPort, String sourceIdentify) throws EmailException {
+            String sender, String subject, String user, String passwd, Integer smtpPort, String senderIdentify) throws EmailException {
 
         try {
             SimpleEmail simpleEmail = new SimpleEmail();
             simpleEmail.setHostName(smtpServer); // SMTP server
             simpleEmail.addTo(toEmail, toName); //to  email and name 
-            simpleEmail.setFrom(sender, sourceIdentify); // from  
+            simpleEmail.setFrom(sender, senderIdentify); // from  
             simpleEmail.setSubject(subject); //subject 
             simpleEmail.setMsg(message); //msg  
             simpleEmail.setAuthentication(user, passwd);  // user and passwd

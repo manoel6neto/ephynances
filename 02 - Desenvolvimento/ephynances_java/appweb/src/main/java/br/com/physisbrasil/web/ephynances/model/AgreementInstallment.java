@@ -23,6 +23,10 @@ import javax.ws.rs.DefaultValue;
 @Entity
 @Table(name = "agreement_installment")
 public class AgreementInstallment implements BaseModel {
+    
+    private static final String STATUS_PENDENTE = "Pendente";
+    private static final String STATUS_PAGO = "Pago";
+    private static final String STATUS_PENDENTE_COM_LIBERACAO = "Pendente - Liberado manualmente";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,14 +38,18 @@ public class AgreementInstallment implements BaseModel {
     @Column(nullable = false, name = "value")
     private BigDecimal value;
 
-    @DefaultValue(value = "0")
-    @Column(name = "status", nullable = false)
-    private boolean status;
+    @DefaultValue(value = "pendente")
+    @Column(name = "status", nullable = false, length = 200)
+    private String status;
 
     @NotNull
     @Column(name = "due_date", nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dueDate;
+    
+    @Column(name = "liberation_date", nullable = true)
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date liberationDate;
     
     //References
     @OneToOne(optional = false)
@@ -71,14 +79,6 @@ public class AgreementInstallment implements BaseModel {
 
     public void setValue(BigDecimal value) {
         this.value = value;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public Date getDueDate() {
@@ -111,6 +111,34 @@ public class AgreementInstallment implements BaseModel {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public Date getLiberationDate() {
+        return liberationDate;
+    }
+
+    public void setLiberationDate(Date liberationDate) {
+        this.liberationDate = liberationDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
+    public static String getSTATUS_PENDENTE() {
+        return STATUS_PENDENTE;
+    }
+
+    public static String getSTATUS_PAGO() {
+        return STATUS_PAGO;
+    }
+
+    public static String getSTATUS_PENDENTE_COM_LIBERACAO() {
+        return STATUS_PENDENTE_COM_LIBERACAO;
     }
     
     @Override
