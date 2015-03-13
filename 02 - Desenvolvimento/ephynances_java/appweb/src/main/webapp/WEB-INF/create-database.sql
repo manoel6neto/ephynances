@@ -2,7 +2,9 @@ CREATE DATABASE `physis_ephynances`;
 
 ALTER DATABASE `physis_ephynances` CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 
-create table proponente_siconv(
+USE `physis_ephynances`;
+
+CREATE TABLE proponente_siconv(
 	id_proponente_siconv integer auto_increment not null primary key,
 	cnpj varchar(18) not null,
 	nome varchar(255) not null,

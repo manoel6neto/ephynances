@@ -54,12 +54,6 @@
                 </div>
 
                 <br class="clear" />
-                <div class="grid_4 alpha" >
-                    <p:outputLabel value="N. Contratos Venda (Máx): " for="maxsalesamount"  />
-                    <p:inputText id="maxsalesamount" value="#{userController.user.maxSalesAmount}" required="true" requiredMessage="Necessário informar limite para criação de contratos." validatorMessage="Não pode ser em branco."/> 
-                </div>
-
-                <br class="clear" />
                 <div class="grid_2 alpha" >
                     <p:outputLabel  value="Nova Senha: " for="formPassword" />
                     <p:password styleClass="grid_2" autocomplete="off" id="formPassword" value="#{userController.user.password}" match="confPassword"

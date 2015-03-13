@@ -195,7 +195,6 @@ public class SellerContributorController extends BaseController {
     public String create() {
         tempUser = new User();
         tempUser.setProfileRule(User.getRULER_CONTRIBUTOR());
-        tempUser.setMaxSalesAmount(seller.getMaxSalesAmount());
 
         putFlash("seller", seller);
         putFlash("contributors", contributors);

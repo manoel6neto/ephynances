@@ -54,12 +54,6 @@
                 </div>
                 
                 <br class="clear" />
-                <div class="grid_4 alpha" >
-                    <p:outputLabel value="N. Contratos Venda (Máx): " for="maxsalesamount"  />
-                    <p:inputText id="maxsalesamount" value="#{userController.user.maxSalesAmount}" required="true" requiredMessage="Necessário informar limite para criação de contratos." validatorMessage="Não pode ser em branco."/> 
-                </div>
-               
-                <br class="clear" />
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >
                     <p:commandButton styleClass="grid_1 alpha" action="#{userController.save}" value="Atualizar" update="formUser" ajax="false"/>

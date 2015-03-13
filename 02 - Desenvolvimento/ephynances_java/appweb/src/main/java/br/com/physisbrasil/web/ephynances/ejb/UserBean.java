@@ -12,11 +12,29 @@ import javax.persistence.TypedQuery;
 @Stateless
 public class UserBean extends DAO<User> {
 
-    public User findByEmailSenha(String email, String senha) {
-        TypedQuery<User> namedQuery = getEntityManager().createNamedQuery("Usuario.findByEmailSenha", User.class);
+    public User findByEmailSenhaProfile(String email, String senha, String profile) {
+        TypedQuery<User> namedQuery = getEntityManager().createNamedQuery("Usuario.findByEmailSenhaProfile", User.class);
 
         namedQuery.setParameter("email", email);
         namedQuery.setParameter("password", senha);
+        namedQuery.setParameter("profile", profile);
+
+        User usuario;
+        try {
+            usuario = namedQuery.getSingleResult();
+        } catch (Exception e) {
+            usuario = null;
+        }
+
+        return usuario;
+    }
+    
+    public User findByCpfSenhaProfile(String cpf, String senha, String profile) {
+        TypedQuery<User> namedQuery = getEntityManager().createNamedQuery("Usuario.findByCpfSenhaProfile", User.class);
+
+        namedQuery.setParameter("cpf", cpf);
+        namedQuery.setParameter("password", senha);
+        namedQuery.setParameter("profile", profile);
 
         User usuario;
         try {

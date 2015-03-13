@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -17,29 +19,35 @@ import javax.validation.constraints.NotNull;
  * @author Thomas
  */
 @Entity
-@Table(name="state")
+@Table(name = "state")
 public class State implements BaseModel {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Long id;
-    
-    @Column(name="name", length = 100, nullable = false)
+
+    @Column(name = "name", length = 100, nullable = false)
     private String name;
-    
-    @Column(name="acronym", length = 100, nullable = false)
+
+    @Column(name = "acronym", length = 100, nullable = false)
     private String acronym;
-    
+
     //References
     @OneToMany(mappedBy = "state", orphanRemoval = true)
     private List<CityOrgan> cityOrgans;
-    
+
     @OneToOne(optional = false)
-    @NotNull    
+    @NotNull
     @JoinColumn(name = "region_id", referencedColumnName = "id", nullable = false)
     private Region region;
-    
+
+    @JoinTable(name = "user_states", joinColumns = {
+        @JoinColumn(name = "state_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "user_id", referencedColumnName = "id")})
+    @ManyToMany()
+    private List<User> users;
+
     /**
      *
      * @return
@@ -80,10 +88,18 @@ public class State implements BaseModel {
     public void setRegion(Region region) {
         this.region = region;
     }
-    
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
     @Override
     public String toString() {
         return id.toString();
     }
-    
+
 }

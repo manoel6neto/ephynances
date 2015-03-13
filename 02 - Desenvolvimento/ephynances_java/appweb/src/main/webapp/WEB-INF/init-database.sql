@@ -9,8 +9,8 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 USE `physis_ephynances`;
 
 -- Users --
-insert into `user`(email, name, password, cpf, phone, cell_phone, max_sales_amount, profile_rule, is_verified) 
-values ('admin@physisbrasil.com.br', 'Administrador', 'c0859afbb1427c8ead10835ae456db9', '111.111.111-11', '(00) 0000-0000', '(00) 0000-0000', 0, 'Administrador', 1);
+insert into `user`(email, name, password, cpf, phone, cell_phone, profile_rule, is_verified) 
+values ('admin@physisbrasil.com.br', 'Administrador', 'c0859afbb1427c8ead10835ae456db9', '111.111.111-11', '(00) 0000-0000', '(00) 0000-0000', 'Administrador', 1);
 
 -------- Configurations ---------
 insert into configuration(smtp_server, user_name, password, smtp_port, email)
@@ -32,10 +32,14 @@ values (1, 'Acre', 'AC'), (1, 'Amapá', 'AP'), (1, 'Amazonas', 'AM'), (1, 'Pará
 (4, 'Goiás', 'GO'), (4, 'Distrito Federal', 'DF'), (4, 'Mato Grosso', 'MT'), (4, 'Mato Grosso do Sul', 'MS'),
 (5, 'Paraná', 'PR'), (5, 'Santa Catarina', 'SC'), (5, 'Rio Grande do Sul', 'RS');
 
---- CityOrgans ---
-insert into city_organ(city_name, organ_name, cnpj, state_id)
-values ('Itabuna', 'Prefeitura Municipal', '12345678912', 9),
-('Itabuna', 'Fundação Marimbeta', '12345678913', 9);
+insert into `administrative_sphere`(name)
+values ('CONSORCIO PUBLICO'),
+('EMPRESA PUBLICA SOCIEDADE ECONOMIA MISTA'),
+('ESTADUAL'),
+('FEDERAL'),
+('MUNICIPAL'),
+('ORGANISMO INTERNACIONAL'),
+('PRIVADA');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

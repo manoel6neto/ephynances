@@ -7,14 +7,18 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import javax.ws.rs.DefaultValue;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -22,16 +26,18 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Thomas
  */
 @Entity
-@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = {"cpf", "email"}))
+@Table(name = "user")
 @NamedQueries({
-    @NamedQuery(name = "Usuario.findByEmailSenha",
-            query = "SELECT u FROM User u WHERE u.email = :email AND u.password = :password"),
+    @NamedQuery(name = "Usuario.findByEmailSenhaProfile",
+            query = "SELECT u FROM User u WHERE u.email = :email AND u.password = :password AND u.profileRule = :profile"),
+    @NamedQuery(name = "Usuario.findByCpfSenhaProfile",
+            query = "SELECT u FROM User u WHERE u.cpf = :cpf AND u.password = :password AND u.profileRule = :profile"),
     @NamedQuery(name = "Usuario.findByEmail",
             query = "SELECT u FROM User u WHERE u.email = :email")})
 public class User implements BaseModel {
 
     private static final String RULER_ADMIN = "Administrador";
-    private static final String RULER_SELLER = "Vendedor";
+    private static final String RULER_SELLER = "Representante";
     private static final String RULER_CONTRIBUTOR = "Colaborador";
 
     @Basic(optional = false)
@@ -46,6 +52,8 @@ public class User implements BaseModel {
     private Long id;
 
     @Column(name = "name", length = 150, nullable = false)
+    @NotEmpty
+    @Size(max = 150)
     private String name;
 
     @Column(name = "email", length = 200, unique = true, nullable = false)
@@ -60,12 +68,18 @@ public class User implements BaseModel {
     @Column(name = "cell_phone", length = 30, nullable = true)
     private String cellPhone;
 
-    @Column(name = "cpf", length = 16, nullable = false, unique = true)
+    @Column(name = "cpf", length = 16, nullable = false)
     @NotEmpty
     private String cpf;
 
-    @Column(name = "max_sales_amount")
-    private int maxSalesAmount;
+    @Column(name = "rg", length = 11, nullable = false)
+    @NotEmpty
+    private String rg;
+
+    @Column(name = "entity", length = 100, nullable = false)
+    @NotEmpty
+    @Size(max = 100)
+    private String entity;
 
     @Column(name = "password", length = 40, nullable = false)
     @NotEmpty
@@ -75,15 +89,60 @@ public class User implements BaseModel {
     @Column(name = "is_verified", nullable = false)
     private boolean isVerified;
 
+    @Column(name = "number_cnpjs", nullable = true)
+    private int numberCnpjs;
+
+    @Column(name = "number_cities", nullable = true)
+    private int numberCities;
+
+    @Column(name = "street", length = 200, nullable = true)
+    private String street;
+
+    @Column(name = "neighborhood", length = 200, nullable = true)
+    private String neighborhood;
+
+    @Column(name = "city", length = 200, nullable = true)
+    private String city;
+
+    @Column(name = "state", length = 200, nullable = true)
+    private String state;
+
+    @Column(name = "postal_code", length = 9, nullable = true)
+    private String postalCode;
+
+    @Column(name = "commission", nullable = false)
+    @Max(100)
+    @DefaultValue(value = "0")
+    private int commission;
+
+    @Column(name = "salary", nullable = false)
+    @DefaultValue(value = "0")
+    private int salary;
+
     //References
     @OneToMany(mappedBy = "user", orphanRemoval = true)
     private List<Agreement> agreements;
-    
+
     @OneToMany(mappedBy = "contributor", orphanRemoval = true)
     private List<SellerContributor> contributors;
-    
+
     @OneToMany(mappedBy = "seller", orphanRemoval = true)
     private List<SellerContributor> sellers;
+
+    @JoinTable(name = "user_states", joinColumns = {
+        @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "state_id", referencedColumnName = "id")})
+    @ManyToMany()
+    private List<State> states;
+
+    @JoinTable(name = "user_administrative_sphere", joinColumns = {
+        @JoinColumn(name = "user_id", referencedColumnName = "id")}, inverseJoinColumns = {
+        @JoinColumn(name = "administrative_sphere_id", referencedColumnName = "id")})
+    @ManyToMany()
+    private List<AdministrativeSphere> administrativeSpheres;
+    
+    @OneToMany(mappedBy = "user")
+    private List<ProponentSiconv> proponents;
 
     /**
      *
@@ -92,6 +151,11 @@ public class User implements BaseModel {
     @Override
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public String toString() {
+        return id.toString();
     }
 
     public String getProfileRule() {
@@ -142,12 +206,20 @@ public class User implements BaseModel {
         this.cpf = cpf;
     }
 
-    public int getMaxSalesAmount() {
-        return maxSalesAmount;
+    public String getRg() {
+        return rg;
     }
 
-    public void setMaxSalesAmount(int maxSalesAmount) {
-        this.maxSalesAmount = maxSalesAmount;
+    public void setRg(String rg) {
+        this.rg = rg;
+    }
+
+    public String getEntity() {
+        return entity;
+    }
+
+    public void setEntity(String entity) {
+        this.entity = entity;
     }
 
     public String getPassword() {
@@ -164,6 +236,78 @@ public class User implements BaseModel {
 
     public void setIsVerified(boolean isVerified) {
         this.isVerified = isVerified;
+    }
+
+    public int getNumberCnpjs() {
+        return numberCnpjs;
+    }
+
+    public void setNumberCnpjs(int numberCnpjs) {
+        this.numberCnpjs = numberCnpjs;
+    }
+
+    public int getNumberCities() {
+        return numberCities;
+    }
+
+    public void setNumberCities(int numberCities) {
+        this.numberCities = numberCities;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public String getNeighborhood() {
+        return neighborhood;
+    }
+
+    public void setNeighborhood(String neighborhood) {
+        this.neighborhood = neighborhood;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public int getCommission() {
+        return commission;
+    }
+
+    public void setCommission(int commission) {
+        this.commission = commission;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
     }
 
     public List<Agreement> getAgreements() {
@@ -190,11 +334,30 @@ public class User implements BaseModel {
         this.sellers = sellers;
     }
 
-    @Override
-    public String toString() {
-        return id.toString();
+    public List<State> getStates() {
+        return states;
     }
 
+    public void setStates(List<State> states) {
+        this.states = states;
+    }
+
+    public List<AdministrativeSphere> getAdministrativeSpheres() {
+        return administrativeSpheres;
+    }
+
+    public void setAdministrativeSpheres(List<AdministrativeSphere> administrativeSpheres) {
+        this.administrativeSpheres = administrativeSpheres;
+    }
+
+    public List<ProponentSiconv> getProponents() {
+        return proponents;
+    }
+
+    public void setProponents(List<ProponentSiconv> proponents) {
+        this.proponents = proponents;
+    }
+    
     public static String getRULER_ADMIN() {
         return RULER_ADMIN;
     }

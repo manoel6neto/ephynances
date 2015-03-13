@@ -73,10 +73,11 @@
                                             <p:menuitem value="PARCELAS" outcome="/index.xhtml" />
                                             <p:menuitem value="PAGAMENTOS" outcome="/index.xhtml" />
                                         </p:submenu>
-                                        <p:submenu label="ENDEREÇO">
+                                        <p:submenu label="GERAL">
                                             <p:menuitem value="REGIÕES" outcome="/region/list" />
                                             <p:menuitem value="ESTADOS" outcome="/state/list" />
-                                            <p:menuitem value="CIDADES" outcome="/cityorgan/list" />
+                                            <p:menuitem value="PROPONENTE SICONV" outcome="/proponentSiconv/list" />
+                                            <p:menuitem value="ESFERAS ADMINISTRATIVAS" outcome="/administrativeSphere/list" />
                                         </p:submenu>     
                                         <p:menuitem value="CONFIGURAÇÕES" outcome="/admin/form" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>                                        
                                     </p:menubar>

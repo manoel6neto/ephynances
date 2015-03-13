@@ -105,11 +105,6 @@ public class Agreement implements BaseModel {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
-    @OneToOne(optional = false)
-    @NotNull
-    @JoinColumn(name = "proponente_siconv_id", referencedColumnName = "id_proponente_siconv", nullable = false)
-    private ProponentSiconv proponenteSiconv;
-    
     @OneToMany(mappedBy = "agreement", orphanRemoval = true)
     private List<AgreementInstallment> agreementInstallments;
     
@@ -215,14 +210,6 @@ public class Agreement implements BaseModel {
 
     public void setAgreementResponsible(AgreementResponsible agreementResponsible) {
         this.agreementResponsible = agreementResponsible;
-    }
-
-    public ProponentSiconv getProponenteSiconv() {
-        return proponenteSiconv;
-    }
-
-    public void setProponenteSiconv(ProponentSiconv proponenteSiconv) {
-        this.proponenteSiconv = proponenteSiconv;
     }
 
     public User getUser() {

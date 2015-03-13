@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:composition template="/template.xhtml" >
 
@@ -26,18 +27,27 @@
                               style="color:darkred; font-size: 12px; margin-top: 5px;" />
 
                 <div class="grid_3" >
+                    <p:outputLabel value="Perfil: " for="menu"  />
+                    <p:selectOneMenu id="menu" style="width: auto" value="#{loginController.profileRule}" required="true" effect="fade">
+                        <f:selectItem itemLabel="#{userController.RULER_ADMIN}" itemValue="#{userController.RULER_ADMIN}" />
+                        <f:selectItem itemLabel="#{userController.RULER_SELLER}" itemValue="#{userController.RULER_SELLER}" />
+                        <f:selectItem itemLabel="#{userController.RULER_CONTRIBUTOR}" itemValue="#{userController.RULER_CONTRIBUTOR}" />
+                    </p:selectOneMenu>
+                </div>
+                <div class="grid_3" >
                     <label for="loginEmail">Email:</label>
-                    <h:inputText id="loginEmail" value="#{loginController.email}" maxlength="80" />
+                    <p:inputText id="loginEmail" value="#{loginController.email}" maxlength="200" />
                 </div>
                 <br class="clear" />
                 <div class="grid_3" >
                     <label for="loginPass">Senha:</label>
-                    <h:inputSecret id="loginPass" value="#{loginController.senha}" maxlength="40" />
+                    <p:password id="loginPass" value="#{loginController.senha}" maxlength="40" autocomplete="off" promptLabel="6 à 40 caracteres"/>
                 </div>
                 <br class="clear" />
 
+                <br class="clear" />
                 <div class="grid_3" >
-                    <h:commandButton action="#{loginController.login}" value="Login" class="grid_1 alpha" />
+                    <p:commandButton action="#{loginController.login}" value="Login" class="grid_1 alpha" />
                     <a onclick="cd.show()" href="#">Esqueci minha senha</a>
                 </div>                
             </h:form>

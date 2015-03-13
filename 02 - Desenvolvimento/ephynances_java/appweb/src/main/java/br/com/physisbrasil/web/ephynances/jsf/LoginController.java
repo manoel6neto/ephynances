@@ -23,13 +23,26 @@ public class LoginController implements Serializable {
 
     private String email;
     private String senha;
+    private String profileRule;
+    private User user;
 
     @EJB
     private UserBean usuarioBean;
 
     public String login() {
         try {
-            User user = usuarioBean.findByEmailSenha(email, Criptografia.criptografar(senha));
+            if(email.contains("@")) {
+                user = usuarioBean.findByEmailSenhaProfile(email, Criptografia.criptografar(senha), profileRule);
+            } else {
+                if (email.length() != 11) {
+                    JsfUtil.addErrorMessage("Informe um cpf ou email válido. Utilize apenas números para o cpf!");
+                    return "login";
+                }
+                email = new StringBuilder(email).insert(3, ".").toString();
+                email = new StringBuilder(email).insert(7, ".").toString();
+                email = new StringBuilder(email).insert(11, "-").toString();
+                user = usuarioBean.findByCpfSenhaProfile(email, Criptografia.criptografar(senha), profileRule);
+            }
 
             if (user.isIsVerified()) {
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -70,6 +83,14 @@ public class LoginController implements Serializable {
         this.senha = senha;
     }
 
+    public String getProfileRule() {
+        return profileRule;
+    }
+
+    public void setProfileRule(String profileRule) {
+        this.profileRule = profileRule;
+    }
+    
     public User getLoggedUser() {
         return (User) JsfUtil.getSessionAttribute(AbstractFilter.USER_KEY);
     }
