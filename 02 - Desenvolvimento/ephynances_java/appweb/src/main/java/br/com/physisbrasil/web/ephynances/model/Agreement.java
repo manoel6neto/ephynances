@@ -33,7 +33,7 @@ public class Agreement implements BaseModel {
 
     private static final List<String> AGREEMENT_TYPES = new ArrayList<String>() {
         {
-            add("Município");
+            add("Municipal");
             add("Parlamentar");
             add("Fundação");
             add("Consórcio");
