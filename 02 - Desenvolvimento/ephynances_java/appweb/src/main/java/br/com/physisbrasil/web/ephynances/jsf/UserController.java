@@ -1,8 +1,10 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
+import br.com.physisbrasil.web.ephynances.ejb.ActivationBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.SellerContributorBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
+import br.com.physisbrasil.web.ephynances.model.Activation;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
@@ -38,6 +40,9 @@ public class UserController extends BaseController {
 
     @EJB
     private SellerContributorBean sellerContributorBean;
+    
+    @EJB
+    private ActivationBean activationBean;
 
     @PostConstruct
     public void init() {
@@ -97,6 +102,16 @@ public class UserController extends BaseController {
                     user.setIsVerified(false);
                     usuarioBean.create(user);
                     usuarioBean.clearCache();
+                    
+                    Activation activation = new Activation();
+                    activation.setUser(user);
+                    activation.setDueDate(null);
+                    activation.setToken(generateToken(user));
+                    activationBean.create(activation);
+                    activationBean.clearCache();
+                    
+                    //Enviar email com o link contendo o token para realizar o processo de validação e ativação
+                    
                     JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
                 }
             } else {
@@ -313,5 +328,11 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Erro.");
         }
+    }
+    
+    private String generateToken(User user) {
+        String token = Criptografia.criptografar(user.getId() + user.getEmail());
+        
+        return token;
     }
 }

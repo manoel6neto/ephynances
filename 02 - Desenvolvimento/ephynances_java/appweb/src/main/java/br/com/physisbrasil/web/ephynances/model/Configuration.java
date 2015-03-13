@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -49,10 +48,25 @@ public class Configuration implements BaseModel {
     @Size(max = 200)
     private String email;
     
-    @Column(name = "iss", nullable = false)
+    @Column(name = "CSLL", nullable = false)
     @Max(100)
     @DefaultValue(value = "0")
-    private int iss;
+    private int CSLL;
+    
+    @Column(name = "PIS", nullable = false)
+    @Max(100)
+    @DefaultValue(value = "0")
+    private int PIS;
+    
+    @Column(name = "COFINS", nullable = false)
+    @Max(100)
+    @DefaultValue(value = "0")
+    private int COFINS;
+    
+    @Column(name = "IRPJ", nullable = false)
+    @Max(100)
+    @DefaultValue(value = "0")
+    private int IRPJ;
 
     @Override
     public Long getId() {
@@ -99,6 +113,38 @@ public class Configuration implements BaseModel {
         this.email = email;
     }
 
+    public int getCSLL() {
+        return CSLL;
+    }
+
+    public void setCSLL(int CSLL) {
+        this.CSLL = CSLL;
+    }
+
+    public int getPIS() {
+        return PIS;
+    }
+
+    public void setPIS(int PIS) {
+        this.PIS = PIS;
+    }
+
+    public int getCOFINS() {
+        return COFINS;
+    }
+
+    public void setCOFINS(int COFINS) {
+        this.COFINS = COFINS;
+    }
+
+    public int getIRPJ() {
+        return IRPJ;
+    }
+
+    public void setIRPJ(int IRPJ) {
+        this.IRPJ = IRPJ;
+    }
+    
     @Override
     public String toString() {
         return id.toString();

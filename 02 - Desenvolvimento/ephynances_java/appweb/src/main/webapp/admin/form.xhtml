@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
-konsole
+    konsole
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
             <h:outputText  value="Configurações do Sistema" />
@@ -13,7 +13,7 @@ konsole
         <ui:define name="body">
             <f:event type="preRenderView" listener="#{loginController.isUserInRuller(userController.RULER_ADMIN)}" />
             <h:form id="form" styleClass="form">
-                
+
                 <br class="clear" />
                 <br/>
                 <p:fieldset legend="Envio de email" toggleable="true" collapsed="false">
@@ -21,40 +21,74 @@ konsole
                     <br class="clear" />                    
                     <div class="grid_4 alpha" >
                         <p:outputLabel  value="SMTP HostName: " />
-                        <p:inputText value="#{configurationController.configuration.smtpServer}" required="false" />
+                        <p:inputText value="#{configurationController.configuration.smtpServer}" required="true" requiredMessage="Não pode ser em branco."/>
                     </div>
 
                     <br class="clear" />
                     <div class="grid_4 alpha" >
                         <p:outputLabel  value="Usuário: "/>
-                        <p:inputText value="#{configurationController.configuration.userName}" required="false" />
+                        <p:inputText value="#{configurationController.configuration.userName}" required="true" requiredMessage="Não pode ser em branco."/>
                     </div>
 
                     <br class="clear" />
                     <div class="grid_4 alpha" >
                         <p:outputLabel  value="Senha: "/>
-                        <p:password value="#{configurationController.configuration.password}" required="false" />
+                        <p:inputText value="#{configurationController.configuration.password}" required="true" requiredMessage="Não pode ser em branco."/>
                     </div>
 
                     <br class="clear" />
                     <div class="grid_4 alpha" >
                         <p:outputLabel  value="SMTP Port: "/>
-                        <p:inputText value="#{configurationController.configuration.smtpPort}" required="false" />
+                        <p:inputText value="#{configurationController.configuration.smtpPort}" required="true" requiredMessage="Não pode ser em branco."/>
                     </div>
 
                     <br class="clear" />
                     <div class="grid_4 alpha" >
                         <p:outputLabel  value="Email de envio: " />
-                        <p:inputText value="#{configurationController.configuration.email}" required="false" />
-                    </div>
-
-                    <br class="clear" />
-                    <br/>
-                    <div class="grid_12 alpha" style="line-height: 30px;" >
-                        <p:commandButton styleClass="grid_1 alpha" action="#{configurationController.save}" ajax="false" value="Salvar"/>
-                        <h:link styleClass="grid_1" outcome="/index.xhtml" value="Voltar" />
+                        <p:inputText style="margin-bottom: 10px" value="#{configurationController.configuration.email}" required="true" requiredMessage="Não pode ser em branco."/>
                     </div>
                 </p:fieldset>
+                
+                <br class="clear" />
+                <br/>
+                <p:fieldset legend="Impostos" toggleable="true" collapsed="false">
+
+                    <br class="clear" />                    
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel  id="csll" value="CSLL(%): " />
+                        <p:inputText value="#{configurationController.configuration.CSLL}" required="true" requiredMessage="Não pode ser em branco."/>
+                        <p:watermark id="wmcsll" for="csll" value="0"/>
+                    </div>
+                    
+                    <br class="clear" />                    
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel  id="pis" value="PIS(%): " />
+                        <p:inputText value="#{configurationController.configuration.PIS}" required="true" requiredMessage="Não pode ser em branco."/>
+                        <p:watermark id="wmpis" for="pis" value="0"/>
+                    </div>
+                    
+                    <br class="clear" />                    
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel  id="cofins" value="COFINS(%): " />
+                        <p:inputText value="#{configurationController.configuration.COFINS}" required="true" requiredMessage="Não pode ser em branco."/>
+                        <p:watermark id="wmcofins" for="cofins" value="0"/>
+                    </div>
+                    
+                    <br class="clear" />                    
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel  id="irpj" value="IRPJ(%): " />
+                        <p:inputText style="margin-bottom: 10px" value="#{configurationController.configuration.IRPJ}" required="true" requiredMessage="Não pode ser em branco."/>
+                        <p:watermark id="wmirpj" for="irpj" value="0"/>
+                    </div>
+
+                </p:fieldset>
+
+                <br class="clear" />
+                <br/>
+                <div class="grid_12 alpha" style="line-height: 30px;" >
+                    <p:commandButton styleClass="grid_1 alpha" action="#{configurationController.save}" ajax="false" value="Salvar" update="form"/>
+                    <h:link styleClass="grid_1" outcome="/index.xhtml" value="Voltar" />
+                </div>
             </h:form>
         </ui:define>
     </ui:composition>
