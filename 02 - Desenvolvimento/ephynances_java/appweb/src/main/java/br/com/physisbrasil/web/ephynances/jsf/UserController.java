@@ -243,53 +243,12 @@ public class UserController extends BaseController {
         this.listUser = listUser;
     }
 
-    public void recoverPassword() {
-        try {
-            User usr = usuarioBean.findByEmail(recoverEmail);
-            if (usr == null) {
-                JsfUtil.addErrorMessage("Email inválido!");
-                return;
-            }
-
-            String decriptedPass = Utils.randomPassword();
-            usr.setPassword(Criptografia.criptografar(decriptedPass));
-
-            if (sendMail(usr, decriptedPass, true)) {
-                usuarioBean.edit(usr);
-                JsfUtil.addSuccessMessage("E-mail de recuperação de senha enviado com sucesso!");
-            } else {
-                JsfUtil.addErrorMessage("Falha ao enviar e-mail de recuperação de senha!");
-            }
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Falha resetar senha!");
-        }
-    }
-
     public void setRecoverEmail(String recoverEmail) {
         this.recoverEmail = recoverEmail;
     }
 
     public void setOldPass(String oldPass) {
         this.oldPass = oldPass;
-    }
-
-    private boolean sendMail(User user, String decriptedPass, boolean edit) {
-
-        try {
-            String message = "Sua conta foi cadastrada no sistema.";
-            if (edit) {
-                message = "Sua conta foi alterada no sistema.";
-            }
-            message += "\nSua senha é: " + decriptedPass;
-
-            Configuration config = configurationBean.find(1);
-
-            return Utils.sendEmail(user.getEmail(), user.getName(), message, config.getSmtpServer(), config.getEmail(), "Nova senha", config.getUserName(), config.getPassword(),
-                    config.getSmtpPort(), "Physis Ephynances");
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage("Falha ao enviar email. Solicite ajuda do Administrador.");
-            return false;
-        }
     }
 
     public List<User> getListUsers() {
