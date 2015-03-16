@@ -28,6 +28,12 @@
                     <p:outputLabel value="Nome: " for="name"  />
                     <p:inputText id="name" value="#{userController.user.name}" required="true" requiredMessage="Nome é necessário"/> 
                 </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Entidade: " for="entidade"  />
+                    <p:inputText id="entidade" value="#{userController.user.entity}" required="true" requiredMessage="Entidade é necessário" /> 
+                </div>
 
                 <br class="clear" />
                 <div class="grid_4 alpha" >
@@ -40,6 +46,12 @@
                     <p:outputLabel value="CPF: " for="cpf"  />
                     <p:inputMask id="cpf" value="#{userController.user.cpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"/> 
                 </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="RG: " for="rg"  />
+                    <p:inputMask id="cpf" value="#{userController.user.rg}" mask="99999999-99" required="true" requiredMessage="RG é necessário"/> 
+                </div>
 
                 <br class="clear" />
                 <div class="grid_4 alpha" >
@@ -50,20 +62,10 @@
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Celular: " for="cellphone"  />
-                    <p:inputMask id="cellphone" value="#{userController.user.cellPhone}" required="false" mask="(99) 9999-9999"/> 
+                    <p:inputMask id="cellphone" value="#{userController.user.cellPhone}" required="false" mask="(99) 9999-99999"/> 
                 </div>
-
-                <br class="clear" />
-                <div class="grid_2 alpha" >
-                    <p:outputLabel  value="Nova Senha: " for="formPassword" />
-                    <p:password styleClass="grid_2" autocomplete="off" id="formPassword" value="#{userController.user.password}" match="confPassword"
-                                feedback="true" promptLabel="6 à 40 caracteres" weakLabel="fraca" goodLabel="média" strongLabel="forte" required="true" requiredMessage="Senha é necessária"/> 
-                </div>
-                <div class="grid_2" >
-                    <p:outputLabel value="Confirmação Senha: " for="confPassword"/>
-                    <p:password styleClass="grid_2" autocomplete="off"  id="confPassword" value="#{userController.user.password}"  /> 
-                </div>
-
+                
+                
                 <br class="clear" />
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >

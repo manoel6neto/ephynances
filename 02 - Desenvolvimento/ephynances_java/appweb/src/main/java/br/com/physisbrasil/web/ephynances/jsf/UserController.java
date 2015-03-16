@@ -100,6 +100,7 @@ public class UserController extends BaseController {
                         }
                     }
                     user.setIsVerified(false);
+                    user.setPassword(Criptografia.criptografar(user.getCpf() + String.valueOf(System.currentTimeMillis())));
                     usuarioBean.create(user);
                     usuarioBean.clearCache();
                     
@@ -110,7 +111,8 @@ public class UserController extends BaseController {
                     activationBean.create(activation);
                     activationBean.clearCache();
                     
-                    //Enviar email com o link contendo o token para realizar o processo de validação e ativação
+                    Configuration config = configurationBean.findAll().get(0);
+                    Utils.sendEmail(user.getEmail(), user.getName(), "http://localhost:8080/ephynances/activation/active?token=" + activation.getToken(), config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
                     
                     JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
                 }
