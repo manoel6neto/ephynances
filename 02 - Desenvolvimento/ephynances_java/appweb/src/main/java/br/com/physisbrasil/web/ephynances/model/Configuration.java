@@ -163,6 +163,10 @@ public class Configuration implements BaseModel {
             return false;
         }
         final Configuration other = (Configuration) object;
-        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
+        if (this.id != null) {
+            return this.id.equals(other.id);
+        }
+        
+        return false;
     }
 }

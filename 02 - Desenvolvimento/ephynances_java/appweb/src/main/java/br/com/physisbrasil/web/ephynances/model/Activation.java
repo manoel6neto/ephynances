@@ -88,6 +88,10 @@ public class Activation implements BaseModel {
             return false;
         }
         final Activation other = (Activation) object;
-        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
+        if (this.id != null) {
+            return this.id.equals(other.id);
+        }
+        
+        return false;
     }
 }

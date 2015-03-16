@@ -115,6 +115,10 @@ public class State implements BaseModel {
             return false;
         }
         final State other = (State) object;
-        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
+        if (this.id != null) {
+            return this.id.equals(other.id);
+        }
+        
+        return false;
     }
 }

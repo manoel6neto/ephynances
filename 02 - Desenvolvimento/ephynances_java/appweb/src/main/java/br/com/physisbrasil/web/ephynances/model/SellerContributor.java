@@ -81,6 +81,10 @@ public class SellerContributor implements BaseModel {
             return false;
         }
         final SellerContributor other = (SellerContributor) object;
-        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
+        if (this.id != null) {
+            return this.id.equals(other.id);
+        }
+        
+        return false;
     }
 }

@@ -104,6 +104,10 @@ public class CityOrgan implements BaseModel {
             return false;
         }
         final CityOrgan other = (CityOrgan) object;
-        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
+        if (this.id != null) {
+            return this.id.equals(other.id);
+        }
+        
+        return false;
     }
 }

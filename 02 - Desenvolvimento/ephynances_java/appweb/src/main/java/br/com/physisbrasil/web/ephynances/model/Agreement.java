@@ -413,6 +413,10 @@ public class Agreement implements BaseModel {
             return false;
         }
         final Agreement other = (Agreement) object;
-        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
+        if (this.id != null) {
+            return this.id.equals(other.id);
+        }
+        
+        return false;
     }
 }

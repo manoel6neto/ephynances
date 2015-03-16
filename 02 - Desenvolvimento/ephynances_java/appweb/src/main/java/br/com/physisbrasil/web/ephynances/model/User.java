@@ -1,6 +1,5 @@
 package br.com.physisbrasil.web.ephynances.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -15,12 +14,10 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.ws.rs.DefaultValue;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -53,12 +50,10 @@ public class User implements BaseModel {
     private Long id;
 
     @Column(name = "name", length = 150, nullable = false)
-    @NotEmpty
     @Size(max = 150)
     private String name;
 
-    @Column(name = "email", length = 200, unique = true, nullable = false)
-    @NotEmpty
+    @Column(name = "email", length = 200, nullable = false)
     @Pattern(regexp = EMAIL_REGEX, message = "Email mal formatado")
     @Size(max = 200)
     private String email;
@@ -70,20 +65,16 @@ public class User implements BaseModel {
     private String cellPhone;
 
     @Column(name = "cpf", length = 16, nullable = false)
-    @NotEmpty
     private String cpf;
 
     @Column(name = "rg", length = 11, nullable = false)
-    @NotEmpty
     private String rg;
 
     @Column(name = "entity", length = 100, nullable = false)
-    @NotEmpty
     @Size(max = 100)
     private String entity;
 
     @Column(name = "password", length = 40, nullable = false)
-    @NotEmpty
     @Size(min = 6, max = 40, message = "Tamanho deve ser entre 6 e 40 caracteres.")
     private String password;
 
@@ -112,8 +103,6 @@ public class User implements BaseModel {
     private String postalCode;
 
     @Column(name = "commission", nullable = false)
-    @Max(100)
-    @DefaultValue(value = "0")
     private int commission;
 
     @Column(name = "salary", nullable = false)
@@ -384,6 +373,11 @@ public class User implements BaseModel {
             return false;
         }
         final User other = (User) object;
-        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
+        
+        if (this.id != null) {
+            return this.id.equals(other.id);
+        }
+        
+        return false;
     }
 }

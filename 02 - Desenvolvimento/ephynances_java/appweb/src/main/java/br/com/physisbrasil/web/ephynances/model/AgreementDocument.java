@@ -122,6 +122,10 @@ public class AgreementDocument implements BaseModel {
             return false;
         }
         final AgreementDocument other = (AgreementDocument) object;
-        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
+        if (this.id != null) {
+            return this.id.equals(other.id);
+        }
+        
+        return false;
     }
 }
