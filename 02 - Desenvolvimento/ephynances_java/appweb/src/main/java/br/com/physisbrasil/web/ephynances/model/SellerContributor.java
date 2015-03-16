@@ -28,14 +28,14 @@ public class SellerContributor implements BaseModel {
     @Column(name = "id")
     private Long id;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = true)
     @NotNull
-    @JoinColumn(name = "seller_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "seller_id", referencedColumnName = "id", nullable = true)
     private User seller;
 
-    @OneToOne(optional = false)
+    @OneToOne(optional = true)
     @NotNull
-    @JoinColumn(name = "contributor_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "contributor_id", referencedColumnName = "id", nullable = true)
     private User contributor;
 
     /**
@@ -66,5 +66,21 @@ public class SellerContributor implements BaseModel {
     @Override
     public String toString() {
         return id.toString();
+    }
+    
+     @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof SellerContributor)) {
+            return false;
+        }
+        final SellerContributor other = (SellerContributor) object;
+        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
     }
 }

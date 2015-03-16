@@ -108,4 +108,20 @@ public class PaymentDocument implements BaseModel {
     public String toString() {
         return id.toString();
     }
+    
+     @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof PaymentDocument)) {
+            return false;
+        }
+        final PaymentDocument other = (PaymentDocument) object;
+        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
+    }
 }

@@ -96,10 +96,25 @@ public class State implements BaseModel {
     public void setUsers(List<User> users) {
         this.users = users;
     }
-
+    
     @Override
     public String toString() {
         return id.toString();
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof State)) {
+            return false;
+        }
+        final State other = (State) object;
+        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
+    }
 }

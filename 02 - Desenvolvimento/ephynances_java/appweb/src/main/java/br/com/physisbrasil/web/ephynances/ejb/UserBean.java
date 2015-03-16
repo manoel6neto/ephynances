@@ -3,6 +3,7 @@ package br.com.physisbrasil.web.ephynances.ejb;
 import br.com.physisbrasil.web.ephynances.dao.DAO;
 import br.com.physisbrasil.web.ephynances.model.User;
 import javax.ejb.Stateless;
+import javax.faces.bean.ViewScoped;
 import javax.persistence.TypedQuery;
 
 /**
@@ -10,6 +11,7 @@ import javax.persistence.TypedQuery;
  * @author Thomas
  */
 @Stateless
+@ViewScoped
 public class UserBean extends DAO<User> {
 
     public User findByEmailSenhaProfile(String email, String senha, String profile) {

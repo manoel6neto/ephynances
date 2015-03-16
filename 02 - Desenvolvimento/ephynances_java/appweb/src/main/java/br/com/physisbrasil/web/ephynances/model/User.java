@@ -1,5 +1,6 @@
 package br.com.physisbrasil.web.ephynances.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -13,7 +14,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
@@ -145,10 +145,6 @@ public class User implements BaseModel {
     @OneToMany(mappedBy = "user")
     private List<ProponentSiconv> proponents;
     
-    @OneToOne(optional = true)
-    @JoinColumn(name = "activation_id", referencedColumnName = "id", nullable = true)
-    private Activation activation;
-
     /**
      *
      * @return
@@ -363,14 +359,6 @@ public class User implements BaseModel {
         this.proponents = proponents;
     }
 
-    public Activation getActivation() {
-        return activation;
-    }
-
-    public void setActivation(Activation activation) {
-        this.activation = activation;
-    }
-    
     public static String getRULER_ADMIN() {
         return RULER_ADMIN;
     }
@@ -382,5 +370,20 @@ public class User implements BaseModel {
     public static String getRULER_CONTRIBUTOR() {
         return RULER_CONTRIBUTOR;
     }
-
+    
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof User)) {
+            return false;
+        }
+        final User other = (User) object;
+        return this.id.equals(other.id) || (this.id != null && this.id.equals(other.id));
+    }
 }

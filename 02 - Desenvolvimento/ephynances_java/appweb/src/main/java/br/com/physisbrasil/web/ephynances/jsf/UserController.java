@@ -40,7 +40,7 @@ public class UserController extends BaseController {
 
     @EJB
     private SellerContributorBean sellerContributorBean;
-    
+
     @EJB
     private ActivationBean activationBean;
 
@@ -73,6 +73,7 @@ public class UserController extends BaseController {
     public String save() {
         try {
             if (user != null) {
+
                 if (user.getId() != null) {
                     if (user.getCpf() != null && !user.getCpf().equals("")) {
                         if (!ValidaCpf.isCPF(user.getCpf().replace(".", "").replace("-", ""))) {
@@ -103,17 +104,17 @@ public class UserController extends BaseController {
                     user.setPassword(Criptografia.criptografar(user.getCpf() + String.valueOf(System.currentTimeMillis())));
                     usuarioBean.create(user);
                     usuarioBean.clearCache();
-                    
+
                     Activation activation = new Activation();
                     activation.setUser(user);
                     activation.setDueDate(null);
                     activation.setToken(generateToken(user));
                     activationBean.create(activation);
                     activationBean.clearCache();
-                    
+
                     Configuration config = configurationBean.findAll().get(0);
-                    Utils.sendEmail(user.getEmail(), user.getName(), "http://localhost:8080/ephynances/activation/active?token=" + activation.getToken(), config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
-                    
+                    Utils.sendEmail(user.getEmail(), user.getName(), "http://localhost:8080/ephynances/activation/active.xhtml?token=" + activation.getToken(), config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
+
                     JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
                 }
             } else {
@@ -331,10 +332,10 @@ public class UserController extends BaseController {
             JsfUtil.addErrorMessage("Erro.");
         }
     }
-    
+
     private String generateToken(User user) {
         String token = Criptografia.criptografar(user.getId() + user.getEmail());
-        
+
         return token;
     }
 }
