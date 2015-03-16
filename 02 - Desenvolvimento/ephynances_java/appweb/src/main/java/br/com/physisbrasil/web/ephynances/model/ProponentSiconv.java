@@ -279,4 +279,20 @@ public class ProponentSiconv implements BaseModel {
     public void setAgreement(Agreement agreement) {
         this.agreement = agreement;
     }
+    
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 97 * hash + (this.idProponenteSiconv != null ? this.idProponenteSiconv.hashCode() : 0);
+        return hash;
+    }
+    
+    @Override
+    public boolean equals(Object object) {
+        if (!(object instanceof ProponentSiconv)) {
+            return false;
+        }
+        final ProponentSiconv other = (ProponentSiconv) object;
+        return this.idProponenteSiconv.equals(other.idProponenteSiconv) || (this.idProponenteSiconv != null && this.idProponenteSiconv.equals(other.idProponenteSiconv));
+    }
 }

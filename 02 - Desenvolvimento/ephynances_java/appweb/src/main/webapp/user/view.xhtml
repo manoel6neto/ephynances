@@ -12,7 +12,7 @@
         </ui:define>
         <ui:define name="body"  >
             <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER, userController.RULER_CONTRIBUTOR])}" />
-            <h:form id="formUser" styleClass="form" >
+            <h:form id="form" styleClass="form" >
                 <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
                 
                 <br class="clear" />
@@ -39,6 +39,12 @@
                     <p:inputText id="cpf" value="#{userController.user.cpf}" disabled="true" /> 
                 </div>
                 
+                 <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="RG: " for="rg"  />
+                    <p:inputText id="rg" value="#{userController.user.rg}" disabled="true" /> 
+                </div>
+                
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Telefone: " for="phone"  />
@@ -51,6 +57,88 @@
                     <p:inputText id="cellphone" value="#{userController.user.cellPhone}" disabled="true" /> 
                 </div>
                 
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Quant. CNPJ's: " for="qntCnpj" />
+                    <p:inputText id="qntCnpj" value="#{userController.user.numberCnpjs}" disabled="true" /> 
+                </div>
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Quant. Cidades: " for="qntCidades" />
+                    <p:inputText id="qntCidades" value="#{userController.user.numberCities}" disabled="true" /> 
+                </div>
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Logradouro: " for="logradouro" />
+                    <p:inputText id="logradouro" value="#{userController.user.street}" disabled="true" /> 
+                </div>
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Bairro: " for="bairro" />
+                    <p:inputText id="bairro" value="#{userController.user.neighborhood}" disabled="true" /> 
+                </div>
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Estado: " for="estado" />
+                    <p:inputText id="estado" value="#{userController.user.state}" disabled="true" /> 
+                </div>
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Cidade: " for="cidade" />
+                    <p:inputText id="cidade" value="#{userController.user.city}" disabled="true" /> 
+                </div>
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Cep: " for="cep" />
+                    <p:inputText id="cep" value="#{userController.user.postalCode}" disabled="true" /> 
+                </div>
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Comissão: " for="comissao" />
+                    <p:inputText id="comissao" value="#{userController.user.commission}" disabled="true"/>
+                </div>
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Salário: " for="salario" />
+                    <p:inputText id="salario" value="#{userController.user.salary}" disabled="true" />
+                    <p:watermark value="0" for="salario" />
+                </div>
+
+                <br class="clear" />
+                <br class="clear" />
+                <p:outputLabel value="Esferas Administrativas: " for="esferas" />
+                <div class="grid_4 alpha" >
+                    <p:selectManyMenu id="esferas" value="#{userController.user.administrativeSpheres}" converter="sphereConverter"
+                                      var="t" filter="true" filterMatchMode="contains" showCheckbox="true" disabled="true">
+                        <f:selectItems value="#{administrativeSphereController.administrativeSpheres}" var="sphere" itemLabel="#{sphere.name}" itemValue="#{sphere}" />
+                        <p:column>
+                            <h:outputText value="#{t.name}" />
+                        </p:column>
+                    </p:selectManyMenu>
+                </div>
+
+                <br class="clear" />
+                <br class="clear" />
+                <p:outputLabel value="Estados: " for="estados" />
+                <div class="grid_4 alpha" >
+                    <p:selectManyMenu id="estados" value="#{userController.user.states}" converter="stateConverter"
+                                      var="t" filter="true" filterMatchMode="contains" showCheckbox="true" disabled="true">
+                        <f:selectItems value="#{stateController.states}" var="states" itemLabel="#{states.name}" itemValue="#{states}" />
+                        <p:column>
+                            <h:outputText value="#{t.name}" />
+                        </p:column>
+                    </p:selectManyMenu>
+                </div>
+                
+                <br class="clear" />
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >
                     <h:link styleClass="grid_1"  outcome="list" value="Voltar"  />
