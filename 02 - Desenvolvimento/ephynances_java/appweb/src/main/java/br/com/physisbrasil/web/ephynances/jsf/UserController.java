@@ -242,28 +242,6 @@ public class UserController extends BaseController {
         this.listUser = listUser;
     }
 
-    public void recoverPassword() {
-        try {
-            User usr = usuarioBean.findByEmail(recoverEmail);
-            if (usr == null) {
-                JsfUtil.addErrorMessage("Email inválido!");
-                return;
-            }
-
-            String decriptedPass = Utils.randomPassword();
-            usr.setPassword(Criptografia.criptografar(decriptedPass));
-
-            if (sendMail(usr, decriptedPass, true)) {
-                usuarioBean.edit(usr);
-                JsfUtil.addSuccessMessage("E-mail de recuperação de senha enviado com sucesso!");
-            } else {
-                JsfUtil.addErrorMessage("Falha ao enviar e-mail de recuperação de senha!");
-            }
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Falha resetar senha!");
-        }
-    }
-
     public void setRecoverEmail(String recoverEmail) {
         this.recoverEmail = recoverEmail;
     }
