@@ -1,9 +1,12 @@
 package br.com.physisbrasil.web.ephynances.util;
 
+import br.com.physisbrasil.web.ephynances.model.User;
 import java.util.Random;
+import javax.mail.Message;
+import javax.mail.*;
+import javax.mail.internet.*;
+import javax.mail.internet.MimeMessage;
 import javax.xml.bind.DatatypeConverter;
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.SimpleEmail;
 
 /**
  *
@@ -12,21 +15,39 @@ import org.apache.commons.mail.SimpleEmail;
 public class Utils {
 
     public static boolean sendEmail(String toEmail, String toName, String message, String smtpServer,
-            String sender, String subject, String user, String passwd, Integer smtpPort, String senderIdentify) throws EmailException {
+            String sender, String subject, String user, String passwd, Integer smtpPort, String senderIdentify) throws MessagingException {
 
+        java.util.Properties props = new java.util.Properties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.host", smtpServer);
+        props.put("mail.user", user);
+        props.put("mail.password", passwd);
+        //props.put("mail.smtp.port", smtpPort);
+        
+        Session session = Session.getDefaultInstance(props, null);
+
+        Message msg = new MimeMessage(session);
         try {
-            SimpleEmail simpleEmail = new SimpleEmail();
-            simpleEmail.setHostName(smtpServer); // SMTP server
-            simpleEmail.addTo(toEmail, toName); //to  email and name 
-            simpleEmail.setFrom(sender, senderIdentify); // from  
-            simpleEmail.setSubject(subject); //subject 
-            simpleEmail.setMsg(message); //msg  
-            simpleEmail.setAuthentication(user, passwd);  // user and passwd
-            simpleEmail.setSmtpPort(smtpPort);  // SMTP port                
-            simpleEmail.send();
+//            SimpleEmail simpleEmail = new SimpleEmail();
+//            simpleEmail.setHostName(smtpServer); // SMTP server
+//            simpleEmail.addTo(toEmail, toName); //to  email and name 
+//            simpleEmail.setFrom(sender, senderIdentify); // from  
+//            simpleEmail.setSubject(subject); //subject 
+//            simpleEmail.setMsg(message); //msg  
+//            simpleEmail.setAuthentication(user, passwd);  // user and passwd
+//            simpleEmail.setSmtpPort(smtpPort);  // SMTP port                
+//            simpleEmail.send();
+            
+            msg.setFrom(new InternetAddress(sender));
+            msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            msg.setSubject(subject);
+            msg.setText(message);
+
+            // Send the message.
+            Transport.send(msg);
 
             return true;
-        } catch (EmailException e) {
+        } catch (MessagingException e) {
             JsfUtil.addErrorMessage(e, "Falha na solicitação de envio do email. Consulte o Administrador.");
         }
 
@@ -76,5 +97,11 @@ public class Utils {
         //  - the first one is login,
         //  - the second one password
         return new String(decodedBytes).split(":", 2);
+    }
+    
+    public static String generateToken(User user) {
+        String token = Criptografia.criptografar(user.getId() + user.getEmail());
+        
+        return token;
     }
 }

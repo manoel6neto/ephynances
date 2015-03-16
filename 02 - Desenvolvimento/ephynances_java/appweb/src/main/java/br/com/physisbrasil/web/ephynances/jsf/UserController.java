@@ -107,7 +107,7 @@ public class UserController extends BaseController {
                     Activation activation = new Activation();
                     activation.setUser(user);
                     activation.setDueDate(null);
-                    activation.setToken(generateToken(user));
+                    activation.setToken(Utils.generateToken(user));
                     activationBean.create(activation);
                     activationBean.clearCache();
                     
@@ -289,11 +289,5 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Erro.");
         }
-    }
-    
-    private String generateToken(User user) {
-        String token = Criptografia.criptografar(user.getId() + user.getEmail());
-        
-        return token;
     }
 }
