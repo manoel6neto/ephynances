@@ -250,25 +250,6 @@ public class UserController extends BaseController {
         this.oldPass = oldPass;
     }
 
-    private boolean sendMail(User user, String decriptedPass, boolean edit) {
-
-        try {
-            String message = "Sua conta foi cadastrada no sistema.";
-            if (edit) {
-                message = "Sua conta foi alterada no sistema.";
-            }
-            message += "\nSua senha é: " + decriptedPass;
-
-            Configuration config = configurationBean.find(1);
-
-            return Utils.sendEmail(user.getEmail(), user.getName(), message, config.getSmtpServer(), config.getEmail(), "Nova senha", config.getUserName(), config.getPassword(),
-                    config.getSmtpPort(), "Physis Ephynances");
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage("Falha ao enviar email. Solicite ajuda do Administrador.");
-            return false;
-        }
-    }
-
     public List<User> getListUsers() {
         return listUser;
     }
