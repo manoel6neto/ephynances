@@ -48,7 +48,7 @@
                 <br class="clear" />
                 <div class="grid_3" >
                     <p:commandButton action="#{loginController.login}" value="Login" class="grid_1 alpha" />
-                    <a onclick="cd.show()" href="#">Esqueci minha senha</a>
+                    <a onclick="PF('cd').show()" href="#">Esqueci minha senha</a>
                 </div>                
             </h:form>
 
@@ -56,14 +56,14 @@
                 <h:form styleClass="form">
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Email" for="formEmail"/>
-                        <p:inputText id="formEmail" autocomplete="off" value="#{usuarioController.recoverEmail}" /> 
+                        <p:inputText id="formEmail" autocomplete="off" value="#{loginController.recoverEmail}" /> 
                         <p:message for="formEmail" />
                     </div>
 
                     <br class="clear" />
                     <p:separator/>
-                    <p:commandButton value="Enviar" action="#{usuarioController.recoverPassword}" icon="ui-icon-closethick" update="@all" />
-                    <p:commandButton value="Cancelar" onclick="cd.hide();" type="button" /> 
+                    <p:commandButton value="Enviar" action="#{loginController.recoverPassword}" icon="ui-icon-closethick" />
+                    <p:commandButton value="Cancelar" onclick="PF('cd').hide();" type="button" /> 
                 </h:form>
             </p:dialog>
 
