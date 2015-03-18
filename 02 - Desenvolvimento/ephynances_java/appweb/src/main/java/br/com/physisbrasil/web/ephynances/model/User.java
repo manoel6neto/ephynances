@@ -2,6 +2,7 @@ package br.com.physisbrasil.web.ephynances.model;
 
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -110,13 +112,13 @@ public class User implements BaseModel {
     private int salary;
 
     //References
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "user")
     private List<Agreement> agreements;
 
-    @OneToMany(mappedBy = "contributor", orphanRemoval = true)
+    @OneToMany(mappedBy = "contributor")
     private List<SellerContributor> contributors;
 
-    @OneToMany(mappedBy = "seller", orphanRemoval = true)
+    @OneToMany(mappedBy = "seller")
     private List<SellerContributor> sellers;
 
     @JoinTable(name = "user_states", joinColumns = {
@@ -131,8 +133,12 @@ public class User implements BaseModel {
     @ManyToMany()
     private List<AdministrativeSphere> administrativeSpheres;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", orphanRemoval = false)
     private List<ProponentSiconv> proponents;
+    
+    @OneToOne(optional = true)
+    @JoinColumn(name = "activation_id", referencedColumnName = "id", nullable = true)
+    private Activation activation;
     
     /**
      *
@@ -294,6 +300,14 @@ public class User implements BaseModel {
 
     public int getSalary() {
         return salary;
+    }
+
+    public Activation getActivation() {
+        return activation;
+    }
+
+    public void setActivation(Activation activation) {
+        this.activation = activation;
     }
 
     public void setSalary(int salary) {

@@ -1,7 +1,10 @@
 package br.com.physisbrasil.web.ephynances.util;
 
 import br.com.physisbrasil.web.ephynances.model.User;
+import java.io.UnsupportedEncodingException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.*;
 import javax.mail.internet.*;
@@ -19,29 +22,31 @@ public class Utils {
 
         java.util.Properties props = new java.util.Properties();
         props.put("mail.transport.protocol", "smtp");
-        props.put("mail.host", smtpServer);
-        props.put("mail.user", user);
-        props.put("mail.password", passwd);
-        //props.put("mail.smtp.port", smtpPort);
-        
-        Session session = Session.getDefaultInstance(props, null);
+        props.put("mail.smtp.host", smtpServer);
+        props.put("mail.smtp.user", sender);
+        props.put("mail.smtp.password", passwd);
+        props.put("mail.smtp.port", smtpPort.toString());
+        props.put("mail.debug", "true");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.ssl.trust", smtpServer);
 
-        Message msg = new MimeMessage(session);
+        final String userName = (String) props.get("mail.smtp.user");
+        final String password = (String) props.get("mail.smtp.password");
+
+        Session session = Session.getInstance(props, new javax.mail.Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(userName, password);
+            }
+        });
+
         try {
-//            SimpleEmail simpleEmail = new SimpleEmail();
-//            simpleEmail.setHostName(smtpServer); // SMTP server
-//            simpleEmail.addTo(toEmail, toName); //to  email and name 
-//            simpleEmail.setFrom(sender, senderIdentify); // from  
-//            simpleEmail.setSubject(subject); //subject 
-//            simpleEmail.setMsg(message); //msg  
-//            simpleEmail.setAuthentication(user, passwd);  // user and passwd
-//            simpleEmail.setSmtpPort(smtpPort);  // SMTP port                
-//            simpleEmail.send();
-            
-            msg.setFrom(new InternetAddress(sender));
-            msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            MimeMessage msg = new MimeMessage(session);
+            msg.setFrom(new InternetAddress(user, sender));
+            msg.setRecipients(Message.RecipientType.TO, toEmail);
             msg.setSubject(subject);
-            msg.setText(message);
+            msg.setText(message, "utf-8", "html");
 
             // Send the message.
             Transport.send(msg);
@@ -49,11 +54,13 @@ public class Utils {
             return true;
         } catch (MessagingException e) {
             JsfUtil.addErrorMessage(e, "Falha na solicitação de envio do email. Consulte o Administrador.");
+        } catch (UnsupportedEncodingException e) {
+            JsfUtil.addErrorMessage(e, "Falha na solicitação de envio do email. Consulte o Administrador.");
         }
 
         return false;
-    } 
-    
+    }
+
     public static String onlyDigits(String value, boolean dropLeftZeros) {
 
         String replaceAll = value.replaceAll("[^\\d]", "");
@@ -98,10 +105,10 @@ public class Utils {
         //  - the second one password
         return new String(decodedBytes).split(":", 2);
     }
-    
+
     public static String generateToken(User user) {
         String token = Criptografia.criptografar(user.getId() + user.getEmail());
-        
+
         return token;
     }
 }

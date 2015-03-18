@@ -49,7 +49,9 @@ public class ActivationController extends BaseController {
             activation = new Activation();
         }
         
-        putFlash("activation", null);
+        active();
+        
+        //putFlash("activation", null);
     }
 
     public List<Activation> getActivations() {
@@ -76,23 +78,17 @@ public class ActivationController extends BaseController {
         this.password = password;
     }
 
-    public String active() {
+    public void active() {
         try {
             Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
             String token = params.get("token");
 
             if (token != null && !token.equals("")) {
                 activation = activationBean.findByProperty("token", token);
-
-                putFlash("activation", activation);
-
-                return "active";
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Falha ao carregar os dados para ativação. Entre em contato com o administrador.");
         }
-        
-        return "/login?faces-redirect=true";
     }
 
     public String activeUserAndDropRegister() {
@@ -108,7 +104,7 @@ public class ActivationController extends BaseController {
             activationBean.clearCache();
             JsfUtil.addSuccessMessage("Usuário ativado com sucesso !!");
 
-            return "login";
+            return "/login?faces-redirect=true";
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Falha ao ativar o usuário. Entre em contato com o administrador.");
         }
