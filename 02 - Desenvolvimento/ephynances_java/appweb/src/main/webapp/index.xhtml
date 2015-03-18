@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets" >
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:pe="http://primefaces.org/ui/extensions" >
 
     <ui:composition template="/template.xhtml">
         <ui:define name="body">
@@ -12,6 +13,10 @@
                     <p:pieChart id="chartUsers" value="#{chartController.chartActiveUsers}" fill="true" legendPosition="nw" showDataLabels="true"  
                                 title="Usuários Ativos x Usuários Inativos" style="width:500px;height:270px" sliceMargin="05" diameter="185" shadow="true"/>                
                     <p:effect for="chartUsers" type="shake" speed="250" event="load"/>
+                </div>
+                
+                <div>
+                    <pe:documentViewer id="pdfViewer" url="#{loginController.pdfContract}" rendered="#{loginController.showPdfContract}" />
                 </div>
             </h:form>
         </ui:define>

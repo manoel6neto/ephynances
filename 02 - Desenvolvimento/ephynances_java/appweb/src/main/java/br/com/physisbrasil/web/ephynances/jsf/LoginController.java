@@ -25,13 +25,16 @@ public class LoginController implements Serializable {
     private String senha;
     private String profileRule;
     private User user;
+    private boolean showPdfContract;
+    private String pdfContract;
 
     @EJB
     private UserBean usuarioBean;
 
     public String login() {
         try {
-            if(email.contains("@")) {
+            setPdfContract(new String());
+            if (email.contains("@")) {
                 user = usuarioBean.findByEmailSenhaProfile(email, Criptografia.criptografar(senha), profileRule);
             } else {
                 if (email.length() != 11) {
@@ -47,6 +50,15 @@ public class LoginController implements Serializable {
             if (user.isIsVerified()) {
                 HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
                 session.setAttribute(AbstractFilter.USER_KEY, user);
+
+                if (user.getProfileRule().equals(User.getRULER_SELLER())) {
+                    if (user.getSellerContract() == null) {
+                        //Criar e exibir contrato
+                        pdfContract = "TESTESTESTESTETSETS";
+                        setShowPdfContract(true);
+                    }
+                }
+
                 return "index";
             } else {
                 JsfUtil.addErrorMessage("Usuário não ativado. Procure um administrador.");
@@ -90,7 +102,7 @@ public class LoginController implements Serializable {
     public void setProfileRule(String profileRule) {
         this.profileRule = profileRule;
     }
-    
+
     public User getLoggedUser() {
         return (User) JsfUtil.getSessionAttribute(AbstractFilter.USER_KEY);
     }
@@ -99,4 +111,27 @@ public class LoginController implements Serializable {
         return getLoggedUser().getProfileRule().equals(ruller);
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public boolean isShowPdfContract() {
+        return showPdfContract;
+    }
+
+    public void setShowPdfContract(boolean showPdfContract) {
+        this.showPdfContract = showPdfContract;
+    }
+
+    public String getPdfContract() {
+        return pdfContract;
+    }
+
+    public void setPdfContract(String pdfContract) {
+        this.pdfContract = pdfContract;
+    }
 }
