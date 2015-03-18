@@ -118,7 +118,7 @@ public class SellerContributorController extends BaseController {
         putFlash("contributors", contributors);
         putFlash("tempuser", tempUser);
 
-        return "/sellerContributor/edit";
+        return "edit";
     }
 
     public String view(User user) {
@@ -141,7 +141,7 @@ public class SellerContributorController extends BaseController {
         putFlash("contributors", contributors);
         putFlash("tempuser", tempUser);
 
-        return "/sellerContributor/view";
+        return "view";
     }
 
     public String active_desactive(Long id) {
@@ -167,16 +167,16 @@ public class SellerContributorController extends BaseController {
         putFlash("seller", seller);
         putFlash("contributors", contributors);
 
-        return "/sellerContributor/list";
+        return "list";
     }
 
     public String delete(Long id) {
         try {
             //Removendo o usuário e apagando da lista. Não precisa remover o relacionamento pois faz automaticamente
             tempUser = userBean.find(id);
-            userBean.remove(tempUser);
             contributors.remove(tempUser);
-
+            userBean.remove(tempUser);
+            
             //Limpando o cache
             userBean.clearCache();
             sellerContributorBean.clearCache();
@@ -189,7 +189,7 @@ public class SellerContributorController extends BaseController {
         putFlash("seller", seller);
         putFlash("contributors", contributors);
 
-        return "/sellerContributor/list";
+        return "list";
     }
 
     public String create() {
@@ -200,7 +200,7 @@ public class SellerContributorController extends BaseController {
         putFlash("contributors", contributors);
         putFlash("tempuser", tempUser);
 
-        return "/sellerContributor/add";
+        return "add";
     }
 
     public String save() {
@@ -208,6 +208,10 @@ public class SellerContributorController extends BaseController {
             if (seller.getId() != null) {
                 if (tempUser.getId() == null) {
                     //Criando o usuário
+                    tempUser.setCommission(0);
+                    tempUser.setSalary(0);
+                    tempUser.setNumberCnpjs(0);
+                    tempUser.setNumberCities(0);
                     userBean.create(tempUser);
 
                     //Criando o relacionamento
@@ -222,10 +226,10 @@ public class SellerContributorController extends BaseController {
                     JsfUtil.addSuccessMessage("Colaborador adicionado com sucesso!");
                 } else {
                     //Editando o usuário
+                    contributors.remove(tempUser);
                     userBean.edit(tempUser);
                     
                     //Atualizando o colaborador na lista
-                    contributors.remove(tempUser);
                     contributors.add(tempUser);
                     
                     JsfUtil.addSuccessMessage("Colaborador atualizado com sucesso!");
@@ -241,7 +245,7 @@ public class SellerContributorController extends BaseController {
         putFlash("seller", seller);
         putFlash("contributors", contributors);
 
-        return "/sellerContributor/list";
+        return "list";
     }
 
     public String listBySeller(Long userId) {

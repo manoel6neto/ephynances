@@ -14,49 +14,49 @@
             <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER, userController.RULER_CONTRIBUTOR])}" />
             <h:form id="form" styleClass="form" >
                 <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Perfil: " for="profileRule"  />
                     <p:inputText id="profileRule" value="#{userController.user.profileRule}" disabled="true" />
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Nome: " for="name"  />
                     <p:inputText id="name" value="#{userController.user.name}" disabled="true" /> 
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Email: " for="email"  />
                     <p:inputText id="email" value="#{userController.user.email}" disabled="true" /> 
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="CPF: " for="cpf"  />
                     <p:inputText id="cpf" value="#{userController.user.cpf}" disabled="true" /> 
                 </div>
-                
-                 <br class="clear" />
+
+                <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="RG: " for="rg"  />
                     <p:inputText id="rg" value="#{userController.user.rg}" disabled="true" /> 
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Telefone: " for="phone"  />
                     <p:inputText id="phone" value="#{userController.user.phone}" disabled="true" /> 
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Celular: " for="cellphone"  />
                     <p:inputText id="cellphone" value="#{userController.user.cellPhone}" disabled="true" /> 
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Quant. CNPJ's: " for="qntCnpj" />
@@ -116,7 +116,7 @@
                 <br class="clear" />
                 <p:outputLabel value="Esferas Administrativas: " for="esferas" />
                 <div class="grid_4 alpha" >
-                    <p:selectManyMenu id="esferas" value="#{userController.user.administrativeSpheres}" converter="sphereConverter"
+                    <p:selectManyMenu id="esferas" value="#{userController.user.administrativeSpheres}" converter="administrativeSphereConverter"
                                       var="t" filter="true" filterMatchMode="contains" showCheckbox="true" disabled="true">
                         <f:selectItems value="#{administrativeSphereController.administrativeSpheres}" var="sphere" itemLabel="#{sphere.name}" itemValue="#{sphere}" />
                         <p:column>
@@ -137,7 +137,7 @@
                         </p:column>
                     </p:selectManyMenu>
                 </div>
-                
+
                 <br class="clear" />
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >

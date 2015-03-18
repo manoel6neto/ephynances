@@ -96,11 +96,11 @@ public class ProponentSiconv implements BaseModel {
     private String situacao;
 
     //References
-    @OneToOne(optional = true)
+    @OneToOne(optional = true, orphanRemoval = false)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
     
-    @OneToOne(optional = true)
+    @OneToOne(optional = true, orphanRemoval = false)
     @JoinColumn(name = "agreement_id", referencedColumnName = "id", nullable = true)
     private Agreement agreement;
 

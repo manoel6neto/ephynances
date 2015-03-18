@@ -115,10 +115,10 @@ public class User implements BaseModel {
     @OneToMany(mappedBy = "user")
     private List<Agreement> agreements;
 
-    @OneToMany(mappedBy = "contributor")
+    @OneToMany(mappedBy = "contributor", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<SellerContributor> contributors;
 
-    @OneToMany(mappedBy = "seller")
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<SellerContributor> sellers;
 
     @JoinTable(name = "user_states", joinColumns = {

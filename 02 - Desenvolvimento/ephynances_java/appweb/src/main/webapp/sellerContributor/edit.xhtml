@@ -30,6 +30,12 @@
                     <p:outputLabel value="CPF: " for="cpf"  />
                     <p:inputMask id="cpf" value="#{sellerContributorController.tempUser.cpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"/> 
                 </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="RG: " for="rg" />
+                    <p:inputMask id="rg" value="#{sellerContributorController.tempUser.rg}" mask="99999999-99" required="true" requiredMessage="RG é necessário"/> 
+                </div>
 
                 <br class="clear" />
                 <div class="grid_4 alpha" >
@@ -41,6 +47,37 @@
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Celular: " for="cellphone"  />
                     <p:inputMask id="cellphone" value="#{sellerContributorController.tempUser.cellPhone}" required="false" mask="(99) 9999-9999"/> 
+                </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Logradouro: " for="logradouro" />
+                    <p:inputText id="logradouro" value="#{sellerContributorController.tempUser.street}" required="false" /> 
+                </div>
+
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Bairro: " for="bairro" />
+                    <p:inputText id="bairro" value="#{sellerContributorController.tempUser.neighborhood}" required="false" /> 
+                </div>
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Estado: " for="estado" />
+                    <p:inputText id="estado" value="#{sellerContributorController.tempUser.state}" required="false" /> 
+                </div>
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Cidade: " for="cidade" />
+                    <p:inputText id="cidade" value="#{sellerContributorController.tempUser.city}" required="false" /> 
+                </div>
+
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Cep: " for="cep" />
+                    <p:inputMask id="cep" value="#{sellerContributorController.tempUser.postalCode}" required="false" mask="99999-999"/> 
                 </div>
 
                 <br class="clear" />
