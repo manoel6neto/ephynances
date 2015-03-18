@@ -136,8 +136,7 @@ public class User implements BaseModel {
     @OneToMany(mappedBy = "user", orphanRemoval = false)
     private List<ProponentSiconv> proponents;
     
-    @OneToOne(optional = true)
-    @JoinColumn(name = "activation_id", referencedColumnName = "id", nullable = true)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Activation activation;
     
     /**
@@ -192,6 +191,14 @@ public class User implements BaseModel {
 
     public void setCellPhone(String cellPhone) {
         this.cellPhone = cellPhone;
+    }
+
+    public Activation getActivation() {
+        return activation;
+    }
+
+    public void setActivation(Activation activation) {
+        this.activation = activation;
     }
 
     public String getCpf() {
@@ -300,14 +307,6 @@ public class User implements BaseModel {
 
     public int getSalary() {
         return salary;
-    }
-
-    public Activation getActivation() {
-        return activation;
-    }
-
-    public void setActivation(Activation activation) {
-        this.activation = activation;
     }
 
     public void setSalary(int salary) {

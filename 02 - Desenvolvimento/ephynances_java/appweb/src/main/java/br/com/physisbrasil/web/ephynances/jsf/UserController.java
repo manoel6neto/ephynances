@@ -113,7 +113,7 @@ public class UserController extends BaseController {
                     activationBean.clearCache();
 
                     Configuration config = configurationBean.findAll().get(0);
-                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://localhost:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Ativar Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
+                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://192.168.0.105:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Ativar Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
 
                     JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
                 }
@@ -167,10 +167,6 @@ public class UserController extends BaseController {
                 if (user.equals(l.getLoggedUser())) {
                     JsfUtil.addErrorMessage("Impossível apagar sua própria conta.");
                 } else {
-                    usuarioBean.refresh(user);
-                    if (user.getActivation() != null) {
-                        activationBean.remove(user.getActivation());
-                    }
                     usuarioBean.remove(user);
                     usuarioBean.clearCache();
                     JsfUtil.addSuccessMessage("Usuário apagado com sucesso!");
