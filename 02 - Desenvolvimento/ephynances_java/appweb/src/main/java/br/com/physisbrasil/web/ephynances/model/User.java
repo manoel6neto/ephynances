@@ -139,6 +139,9 @@ public class User implements BaseModel {
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Activation activation;
     
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private SellerContract sellerContract;
+    
     /**
      *
      * @return
@@ -225,6 +228,14 @@ public class User implements BaseModel {
         this.entity = entity;
     }
 
+    public SellerContract getSellerContract() {
+        return sellerContract;
+    }
+
+    public void setSellerContract(SellerContract sellerContract) {
+        this.sellerContract = sellerContract;
+    }
+    
     public String getPassword() {
         return password;
     }
