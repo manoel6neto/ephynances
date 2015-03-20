@@ -7,6 +7,7 @@ import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -32,6 +33,7 @@ public class ActivationController extends BaseController {
     private UserBean userBean;
 
     String password;
+    String cpf;
 
     @PostConstruct
     public void init() {
@@ -78,6 +80,14 @@ public class ActivationController extends BaseController {
         this.password = password;
     }
 
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
     public void active() {
         try {
             Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
@@ -85,6 +95,12 @@ public class ActivationController extends BaseController {
 
             if (token != null && !token.equals("")) {
                 activation = activationBean.findByProperty("token", token);
+                if (activation.getDueDate() != null) {
+                    if (new Date(System.currentTimeMillis()).after(activation.getDueDate())) {
+                        activation = null;
+                        JsfUtil.addErrorMessage("Token expirado inicie o processo de recuperação de senha novamente.");
+                    }
+                }
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Falha ao carregar os dados para ativação. Entre em contato com o administrador.");
@@ -94,6 +110,18 @@ public class ActivationController extends BaseController {
     public String activeUserAndDropRegister() {
         try {
             User user = activation.getUser();
+            
+            if (activation.getDueDate() != null) {
+                if (!getCpf().equals(user.getCpf())) {
+                    JsfUtil.addErrorMessage("Cpf inválido.");
+                    
+                    activationBean.remove(activation);
+                    activationBean.clearCache();
+                    
+                    return "/login?faces-redirect=true";
+                }
+            }
+            
             user.setPassword(Criptografia.criptografar(password));
             user.setIsVerified(true);
             userBean.edit(user);

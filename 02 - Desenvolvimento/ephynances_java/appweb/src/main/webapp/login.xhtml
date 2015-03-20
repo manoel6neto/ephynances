@@ -55,6 +55,14 @@
             <p:dialog id="confirmDialog" header="Recuperação de senha" widgetVar="cd" resizable="false" width="300" >
                 <h:form styleClass="form">
                     <div class="grid_3 alpha" >
+                        <p:outputLabel value="Perfil: " for="menu"  />
+                        <p:selectOneMenu id="menu" style="width: auto" value="#{loginController.profileRule}" required="true" effect="fade">
+                            <f:selectItem itemLabel="#{userController.RULER_ADMIN}" itemValue="#{userController.RULER_ADMIN}" />
+                            <f:selectItem itemLabel="#{userController.RULER_SELLER}" itemValue="#{userController.RULER_SELLER}" />
+                            <f:selectItem itemLabel="#{userController.RULER_CONTRIBUTOR}" itemValue="#{userController.RULER_CONTRIBUTOR}" />
+                        </p:selectOneMenu>
+                    </div>
+                    <div class="grid_3 alpha" >
                         <p:outputLabel value="Email" for="formEmail"/>
                         <p:inputText id="formEmail" autocomplete="off" value="#{loginController.email}" /> 
                         <p:message for="formEmail" />
@@ -62,7 +70,7 @@
 
                     <br class="clear" />
                     <p:separator/>
-                    <p:commandButton value="Enviar" action="#{loginController.login()}" icon="ui-icon-closethick" />
+                    <p:commandButton value="Enviar" action="#{loginController.recoverPassword}" icon="ui-icon-closethick" />
                     <p:commandButton value="Cancelar" onclick="PF('cd').hide();" type="button" /> 
                 </h:form>
             </p:dialog>

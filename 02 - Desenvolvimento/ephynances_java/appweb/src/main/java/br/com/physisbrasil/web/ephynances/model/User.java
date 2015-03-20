@@ -33,7 +33,9 @@ import javax.ws.rs.DefaultValue;
     @NamedQuery(name = "Usuario.findByCpfSenhaProfile",
             query = "SELECT u FROM User u WHERE u.cpf = :cpf AND u.password = :password AND u.profileRule = :profile"),
     @NamedQuery(name = "Usuario.findByEmail",
-            query = "SELECT u FROM User u WHERE u.email = :email")})
+            query = "SELECT u FROM User u WHERE u.email = :email"),
+    @NamedQuery(name = "Usuario.findByEmailProfile",
+            query = "SELECT u FROM User u WHERE u.email = :email AND u.profileRule = :profile")})
 public class User implements BaseModel {
 
     private static final String RULER_ADMIN = "Administrador";
@@ -132,16 +134,16 @@ public class User implements BaseModel {
         @JoinColumn(name = "administrative_sphere_id", referencedColumnName = "id")})
     @ManyToMany()
     private List<AdministrativeSphere> administrativeSpheres;
-    
+
     @OneToMany(mappedBy = "user", orphanRemoval = false)
     private List<ProponentSiconv> proponents;
-    
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Activation activation;
-    
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private SellerContract sellerContract;
-    
+
     /**
      *
      * @return
@@ -235,7 +237,7 @@ public class User implements BaseModel {
     public void setSellerContract(SellerContract sellerContract) {
         this.sellerContract = sellerContract;
     }
-    
+
     public String getPassword() {
         return password;
     }
@@ -383,25 +385,25 @@ public class User implements BaseModel {
     public static String getRULER_CONTRIBUTOR() {
         return RULER_CONTRIBUTOR;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 5;
         hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
-    
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof User)) {
             return false;
         }
         final User other = (User) object;
-        
+
         if (this.id != null) {
             return this.id.equals(other.id);
         }
-        
+
         return false;
     }
 }

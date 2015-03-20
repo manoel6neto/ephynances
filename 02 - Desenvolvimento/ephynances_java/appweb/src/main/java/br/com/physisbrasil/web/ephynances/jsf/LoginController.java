@@ -1,11 +1,17 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
+import br.com.physisbrasil.web.ephynances.ejb.ActivationBean;
+import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
+import br.com.physisbrasil.web.ephynances.model.Activation;
+import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.servlet.AbstractFilter;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
+import br.com.physisbrasil.web.ephynances.util.Utils;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -30,6 +36,12 @@ public class LoginController implements Serializable {
 
     @EJB
     private UserBean usuarioBean;
+    
+    @EJB
+    private ActivationBean activationBean;
+    
+    @EJB
+    private ConfigurationBean configurationBean;
 
     public String login() {
         try {
@@ -69,6 +81,38 @@ public class LoginController implements Serializable {
             JsfUtil.addErrorMessage(ResourceBundle.getBundle("/bundle").getString("login.invalid"));
             return "login";
         }
+    }
+    
+    public String recoverPassword() {
+        try {
+            if (email.contains("@")) {
+                user = usuarioBean.findByEmailProfile(email, profileRule);
+                if (user.isIsVerified()) {
+                    user.setPassword(Criptografia.criptografar(user.getCpf() + String.valueOf(System.currentTimeMillis())));
+                    usuarioBean.edit(user);
+                    usuarioBean.clearCache();
+                    //Gerar ativação para recuperação de senha
+                    
+                    Activation activation = new Activation();
+                    activation.setUser(user);
+                    Calendar c = Calendar.getInstance();
+                    c.add(Calendar.DATE, 1);
+                    activation.setDueDate(c.getTime());
+                    activation.setToken(Utils.generateToken(user));
+                    activationBean.create(activation);
+                    activationBean.clearCache();
+
+                    Configuration config = configurationBean.findAll().get(0);
+                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://192.168.0.105:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Recuperar Senha Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
+
+                    JsfUtil.addSuccessMessage("Recuperação solicitada com sucesso!");
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Falha ao recuperar informações para recuperação de senha.");
+        }
+        
+        return "/login?faces-redirect=true";
     }
 
     public String logout() {

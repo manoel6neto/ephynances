@@ -10,11 +10,16 @@
             <h:outputText  value="Ativação de novo usuário"/>
         </ui:define>
         <ui:define name="body" >
-            <h:form id="form" class="form loginForm" >
-                <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
-
+            <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
+            <h:form id="form" class="form loginForm" rendered="#{activationController.activation != null}">
                 <br class="clear" />
                 <div class="grid_3" >
+                    <p:outputLabel value="CPF: " for="cpf" rendered="#{activationController.activation.dueDate != null}"/>
+                    <p:inputMask styleClass="grid_2" id="cpf" value="#{activationController.cpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário" rendered="#{activationController.activation.dueDate != null}"/> 
+                </div>
+
+                <br class="clear" />
+                <div class="grid_3">
                     <p:outputLabel  value="Nova Senha: " for="formPassword" />
                     <p:password styleClass="grid_2" autocomplete="off" id="formPassword" value="#{activationController.password}" match="confPassword"
                                 feedback="true" promptLabel="6 à 40 caracteres" weakLabel="fraca" goodLabel="média" strongLabel="forte" required="true" requiredMessage="Senha é necessária"/> 

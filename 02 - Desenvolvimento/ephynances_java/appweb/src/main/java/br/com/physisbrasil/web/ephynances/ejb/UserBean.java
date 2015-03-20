@@ -62,4 +62,20 @@ public class UserBean extends DAO<User> {
 
         return usuario;
     }
+    
+    public User findByEmailProfile(String email, String profile) {
+        TypedQuery<User> namedQuery = getEntityManager().createNamedQuery("Usuario.findByEmailProfile", User.class);
+
+        namedQuery.setParameter("email", email);
+        namedQuery.setParameter("profile", profile);
+
+        User usuario;
+        try {
+            usuario = namedQuery.getSingleResult();
+        } catch (Exception e) {
+            usuario = null;
+        }
+
+        return usuario;
+    }
 }
