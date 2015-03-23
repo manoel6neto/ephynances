@@ -3,20 +3,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:ui="http://java.sun.com/jsf/facelets" 
-      xmlns:pe="http://primefaces.org/ui/extensions" >
+      xmlns:ui="http://java.sun.com/jsf/facelets" >
 
     <ui:composition template="/template.xhtml">
         <ui:define name="body">
-            <h:form id="formDefault">
-                <div style="float: left">
+            <h:form styleClass="form" id="formContract" rendered="#{loginController.showPdfContract}">
+                <div id="divMedia">
+                    <p:media id="media" player="pdf" cache="true" value="#{loginController.file}" width="100%" height="600px"/> 
+                </div>
+                <br class="clear" />
+                <p:separator/>
+                <p:commandButton value="Aceitar" action="#{loginController.accept_contract(true)}" icon="ui-icon-closethick" />
+                <p:commandButton value="Recusar" action="#{loginController.accept_contract(false)}" icon="ui-icon-closethick" /> 
+            </h:form>
+
+            <h:form id="formDefault" rendered="#{loginController.showPdfContract == false}">
+                <div id="divDefault" style="float: left">
                     <p:pieChart id="chartUsers" value="#{chartController.chartActiveUsers}" fill="true" legendPosition="nw" showDataLabels="true"  
                                 title="Usuários Ativos x Usuários Inativos" style="width:500px;height:270px" sliceMargin="05" diameter="185" shadow="true"/>                
                     <p:effect for="chartUsers" type="shake" speed="250" event="load"/>
-                </div>
-                
-                <div>
-                    <pe:documentViewer id="pdfViewer" url="#{loginController.pdfContract}" rendered="#{loginController.showPdfContract}" />
                 </div>
             </h:form>
         </ui:define>

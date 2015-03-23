@@ -2,9 +2,11 @@ package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.ActivationBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
+import br.com.physisbrasil.web.ephynances.ejb.SellerContractBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Activation;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
+import br.com.physisbrasil.web.ephynances.model.SellerContract;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.servlet.AbstractFilter;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
@@ -18,13 +20,23 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.util.Date;
+import javax.faces.bean.SessionScoped;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
  * @author Thomas
  */
 @ManagedBean
-@ViewScoped
+@SessionScoped
 public class LoginController implements Serializable {
 
     private String email;
@@ -32,20 +44,26 @@ public class LoginController implements Serializable {
     private String profileRule;
     private User user;
     private boolean showPdfContract;
-    private String pdfContract;
+    private StreamedContent file;
+    private SellerContract contract;
 
     @EJB
     private UserBean usuarioBean;
-    
+
     @EJB
     private ActivationBean activationBean;
-    
+
     @EJB
     private ConfigurationBean configurationBean;
 
+    @EJB
+    private SellerContractBean sellerContractBean;
+
     public String login() {
         try {
-            setPdfContract(new String());
+            usuarioBean.clearCache();
+            file = new DefaultStreamedContent();
+            setShowPdfContract(false);
             if (email.contains("@")) {
                 user = usuarioBean.findByEmailSenhaProfile(email, Criptografia.criptografar(senha), profileRule);
             } else {
@@ -65,9 +83,32 @@ public class LoginController implements Serializable {
 
                 if (user.getProfileRule().equals(User.getRULER_SELLER())) {
                     if (user.getSellerContract() == null) {
-                        //Criar e exibir contrato
-                        pdfContract = "TESTESTESTESTETSETS";
+
+                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+                        //Criar e exibir contrato PDF
+                        Document document = new Document();
+                        PdfWriter.getInstance(document, out);
+                        document.open();
+                        document.add(new Paragraph("CONTRATO DE PRESTAÇÃO DE SERVIÇO !! "));
+                        document.add(new Paragraph("VENDEDOR: " + user.getName()));
+                        document.close();
+
+                        ByteArrayInputStream stream = new ByteArrayInputStream(out.toByteArray());
+                        file = new DefaultStreamedContent(stream, "application/pdf", "vendor.pdf");
                         setShowPdfContract(true);
+
+                        //Salvar no banco de dados
+                        contract = new SellerContract();
+                        contract.setUser(user);
+
+                        // Escrevendo o arquivo no banco de dados
+                        byte[] byteArrayDoc = out.toByteArray();
+                        contract.setContract(byteArrayDoc);
+                        sellerContractBean.create(contract);
+
+                        usuarioBean.clearCache();
+                        sellerContractBean.clearCache();
                     }
                 }
 
@@ -77,12 +118,32 @@ public class LoginController implements Serializable {
                 return "login";
             }
 
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(ResourceBundle.getBundle("/bundle").getString("login.invalid"));
+        } catch (DocumentException e) {
+            JsfUtil.addErrorMessage("Falha ao gerar o contrato do vendedor. Consulte o administrador.");
             return "login";
         }
     }
     
+    public String accept_contract(boolean status) {
+        try {
+            if (status) {
+                contract.setAcceptDate(new Date(System.currentTimeMillis()));
+                sellerContractBean.edit(contract);
+                sellerContractBean.clearCache();
+                
+                JsfUtil.addSuccessMessage("Contrato aceito com sucesso !!");
+                return "index";
+            } else {
+                sellerContractBean.remove(contract);
+                sellerContractBean.clearCache();
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Falha ao alterar o status do contrato.");
+        }
+        
+        return "/login?faces-redirect=true";
+    }
+
     public String recoverPassword() {
         try {
             if (email.contains("@")) {
@@ -92,7 +153,7 @@ public class LoginController implements Serializable {
                     usuarioBean.edit(user);
                     usuarioBean.clearCache();
                     //Gerar ativação para recuperação de senha
-                    
+
                     Activation activation = new Activation();
                     activation.setUser(user);
                     Calendar c = Calendar.getInstance();
@@ -111,7 +172,7 @@ public class LoginController implements Serializable {
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Falha ao recuperar informações para recuperação de senha.");
         }
-        
+
         return "/login?faces-redirect=true";
     }
 
@@ -171,11 +232,19 @@ public class LoginController implements Serializable {
         this.showPdfContract = showPdfContract;
     }
 
-    public String getPdfContract() {
-        return pdfContract;
+    public StreamedContent getFile() {
+        return file;
     }
 
-    public void setPdfContract(String pdfContract) {
-        this.pdfContract = pdfContract;
+    public void setFile(StreamedContent file) {
+        this.file = file;
+    }
+
+    public SellerContract getContract() {
+        return contract;
+    }
+
+    public void setContract(SellerContract contract) {
+        this.contract = contract;
     }
 }
