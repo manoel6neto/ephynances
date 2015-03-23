@@ -62,7 +62,7 @@
                         <h:panelGroup rendered="#{loginController.loggedUser != null}" >
                             <div class="grid_8 omega "  >
                                 <ui:insert name="header">
-                                    <p:menubar style="margin-top: 4px">  
+                                    <p:menubar style="margin-top: 4px" rendered="#{loginController.showPdfContract == false}">  
                                         <p:menuitem value="HOME" outcome="/index.xhtml" />  
                                         <p:menuitem value="USUÁRIOS" outcome="/user/list" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}" />  
                                         <p:submenu label="CONTRATOS">

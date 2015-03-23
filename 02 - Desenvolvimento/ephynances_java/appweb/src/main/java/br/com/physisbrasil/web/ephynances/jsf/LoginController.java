@@ -95,6 +95,7 @@ public class LoginController implements Serializable {
                         ByteArrayInputStream stream = new ByteArrayInputStream(out.toByteArray());
                         file = new DefaultStreamedContent(stream, "application/pdf", "vendor.pdf");
                         setShowPdfContract(true);
+                        
 
                         //Salvar no banco de dados
                         contract = new SellerContract();
