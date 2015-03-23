@@ -14,10 +14,8 @@ import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.Utils;
 import java.io.Serializable;
 import java.util.Calendar;
-import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import com.itextpdf.text.Document;
@@ -130,12 +128,15 @@ public class LoginController implements Serializable {
                 contract.setAcceptDate(new Date(System.currentTimeMillis()));
                 sellerContractBean.edit(contract);
                 sellerContractBean.clearCache();
+                setShowPdfContract(false);
                 
                 JsfUtil.addSuccessMessage("Contrato aceito com sucesso !!");
-                return "index";
+                logout();
+                return "login";
             } else {
                 sellerContractBean.remove(contract);
                 sellerContractBean.clearCache();
+                logout();
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Falha ao alterar o status do contrato.");
