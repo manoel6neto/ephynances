@@ -22,7 +22,8 @@
                     <div class="grid_3" >
                         <p:outputLabel value="Esfera Administrativa: " for="menuEsfera" />
                         <p:selectOneMenu id="menuEsfera" style="width: 1050px" value="#{userController.selectedAdministrativeSphere}" required="true" effect="fade">
-                            <f:selectItems value="#{userController.user.administrativeSpheres}"/>
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione uma esfera" />
+                            <f:selectItems value="#{userController.user.administrativeSpheres}" var="selectSphereMenu" itemLabel="#{selectSphereMenu.name}" itemValue="#{selectSphereMenu}"/>
                         </p:selectOneMenu>
                     </div>
 
@@ -31,7 +32,8 @@
                     <div class="grid_3" >
                         <p:outputLabel value="Estados: " for="menuEstados" />
                         <p:selectOneMenu id="menuEstados" style="width: 1050px" value="#{userController.selectedState}" required="true" effect="fade">
-                            <f:selectItems value="#{userController.user.states}"/>
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione um estado" />
+                            <f:selectItems value="#{userController.user.states}" var="selectStateMenu" itemLabel="#{selectStateMenu.name}" itemValue="#{selectStateMenu}"/>
                         </p:selectOneMenu>
                     </div>
 
