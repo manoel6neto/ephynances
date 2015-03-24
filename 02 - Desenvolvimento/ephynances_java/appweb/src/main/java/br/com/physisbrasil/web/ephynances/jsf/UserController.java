@@ -5,7 +5,9 @@ import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.SellerContributorBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Activation;
+import br.com.physisbrasil.web.ephynances.model.AdministrativeSphere;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
+import br.com.physisbrasil.web.ephynances.model.State;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
@@ -43,6 +45,11 @@ public class UserController extends BaseController {
 
     @EJB
     private ActivationBean activationBean;
+    
+    /// ATRELAMENTO CNPJS ///
+    private AdministrativeSphere selectedAdministrativeSphere;
+    private State selectedState;
+    /// --- ///
 
     @PostConstruct
     public void init() {
@@ -273,6 +280,22 @@ public class UserController extends BaseController {
 
     public void ruleCheck(List<String> profileRule) {
         JsfUtil.ruleCheck(profileRule);
+    }
+
+    public AdministrativeSphere getSelectedAdministrativeSphere() {
+        return selectedAdministrativeSphere;
+    }
+
+    public void setSelectedAdministrativeSphere(AdministrativeSphere selectedAdministrativeSphere) {
+        this.selectedAdministrativeSphere = selectedAdministrativeSphere;
+    }
+
+    public State getSelectedState() {
+        return selectedState;
+    }
+
+    public void setSelectedState(State selectedState) {
+        this.selectedState = selectedState;
     }
 
     private void loadUsers() {

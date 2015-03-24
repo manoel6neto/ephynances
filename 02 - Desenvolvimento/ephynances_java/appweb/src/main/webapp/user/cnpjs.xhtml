@@ -1,16 +1,100 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml"> 
+        <ui:define name="title"> 
+            <h:outputText  value="CNPJ's" />
+        </ui:define>
+        <ui:define name="body"  >
+            <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER])}" />
+            <h:form id="form" >
+                <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
+
+                <br class="clear" />
+                <br/>
+                <p:fieldset legend="Atrelamento" toggleable="true" collapsed="false">
+                    <br class="clear" />
+                    <div class="grid_3" >
+                        <p:outputLabel value="Esfera Administrativa: " for="menuEsfera" />
+                        <p:selectOneMenu id="menuEsfera" style="width: 1050px" value="#{userController.selectedAdministrativeSphere}" required="true" effect="fade">
+                            <f:selectItems value="#{userController.user.administrativeSpheres}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <br class="clear" />
+                    <br />
+                    <div class="grid_3" >
+                        <p:outputLabel value="Estados: " for="menuEstados" />
+                        <p:selectOneMenu id="menuEstados" style="width: 1050px" value="#{userController.selectedState}" required="true" effect="fade">
+                            <f:selectItems value="#{userController.user.states}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <br class="clear" />
+                    <br />
+                    <div class="grid_3" >
+                        <p:outputLabel value="Municípios: " for="menuMunicipios" />
+                        <p:selectOneMenu id="menuMunicipios" style="width: 1050px" value="#{userController.selectedState}" required="false" effect="fade">
+                            <f:selectItems value="#{userController.user.states}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <br class="clear" />
+                    <br />
+                    <div class="grid_3" >
+                        <p:outputLabel value="Cnpj's: " for="menuCnpjs" />
+                        <p:selectOneMenu id="menuCnpjs" style="width: 1050px" value="#{userController.selectedState}" required="true" effect="fade">
+                            <f:selectItems value="#{userController.user.states}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <br class="clear" />
+                    <br />
+                </p:fieldset>
+
+                <br class="clear" />
+                <br/>
+                <p:fieldset legend="CNPJ's atrelados" toggleable="true" collapsed="false">
+
+                    <br class="clear" />
+                    <br />
+                    <p:dataTable id="table" widgetVar="table" value="#{userController.user.proponents}" var="item" lazy="false" 
+                                 rows="15" paginator="true"  paginatorPosition="bottom" 
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                 currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
+                                 emptyMessage="Nenhum registro atrelado!">
+
+
+                        <p:column style="text-align: center" headerText="CNPJ" sortBy="#{item.cnpj}" filterBy="#{item.cnpj}" filterStyle="text-align: center; width: 140px;">                       
+                            <h:outputText value="#{item.cnpj}" />
+                        </p:column>
+
+                        <p:column style="text-align: center" headerText="Município" sortBy="#{item.municipio}" filterBy="#{item.municipio}" filterStyle="text-align: center; width: 200px;">                       
+                            <h:outputText value="#{item.municipio}" />
+                        </p:column>
+
+                        <p:column style="text-align: center; width: 50px;" headerText="UF" sortBy="#{item.municipioUfSigla}" filterBy="#{item.municipioUfSigla}" filterStyle="text-align: center; width: 30px;">                       
+                            <h:outputText value="#{item.municipioUfSigla}" />
+                        </p:column>
+
+                        <p:column style="text-align: center" headerText="Esfera Administrativa" sortBy="#{item.esferaAdministrativa}" filterBy="#{item.esferaAdministrativa}" filterStyle="text-align: center; width: 200px;">                       
+                            <h:outputText value="#{item.esferaAdministrativa}" />
+                        </p:column>
+
+                        <p:column style="text-align: center; width: 50px;" headerText="Prio." sortBy="#{item.order}">                       
+                            <h:outputText value="#{item.order}" />
+                        </p:column>
+                    </p:dataTable>
+
+                    <br class="clear" />
+                    <br />
+                </p:fieldset>
+            </h:form>
+        </ui:define>
+    </ui:composition>
 </html>
