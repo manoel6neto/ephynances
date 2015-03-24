@@ -16,6 +16,7 @@
             jQuery(document).ready(function () {
                 updateMasks();
             });
+            
             function updateMasks() {
                 jQuery('.maskMoney').each(function () {
                     jQuery(this).maskMoney({thousands: '.', decimal: ','});
@@ -26,6 +27,14 @@
                 jQuery('.maskInt').each(function () {
                     jQuery(this).maskMoney({thousands: '', decimal: '', precision: 0, allowZero: true});
                 });
+            }
+
+            function start() {
+                PF('statusDialog').show();
+            }
+
+            function stop() {
+                PF('statusDialog').hide();
             }
         </script>     
     </h:head>

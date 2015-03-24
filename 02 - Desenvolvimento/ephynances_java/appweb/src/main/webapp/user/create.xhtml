@@ -77,6 +77,12 @@
                     <p:outputLabel value="Quant. Cidades: " for="qntCidades" />
                     <p:inputText id="qntCidades" value="#{userController.user.numberCities}" required="false" disabled="#{!loginController.isUserInRuller(userController.RULER_ADMIN)}"/> 
                 </div>
+                
+                <br class="clear" />
+                <div class="grid_4 alpha" >
+                    <p:outputLabel value="Quant. Autarquias " for="qntAutarquias" />
+                    <p:inputText id="qntAutarquias" value="#{userController.user.numberAutority}" required="false" disabled="#{!loginController.isUserInRuller(userController.RULER_ADMIN)}"/> 
+                </div>
 
                 <br class="clear" />
                 <div class="grid_4 alpha" >

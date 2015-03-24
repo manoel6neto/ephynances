@@ -12,20 +12,16 @@ import br.com.physisbrasil.web.ephynances.servlet.AbstractFilter;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.Utils;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Calendar;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.Date;
 import javax.faces.bean.SessionScoped;
+import javax.servlet.ServletContext;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -42,8 +38,8 @@ public class LoginController implements Serializable {
     private String profileRule;
     private User user;
     private boolean showPdfContract;
-    private StreamedContent file;
     private SellerContract contract;
+    private StreamedContent file;
 
     @EJB
     private UserBean usuarioBean;
@@ -58,90 +54,65 @@ public class LoginController implements Serializable {
     private SellerContractBean sellerContractBean;
 
     public String login() {
-        try {
-            usuarioBean.clearCache();
-            file = new DefaultStreamedContent();
-            setShowPdfContract(false);
-            if (email.contains("@")) {
-                user = usuarioBean.findByEmailSenhaProfile(email, Criptografia.criptografar(senha), profileRule);
-            } else {
-                if (email.length() != 11) {
-                    JsfUtil.addErrorMessage("Informe um cpf ou email válido. Utilize apenas números para o cpf!");
-                    return "login";
-                }
-                email = new StringBuilder(email).insert(3, ".").toString();
-                email = new StringBuilder(email).insert(7, ".").toString();
-                email = new StringBuilder(email).insert(11, "-").toString();
-                user = usuarioBean.findByCpfSenhaProfile(email, Criptografia.criptografar(senha), profileRule);
-            }
-
-            if (user.isIsVerified()) {
-                HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-                session.setAttribute(AbstractFilter.USER_KEY, user);
-
-                if (user.getProfileRule().equals(User.getRULER_SELLER())) {
-                    if (user.getSellerContract() == null) {
-
-                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-
-                        //Criar e exibir contrato PDF
-                        Document document = new Document();
-                        PdfWriter.getInstance(document, out);
-                        document.open();
-                        document.add(new Paragraph("CONTRATO DE PRESTAÇÃO DE SERVIÇO !! "));
-                        document.add(new Paragraph("VENDEDOR: " + user.getName()));
-                        document.close();
-
-                        ByteArrayInputStream stream = new ByteArrayInputStream(out.toByteArray());
-                        file = new DefaultStreamedContent(stream, "application/pdf", user.getId() + ".pdf");
-                        setShowPdfContract(true);
-
-                        //Salvar no banco de dados
-                        contract = new SellerContract();
-                        contract.setUser(user);
-
-                        // Escrevendo o arquivo no banco de dados
-                        byte[] byteArrayDoc = out.toByteArray();
-                        contract.setContract(byteArrayDoc);
-                        sellerContractBean.create(contract);
-
-                        usuarioBean.clearCache();
-                        sellerContractBean.clearCache();
-                    }
-                }
-
-                return "index";
-            } else {
-                JsfUtil.addErrorMessage("Usuário não ativado. Procure um administrador.");
+        usuarioBean.clearCache();
+        setShowPdfContract(false);
+        if (email.contains("@")) {
+            user = usuarioBean.findByEmailSenhaProfile(email, Criptografia.criptografar(senha), profileRule);
+        } else {
+            if (email.length() != 11) {
+                JsfUtil.addErrorMessage("Informe um cpf ou email válido. Utilize apenas números para o cpf!");
                 return "login";
             }
+            email = new StringBuilder(email).insert(3, ".").toString();
+            email = new StringBuilder(email).insert(7, ".").toString();
+            email = new StringBuilder(email).insert(11, "-").toString();
+            user = usuarioBean.findByCpfSenhaProfile(email, Criptografia.criptografar(senha), profileRule);
+        }
+        if (user.isIsVerified()) {
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+            session.setAttribute(AbstractFilter.USER_KEY, user);
 
-        } catch (DocumentException e) {
-            JsfUtil.addErrorMessage("Falha ao gerar o contrato do vendedor. Consulte o administrador.");
+            if (user.getProfileRule().equals(User.getRULER_SELLER())) {
+                if (user.getSellerContract() == null) {
+                    setShowPdfContract(true);
+
+                    InputStream stream = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/resources/documents/contrato.docx");
+                    file = new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "contrato.docx");
+                }
+            }
+
+            return "index";
+        } else {
+            JsfUtil.addErrorMessage("Usuário não ativado. Procure um administrador.");
             return "login";
         }
     }
-    
+
     public String accept_contract(boolean status) {
         try {
             if (status) {
+                //Salvar no banco de dados
+                contract = new SellerContract();
+                contract.setUser(user);
                 contract.setAcceptDate(new Date(System.currentTimeMillis()));
-                sellerContractBean.edit(contract);
+                sellerContractBean.create(contract);
                 sellerContractBean.clearCache();
+                usuarioBean.clearCache();
                 setShowPdfContract(false);
-                
+
                 JsfUtil.addSuccessMessage("Contrato aceito com sucesso !!");
                 logout();
                 return "login";
             } else {
                 sellerContractBean.remove(contract);
                 sellerContractBean.clearCache();
+                usuarioBean.clearCache();
                 logout();
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Falha ao alterar o status do contrato.");
         }
-        
+
         return "/login?faces-redirect=true";
     }
 
@@ -233,19 +204,19 @@ public class LoginController implements Serializable {
         this.showPdfContract = showPdfContract;
     }
 
-    public StreamedContent getFile() {
-        return file;
-    }
-
-    public void setFile(StreamedContent file) {
-        this.file = file;
-    }
-
     public SellerContract getContract() {
         return contract;
     }
 
     public void setContract(SellerContract contract) {
         this.contract = contract;
+    }
+
+    public StreamedContent getFile() {
+        return file;
+    }
+
+    public void setFile(StreamedContent file) {
+        this.file = file;
     }
 }

@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -30,10 +29,6 @@ public class SellerContract implements BaseModel {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date acceptDate;
     
-    @Lob
-    @Column(name = "contract")
-    private byte[] contract;
-    
     //References
     @OneToOne(optional = false)
     @NotNull
@@ -55,14 +50,6 @@ public class SellerContract implements BaseModel {
 
     public void setAcceptDate(Date acceptDate) {
         this.acceptDate = acceptDate;
-    }
-
-    public byte[] getContract() {
-        return contract;
-    }
-
-    public void setContract(byte[] contract) {
-        this.contract = contract;
     }
 
     public User getUser() {

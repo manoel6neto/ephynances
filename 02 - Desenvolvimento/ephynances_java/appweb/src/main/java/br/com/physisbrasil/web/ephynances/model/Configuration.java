@@ -67,6 +67,16 @@ public class Configuration implements BaseModel {
     @Max(100)
     @DefaultValue(value = "0")
     private int IRPJ;
+    
+    @Column(name = "ISSQN", nullable = false)
+    @Max(100)
+    @DefaultValue(value = "0")
+    private int ISSQN;
+    
+    @Column(name = "ICMS", nullable = false)
+    @Max(100)
+    @DefaultValue(value = "0")
+    private int ICMS;
 
     @Override
     public Long getId() {
@@ -143,6 +153,22 @@ public class Configuration implements BaseModel {
 
     public void setIRPJ(int IRPJ) {
         this.IRPJ = IRPJ;
+    }
+
+    public int getISSQN() {
+        return ISSQN;
+    }
+
+    public void setISSQN(int ISSQN) {
+        this.ISSQN = ISSQN;
+    }
+
+    public int getICMS() {
+        return ICMS;
+    }
+
+    public void setICMS(int ICMS) {
+        this.ICMS = ICMS;
     }
     
     @Override

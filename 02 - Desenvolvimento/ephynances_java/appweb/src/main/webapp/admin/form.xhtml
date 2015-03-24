@@ -80,7 +80,21 @@
                         <p:inputText style="margin-bottom: 10px" value="#{configurationController.configuration.IRPJ}" required="true" requiredMessage="Não pode ser em branco."/>
                         <p:watermark id="wmirpj" for="irpj" value="0"/>
                     </div>
-
+                    
+                    <br class="clear" />                    
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel  id="issqn" value="ISSQN(%): " />
+                        <p:inputText style="margin-bottom: 10px" value="#{configurationController.configuration.ISSQN}" required="true" requiredMessage="Não pode ser em branco."/>
+                        <p:watermark id="wmissqn" for="issqn" value="0"/>
+                    </div>
+                    
+                    <br class="clear" />                    
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel  id="icms" value="ICMS(%): " />
+                        <p:inputText style="margin-bottom: 10px" value="#{configurationController.configuration.ICMS}" required="true" requiredMessage="Não pode ser em branco."/>
+                        <p:watermark id="wmicms" for="icms" value="0"/>
+                    </div>
+                    
                 </p:fieldset>
 
                 <br class="clear" />

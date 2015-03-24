@@ -94,6 +94,9 @@ public class ProponentSiconv implements BaseModel {
 
     @Column(name = "situacao", length = 255, nullable = true)
     private String situacao;
+    
+    @Column(name = "order", nullable = true)
+    private int order;
 
     //References
     @OneToOne(optional = true, orphanRemoval = false)
@@ -276,6 +279,14 @@ public class ProponentSiconv implements BaseModel {
 
     public void setAgreement(Agreement agreement) {
         this.agreement = agreement;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public void setOrder(int order) {
+        this.order = order;
     }
     
     @Override

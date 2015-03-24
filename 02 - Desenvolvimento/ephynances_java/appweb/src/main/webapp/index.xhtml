@@ -9,12 +9,18 @@
         <ui:define name="body">
             <h:form styleClass="form" id="formContract" rendered="#{loginController.showPdfContract}">
                 <div id="divMedia">
-                    <p:media id="media" player="pdf" cache="true" value="#{loginController.file}" width="100%" height="600px"/> 
+                    <p:media id="media" player="pdf" cache="true" value="./resources/documents/contrato.pdf" width="100%" height="600px"/> 
                 </div>
                 <br class="clear" />
                 <p:separator/>
-                <p:commandButton value="Aceitar" action="#{loginController.accept_contract(true)}" icon="ui-icon-closethick" />
+                <p:commandButton value="Aceitar" action="#{loginController.accept_contract(true)}" icon="ui-icon-check" />
                 <p:commandButton value="Recusar" action="#{loginController.accept_contract(false)}" icon="ui-icon-closethick" /> 
+                <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
+                    <p:graphicImage name="./resources/img/ajaxloadingbar.gif" url="./resources/img/ajaxloadingbar.gif" alt="loading..." cache="true"/>
+                </p:dialog>
+                <p:commandButton value="Baixar (Docx)" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                    <p:fileDownload value="#{loginController.file}" />
+                </p:commandButton>
             </h:form>
 
             <h:form id="formDefault" rendered="#{loginController.showPdfContract == false}">

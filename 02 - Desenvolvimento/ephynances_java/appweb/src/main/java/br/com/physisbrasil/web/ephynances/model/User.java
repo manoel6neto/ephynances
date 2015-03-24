@@ -91,6 +91,9 @@ public class User implements BaseModel {
     @Column(name = "number_cities", nullable = true)
     private int numberCities;
 
+    @Column(name = "number_autority", nullable = true)
+    private int numberAutority;
+    
     @Column(name = "street", length = 200, nullable = true)
     private String street;
 
@@ -384,6 +387,14 @@ public class User implements BaseModel {
 
     public static String getRULER_CONTRIBUTOR() {
         return RULER_CONTRIBUTOR;
+    }
+
+    public int getNumberAutority() {
+        return numberAutority;
+    }
+
+    public void setNumberAutority(int numberAutority) {
+        this.numberAutority = numberAutority;
     }
 
     @Override
