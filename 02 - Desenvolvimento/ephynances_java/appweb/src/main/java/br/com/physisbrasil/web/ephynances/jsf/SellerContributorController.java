@@ -1,10 +1,16 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
+import br.com.physisbrasil.web.ephynances.ejb.ActivationBean;
+import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.SellerContributorBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
+import br.com.physisbrasil.web.ephynances.model.Activation;
+import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.SellerContributor;
 import br.com.physisbrasil.web.ephynances.model.User;
+import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
+import br.com.physisbrasil.web.ephynances.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -30,6 +36,12 @@ public class SellerContributorController extends BaseController {
     private User seller;
     private List<User> contributors;
     private User tempUser;
+    
+    @EJB
+    private ActivationBean activationBean;
+    
+    @EJB
+    private ConfigurationBean configurationBean;
 
     @PostConstruct
     public void init() {
@@ -212,6 +224,9 @@ public class SellerContributorController extends BaseController {
                     tempUser.setSalary(0);
                     tempUser.setNumberCnpjs(0);
                     tempUser.setNumberCities(0);
+                    tempUser.setNumberAutority(0);
+                    tempUser.setIsVerified(false);
+                    tempUser.setPassword(Criptografia.criptografar(tempUser.getCpf() + String.valueOf(System.currentTimeMillis())));
                     userBean.create(tempUser);
 
                     //Criando o relacionamento
@@ -222,6 +237,17 @@ public class SellerContributorController extends BaseController {
 
                     //Adicionando na lista
                     contributors.add(tempUser);
+                    
+                    Activation activation = new Activation();
+                    activation.setUser(tempUser);
+                    activation.setDueDate(null);
+                    activation.setToken(Utils.generateToken(tempUser));
+                    activationBean.create(activation);
+                    activationBean.clearCache();
+
+                    Configuration config = configurationBean.findAll().get(0);
+                    Utils.sendEmail(tempUser.getEmail(), tempUser.getName(), "<html><body><a href='http://192.168.0.105:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Ativar Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
+
                     
                     JsfUtil.addSuccessMessage("Colaborador adicionado com sucesso!");
                 } else {

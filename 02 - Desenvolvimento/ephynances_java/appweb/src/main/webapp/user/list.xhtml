@@ -63,7 +63,7 @@
 
                 <br />
                 <div class="alpha grid_2" >
-                    <p:commandButton ajax="false" action="#{userController.create}" value="Novo usuário" />
+                    <p:commandButton ajax="false" action="#{userController.create}" value="Novo usuário" rendered="#{item.profileRule.equals(userController.RULER_ADMIN)}"/>
                 </div>
 
             </h:form>
