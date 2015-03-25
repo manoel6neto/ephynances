@@ -52,8 +52,9 @@
 
                     <br class="clear" />
                     <br class="clear" />
-                    <p:outputLabel value="Proponente: " for="menuProponents" />
-                    <div class="grid_3" >
+                    <p:outputLabel value="Proponente: " for="menuProponents" style="margin-left: 10px"/>
+                    <br />
+                    <div class="grid_3" style="width: 1075px" >
                         <p:selectManyMenu id="menuProponents" value="#{userController.selectedProponents}" converter="proponentSiconvConverter"
                                           var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
                             <f:selectItems value="#{userController.proponentsFiltered}" var="proponent" itemLabel="#{proponent.cnpj}" itemValue="#{proponent}" />

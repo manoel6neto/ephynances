@@ -193,6 +193,14 @@ label.ui-state-error{
 
 }
 
+.ui-selectlistbox-filter-container {
+    padding-right: 10px !important;
+}
+
+.ui-selectlistbox-filter.ui-inputfield {
+    padding-left: 1% !important;
+}
+
 .ui-state-highlight{
     background-color: #EBE9DE !important;
     background: url('../img/ui-state-hightlight-bg.png.jsf') repeat-x !important;
