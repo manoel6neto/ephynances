@@ -19,7 +19,6 @@ public class ProponentSiconvBean extends DAO<ProponentSiconv> {
 
         namedQuery.setParameter("esferaAdministrativa", esferaAdministrativa);
         namedQuery.setParameter("municipioUfNome", municipioUfNome);
-        namedQuery.setParameter("user", "null");
         
 
         List<ProponentSiconv> proponentsSiconv;
@@ -37,7 +36,6 @@ public class ProponentSiconvBean extends DAO<ProponentSiconv> {
 
         namedQuery.setParameter("esferaAdministrativa", esferaAdministrativa);
         namedQuery.setParameter("municipioUfNome", municipioUfNome);
-        namedQuery.setParameter("user", "null");
 
         List<ProponentSiconv> proponentsSiconv;
         List<String> cities;
@@ -62,7 +60,6 @@ public class ProponentSiconvBean extends DAO<ProponentSiconv> {
         namedQuery.setParameter("esferaAdministrativa", esferaAdministrativa);
         namedQuery.setParameter("municipioUfNome", municipioUfNome);
         namedQuery.setParameter("municipio", municipio);
-        namedQuery.setParameter("user", "null");
 
         List<ProponentSiconv> proponentsSiconv;
         try {
