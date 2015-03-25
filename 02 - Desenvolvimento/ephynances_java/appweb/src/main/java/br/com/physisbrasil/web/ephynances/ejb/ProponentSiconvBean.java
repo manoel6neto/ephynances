@@ -13,7 +13,7 @@ import javax.persistence.TypedQuery;
  */
 @Stateless
 public class ProponentSiconvBean extends DAO<ProponentSiconv> {
-    
+
     public List<ProponentSiconv> findBySphereState(String esferaAdministrativa, String municipioUfNome) {
         TypedQuery<ProponentSiconv> namedQuery = getEntityManager().createNamedQuery("ProponentSiconv.findBySphereState", ProponentSiconv.class);
 
@@ -29,8 +29,8 @@ public class ProponentSiconvBean extends DAO<ProponentSiconv> {
 
         return proponentsSiconv;
     }
-    
-     public List<String> findCitiesNamesBySphereState(String esferaAdministrativa, String municipioUfNome) {
+
+    public List<String> findCitiesNamesBySphereState(String esferaAdministrativa, String municipioUfNome) {
         TypedQuery<ProponentSiconv> namedQuery = getEntityManager().createNamedQuery("ProponentSiconv.findBySphereState", ProponentSiconv.class);
 
         namedQuery.setParameter("esferaAdministrativa", esferaAdministrativa);
@@ -41,18 +41,18 @@ public class ProponentSiconvBean extends DAO<ProponentSiconv> {
         try {
             proponentsSiconv = namedQuery.getResultList();
             cities = new ArrayList<String>();
-            for(ProponentSiconv prop : proponentsSiconv) {
-                cities.add(prop.getMunicipio());
+            for (ProponentSiconv prop : proponentsSiconv) {
+                if (!cities.contains(prop.getMunicipio())) {
+                    cities.add(prop.getMunicipio());
+                }
             }
         } catch (Exception e) {
-            proponentsSiconv = null;
             cities = null;
         }
 
         return cities;
     }
 
-    
     public List<ProponentSiconv> findBySphereStateCity(String esferaAdministrativa, String municipioUfNome, String municipio) {
         TypedQuery<ProponentSiconv> namedQuery = getEntityManager().createNamedQuery("ProponentSiconv.findBySphereStateCity", ProponentSiconv.class);
 

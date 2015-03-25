@@ -46,6 +46,7 @@
                         <p:outputLabel value="Municípios: " for="menuMunicipios" />
                         <p:selectOneMenu id="menuMunicipios" style="width: 1050px" value="#{userController.selectNameCity}" required="false" effect="fade">
                             <p:ajax listener="#{userController.updateCityCnpj}" update="menuProponents" />
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione uma cidade" />
                             <f:selectItems value="#{userController.citiesFiltered}"/>
                         </p:selectOneMenu>
                     </div>
@@ -56,16 +57,10 @@
                     <br />
                     <div class="grid_3" style="width: 1075px" >
                         <p:selectManyMenu id="menuProponents" value="#{userController.selectedProponents}" converter="proponentSiconvConverter"
-                                          var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
+                                          var="t" filter="true" filterMatchMode="contains" showCheckbox="true" disabled="#{userController.proponentsFiltered.size() == 0}">
                             <f:selectItems value="#{userController.proponentsFiltered}" var="proponent" itemLabel="#{proponent.cnpj}" itemValue="#{proponent}" />
-                            <p:column>
-                                <h:outputText value="#{t.cnpj}" />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value=" - " />
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{t.municipio}" />
+                            <p:column style="width: 50px; padding: 1px;">
+                                <h:outputText value="#{t.cnpj}  -  #{t.nome}" />
                             </p:column>
                         </p:selectManyMenu>
                     </div>
@@ -109,8 +104,8 @@
                             <h:outputText value="#{item.esferaAdministrativa}" />
                         </p:column>
 
-                        <p:column style="text-align: center; width: 50px;" headerText="Prio." sortBy="#{item.order}">                       
-                            <h:outputText value="#{item.order}" />
+                        <p:column style="text-align: center; width: 50px;" headerText="Prio." sortBy="#{item.orderVisit}">                       
+                            <h:outputText value="#{item.orderVisit}" />
                         </p:column>
                     </p:dataTable>
 

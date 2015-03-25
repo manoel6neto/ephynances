@@ -47,10 +47,10 @@ public class UserController extends BaseController {
 
     @EJB
     private ActivationBean activationBean;
-    
+
     @EJB
     private ProponentSiconvBean proponentSiconvBean;
-    
+
     /// ATRELAMENTO CNPJS ///
     private AdministrativeSphere selectedAdministrativeSphere;
     private State selectedState;
@@ -78,6 +78,9 @@ public class UserController extends BaseController {
         this.oldPass = "";
         selectedAdministrativeSphere = null;
         selectedState = null;
+
+        proponentsFiltered = new ArrayList<ProponentSiconv>();
+        citiesFiltered = new ArrayList<String>();
         //putFlash("user", null);
     }
 
@@ -349,7 +352,7 @@ public class UserController extends BaseController {
     public void setSelectedProponents(List<ProponentSiconv> selectedProponents) {
         this.selectedProponents = selectedProponents;
     }
-    
+
     private void loadUsers() {
         try {
             if (getUsuarioLogado() != null) {
@@ -366,18 +369,15 @@ public class UserController extends BaseController {
             JsfUtil.addErrorMessage("Erro.");
         }
     }
-    
+
     public void setSeller(Long id) {
         if (id > 0) {
             usuarioBean.clearCache();
             user = usuarioBean.find(id);
-            
-            proponentsFiltered = new ArrayList<ProponentSiconv>();
-            citiesFiltered = new ArrayList<String>();
-            
+
         }
     }
-    
+
     public void updateCityCnpj() {
         if (selectedAdministrativeSphere != null) {
             if (selectedState != null) {
@@ -392,8 +392,22 @@ public class UserController extends BaseController {
             }
         }
     }
-    
+
     public void addCpnjSeller() {
-        
+        if (user != null) {
+            if (user.getId() > 0) {
+                if (selectNameCity != null && selectedAdministrativeSphere != null && selectedState != null) {
+                     if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
+                         // Adicionar todos do municipio
+                     } else {
+                         if (selectedProponents != null && selectedProponents.size() > 0) {
+                             //Adicionar os selecionados
+                         }
+                     }
+                } else {
+                    JsfUtil.addErrorMessage("Selecione os filtro e os cnpj's desejados.");
+                }
+            }
+        }
     }
 }
