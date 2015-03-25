@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -107,11 +108,11 @@ public class ProponentSiconv implements BaseModel {
     private int orderVisit;
 
     //References
-    @OneToOne(optional = true, orphanRemoval = false)
+    @ManyToOne()
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
     
-    @OneToOne(optional = true, orphanRemoval = false)
+    @ManyToOne()
     @JoinColumn(name = "agreement_id", referencedColumnName = "id", nullable = true)
     private Agreement agreement;
 

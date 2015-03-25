@@ -135,7 +135,7 @@ public class UserController extends BaseController {
                     activationBean.clearCache();
 
                     Configuration config = configurationBean.findAll().get(0);
-                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://192.168.0.105:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Ativar Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
+                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://192.168.0.100:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Ativar Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
 
                     JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
                 }
@@ -398,10 +398,18 @@ public class UserController extends BaseController {
             if (user.getId() > 0) {
                 if (selectNameCity != null && selectedAdministrativeSphere != null && selectedState != null) {
                      if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
-                         // Adicionar todos do municipio
+                         for(ProponentSiconv prop : proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity)) {
+                             prop.setUser(user);
+                             proponentSiconvBean.edit(prop);
+                         }
+                         proponentSiconvBean.clearCache();
                      } else {
                          if (selectedProponents != null && selectedProponents.size() > 0) {
-                             //Adicionar os selecionados
+                             for(ProponentSiconv prop : selectedProponents) {
+                                 prop.setUser(user);
+                                 proponentSiconvBean.edit(prop);
+                             }
+                             proponentSiconvBean.clearCache();
                          }
                      }
                 } else {
