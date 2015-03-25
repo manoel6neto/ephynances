@@ -138,7 +138,7 @@ public class User implements BaseModel {
     @ManyToMany()
     private List<AdministrativeSphere> administrativeSpheres;
 
-    @OneToMany(mappedBy = "user", orphanRemoval = false)
+    @OneToMany(mappedBy = "user")
     private List<ProponentSiconv> proponents;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)

@@ -21,6 +21,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.validation.ConstraintViolationException;
 
 /**
  *
@@ -394,28 +395,33 @@ public class UserController extends BaseController {
     }
 
     public void addCpnjSeller() {
-        if (user != null) {
-            if (user.getId() > 0) {
-                if (selectNameCity != null && selectedAdministrativeSphere != null && selectedState != null) {
-                     if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
-                         for(ProponentSiconv prop : proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity)) {
-                             prop.setUser(user);
-                             proponentSiconvBean.edit(prop);
-                         }
-                         proponentSiconvBean.clearCache();
-                     } else {
-                         if (selectedProponents != null && selectedProponents.size() > 0) {
-                             for(ProponentSiconv prop : selectedProponents) {
-                                 prop.setUser(user);
-                                 proponentSiconvBean.edit(prop);
-                             }
-                             proponentSiconvBean.clearCache();
-                         }
-                     }
-                } else {
-                    JsfUtil.addErrorMessage("Selecione os filtro e os cnpj's desejados.");
+        try {
+            if (user != null) {
+                if (user.getId() > 0) {
+                    if (selectNameCity != null && selectedAdministrativeSphere != null && selectedState != null) {
+                        if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
+                            for (ProponentSiconv prop : proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity)) {
+                                prop.setUser(user);
+                                proponentSiconvBean.edit(prop);
+                            }
+                            proponentSiconvBean.clearCache();
+                        } else {
+                            if (selectedProponents != null && selectedProponents.size() > 0) {
+                                for (ProponentSiconv prop : selectedProponents) {
+                                    prop.setUser(user);
+                                    proponentSiconvBean.edit(prop);
+                                }
+                                proponentSiconvBean.clearCache();
+                                selectedProponents = null;
+                            }
+                        }
+                    } else {
+                        JsfUtil.addErrorMessage("Selecione os filtro e os cnpj's desejados.");
+                    }
                 }
             }
+        } catch (ConstraintViolationException e) {
+            JsfUtil.addErrorMessage(e, "Falha ao adicionar cnpj's.");
         }
     }
 }

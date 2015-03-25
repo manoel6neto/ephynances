@@ -9,12 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  *
@@ -24,9 +19,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "proponente_siconv")
 @NamedQueries({
     @NamedQuery(name = "ProponentSiconv.findBySphereState",
-            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome"),
+            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.user = :user"),
     @NamedQuery(name = "ProponentSiconv.findBySphereStateCity",
-            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.municipio = :municipio")
+            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.municipio = :municipio AND p.user = :user")
 })
 public class ProponentSiconv implements BaseModel {
 
@@ -35,70 +30,52 @@ public class ProponentSiconv implements BaseModel {
     @Column(name = "id_proponente_siconv")
     private Long idProponenteSiconv;
 
-    @Column(name = "cnpj", length = 18, nullable = false, unique = true)
-    @NotEmpty
-    @Size(max = 18, message = "Deve conter no máximo 18 dígitos.")
-    @Pattern(regexp = CNPJ_REGEX)
+    @Column(name = "cnpj")
     private String cnpj;
 
-    @Column(name = "nome", length = 255, nullable = false)
-    @NotNull
+    @Column(name = "nome", length = 255, nullable = true)
     private String nome;
 
-    @Column(name = "esfera_administrativa", length = 255, nullable = false)
-    @NotNull
+    @Column(name = "esfera_administrativa", length = 255, nullable = true)
     private String esferaAdministrativa;
 
-    @Column(name = "codigo_municipio", length = 40, nullable = false)
-    @NotNull
+    @Column(name = "codigo_municipio", length = 40, nullable = true)
     private String codigoMunicipio;
 
-    @Column(name = "municipio", length = 255, nullable = false)
-    @NotNull
+    @Column(name = "municipio", length = 255, nullable = true)
     private String municipio;
 
-    @Column(name = "municipio_uf_sigla", length = 2, nullable = false)
-    @NotNull
+    @Column(name = "municipio_uf_sigla", length = 2, nullable = true)
     private String municipioUfSigla;
 
-    @Column(name = "municipio_uf_nome", length = 60, nullable = false)
-    @NotNull
+    @Column(name = "municipio_uf_nome", length = 60, nullable = true)
     private String municipioUfNome;
 
-    @Column(name = "municipio_uf_regiao", length = 2, nullable = false)
-    @NotNull
+    @Column(name = "municipio_uf_regiao", length = 2, nullable = true)
     private String municipioUfRegiao;
 
-    @Column(name = "endereco", length = 255, nullable = false)
-    @NotNull
+    @Column(name = "endereco", length = 255, nullable = true)
     private String endereco;
 
-    @Column(name = "cep", length = 8, nullable = false)
-    @NotNull
+    @Column(name = "cep", length = 8, nullable = true)
     private String cep;
 
-    @Column(name = "nome_responsavel", length = 255, nullable = false)
-    @NotNull
+    @Column(name = "nome_responsavel", length = 255, nullable = true)
     private String nomeResponsavel;
 
-    @Column(name = "telefone", length = 30, nullable = false)
-    @NotNull
+    @Column(name = "telefone", length = 30, nullable = true)
     private String telefone;
 
-    @Column(name = "fax", length = 30, nullable = false)
-    @NotNull
+    @Column(name = "fax", length = 30, nullable = true)
     private String fax;
 
-    @Column(name = "natureza_juridica", length = 255, nullable = false)
-    @NotNull
+    @Column(name = "natureza_juridica", length = 255, nullable = true)
     private String naturezaJuridica;
 
-    @Column(name = "inscricao_estadual", length = 255, nullable = false)
-    @NotNull
+    @Column(name = "inscricao_estadual", length = 255, nullable = true)
     private String inscricaoEstadual;
 
-    @Column(name = "inscricao_municipal", length = 255, nullable = false)
-    @NotNull
+    @Column(name = "inscricao_municipal", length = 255, nullable = true)
     private String inscricaoMunicipal;
 
     @Column(name = "situacao", length = 255, nullable = true)
@@ -108,11 +85,11 @@ public class ProponentSiconv implements BaseModel {
     private int orderVisit;
 
     //References
-    @ManyToOne()
+    @ManyToOne(optional = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
     
-    @ManyToOne()
+    @ManyToOne(optional = true)
     @JoinColumn(name = "agreement_id", referencedColumnName = "id", nullable = true)
     private Agreement agreement;
 
@@ -124,7 +101,7 @@ public class ProponentSiconv implements BaseModel {
     public Long getId() {
         return idProponenteSiconv;
     }
-
+    
     @Override
     public String toString() {
         return idProponenteSiconv.toString();
