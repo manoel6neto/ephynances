@@ -2,11 +2,13 @@ package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.ActivationBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
+import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
 import br.com.physisbrasil.web.ephynances.ejb.SellerContributorBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Activation;
 import br.com.physisbrasil.web.ephynances.model.AdministrativeSphere;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
+import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
 import br.com.physisbrasil.web.ephynances.model.State;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
@@ -46,9 +48,17 @@ public class UserController extends BaseController {
     @EJB
     private ActivationBean activationBean;
     
+    @EJB
+    private ProponentSiconvBean proponentSiconvBean;
+    
     /// ATRELAMENTO CNPJS ///
     private AdministrativeSphere selectedAdministrativeSphere;
     private State selectedState;
+    private ProponentSiconv selectedProponentSiconv;
+    private String selectNameCity;
+    private List<ProponentSiconv> proponentsFiltered;
+    private List<ProponentSiconv> selectedProponents;
+    private List<String> citiesFiltered;
     /// --- ///
 
     @PostConstruct
@@ -66,6 +76,8 @@ public class UserController extends BaseController {
         }
 
         this.oldPass = "";
+        selectedAdministrativeSphere = null;
+        selectedState = null;
         //putFlash("user", null);
     }
 
@@ -298,6 +310,46 @@ public class UserController extends BaseController {
         this.selectedState = selectedState;
     }
 
+    public ProponentSiconv getSelectedProponentSiconv() {
+        return selectedProponentSiconv;
+    }
+
+    public void setSelectedProponentSiconv(ProponentSiconv selectedProponentSiconv) {
+        this.selectedProponentSiconv = selectedProponentSiconv;
+    }
+
+    public String getSelectNameCity() {
+        return selectNameCity;
+    }
+
+    public void setSelectNameCity(String selectNameCity) {
+        this.selectNameCity = selectNameCity;
+    }
+
+    public List<ProponentSiconv> getProponentsFiltered() {
+        return proponentsFiltered;
+    }
+
+    public void setProponentsFiltered(List<ProponentSiconv> proponentsFiltered) {
+        this.proponentsFiltered = proponentsFiltered;
+    }
+
+    public List<String> getCitiesFiltered() {
+        return citiesFiltered;
+    }
+
+    public void setCitiesFiltered(List<String> citiesFiltered) {
+        this.citiesFiltered = citiesFiltered;
+    }
+
+    public List<ProponentSiconv> getSelectedProponents() {
+        return selectedProponents;
+    }
+
+    public void setSelectedProponents(List<ProponentSiconv> selectedProponents) {
+        this.selectedProponents = selectedProponents;
+    }
+    
     private void loadUsers() {
         try {
             if (getUsuarioLogado() != null) {
@@ -313,5 +365,35 @@ public class UserController extends BaseController {
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Erro.");
         }
+    }
+    
+    public void setSeller(Long id) {
+        if (id > 0) {
+            usuarioBean.clearCache();
+            user = usuarioBean.find(id);
+            
+            proponentsFiltered = new ArrayList<ProponentSiconv>();
+            citiesFiltered = new ArrayList<String>();
+            
+        }
+    }
+    
+    public void updateCityCnpj() {
+        if (selectedAdministrativeSphere != null) {
+            if (selectedState != null) {
+                citiesFiltered = proponentSiconvBean.findCitiesNamesBySphereState(selectedAdministrativeSphere.getName(), selectedState.getName());
+                if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
+                    proponentsFiltered = new ArrayList<ProponentSiconv>();
+                } else {
+                    if (selectNameCity != null) {
+                        proponentsFiltered = proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity);
+                    }
+                }
+            }
+        }
+    }
+    
+    public void addCpnjSeller() {
+        
     }
 }

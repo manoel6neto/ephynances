@@ -12,6 +12,7 @@
         </ui:define>
         <ui:define name="body"  >
             <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER])}" />
+            <f:event type="preRenderView" listener="#{userController.setSeller(loginController.loggedUser.id)}" />
             <h:form id="form" >
                 <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
 
@@ -21,9 +22,10 @@
                     <br class="clear" />
                     <div class="grid_3" >
                         <p:outputLabel value="Esfera Administrativa: " for="menuEsfera" />
-                        <p:selectOneMenu id="menuEsfera" style="width: 1050px" value="#{userController.selectedAdministrativeSphere}" required="true" effect="fade">
+                        <p:selectOneMenu id="menuEsfera" style="width: 1050px" value="#{userController.selectedAdministrativeSphere}" required="true" effect="fade" converter="administrativeSphereConverter">
+                            <p:ajax listener="#{userController.updateCityCnpj}" update="menuMunicipios menuProponents" />
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione uma esfera" />
-                            <f:selectItems value="#{userController.user.administrativeSpheres}" var="selectSphereMenu" itemLabel="#{selectSphereMenu.name}" itemValue="#{selectSphereMenu}"/>
+                            <f:selectItems value="#{userController.user.administrativeSpheres}" var="sphere" itemLabel="#{sphere.name}" itemValue="#{sphere}"/>
                         </p:selectOneMenu>
                     </div>
 
@@ -31,9 +33,10 @@
                     <br />
                     <div class="grid_3" >
                         <p:outputLabel value="Estados: " for="menuEstados" />
-                        <p:selectOneMenu id="menuEstados" style="width: 1050px" value="#{userController.selectedState}" required="true" effect="fade">
+                        <p:selectOneMenu id="menuEstados" style="width: 1050px" value="#{userController.selectedState}" required="true" effect="fade" converter="stateConverter">
+                            <p:ajax listener="#{userController.updateCityCnpj}" update="menuMunicipios menuProponents" />
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione um estado" />
-                            <f:selectItems value="#{userController.user.states}" var="selectStateMenu" itemLabel="#{selectStateMenu.name}" itemValue="#{selectStateMenu}"/>
+                            <f:selectItems value="#{userController.user.states}" var="states" itemLabel="#{states.name}" itemValue="#{states}"/>
                         </p:selectOneMenu>
                     </div>
 
@@ -41,18 +44,35 @@
                     <br />
                     <div class="grid_3" >
                         <p:outputLabel value="Municípios: " for="menuMunicipios" />
-                        <p:selectOneMenu id="menuMunicipios" style="width: 1050px" value="#{userController.selectedState}" required="false" effect="fade">
-                            <f:selectItems value="#{userController.user.states}"/>
+                        <p:selectOneMenu id="menuMunicipios" style="width: 1050px" value="#{userController.selectNameCity}" required="false" effect="fade">
+                            <p:ajax listener="#{userController.updateCityCnpj}" update="menuProponents" />
+                            <f:selectItems value="#{userController.citiesFiltered}"/>
                         </p:selectOneMenu>
                     </div>
 
                     <br class="clear" />
-                    <br />
+                    <br class="clear" />
+                    <p:outputLabel value="Proponente: " for="menuProponents" />
                     <div class="grid_3" >
-                        <p:outputLabel value="Cnpj's: " for="menuCnpjs" />
-                        <p:selectOneMenu id="menuCnpjs" style="width: 1050px" value="#{userController.selectedState}" required="true" effect="fade">
-                            <f:selectItems value="#{userController.user.states}"/>
-                        </p:selectOneMenu>
+                        <p:selectManyMenu id="menuProponents" value="#{userController.selectedProponents}" converter="proponentSiconvConverter"
+                                          var="t" filter="true" filterMatchMode="contains" showCheckbox="true">
+                            <f:selectItems value="#{userController.proponentsFiltered}" var="proponent" itemLabel="#{proponent.cnpj}" itemValue="#{proponent}" />
+                            <p:column>
+                                <h:outputText value="#{t.cnpj}" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value=" - " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{t.municipio}" />
+                            </p:column>
+                        </p:selectManyMenu>
+                    </div>
+
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_3" style="line-height: 30px;" >
+                        <p:commandButton styleClass="grid_1 alpha" action="#{userController.addCpnjSeller}" value="Adicionar" update="table" ajax="false"/>
                     </div>
 
                     <br class="clear" />

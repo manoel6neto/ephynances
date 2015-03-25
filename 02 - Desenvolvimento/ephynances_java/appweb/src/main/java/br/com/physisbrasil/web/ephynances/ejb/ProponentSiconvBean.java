@@ -2,7 +2,10 @@ package br.com.physisbrasil.web.ephynances.ejb;
 
 import br.com.physisbrasil.web.ephynances.dao.DAO;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -10,5 +13,60 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class ProponentSiconvBean extends DAO<ProponentSiconv> {
+    
+    public List<ProponentSiconv> findBySphereState(String esferaAdministrativa, String municipioUfNome) {
+        TypedQuery<ProponentSiconv> namedQuery = getEntityManager().createNamedQuery("ProponentSiconv.findBySphereState", ProponentSiconv.class);
 
+        namedQuery.setParameter("esferaAdministrativa", esferaAdministrativa);
+        namedQuery.setParameter("municipioUfNome", municipioUfNome);
+
+        List<ProponentSiconv> proponentsSiconv;
+        try {
+            proponentsSiconv = namedQuery.getResultList();
+        } catch (Exception e) {
+            proponentsSiconv = null;
+        }
+
+        return proponentsSiconv;
+    }
+    
+     public List<String> findCitiesNamesBySphereState(String esferaAdministrativa, String municipioUfNome) {
+        TypedQuery<ProponentSiconv> namedQuery = getEntityManager().createNamedQuery("ProponentSiconv.findBySphereState", ProponentSiconv.class);
+
+        namedQuery.setParameter("esferaAdministrativa", esferaAdministrativa);
+        namedQuery.setParameter("municipioUfNome", municipioUfNome);
+
+        List<ProponentSiconv> proponentsSiconv;
+        List<String> cities;
+        try {
+            proponentsSiconv = namedQuery.getResultList();
+            cities = new ArrayList<String>();
+            for(ProponentSiconv prop : proponentsSiconv) {
+                cities.add(prop.getMunicipio());
+            }
+        } catch (Exception e) {
+            proponentsSiconv = null;
+            cities = null;
+        }
+
+        return cities;
+    }
+
+    
+    public List<ProponentSiconv> findBySphereStateCity(String esferaAdministrativa, String municipioUfNome, String municipio) {
+        TypedQuery<ProponentSiconv> namedQuery = getEntityManager().createNamedQuery("ProponentSiconv.findBySphereStateCity", ProponentSiconv.class);
+
+        namedQuery.setParameter("esferaAdministrativa", esferaAdministrativa);
+        namedQuery.setParameter("municipioUfNome", municipioUfNome);
+        namedQuery.setParameter("municipio", municipio);
+
+        List<ProponentSiconv> proponentsSiconv;
+        try {
+            proponentsSiconv = namedQuery.getResultList();
+        } catch (Exception e) {
+            proponentsSiconv = null;
+        }
+
+        return proponentsSiconv;
+    }
 }

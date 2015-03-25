@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -19,6 +21,12 @@ import org.hibernate.validator.constraints.NotEmpty;
  */
 @Entity
 @Table(name = "proponente_siconv")
+@NamedQueries({
+    @NamedQuery(name = "ProponentSiconv.findBySphereState",
+            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome"),
+    @NamedQuery(name = "ProponentSiconv.findBySphereStateCity",
+            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.municipio = :municipio")
+})
 public class ProponentSiconv implements BaseModel {
 
     @Id
@@ -95,8 +103,8 @@ public class ProponentSiconv implements BaseModel {
     @Column(name = "situacao", length = 255, nullable = true)
     private String situacao;
     
-    @Column(name = "order", nullable = true)
-    private int order;
+    @Column(name = "order_visit", nullable = true)
+    private int orderVisit;
 
     //References
     @OneToOne(optional = true, orphanRemoval = false)
@@ -281,12 +289,12 @@ public class ProponentSiconv implements BaseModel {
         this.agreement = agreement;
     }
 
-    public int getOrder() {
-        return order;
+    public int getOrderVisit() {
+        return orderVisit;
     }
 
-    public void setOrder(int order) {
-        this.order = order;
+    public void setOrderVisit(int orderVisit) {
+        this.orderVisit = orderVisit;
     }
     
     @Override

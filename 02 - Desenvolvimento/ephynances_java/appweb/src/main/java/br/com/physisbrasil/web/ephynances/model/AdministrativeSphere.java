@@ -21,6 +21,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "administrative_sphere", uniqueConstraints = @UniqueConstraint(columnNames = {"name"}))
 public class AdministrativeSphere implements BaseModel {
 
+    private static final String SPHERE_MUNICIPAL = "MUNICIPAL";
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -60,6 +62,10 @@ public class AdministrativeSphere implements BaseModel {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public static String getSPHERE_MUNICIPAL() {
+        return SPHERE_MUNICIPAL;
     }
 
     @Override
