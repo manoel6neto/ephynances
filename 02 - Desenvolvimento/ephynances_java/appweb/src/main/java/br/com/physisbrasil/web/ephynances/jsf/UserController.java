@@ -514,6 +514,49 @@ public class UserController extends BaseController {
             }
         }
     }
+    
+    public String setSellerExternal(Long id) {
+        if (id > 0) {
+            usuarioBean.clearCache();
+            user = usuarioBean.find(id);
+
+            //Carregando os valores do banco
+            quantidadeCnjsDisponiveis = user.getNumberCnpjs();
+            quantidadeMunicipiosDisponiveis = user.getNumberCities();
+
+            //Ajustando os valores removendo os já cadastrados
+            if (user.getProponents() != null) {
+                if (user.getProponents().size() > 0) {
+                    ordem = 0;
+                    List<String> municipiosTemp = new ArrayList<String>();
+                    for (ProponentSiconv prop : user.getProponents()) {
+                        // Verificando a ordem
+                        if (prop.getOrderVisit() > ordem) {
+                            ordem = prop.getOrderVisit();
+                        }
+                        // Verificando quantidade de Cnpjs não municipais
+                        if (!prop.getEsferaAdministrativa().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
+                            quantidadeCnjsDisponiveis--;
+                        }
+                        // Verificando Cnpjs Municipais
+                        if (prop.getEsferaAdministrativa().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
+                            if (!municipiosTemp.contains(prop.getMunicipio())) {
+                                quantidadeMunicipiosDisponiveis--;
+                                municipiosTemp.add(prop.getMunicipio());
+                            }
+                        }
+                    }
+                    ordem++;
+                } else {
+                    ordem = 1;
+                }
+            } else {
+                ordem = 1;
+            }
+        }
+        
+        return "cnpjext";
+    }
 
     public void updateCityCnpj() {
         if (selectedAdministrativeSphere != null) {
@@ -595,6 +638,21 @@ public class UserController extends BaseController {
                 proponentSiconvBean.edit(prop);
             }
             proponentSiconvBean.clearCache();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Falha ao remover CNPJ's");
+        }
+    }
+    
+    public void clearCnpjsExt() {
+        try {
+            proponentSiconvBean.clearCache();
+            for (ProponentSiconv prop : user.getProponents()) {
+                prop.setOrderVisit(0);
+                prop.setUser(null);
+                proponentSiconvBean.edit(prop);
+            }
+            proponentSiconvBean.clearCache();
+            setSellerExternal(user.getId());
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Falha ao remover CNPJ's");
         }
