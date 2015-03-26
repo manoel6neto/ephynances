@@ -16,7 +16,9 @@ import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.Utils;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -60,7 +62,12 @@ public class UserController extends BaseController {
     private List<ProponentSiconv> proponentsFiltered;
     private List<ProponentSiconv> selectedProponents;
     private List<String> citiesFiltered;
+    private int ordem;
+    private int quantidadeMunicipiosDisponiveis;
+    private int quantidadeCnjsDisponiveis;
     /// --- ///
+
+    private Map<String, String> statesCapital;
 
     @PostConstruct
     public void init() {
@@ -83,6 +90,41 @@ public class UserController extends BaseController {
         proponentsFiltered = new ArrayList<ProponentSiconv>();
         citiesFiltered = new ArrayList<String>();
         //putFlash("user", null);
+
+        statesCapital = new HashMap<String, String>() {
+            {
+                put("Acre", "RIO BRANCO");
+                put("Amapá", "MACAPÁ");
+                put("Amazonas", "MANAUS");
+                put("Pará", "BELÉM");
+                put("Rondônia", "PORTO VELHO");
+                put("Roraima", "BOA VISTA");
+                put("Tocantins", "PALMAS");
+                put("Alagoas", "MACEIÓ");
+                put("Bahia", "SALVADOR");
+                put("Ceará", "FORTALEZA");
+                put("Maranhão", "SÃO LUÍS");
+                put("Paraíba", "JOÃO PESSOA");
+                put("Piauí", "TERESINA");
+                put("Pernambuco", "RECIFE");
+                put("Rio Grande do Norte", "NATAL");
+                put("Sergipe", "ARACAJU");
+                put("São Paulo", "SÃO PAULO");
+                put("Minas Gerais", "BELO HORIZONTE");
+                put("Rio de Janeiro", "RIO DE JANEIRO");
+                put("Espírito Santo", "VITÓRIA");
+                put("Goiás", "GOIANIA");
+                put("Distrito Federal", "BRASÍLIA");
+                put("Mato Grosso", "CUIABÁ");
+                put("Mato Grosso do Sul", "CAMPO GRANDE");
+                put("Paraná", "CURITÍBA");
+                put("Santa Catarina", "FLORIANÓPOLIS");
+                put("Rio Grande do Sul", "PORTO ALEGRE");
+            }
+        ;
+    }
+
+    ;
     }
 
     public String create() {
@@ -293,7 +335,7 @@ public class UserController extends BaseController {
     public String getRULER_SELLER() {
         return User.getRULER_SELLER();
     }
-    
+
     public String getRULER_ADMIN_GESTOR() {
         return User.getRULER_ADMIN_GESTOR();
     }
@@ -357,9 +399,41 @@ public class UserController extends BaseController {
     public void setSelectedProponents(List<ProponentSiconv> selectedProponents) {
         this.selectedProponents = selectedProponents;
     }
-    
+
     public List<User> getAdminGestor() {
         return usuarioBean.listByProperty("profileRule", getRULER_ADMIN_GESTOR());
+    }
+
+    public int getOrdem() {
+        return ordem;
+    }
+
+    public void setOrdem(int ordem) {
+        this.ordem = ordem;
+    }
+
+    public int getQuantidadeMunicipiosDisponiveis() {
+        return quantidadeMunicipiosDisponiveis;
+    }
+
+    public void setQuantidadeMunicipiosDisponiveis(int quantidadeMunicipiosDisponiveis) {
+        this.quantidadeMunicipiosDisponiveis = quantidadeMunicipiosDisponiveis;
+    }
+
+    public int getQuantidadeCnjsDisponiveis() {
+        return quantidadeCnjsDisponiveis;
+    }
+
+    public void setQuantidadeCnjsDisponiveis(int quantidadeCnjsDisponiveis) {
+        this.quantidadeCnjsDisponiveis = quantidadeCnjsDisponiveis;
+    }
+
+    public Map<String, String> getStatesCapital() {
+        return statesCapital;
+    }
+
+    public void setStatesCapital(Map<String, String> statesCapital) {
+        this.statesCapital = statesCapital;
     }
 
     private void loadUsers() {
@@ -383,7 +457,22 @@ public class UserController extends BaseController {
         if (id > 0) {
             usuarioBean.clearCache();
             user = usuarioBean.find(id);
-
+            quantidadeCnjsDisponiveis = user.getNumberCnpjs();
+            quantidadeMunicipiosDisponiveis = user.getNumberCities();
+            if (user.getProponents() != null) {
+                if (user.getProponents().size() > 0) {
+                    ordem = 0;
+                    for (ProponentSiconv prop : user.getProponents()) {
+                        if (prop.getOrderVisit() > ordem) {
+                            ordem = prop.getOrderVisit();
+                        }
+                    }
+                } else {
+                    ordem = 0;
+                }
+            } else {
+                ordem = 0;
+            }
         }
     }
 
@@ -391,6 +480,9 @@ public class UserController extends BaseController {
         if (selectedAdministrativeSphere != null) {
             if (selectedState != null) {
                 citiesFiltered = proponentSiconvBean.findCitiesNamesBySphereState(selectedAdministrativeSphere.getName(), selectedState.getName());
+                if (user.getProfileRule().equals(getRULER_SELLER()) || user.getProfileRule().equals(getRULER_CONTRIBUTOR()) || user.getProfileRule().equals(getRULER_ADMIN_GESTOR())) {
+                    citiesFiltered.remove(statesCapital.get(selectedState.getName()));
+                }
                 if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
                     proponentsFiltered = new ArrayList<ProponentSiconv>();
                 } else {
@@ -410,6 +502,7 @@ public class UserController extends BaseController {
                         if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
                             for (ProponentSiconv prop : proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity)) {
                                 prop.setUser(user);
+                                prop.setOrderVisit(ordem);
                                 proponentSiconvBean.edit(prop);
                             }
                             proponentSiconvBean.clearCache();
@@ -417,6 +510,7 @@ public class UserController extends BaseController {
                             if (selectedProponents != null && selectedProponents.size() > 0) {
                                 for (ProponentSiconv prop : selectedProponents) {
                                     prop.setUser(user);
+                                    prop.setOrderVisit(ordem);
                                     proponentSiconvBean.edit(prop);
                                 }
                                 proponentSiconvBean.clearCache();
