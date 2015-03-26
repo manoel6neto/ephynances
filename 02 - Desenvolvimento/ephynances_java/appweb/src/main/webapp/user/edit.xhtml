@@ -19,7 +19,16 @@
                     <p:outputLabel value="Perfil: " for="menu" />
                     <p:selectOneMenu id="menu" style="width: auto" value="#{userController.user.profileRule}" required="true" effect="fade">
                         <f:selectItem itemLabel="#{userController.RULER_ADMIN}" itemValue="#{userController.RULER_ADMIN}" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>
+                        <f:selectItem itemLabel="#{userController.RULER_ADMIN_GESTOR}" itemValue="#{userController.RULER_ADMIN_GESTOR}" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>
                         <f:selectItem itemLabel="#{userController.RULER_SELLER}" itemValue="#{userController.RULER_SELLER}" />
+                    </p:selectOneMenu>
+                </div>
+                
+                <div class="grid_4 alpha">
+                    <p:outputLabel value="Administrador Regional: " for="menuAdminGestor" rendered="#{userController.user.profileRule.equals(userController.RULER_SELLER)}"/>
+                    <p:selectOneMenu id="menuAdminGestor" style="width: auto" value="#{userController.user.idAdminGestor}" required="false" effect="fade" rendered="#{userController.user.profileRule.equals(userController.RULER_SELLER)}" converter="userConverter">
+                        <f:selectItem noSelectionOption="true" itemLabel="Selecione um administrador regional" />
+                        <f:selectItems value="#{userController.getAdminGestor}" var="admin" itemLabel="#{admin.name}" itemValue="#{admin.id}" />
                     </p:selectOneMenu>
                 </div>
 
@@ -117,7 +126,8 @@
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Comissão: " for="comissao" />
-                    <p:inputText id="comissao" value="#{userController.user.commission}" required="true" disabled="#{!loginController.isUserInRuller(userController.RULER_ADMIN)}"/> 
+                    <p:inputText id="comissao" value="#{userController.user.commission}" required="true" disabled="#{!loginController.isUserInRuller(userController.RULER_ADMIN) || !loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}"/> 
+                    <p:watermark value="20" for="comissao"/>
                 </div>
 
                 <br class="clear" />

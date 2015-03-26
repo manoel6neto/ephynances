@@ -38,7 +38,8 @@ import javax.ws.rs.DefaultValue;
             query = "SELECT u FROM User u WHERE u.email = :email AND u.profileRule = :profile")})
 public class User implements BaseModel {
 
-    private static final String RULER_ADMIN = "Administrador";
+    private static final String RULER_ADMIN = "Administrador Geral";
+    private static final String RULER_ADMIN_GESTOR = "Administrador Regional";
     private static final String RULER_SELLER = "Representante";
     private static final String RULER_CONTRIBUTOR = "Colaborador";
 
@@ -115,6 +116,9 @@ public class User implements BaseModel {
     @Column(name = "salary", nullable = false)
     @DefaultValue(value = "0")
     private int salary;
+    
+    @Column(name = "id_admin_gestor", nullable = true)
+    private int idAdminGestor;
 
     //References
     @OneToMany(mappedBy = "user")
@@ -389,12 +393,24 @@ public class User implements BaseModel {
         return RULER_CONTRIBUTOR;
     }
 
+    public static String getRULER_ADMIN_GESTOR() {
+        return RULER_ADMIN_GESTOR;
+    }
+
     public int getNumberAutority() {
         return numberAutority;
     }
 
     public void setNumberAutority(int numberAutority) {
         this.numberAutority = numberAutority;
+    }
+
+    public int getIdAdminGestor() {
+        return idAdminGestor;
+    }
+
+    public void setIdAdminGestor(int idAdminGestor) {
+        this.idAdminGestor = idAdminGestor;
     }
 
     @Override

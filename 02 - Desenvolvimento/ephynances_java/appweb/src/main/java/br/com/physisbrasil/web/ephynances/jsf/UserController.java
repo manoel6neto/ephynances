@@ -293,6 +293,10 @@ public class UserController extends BaseController {
     public String getRULER_SELLER() {
         return User.getRULER_SELLER();
     }
+    
+    public String getRULER_ADMIN_GESTOR() {
+        return User.getRULER_ADMIN_GESTOR();
+    }
 
     public void ruleCheck(List<String> profileRule) {
         JsfUtil.ruleCheck(profileRule);
@@ -352,6 +356,10 @@ public class UserController extends BaseController {
 
     public void setSelectedProponents(List<ProponentSiconv> selectedProponents) {
         this.selectedProponents = selectedProponents;
+    }
+    
+    public List<User> getAdminGestor() {
+        return usuarioBean.listByProperty("profileRule", getRULER_ADMIN_GESTOR());
     }
 
     private void loadUsers() {
@@ -413,6 +421,7 @@ public class UserController extends BaseController {
                                 }
                                 proponentSiconvBean.clearCache();
                                 selectedProponents = null;
+                                selectNameCity = null;
                             }
                         }
                     } else {
