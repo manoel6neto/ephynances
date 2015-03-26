@@ -457,14 +457,31 @@ public class UserController extends BaseController {
         if (id > 0) {
             usuarioBean.clearCache();
             user = usuarioBean.find(id);
+            
+            //Carregando os valores do banco
             quantidadeCnjsDisponiveis = user.getNumberCnpjs();
             quantidadeMunicipiosDisponiveis = user.getNumberCities();
+            
+            //Ajustando os valores removendo os já cadastrados
             if (user.getProponents() != null) {
                 if (user.getProponents().size() > 0) {
                     ordem = 0;
+                    List<String> municipiosTemp = new ArrayList<String>();
                     for (ProponentSiconv prop : user.getProponents()) {
+                        // Verificando a ordem
                         if (prop.getOrderVisit() > ordem) {
                             ordem = prop.getOrderVisit();
+                        }
+                        // Verificando quantidade de Cnpjs não municipais
+                        if (!prop.getEsferaAdministrativa().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
+                            quantidadeCnjsDisponiveis--;
+                        }
+                        // Verificando Cnpjs Municipais
+                        if (prop.getEsferaAdministrativa().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
+                            if (!municipiosTemp.contains(prop.getMunicipio())) {
+                                quantidadeMunicipiosDisponiveis--;
+                                municipiosTemp.add(prop.getMunicipio());
+                            }
                         }
                     }
                 } else {
@@ -500,22 +517,34 @@ public class UserController extends BaseController {
                 if (user.getId() > 0) {
                     if (selectNameCity != null && selectedAdministrativeSphere != null && selectedState != null) {
                         if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
-                            for (ProponentSiconv prop : proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity)) {
-                                prop.setUser(user);
-                                prop.setOrderVisit(ordem);
-                                proponentSiconvBean.edit(prop);
-                            }
-                            proponentSiconvBean.clearCache();
-                        } else {
-                            if (selectedProponents != null && selectedProponents.size() > 0) {
-                                for (ProponentSiconv prop : selectedProponents) {
+                            if (quantidadeMunicipiosDisponiveis == 0) {
+                                JsfUtil.addErrorMessage("Você atingiu o limite de municípios!");
+                            } else {
+                                for (ProponentSiconv prop : proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity)) {
                                     prop.setUser(user);
                                     prop.setOrderVisit(ordem);
                                     proponentSiconvBean.edit(prop);
                                 }
                                 proponentSiconvBean.clearCache();
+                                quantidadeMunicipiosDisponiveis--;
                                 selectedProponents = null;
                                 selectNameCity = null;
+                            }
+                        } else {
+                            if (selectedProponents != null && selectedProponents.size() > 0) {
+                                if (selectedProponents.size() > quantidadeCnjsDisponiveis) {
+                                    JsfUtil.addErrorMessage("Você não possui quantidade de cnpjs suficiente. Necessários: " + selectedProponents.size() + ", disponíveis:  " + quantidadeCnjsDisponiveis);
+                                } else {
+                                    for (ProponentSiconv prop : selectedProponents) {
+                                        prop.setUser(user);
+                                        prop.setOrderVisit(ordem);
+                                        proponentSiconvBean.edit(prop);
+                                    }
+                                    proponentSiconvBean.clearCache();
+                                    quantidadeCnjsDisponiveis = quantidadeCnjsDisponiveis - selectedProponents.size();
+                                    selectedProponents = null;
+                                    selectNameCity = null;
+                                }
                             }
                         }
                     } else {
