@@ -58,6 +58,10 @@ public class LoginController implements Serializable {
         setShowPdfContract(false);
         if (email.contains("@")) {
             user = usuarioBean.findByEmailSenhaProfile(email, Criptografia.criptografar(senha), profileRule);
+            if (user == null) {
+                JsfUtil.addErrorMessage("Login ou senha inválidos.");
+                return "login";
+            }
         } else {
             if (email.length() != 11) {
                 JsfUtil.addErrorMessage("Informe um cpf ou email válido. Utilize apenas números para o cpf!");

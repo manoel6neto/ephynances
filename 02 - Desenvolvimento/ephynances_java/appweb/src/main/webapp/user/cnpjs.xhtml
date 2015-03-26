@@ -14,8 +14,6 @@
             <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER])}" />
             <f:event type="preRenderView" listener="#{userController.setSeller(loginController.loggedUser.id)}" />
             <h:form id="form" >
-                <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
-
                 <br class="clear" />
                 <br/>
                 <p:fieldset legend="Atrelamento" toggleable="true" collapsed="false">

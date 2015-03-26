@@ -25,13 +25,13 @@
                 </div>
                 
                 <div class="grid_4 alpha">
-                    <p:outputLabel value="Administrador Regional: " for="menuAdminGestor" rendered="#{userController.user.profileRule.equals(userController.RULER_SELLER)}"/>
-                    <p:selectOneMenu id="menuAdminGestor" style="width: auto" value="#{userController.user.idAdminGestor}" required="false" effect="fade" rendered="#{userController.user.profileRule.equals(userController.RULER_SELLER)}" converter="userConverter">
-                        <f:selectItem noSelectionOption="true" itemLabel="Selecione um administrador regional" />
-                        <f:selectItems value="#{userController.getAdminGestor}" var="admin" itemLabel="#{admin.name}" itemValue="#{admin.id}" />
+                    <p:outputLabel value="Administrador Regional: " for="menuAdminGestor" />
+                    <p:selectOneMenu id="menuAdminGestor" style="width: auto" value="#{userController.adminGestor}" required="false" effect="fade" disabled="#{!userController.user.profileRule.equals(userController.RULER_SELLER)}" converter="userConverter">
+                        <f:selectItem noSelectionOption="true" itemLabel="Selecione um administrador regional"/>
+                        <f:selectItems value="#{userController.getAdminGestores()}" var="admin" itemLabel="#{admin.name}" itemValue="#{admin}" />
                     </p:selectOneMenu>
                 </div>
-
+                
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Nome: " for="name" />

@@ -10,7 +10,7 @@ USE `physis_ephynances`;
 
 -- Users --
 insert into `user`(email, name, password, cpf, phone, cell_phone, profile_rule, is_verified) 
-values ('admin@physisbrasil.com.br', 'Administrador', 'c0859afbb1427c8ead10835ae456db9', '111.111.111-11', '(00) 0000-0000', '(00) 0000-0000', 'Administrador', 1);
+values ('admin@physisbrasil.com.br', 'Administrador', 'c0859afbb1427c8ead10835ae456db9', '111.111.111-11', '(00) 0000-0000', '(00) 0000-0000', 'Administrador Geral', 1);
 
 -------- Configurations ---------
 insert into configuration(smtp_server, user_name, password, smtp_port, email)

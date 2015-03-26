@@ -118,7 +118,7 @@ public class User implements BaseModel {
     private int salary;
     
     @Column(name = "id_admin_gestor", nullable = true)
-    private int idAdminGestor;
+    private Long idAdminGestor;
 
     //References
     @OneToMany(mappedBy = "user")
@@ -405,11 +405,11 @@ public class User implements BaseModel {
         this.numberAutority = numberAutority;
     }
 
-    public int getIdAdminGestor() {
+    public Long getIdAdminGestor() {
         return idAdminGestor;
     }
 
-    public void setIdAdminGestor(int idAdminGestor) {
+    public void setIdAdminGestor(Long idAdminGestor) {
         this.idAdminGestor = idAdminGestor;
     }
 

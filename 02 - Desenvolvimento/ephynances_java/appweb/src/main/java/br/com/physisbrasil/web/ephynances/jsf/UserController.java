@@ -54,6 +54,9 @@ public class UserController extends BaseController {
     @EJB
     private ProponentSiconvBean proponentSiconvBean;
 
+    //Cadastro AdminGestor
+    private User adminGestor;
+
     /// ATRELAMENTO CNPJS ///
     private AdministrativeSphere selectedAdministrativeSphere;
     private State selectedState;
@@ -81,6 +84,10 @@ public class UserController extends BaseController {
             user = requestUser;
         } else {
             user = new User();
+        }
+
+        if (user.getIdAdminGestor() != null) {
+            adminGestor = usuarioBean.find(user.getIdAdminGestor());
         }
 
         this.oldPass = "";
@@ -154,6 +161,9 @@ public class UserController extends BaseController {
                         }
                     }
 
+                    if (adminGestor != null) {
+                        user.setIdAdminGestor(adminGestor.getId());
+                    }
                     usuarioBean.edit(user);
                     usuarioBean.clearCache();
                     JsfUtil.addSuccessMessage("Usuário atualizado com sucesso!");
@@ -167,6 +177,9 @@ public class UserController extends BaseController {
                     }
                     user.setIsVerified(false);
                     user.setPassword(Criptografia.criptografar(user.getCpf() + String.valueOf(System.currentTimeMillis())));
+                    if (adminGestor != null) {
+                        user.setIdAdminGestor(adminGestor.getId());
+                    }
                     usuarioBean.create(user);
                     usuarioBean.clearCache();
 
@@ -388,6 +401,14 @@ public class UserController extends BaseController {
         return citiesFiltered;
     }
 
+    public User getAdminGestor() {
+        return adminGestor;
+    }
+
+    public void setAdminGestor(User adminGestor) {
+        this.adminGestor = adminGestor;
+    }
+
     public void setCitiesFiltered(List<String> citiesFiltered) {
         this.citiesFiltered = citiesFiltered;
     }
@@ -400,7 +421,7 @@ public class UserController extends BaseController {
         this.selectedProponents = selectedProponents;
     }
 
-    public List<User> getAdminGestor() {
+    public List<User> getAdminGestores() {
         return usuarioBean.listByProperty("profileRule", getRULER_ADMIN_GESTOR());
     }
 
@@ -461,7 +482,7 @@ public class UserController extends BaseController {
             //Carregando os valores do banco
             quantidadeCnjsDisponiveis = user.getNumberCnpjs();
             quantidadeMunicipiosDisponiveis = user.getNumberCities();
-            
+
             //Ajustando os valores removendo os já cadastrados
             if (user.getProponents() != null) {
                 if (user.getProponents().size() > 0) {
@@ -483,12 +504,13 @@ public class UserController extends BaseController {
                                 municipiosTemp.add(prop.getMunicipio());
                             }
                         }
+                        ordem++;
                     }
                 } else {
-                    ordem = 0;
+                    ordem = 1;
                 }
             } else {
-                ordem = 0;
+                ordem = 1;
             }
         }
     }
@@ -497,6 +519,7 @@ public class UserController extends BaseController {
         if (selectedAdministrativeSphere != null) {
             if (selectedState != null) {
                 citiesFiltered = proponentSiconvBean.findCitiesNamesBySphereState(selectedAdministrativeSphere.getName(), selectedState.getName());
+                citiesFiltered.sort(null);
                 if (user.getProfileRule().equals(getRULER_SELLER()) || user.getProfileRule().equals(getRULER_CONTRIBUTOR()) || user.getProfileRule().equals(getRULER_ADMIN_GESTOR())) {
                     citiesFiltered.remove(statesCapital.get(selectedState.getName()));
                 }

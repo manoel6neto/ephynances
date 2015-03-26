@@ -16,33 +16,35 @@ import javax.faces.convert.FacesConverter;
  */
 @FacesConverter("userConverter")
 public class UserConverter implements Converter {
-    
+
     @EJB
     private UserBean userBean;
-    
+
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
-        if(value != null && value.trim().length() > 0) {
-            try {
-                User user = userBean.find(Long.valueOf(value));
-                return user;
-            } catch(NumberFormatException e) {
-                throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Não é um estado válido."));
+        if (value != null && value.trim().length() > 0) {
+            if (!value.equals("Selecione um administrador regional")) {
+                try {
+                    User user = userBean.find(Long.valueOf(value));
+                    return user;
+                } catch (NumberFormatException e) {
+                    throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Não é um estado válido."));
+                }
+            } else {
+                return null;
             }
-        }
-        else {
+        } else {
             return null;
         }
     }
- 
+
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
-        if(object != null) {
+        if (object != null) {
             return String.valueOf(((User) object).getId());
-        }
-        else {
+        } else {
             return null;
         }
-    }   
-    
+    }
+
 }
