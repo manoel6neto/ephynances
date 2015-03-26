@@ -11,7 +11,7 @@
             <h:outputText  value="CNPJ's" />
         </ui:define>
         <ui:define name="body"  >
-            <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER])}" />
+            <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER, userController.RULER_ADMIN_GESTOR])}" />
             <f:event type="preRenderView" listener="#{userController.setSeller(loginController.loggedUser.id)}" />
             <h:form id="form" >
                 <br class="clear" />
@@ -20,7 +20,7 @@
                     <br class="clear" />
                     <div class="grid_3" >
                         <p:outputLabel value="Esfera Administrativa: " for="menuEsfera" />
-                        <p:selectOneMenu id="menuEsfera" style="width: 1050px" value="#{userController.selectedAdministrativeSphere}" required="true" effect="fade" converter="administrativeSphereConverter">
+                        <p:selectOneMenu id="menuEsfera" style="width: 1050px" value="#{userController.selectedAdministrativeSphere}" required="false" effect="fade" converter="administrativeSphereConverter">
                             <p:ajax listener="#{userController.updateCityCnpj}" update="menuMunicipios menuProponents" />
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione uma esfera" />
                             <f:selectItems value="#{userController.user.administrativeSpheres}" var="sphere" itemLabel="#{sphere.name}" itemValue="#{sphere}"/>
@@ -31,7 +31,7 @@
                     <br />
                     <div class="grid_3" >
                         <p:outputLabel value="Estados: " for="menuEstados" />
-                        <p:selectOneMenu id="menuEstados" style="width: 1050px" value="#{userController.selectedState}" required="true" effect="fade" converter="stateConverter">
+                        <p:selectOneMenu id="menuEstados" style="width: 1050px" value="#{userController.selectedState}" required="false" effect="fade" converter="stateConverter">
                             <p:ajax listener="#{userController.updateCityCnpj}" update="menuMunicipios menuProponents" />
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione um estado" />
                             <f:selectItems value="#{userController.user.states}" var="states" itemLabel="#{states.name}" itemValue="#{states}"/>
@@ -106,6 +106,12 @@
                             <h:outputText value="#{item.orderVisit}" />
                         </p:column>
                     </p:dataTable>
+                    
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_3" style="line-height: 30px;" >
+                        <p:commandButton styleClass="grid_1 alpha" action="#{userController.clearCnpjs()}" value="Limpar" update="table" ajax="false"/>
+                    </div>
 
                     <br class="clear" />
                     <br />

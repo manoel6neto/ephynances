@@ -16,33 +16,35 @@ import javax.faces.convert.FacesConverter;
  */
 @FacesConverter("administrativeSphereConverter")
 public class AdministrativeSphereConverter implements Converter {
-    
+
     @EJB
     private AdministrativeSphereBean administrativeSphereBean;
-    
+
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
-        if(value != null && value.trim().length() > 0) {
-            try {
-                AdministrativeSphere sphere = administrativeSphereBean.find(Long.valueOf(value));
-                return sphere;
-            } catch(NumberFormatException e) {
-                throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Não é uma esfera válida."));
+        if (value != null && value.trim().length() > 0) {
+            if (!value.equals("Selecione uma esfera")) {
+                try {
+                    AdministrativeSphere sphere = administrativeSphereBean.find(Long.valueOf(value));
+                    return sphere;
+                } catch (NumberFormatException e) {
+                    throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Não é uma esfera válida."));
+                }
+            } else {
+                return null;
             }
-        }
-        else {
+        } else {
             return null;
         }
     }
- 
+
     @Override
     public String getAsString(FacesContext fc, UIComponent uic, Object object) {
-        if(object != null) {
+        if (object != null) {
             return String.valueOf(((AdministrativeSphere) object).getId());
-        }
-        else {
+        } else {
             return null;
         }
-    }   
-    
+    }
+
 }

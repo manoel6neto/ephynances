@@ -478,7 +478,7 @@ public class UserController extends BaseController {
         if (id > 0) {
             usuarioBean.clearCache();
             user = usuarioBean.find(id);
-            
+
             //Carregando os valores do banco
             quantidadeCnjsDisponiveis = user.getNumberCnpjs();
             quantidadeMunicipiosDisponiveis = user.getNumberCities();
@@ -504,8 +504,8 @@ public class UserController extends BaseController {
                                 municipiosTemp.add(prop.getMunicipio());
                             }
                         }
-                        ordem++;
                     }
+                    ordem++;
                 } else {
                     ordem = 1;
                 }
@@ -552,6 +552,9 @@ public class UserController extends BaseController {
                                 quantidadeMunicipiosDisponiveis--;
                                 selectedProponents = null;
                                 selectNameCity = null;
+                                selectedState = null;
+                                selectedAdministrativeSphere = null;
+                                proponentsFiltered = null;
                             }
                         } else {
                             if (selectedProponents != null && selectedProponents.size() > 0) {
@@ -567,6 +570,9 @@ public class UserController extends BaseController {
                                     quantidadeCnjsDisponiveis = quantidadeCnjsDisponiveis - selectedProponents.size();
                                     selectedProponents = null;
                                     selectNameCity = null;
+                                    selectedState = null;
+                                    selectedAdministrativeSphere = null;
+                                    proponentsFiltered = null;
                                 }
                             }
                         }
@@ -577,6 +583,20 @@ public class UserController extends BaseController {
             }
         } catch (ConstraintViolationException e) {
             JsfUtil.addErrorMessage(e, "Falha ao adicionar cnpj's.");
+        }
+    }
+
+    public void clearCnpjs() {
+        try {
+            proponentSiconvBean.clearCache();
+            for (ProponentSiconv prop : user.getProponents()) {
+                prop.setOrderVisit(0);
+                prop.setUser(null);
+                proponentSiconvBean.edit(prop);
+            }
+            proponentSiconvBean.clearCache();
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Falha ao remover CNPJ's");
         }
     }
 }
