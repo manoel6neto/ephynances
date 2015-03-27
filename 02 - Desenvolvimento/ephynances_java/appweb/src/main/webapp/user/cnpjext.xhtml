@@ -8,7 +8,7 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="CNPJ's" />
+            <h:outputText  value="CNPJ's atrelados: #{userController.user.name}" />
         </ui:define>
         <ui:define name="body"  >
             <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER, userController.RULER_ADMIN_GESTOR])}" />
@@ -65,7 +65,7 @@
                     <br class="clear" />
                     <br/>
                     <div class="grid_3" style="line-height: 30px;" >
-                        <p:commandButton styleClass="grid_1 alpha" action="#{userController.addCpnjSeller}" value="Adicionar" update="menuProponents table" ajax="false"/>
+                        <p:commandButton styleClass="grid_1 alpha" action="#{userController.addCpnjSellerExt}" value="Adicionar" update="menuProponents table" ajax="false"/>
                     </div>
 
                     <br class="clear" />
@@ -79,10 +79,10 @@
                     <br class="clear" />
                     <br />
                     <p:dataTable id="table" widgetVar="table" value="#{userController.user.proponents}" var="item" lazy="false" 
-                                 rows="15" paginator="true"  paginatorPosition="bottom" 
+                                 rows="25" paginator="true"  paginatorPosition="bottom" 
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                  currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
-                                 emptyMessage="Nenhum registro atrelado!">
+                                 emptyMessage="Nenhum registro atrelado!" sortBy="#{item.orderVisit}">
 
 
                         <p:column style="text-align: center" headerText="CNPJ" sortBy="#{item.cnpj}" filterBy="#{item.cnpj}" filterStyle="text-align: center; width: 140px;">                       

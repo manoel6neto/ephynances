@@ -79,11 +79,34 @@ public class UserController extends BaseController {
             loadUsers();
         }
 
-        User requestUser = (User) getFlash("user");
-        if (requestUser != null) {
-            user = requestUser;
+        if (user != null) {
+            if (user.getId() == 0) {
+                User requestUser = (User) getFlash("user");
+                if (requestUser != null) {
+                    user = requestUser;
+                } else {
+                    user = new User();
+                }
+            }
         } else {
-            user = new User();
+            User requestUser = (User) getFlash("user");
+            if (requestUser != null) {
+                user = requestUser;
+            } else {
+                user = new User();
+            }
+        }
+
+        if (getFlash("qCity") != null) {
+            quantidadeMunicipiosDisponiveis = Integer.valueOf(getFlash("qCity").toString());
+        }
+
+        if (getFlash("qCnpj") != null) {
+            quantidadeCnjsDisponiveis = Integer.valueOf(getFlash("qCnpj").toString());
+        }
+
+        if (getFlash("ordem") != null) {
+            ordem = Integer.valueOf(getFlash("ordem").toString());
         }
 
         if (user.getIdAdminGestor() != null) {
@@ -514,7 +537,7 @@ public class UserController extends BaseController {
             }
         }
     }
-    
+
     public String setSellerExternal(Long id) {
         if (id > 0) {
             usuarioBean.clearCache();
@@ -554,7 +577,11 @@ public class UserController extends BaseController {
                 ordem = 1;
             }
         }
-        
+
+        putFlash("ordem", ordem);
+        putFlash("qCity", quantidadeMunicipiosDisponiveis);
+        putFlash("qCnpj", quantidadeCnjsDisponiveis);
+        putFlash("user", user);
         return "cnpjext";
     }
 
@@ -629,6 +656,60 @@ public class UserController extends BaseController {
         }
     }
 
+    public void addCpnjSellerExt() {
+        try {
+            if (user != null) {
+                if (user.getId() > 0) {
+                    if (selectNameCity != null && selectedAdministrativeSphere != null && selectedState != null) {
+                        if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
+                            if (quantidadeMunicipiosDisponiveis == 0) {
+                                JsfUtil.addErrorMessage("Você atingiu o limite de municípios!");
+                            } else {
+                                for (ProponentSiconv prop : proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity)) {
+                                    prop.setUser(user);
+                                    prop.setOrderVisit(ordem);
+                                    proponentSiconvBean.edit(prop);
+                                }
+                                proponentSiconvBean.clearCache();
+                                quantidadeMunicipiosDisponiveis--;
+                                selectedProponents = null;
+                                selectNameCity = null;
+                                selectedState = null;
+                                selectedAdministrativeSphere = null;
+                                proponentsFiltered = null;
+                                setSellerExternal(user.getId());
+                            }
+                        } else {
+                            if (selectedProponents != null && selectedProponents.size() > 0) {
+                                if (selectedProponents.size() > quantidadeCnjsDisponiveis) {
+                                    JsfUtil.addErrorMessage("Você não possui quantidade de cnpjs suficiente. Necessários: " + selectedProponents.size() + ", disponíveis:  " + quantidadeCnjsDisponiveis);
+                                } else {
+                                    for (ProponentSiconv prop : selectedProponents) {
+                                        prop.setUser(user);
+                                        prop.setOrderVisit(ordem);
+                                        proponentSiconvBean.edit(prop);
+                                    }
+                                    proponentSiconvBean.clearCache();
+                                    quantidadeCnjsDisponiveis = quantidadeCnjsDisponiveis - selectedProponents.size();
+                                    selectedProponents = null;
+                                    selectNameCity = null;
+                                    selectedState = null;
+                                    selectedAdministrativeSphere = null;
+                                    proponentsFiltered = null;
+                                    setSellerExternal(user.getId());
+                                }
+                            }
+                        }
+                    } else {
+                        JsfUtil.addErrorMessage("Selecione os filtro e os cnpj's desejados.");
+                    }
+                }
+            }
+        } catch (ConstraintViolationException e) {
+            JsfUtil.addErrorMessage(e, "Falha ao adicionar cnpj's.");
+        }
+    }
+
     public void clearCnpjs() {
         try {
             proponentSiconvBean.clearCache();
@@ -642,7 +723,7 @@ public class UserController extends BaseController {
             JsfUtil.addErrorMessage("Falha ao remover CNPJ's");
         }
     }
-    
+
     public void clearCnpjsExt() {
         try {
             proponentSiconvBean.clearCache();
