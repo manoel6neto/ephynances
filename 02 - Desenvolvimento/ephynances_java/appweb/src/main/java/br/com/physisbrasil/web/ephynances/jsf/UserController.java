@@ -1,9 +1,11 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.ActivationBean;
+import br.com.physisbrasil.web.ephynances.ejb.AdministrativeSphereBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
 import br.com.physisbrasil.web.ephynances.ejb.SellerContributorBean;
+import br.com.physisbrasil.web.ephynances.ejb.StateBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Activation;
 import br.com.physisbrasil.web.ephynances.model.AdministrativeSphere;
@@ -21,7 +23,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import static javax.mail.Flags.Flag.USER;
 import javax.validation.ConstraintViolationException;
 
 /**
@@ -60,6 +60,12 @@ public class UserController extends BaseController {
 
     @EJB
     private ProponentSiconvBean proponentSiconvBean;
+    
+    @EJB
+    private StateBean stateBean;
+    
+    @EJB
+    private AdministrativeSphereBean administrativeSphereBean;
 
     //Cadastro AdminGestor
     private User adminGestor;
@@ -763,7 +769,63 @@ public class UserController extends BaseController {
         User tempUser = usuarioBean.find(userId);
         if (tempUser != null) {
             if (tempUser.getProfileRule().equals(getRULER_ADMIN()) || tempUser.getProfileRule().equals(getRULER_ADMIN_GESTOR())) {
+                try {
+                    Class.forName(JDBC_DRIVER);
+                    conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
+                    stmt = conn.createStatement();
+                    String sql;
+                    int id = 0;
 
+                    sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
+                    ResultSet rs = stmt.executeQuery(sql);
+                    while (rs.next()) {
+                        id = rs.getInt("id_usuario");
+                    }
+                    rs.close();
+
+                    if (id == 0) {
+                        //Insert
+                        sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
+                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 4 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '')";
+
+                        if (stmt.executeUpdate(sql) == 1) {
+                            //ler o id
+                            sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
+                            rs = stmt.executeQuery(sql);
+                            while (rs.next()) {
+                                id = rs.getInt("id_usuario");
+                            }
+                            rs.close();
+
+                            if (id != 0) {
+                                //Salvar as outras tabelas
+                                //Estados
+                                for (State state : stateBean.findAll()) {
+                                    sql = "INSERT INTO estados_direito_vendedor (id_vendedor, estado_sigla) VALUES (" + id + ", '" + state.getAcronym() + "')";
+                                    stmt.executeUpdate(sql);
+                                }
+
+                                //Esferas
+                                for (AdministrativeSphere sphere : administrativeSphereBean.findAll()) {
+                                    sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
+                                    stmt.executeUpdate(sql);
+                                }
+                            }
+                        }
+
+                        rs.close();
+                        stmt.close();
+                        conn.close();
+                        JsfUtil.addSuccessMessage("Adicionado com sucesso ao E-SICAR");
+                    } else {
+                        //update
+                    }
+
+                } catch (ClassNotFoundException e) {
+                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
+                } catch (SQLException e) {
+                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
+                }
             } else {
                 try {
                     Class.forName(JDBC_DRIVER);
@@ -800,7 +862,7 @@ public class UserController extends BaseController {
                                     sql = "INSERT INTO estados_direito_vendedor (id_vendedor, estado_sigla) VALUES (" + id + ", '" + state.getAcronym() + "')";
                                     stmt.executeUpdate(sql);
                                 }
-                                
+
                                 //Esferas
                                 for (AdministrativeSphere sphere : tempUser.getAdministrativeSpheres()) {
                                     sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
