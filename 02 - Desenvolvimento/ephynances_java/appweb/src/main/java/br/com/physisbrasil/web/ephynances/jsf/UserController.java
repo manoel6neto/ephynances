@@ -819,8 +819,8 @@ public class UserController extends BaseController {
                         JsfUtil.addSuccessMessage("Adicionado com sucesso ao E-SICAR");
                     } else {
                         //update
+                        sql = "";
                     }
-
                 } catch (ClassNotFoundException e) {
                     JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
                 } catch (SQLException e) {
@@ -877,8 +877,8 @@ public class UserController extends BaseController {
                         JsfUtil.addSuccessMessage("Adicionado com sucesso ao E-SICAR");
                     } else {
                         //update
+                        sql = "";
                     }
-
                 } catch (ClassNotFoundException e) {
                     JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
                 } catch (SQLException e) {
