@@ -15,7 +15,13 @@ import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.Utils;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +29,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import static javax.mail.Flags.Flag.USER;
 import javax.validation.ConstraintViolationException;
 
 /**
@@ -736,6 +743,86 @@ public class UserController extends BaseController {
             setSellerExternal(user.getId());
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Falha ao remover CNPJ's");
+        }
+    }
+
+    public void insertSellerEsicar(Long userId) {
+        //Propriedades de conexao
+        String HOSTNAME = "192.168.0.104";
+        int PORT = 3306;
+        String USERNAME = "root";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
+        String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+        String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
+
+        Connection conn;
+        Statement stmt;
+
+        //Dados do sistema
+        User tempUser = usuarioBean.find(userId);
+        if (tempUser != null) {
+            if (tempUser.getProfileRule().equals(getRULER_ADMIN()) || tempUser.getProfileRule().equals(getRULER_ADMIN_GESTOR())) {
+
+            } else {
+                try {
+                    Class.forName(JDBC_DRIVER);
+                    conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
+                    stmt = conn.createStatement();
+                    String sql;
+                    int id = 0;
+
+                    sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
+                    ResultSet rs = stmt.executeQuery(sql);
+                    while (rs.next()) {
+                        id = rs.getInt("id_usuario");
+                    }
+                    rs.close();
+
+                    if (id == 0) {
+                        //Insert
+                        sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
+                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 4 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '')";
+
+                        if (stmt.executeUpdate(sql) == 1) {
+                            //ler o id
+                            sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
+                            rs = stmt.executeQuery(sql);
+                            while (rs.next()) {
+                                id = rs.getInt("id_usuario");
+                            }
+                            rs.close();
+
+                            if (id != 0) {
+                                //Salvar as outras tabelas
+                                //Estados
+                                for (State state : tempUser.getStates()) {
+                                    sql = "INSERT INTO estados_direito_vendedor (id_vendedor, estado_sigla) VALUES (" + id + ", '" + state.getAcronym() + "')";
+                                    stmt.executeUpdate(sql);
+                                }
+                                
+                                //Esferas
+                                for (AdministrativeSphere sphere : tempUser.getAdministrativeSpheres()) {
+                                    sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
+                                    stmt.executeUpdate(sql);
+                                }
+                            }
+                        }
+
+                        rs.close();
+                        stmt.close();
+                        conn.close();
+                        JsfUtil.addSuccessMessage("Adicionado com sucesso ao E-SICAR");
+                    } else {
+                        //update
+                    }
+
+                } catch (ClassNotFoundException e) {
+                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
+                } catch (SQLException e) {
+                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
+                }
+            }
         }
     }
 }
