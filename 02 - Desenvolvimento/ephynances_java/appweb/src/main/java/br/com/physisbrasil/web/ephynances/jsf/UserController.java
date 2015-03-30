@@ -202,6 +202,7 @@ public class UserController extends BaseController {
                     }
                     usuarioBean.edit(user);
                     usuarioBean.clearCache();
+                    insertSellerEsicar(user.getId());
                     JsfUtil.addSuccessMessage("Usuário atualizado com sucesso!");
                 } else {
                     if (user.getCpf() != null && !user.getCpf().equals("")) {
@@ -218,7 +219,8 @@ public class UserController extends BaseController {
                     }
                     usuarioBean.create(user);
                     usuarioBean.clearCache();
-
+                    insertSellerEsicar(user.getId());
+                    
                     Activation activation = new Activation();
                     activation.setUser(user);
                     activation.setDueDate(null);
