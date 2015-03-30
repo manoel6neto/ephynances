@@ -638,6 +638,7 @@ public class UserController extends BaseController {
                                 selectedState = null;
                                 selectedAdministrativeSphere = null;
                                 proponentsFiltered = null;
+                                insertSellerEsicar(user.getId());
                             }
                         } else {
                             if (selectedProponents != null && selectedProponents.size() > 0) {
@@ -656,6 +657,7 @@ public class UserController extends BaseController {
                                     selectedState = null;
                                     selectedAdministrativeSphere = null;
                                     proponentsFiltered = null;
+                                    insertSellerEsicar(user.getId());
                                 }
                             }
                         }
@@ -691,6 +693,7 @@ public class UserController extends BaseController {
                                 selectedAdministrativeSphere = null;
                                 proponentsFiltered = null;
                                 setSellerExternal(user.getId());
+                                insertSellerEsicar(user.getId());
                             }
                         } else {
                             if (selectedProponents != null && selectedProponents.size() > 0) {
@@ -710,6 +713,7 @@ public class UserController extends BaseController {
                                     selectedAdministrativeSphere = null;
                                     proponentsFiltered = null;
                                     setSellerExternal(user.getId());
+                                    insertSellerEsicar(user.getId());
                                 }
                             }
                         }
@@ -732,6 +736,7 @@ public class UserController extends BaseController {
                 proponentSiconvBean.edit(prop);
             }
             proponentSiconvBean.clearCache();
+            insertSellerEsicar(user.getId());
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Falha ao remover CNPJ's");
         }
@@ -747,6 +752,7 @@ public class UserController extends BaseController {
             }
             proponentSiconvBean.clearCache();
             setSellerExternal(user.getId());
+            insertSellerEsicar(user.getId());
         } catch (Exception e) {
             JsfUtil.addErrorMessage("Falha ao remover CNPJ's");
         }
