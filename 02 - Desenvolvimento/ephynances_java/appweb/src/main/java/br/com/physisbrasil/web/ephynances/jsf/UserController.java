@@ -60,10 +60,10 @@ public class UserController extends BaseController {
 
     @EJB
     private ProponentSiconvBean proponentSiconvBean;
-    
+
     @EJB
     private StateBean stateBean;
-    
+
     @EJB
     private AdministrativeSphereBean administrativeSphereBean;
 
@@ -754,7 +754,7 @@ public class UserController extends BaseController {
 
     public void insertSellerEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "192.168.0.104";
+        String HOSTNAME = "192.168.0.103";
         int PORT = 3306;
         String USERNAME = "root";
         String PASSWORD = "A7cbdd82@1";
@@ -768,65 +768,7 @@ public class UserController extends BaseController {
         //Dados do sistema
         User tempUser = usuarioBean.find(userId);
         if (tempUser != null) {
-            if (tempUser.getProfileRule().equals(getRULER_ADMIN()) || tempUser.getProfileRule().equals(getRULER_ADMIN_GESTOR())) {
-                try {
-                    Class.forName(JDBC_DRIVER);
-                    conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
-                    stmt = conn.createStatement();
-                    String sql;
-                    int id = 0;
-
-                    sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
-                    ResultSet rs = stmt.executeQuery(sql);
-                    while (rs.next()) {
-                        id = rs.getInt("id_usuario");
-                    }
-                    rs.close();
-
-                    if (id == 0) {
-                        //Insert
-                        sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
-                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 4 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '')";
-
-                        if (stmt.executeUpdate(sql) == 1) {
-                            //ler o id
-                            sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
-                            rs = stmt.executeQuery(sql);
-                            while (rs.next()) {
-                                id = rs.getInt("id_usuario");
-                            }
-                            rs.close();
-
-                            if (id != 0) {
-                                //Salvar as outras tabelas
-                                //Estados
-                                for (State state : stateBean.findAll()) {
-                                    sql = "INSERT INTO estados_direito_vendedor (id_vendedor, estado_sigla) VALUES (" + id + ", '" + state.getAcronym() + "')";
-                                    stmt.executeUpdate(sql);
-                                }
-
-                                //Esferas
-                                for (AdministrativeSphere sphere : administrativeSphereBean.findAll()) {
-                                    sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
-                                    stmt.executeUpdate(sql);
-                                }
-                            }
-                        }
-
-                        rs.close();
-                        stmt.close();
-                        conn.close();
-                        JsfUtil.addSuccessMessage("Adicionado com sucesso ao E-SICAR");
-                    } else {
-                        //update
-                        sql = "";
-                    }
-                } catch (ClassNotFoundException e) {
-                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
-                } catch (SQLException e) {
-                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
-                }
-            } else {
+            if (tempUser.getProfileRule().equals(getRULER_SELLER())) {
                 try {
                     Class.forName(JDBC_DRIVER);
                     conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
@@ -877,7 +819,33 @@ public class UserController extends BaseController {
                         JsfUtil.addSuccessMessage("Adicionado com sucesso ao E-SICAR");
                     } else {
                         //update
-                        sql = "";
+                        sql = String.format("UPDATE usuario SET nome='%s', email='%s', login='%s', entidade='%s' WHERE id_usuario=%s", tempUser.getName(), tempUser.getEmail(), tempUser.getCpf().replace(".", "").replace("-", ""), tempUser.getEntity(), id);
+
+                        if (stmt.executeUpdate(sql) == 1) {
+                            // Limpando estados e esferas
+                            sql = String.format("DELETE FROM estados_direito_vendedor WHERE id_vendedor = %s", id);
+                            stmt.executeUpdate(sql);
+
+                            sql = String.format("DELETE FROM esfadm_direito_vendedor WHERE id_vendedor = %s", id);
+                            stmt.executeUpdate(sql);
+
+                            //Inserindo novamente (Update)
+                            for (State state : tempUser.getStates()) {
+                                sql = "INSERT INTO estados_direito_vendedor (id_vendedor, estado_sigla) VALUES (" + id + ", '" + state.getAcronym() + "')";
+                                stmt.executeUpdate(sql);
+                            }
+
+                            //Esferas
+                            for (AdministrativeSphere sphere : tempUser.getAdministrativeSpheres()) {
+                                sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
+                                stmt.executeUpdate(sql);
+                            }
+                        }
+
+                        rs.close();
+                        stmt.close();
+                        conn.close();
+                        JsfUtil.addSuccessMessage("Atualizado com sucesso no E-SICAR");
                     }
                 } catch (ClassNotFoundException e) {
                     JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
