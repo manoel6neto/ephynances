@@ -17,6 +17,10 @@ import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.Utils;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -27,6 +31,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -757,13 +763,14 @@ public class UserController extends BaseController {
 
     public void insertSellerEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "localhost";
+        String HOSTNAME = "192.168.0.102";
         int PORT = 3306;
         String USERNAME = "root";
-        String PASSWORD = "Physis_2013";
-        String DATABASE = "physis_esicar";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
+        String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
 
         Connection conn;
         Statement stmt;
@@ -819,6 +826,10 @@ public class UserController extends BaseController {
                                     sql = String.format("INSERT INTO proponente_direito_vendedor (id_vendedor, proponente) VALUES (%s, '%s')", id, prop.getCnpj());
                                     stmt.executeUpdate(sql);
                                 }
+                                
+                                //Ativar usuário no esicar                              
+                                URL urlcon = new URL(URLESICAR + id);
+                                urlcon.openConnection();
                             }
                         }
 
@@ -867,6 +878,10 @@ public class UserController extends BaseController {
                     JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
                 } catch (SQLException e) {
                     JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
+                } catch (MalformedURLException ex) {
+                    Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
