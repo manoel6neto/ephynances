@@ -130,6 +130,7 @@ public class ActivationController extends BaseController {
 
             userBean.clearCache();
             activationBean.clearCache();
+            
             JsfUtil.addSuccessMessage("Usuário ativado com sucesso !!");
 
             return "/login?faces-redirect=true";

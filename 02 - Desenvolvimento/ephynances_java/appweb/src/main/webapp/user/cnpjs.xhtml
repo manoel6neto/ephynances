@@ -83,7 +83,7 @@
                                  rows="25" paginator="true"  paginatorPosition="bottom" 
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                  currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
-                                 emptyMessage="Nenhum registro atrelado!" sortBy="#{item.orderVisit}">
+                                 emptyMessage="Nenhum registro atrelado!">
 
 
                         <p:column style="text-align: center" headerText="CNPJ" sortBy="#{item.cnpj}" filterBy="#{item.cnpj}" filterStyle="text-align: center; width: 140px;">                       
@@ -100,10 +100,6 @@
 
                         <p:column style="text-align: center" headerText="Esfera Administrativa" sortBy="#{item.esferaAdministrativa}" filterBy="#{item.esferaAdministrativa}" filterStyle="text-align: center; width: 200px;">                       
                             <h:outputText value="#{item.esferaAdministrativa}" />
-                        </p:column>
-
-                        <p:column style="text-align: center; width: 50px;" headerText="Prio." sortBy="#{item.orderVisit}">                       
-                            <h:outputText value="#{item.orderVisit}" />
                         </p:column>
                     </p:dataTable>
                     

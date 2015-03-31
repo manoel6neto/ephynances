@@ -71,6 +71,10 @@ public class LoginController implements Serializable {
             email = new StringBuilder(email).insert(7, ".").toString();
             email = new StringBuilder(email).insert(11, "-").toString();
             user = usuarioBean.findByCpfSenhaProfile(email, Criptografia.criptografar(senha), profileRule);
+            if (user == null) {
+                JsfUtil.addErrorMessage("Login ou senha inválidos.");
+                return "login";
+            }
         }
         if (user.isIsVerified()) {
             HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
@@ -140,7 +144,7 @@ public class LoginController implements Serializable {
                     activationBean.clearCache();
 
                     Configuration config = configurationBean.findAll().get(0);
-                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://192.168.0.105:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Recuperar Senha Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
+                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Recuperar Senha Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
 
                     JsfUtil.addSuccessMessage("Recuperação solicitada com sucesso!");
                 }

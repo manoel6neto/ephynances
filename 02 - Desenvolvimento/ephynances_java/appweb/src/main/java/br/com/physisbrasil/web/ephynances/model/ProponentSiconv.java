@@ -81,9 +81,6 @@ public class ProponentSiconv implements BaseModel {
     @Column(name = "situacao", length = 255, nullable = true)
     private String situacao;
     
-    @Column(name = "order_visit", nullable = true)
-    private int orderVisit;
-
     //References
     @ManyToOne(optional = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
@@ -267,14 +264,6 @@ public class ProponentSiconv implements BaseModel {
         this.agreement = agreement;
     }
 
-    public int getOrderVisit() {
-        return orderVisit;
-    }
-
-    public void setOrderVisit(int orderVisit) {
-        this.orderVisit = orderVisit;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 5;

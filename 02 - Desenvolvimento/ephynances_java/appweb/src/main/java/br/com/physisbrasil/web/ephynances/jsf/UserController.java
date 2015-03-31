@@ -1,15 +1,15 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.ActivationBean;
-import br.com.physisbrasil.web.ephynances.ejb.AdministrativeSphereBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
+import br.com.physisbrasil.web.ephynances.ejb.HistoryProponentUserBean;
 import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
 import br.com.physisbrasil.web.ephynances.ejb.SellerContributorBean;
-import br.com.physisbrasil.web.ephynances.ejb.StateBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Activation;
 import br.com.physisbrasil.web.ephynances.model.AdministrativeSphere;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
+import br.com.physisbrasil.web.ephynances.model.HistoryProponentUser;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
 import br.com.physisbrasil.web.ephynances.model.State;
 import br.com.physisbrasil.web.ephynances.model.User;
@@ -23,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,10 +63,7 @@ public class UserController extends BaseController {
     private ProponentSiconvBean proponentSiconvBean;
 
     @EJB
-    private StateBean stateBean;
-
-    @EJB
-    private AdministrativeSphereBean administrativeSphereBean;
+    private HistoryProponentUserBean historyProponentUserBean;
 
     //Cadastro AdminGestor
     private User adminGestor;
@@ -78,7 +76,6 @@ public class UserController extends BaseController {
     private List<ProponentSiconv> proponentsFiltered;
     private List<ProponentSiconv> selectedProponents;
     private List<String> citiesFiltered;
-    private int ordem;
     private int quantidadeMunicipiosDisponiveis;
     private int quantidadeCnjsDisponiveis;
     /// --- ///
@@ -116,10 +113,6 @@ public class UserController extends BaseController {
 
         if (getFlash("qCnpj") != null) {
             quantidadeCnjsDisponiveis = Integer.valueOf(getFlash("qCnpj").toString());
-        }
-
-        if (getFlash("ordem") != null) {
-            ordem = Integer.valueOf(getFlash("ordem").toString());
         }
 
         if (user.getIdAdminGestor() != null) {
@@ -220,7 +213,7 @@ public class UserController extends BaseController {
                     usuarioBean.create(user);
                     usuarioBean.clearCache();
                     insertSellerEsicar(user.getId());
-                    
+
                     Activation activation = new Activation();
                     activation.setUser(user);
                     activation.setDueDate(null);
@@ -229,7 +222,7 @@ public class UserController extends BaseController {
                     activationBean.clearCache();
 
                     Configuration config = configurationBean.findAll().get(0);
-                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://192.168.0.100:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Ativar Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
+                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Ativar Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
 
                     JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
                 }
@@ -302,6 +295,7 @@ public class UserController extends BaseController {
                 user.setIsVerified(!user.isIsVerified());
                 usuarioBean.edit(user);
                 usuarioBean.clearCache();
+                changeStatusUserEsicar(user.getId());
                 JsfUtil.addSuccessMessage("Status alterado com sucesso!");
             }
         } catch (Exception e) {
@@ -463,14 +457,6 @@ public class UserController extends BaseController {
         return usuarioBean.listByProperty("profileRule", getRULER_ADMIN_GESTOR());
     }
 
-    public int getOrdem() {
-        return ordem;
-    }
-
-    public void setOrdem(int ordem) {
-        this.ordem = ordem;
-    }
-
     public int getQuantidadeMunicipiosDisponiveis() {
         return quantidadeMunicipiosDisponiveis;
     }
@@ -524,13 +510,8 @@ public class UserController extends BaseController {
             //Ajustando os valores removendo os já cadastrados
             if (user.getProponents() != null) {
                 if (user.getProponents().size() > 0) {
-                    ordem = 0;
                     List<String> municipiosTemp = new ArrayList<String>();
                     for (ProponentSiconv prop : user.getProponents()) {
-                        // Verificando a ordem
-                        if (prop.getOrderVisit() > ordem) {
-                            ordem = prop.getOrderVisit();
-                        }
                         // Verificando quantidade de Cnpjs não municipais
                         if (!prop.getEsferaAdministrativa().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
                             quantidadeCnjsDisponiveis--;
@@ -543,12 +524,7 @@ public class UserController extends BaseController {
                             }
                         }
                     }
-                    ordem++;
-                } else {
-                    ordem = 1;
                 }
-            } else {
-                ordem = 1;
             }
         }
     }
@@ -565,13 +541,8 @@ public class UserController extends BaseController {
             //Ajustando os valores removendo os já cadastrados
             if (user.getProponents() != null) {
                 if (user.getProponents().size() > 0) {
-                    ordem = 0;
                     List<String> municipiosTemp = new ArrayList<String>();
                     for (ProponentSiconv prop : user.getProponents()) {
-                        // Verificando a ordem
-                        if (prop.getOrderVisit() > ordem) {
-                            ordem = prop.getOrderVisit();
-                        }
                         // Verificando quantidade de Cnpjs não municipais
                         if (!prop.getEsferaAdministrativa().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
                             quantidadeCnjsDisponiveis--;
@@ -584,16 +555,10 @@ public class UserController extends BaseController {
                             }
                         }
                     }
-                    ordem++;
-                } else {
-                    ordem = 1;
                 }
-            } else {
-                ordem = 1;
             }
         }
 
-        putFlash("ordem", ordem);
         putFlash("qCity", quantidadeMunicipiosDisponiveis);
         putFlash("qCnpj", quantidadeCnjsDisponiveis);
         putFlash("user", user);
@@ -630,8 +595,16 @@ public class UserController extends BaseController {
                             } else {
                                 for (ProponentSiconv prop : proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity)) {
                                     prop.setUser(user);
-                                    prop.setOrderVisit(ordem);
                                     proponentSiconvBean.edit(prop);
+
+                                    //Historico
+                                    HistoryProponentUser historyProponentUser = new HistoryProponentUser();
+                                    historyProponentUser.setCnpj(prop.getCnpj());
+                                    historyProponentUser.setInsertDate(new Date(System.currentTimeMillis()));
+                                    historyProponentUser.setNameSeller(user.getName());
+                                    historyProponentUser.setUfAcronym(prop.getMunicipioUfSigla());
+                                    historyProponentUser.setUfMunicipio(prop.getMunicipio());
+                                    historyProponentUserBean.create(historyProponentUser);
                                 }
                                 proponentSiconvBean.clearCache();
                                 quantidadeMunicipiosDisponiveis--;
@@ -649,8 +622,16 @@ public class UserController extends BaseController {
                                 } else {
                                     for (ProponentSiconv prop : selectedProponents) {
                                         prop.setUser(user);
-                                        prop.setOrderVisit(ordem);
                                         proponentSiconvBean.edit(prop);
+
+                                        //Historico
+                                        HistoryProponentUser historyProponentUser = new HistoryProponentUser();
+                                        historyProponentUser.setCnpj(prop.getCnpj());
+                                        historyProponentUser.setInsertDate(new Date(System.currentTimeMillis()));
+                                        historyProponentUser.setNameSeller(user.getName());
+                                        historyProponentUser.setUfAcronym(prop.getMunicipioUfSigla());
+                                        historyProponentUser.setUfMunicipio(prop.getMunicipio());
+                                        historyProponentUserBean.create(historyProponentUser);
                                     }
                                     proponentSiconvBean.clearCache();
                                     quantidadeCnjsDisponiveis = quantidadeCnjsDisponiveis - selectedProponents.size();
@@ -684,8 +665,16 @@ public class UserController extends BaseController {
                             } else {
                                 for (ProponentSiconv prop : proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity)) {
                                     prop.setUser(user);
-                                    prop.setOrderVisit(ordem);
                                     proponentSiconvBean.edit(prop);
+
+                                    //Historico
+                                    HistoryProponentUser historyProponentUser = new HistoryProponentUser();
+                                    historyProponentUser.setCnpj(prop.getCnpj());
+                                    historyProponentUser.setInsertDate(new Date(System.currentTimeMillis()));
+                                    historyProponentUser.setNameSeller(user.getName());
+                                    historyProponentUser.setUfAcronym(prop.getMunicipioUfSigla());
+                                    historyProponentUser.setUfMunicipio(prop.getMunicipio());
+                                    historyProponentUserBean.create(historyProponentUser);
                                 }
                                 proponentSiconvBean.clearCache();
                                 quantidadeMunicipiosDisponiveis--;
@@ -704,8 +693,16 @@ public class UserController extends BaseController {
                                 } else {
                                     for (ProponentSiconv prop : selectedProponents) {
                                         prop.setUser(user);
-                                        prop.setOrderVisit(ordem);
                                         proponentSiconvBean.edit(prop);
+
+                                        //Historico
+                                        HistoryProponentUser historyProponentUser = new HistoryProponentUser();
+                                        historyProponentUser.setCnpj(prop.getCnpj());
+                                        historyProponentUser.setInsertDate(new Date(System.currentTimeMillis()));
+                                        historyProponentUser.setNameSeller(user.getName());
+                                        historyProponentUser.setUfAcronym(prop.getMunicipioUfSigla());
+                                        historyProponentUser.setUfMunicipio(prop.getMunicipio());
+                                        historyProponentUserBean.create(historyProponentUser);
                                     }
                                     proponentSiconvBean.clearCache();
                                     quantidadeCnjsDisponiveis = quantidadeCnjsDisponiveis - selectedProponents.size();
@@ -733,7 +730,6 @@ public class UserController extends BaseController {
         try {
             proponentSiconvBean.clearCache();
             for (ProponentSiconv prop : user.getProponents()) {
-                prop.setOrderVisit(0);
                 prop.setUser(null);
                 proponentSiconvBean.edit(prop);
             }
@@ -748,7 +744,6 @@ public class UserController extends BaseController {
         try {
             proponentSiconvBean.clearCache();
             for (ProponentSiconv prop : user.getProponents()) {
-                prop.setOrderVisit(0);
                 prop.setUser(null);
                 proponentSiconvBean.edit(prop);
             }
@@ -762,7 +757,7 @@ public class UserController extends BaseController {
 
     public void insertSellerEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "192.168.0.103";
+        String HOSTNAME = "192.168.0.102";
         int PORT = 3306;
         String USERNAME = "root";
         String PASSWORD = "A7cbdd82@1";
@@ -818,13 +813,18 @@ public class UserController extends BaseController {
                                     sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
                                     stmt.executeUpdate(sql);
                                 }
+
+                                //Cnpj's
+                                for (ProponentSiconv prop : tempUser.getProponents()) {
+                                    sql = String.format("INSERT INTO proponente_direito_vendedor (id_vendedor, proponente) VALUES (%s, '%s')", id, prop.getCnpj());
+                                    stmt.executeUpdate(sql);
+                                }
                             }
                         }
 
                         rs.close();
                         stmt.close();
                         conn.close();
-                        JsfUtil.addSuccessMessage("Adicionado com sucesso ao E-SICAR");
                     } else {
                         //update
                         sql = String.format("UPDATE usuario SET nome='%s', email='%s', login='%s', entidade='%s' WHERE id_usuario=%s", tempUser.getName(), tempUser.getEmail(), tempUser.getCpf().replace(".", "").replace("-", ""), tempUser.getEntity(), id);
@@ -835,6 +835,9 @@ public class UserController extends BaseController {
                             stmt.executeUpdate(sql);
 
                             sql = String.format("DELETE FROM esfadm_direito_vendedor WHERE id_vendedor = %s", id);
+                            stmt.executeUpdate(sql);
+
+                            sql = String.format("DELETE FROM proponente_direito_vendedor WHERE id_vendedor = %s", id);
                             stmt.executeUpdate(sql);
 
                             //Inserindo novamente (Update)
@@ -848,17 +851,74 @@ public class UserController extends BaseController {
                                 sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
                                 stmt.executeUpdate(sql);
                             }
+
+                            //Cnpj's
+                            for (ProponentSiconv prop : tempUser.getProponents()) {
+                                sql = String.format("INSERT INTO proponente_direito_vendedor (id_vendedor, proponente) VALUES (%s, '%s')", id, prop.getCnpj());
+                                stmt.executeUpdate(sql);
+                            }
                         }
 
                         rs.close();
                         stmt.close();
                         conn.close();
-                        JsfUtil.addSuccessMessage("Atualizado com sucesso no E-SICAR");
                     }
                 } catch (ClassNotFoundException e) {
                     JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
                 } catch (SQLException e) {
                     JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
+                }
+            }
+        }
+    }
+
+    public void changeStatusUserEsicar(Long userId) {
+        //Propriedades de conexao
+        String HOSTNAME = "192.168.0.102";
+        int PORT = 3306;
+        String USERNAME = "root";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
+        String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+        String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
+
+        Connection conn;
+        Statement stmt;
+
+        User tempUser = usuarioBean.find(userId);
+        if (tempUser != null) {
+            if (tempUser.getProfileRule().equals(getRULER_SELLER())) {
+                try {
+                    Class.forName(JDBC_DRIVER);
+                    conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
+                    stmt = conn.createStatement();
+                    String sql;
+                    int id = 0;
+
+                    sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
+                    ResultSet rs = stmt.executeQuery(sql);
+                    while (rs.next()) {
+                        id = rs.getInt("id_usuario");
+                    }
+                    rs.close();
+
+                    if (id == 0) {
+                        if (tempUser.isIsVerified()) {
+                            sql = String.format("UPDATE usuario SET status='%s' WHERE id_usuario=%s", "A", id);
+                        } else {
+                            sql = String.format("UPDATE usuario SET status='%s' WHERE id_usuario=%s", "I", id);
+                        }
+
+                        stmt.executeUpdate(sql);
+                    }
+
+                    rs.close();
+                    stmt.close();
+                    conn.close();
+                } catch (ClassNotFoundException e) {
+                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o status no banco de dados");
+                } catch (SQLException e) {
+                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o status no banco de dados");
                 }
             }
         }
