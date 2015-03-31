@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -12,7 +13,8 @@
 
         <ui:define name="body">
             <h:form id="form">
-                <p:dataTable id="table" widgetVar="table" value="#{agreementController.agreements}" var="item" lazy="false" 
+                <f:event type="preRenderView" listener="#{agreementController.getListFilteredBySeller(loginController.loggedUser.id)}" />
+                <p:dataTable id="table" widgetVar="table" value="#{agreementController.filteredAgreements}" var="item" lazy="false" 
                              rows="30" paginator="true"  paginatorPosition="bottom" 
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                              currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
@@ -31,6 +33,13 @@
                         <h:outputText value="#{agreementController.formatDate(item.expireDate)}" />
                     </p:column>   
                 </p:dataTable>
+
+                <br />
+                <div class="alpha grid_2" >
+                    <p:commandButton ajax="false" action="#{agreementController.startAgreement(loginController.loggedUser.id)}" value="Novo contrato" />
+                    
+                </div>
+
             </h:form>
         </ui:define>
 

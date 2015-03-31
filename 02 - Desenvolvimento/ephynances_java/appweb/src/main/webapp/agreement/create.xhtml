@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml"> 
+        <ui:define name="title"> 
+            <h:outputText  value="Cadastrar novo usuário"/>
+        </ui:define>
+        <ui:define name="body"  >
+            <h:form id="form" >
+                <br class="clear" />
+                <br/>
+                <p:fieldset legend="Dados do contrato" toggleable="true" collapsed="false">
+                    <br class="clear" />
+                    <div class="grid_3" >
+                        <p:outputLabel value="Tipo de contrato " for="menuTipoContrato" />
+                        <p:selectOneMenu id="menuTipoContrato" style="width: 1050px" value="#{agreementController.agreement.agreementType}" required="false" effect="fade">
+                            <f:selectItems value="#{agreementController.agreementTypes}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <br class="clear" />
+                    <div class="grid_3" >
+                        <p:outputLabel value="Código do contrato (Contratante): " for="codContractOwner" />
+                        <p:inputText id="codContractOwner" value="#{agreementController.agreement.contactAgreementNumber}" required="true" requiredMessage="Código do contrato (Contratante) é necessário"/> 
+                    </div>
+                    
+                    <br class="clear" />
+                    <div class="grid_3" >
+                        <p:outputLabel value="Código do contrato (Physis): " for="codContractPhysis" />
+                        <p:inputText id="codContractPhysis" value="#{agreementController.agreement.physisAgreementNumber}" required="true" requiredMessage="Código do contrato (Physis) é necessário"/> 
+                    </div>
+
+                    <br class="clear" />
+                    <br />
+                </p:fieldset>
+
+                <br class="clear" />
+                <br/>
+                <p:fieldset legend="Dados do responsável" toggleable="true" collapsed="false">
+
+                    <br class="clear" />
+                    <br/>
+                </p:fieldset>
+
+                <br class="clear" />
+                <br/>
+                <div class="grid_3" style="line-height: 30px;" >
+                    <p:commandButton styleClass="grid_1 alpha" action="#{userController.addCpnjSeller}" value="Adicionar" update="menuProponents table" ajax="false"/>
+                </div>
+        </ui:define>
+    </ui:composition>
+</html>

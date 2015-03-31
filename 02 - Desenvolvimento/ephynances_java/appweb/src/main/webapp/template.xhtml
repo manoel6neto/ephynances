@@ -16,7 +16,7 @@
             jQuery(document).ready(function () {
                 updateMasks();
             });
-            
+
             function updateMasks() {
                 jQuery('.maskMoney').each(function () {
                     jQuery(this).maskMoney({thousands: '.', decimal: ','});
@@ -76,8 +76,8 @@
                                         <p:menuitem value="USUÁRIOS" outcome="/user/list" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}" />  
                                         <p:menuitem value="CNPJS" outcome="/user/cnpjs" rendered="#{loginController.isUserInRuller(userController.RULER_SELLER)}" />  
                                         <p:submenu label="CONTRATOS">
-                                            <p:menuitem value="RESPONSÁVEIS" outcome="/agreementResponsible/list" />
-                                            <p:menuitem value="CONTRATOS" outcome="/index.xhtml" />
+                                            <p:menuitem value="CONTRATOS" outcome="/agreement/list" />
+                                            <p:menuitem value="NOVO CONTRATO" action="#{agreementController.startAgreement(loginController.loggedUser.id)}" />
                                         </p:submenu>
                                         <p:submenu label="FINANCEIRO" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER)}">
                                             <p:menuitem value="PARCELAS" outcome="/index.xhtml" />
