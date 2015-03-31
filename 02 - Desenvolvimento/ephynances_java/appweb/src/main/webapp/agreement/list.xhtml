@@ -7,27 +7,27 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="Estados"></h:outputText>
+            <h:outputText value="Contratos do vendedor: #{agreementController.usuarioLogado}"></h:outputText>
         </ui:define>
 
         <ui:define name="body">
             <h:form id="form">
-                <p:dataTable id="table" widgetVar="table" value="#{stateController.states}" var="item" lazy="false" 
+                <p:dataTable id="table" widgetVar="table" value="#{agreementController.agreements}" var="item" lazy="false" 
                              rows="30" paginator="true"  paginatorPosition="bottom" 
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                              currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                              emptyMessage="Nenhum registro encontrado!">
 
-                    <p:column style="text-align: center" headerText="Nome" sortBy="#{item.name}" filterBy="#{item.name}">                       
-                        <h:outputText value="#{item.name}" />
+                    <p:column style="text-align: center" headerText="Tipo de contrato" sortBy="#{item.agreementType}" filterBy="#{item.agreementType}">                       
+                        <h:outputText value="#{item.agreementType}" />
                     </p:column>
-                    <p:column style="text-align: center" headerText="Sigla" sortBy="#{item.acronym}" filterBy="#{item.acronym}">
-                        <h:outputText value="#{item.acronym}" />
+                    <p:column style="text-align: center" headerText="Entidade do Gestor" sortBy="#{item.managerEntity}" filterBy="#{item.managerEntity}">
+                        <h:outputText value="#{item.managerEntity}" />
                     </p:column>     
-                    <p:column style="text-align: center" headerText="Região" sortBy="#{item.region.acronym}" filterBy="#{item.region.acronym}">
-                        <h:outputText value="#{item.region.acronym}" />
+                    <p:column style="text-align: center" headerText="Valor" sortBy="#{item.totalPrice}">
+                        <h:outputText value="#{item.totalPrice}" />
                     </p:column> 
-                    <p:column style="text-align: center" headerText="Quant. OC" sortBy="#{item.cityOrgans.size()}">                      
+                    <p:column style="text-align: center" headerText="Status" sortBy="#{item.cityOrgans.size()}">                      
                         <h:outputText value="#{item.cityOrgans.size()}" />
                     </p:column>   
                 </p:dataTable>
