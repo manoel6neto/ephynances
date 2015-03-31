@@ -27,8 +27,8 @@
                     <p:column style="text-align: center" headerText="Valor" sortBy="#{item.totalPrice}">
                         <h:outputText value="#{item.totalPrice}" />
                     </p:column> 
-                    <p:column style="text-align: center" headerText="Status" sortBy="#{item.cityOrgans.size()}">                      
-                        <h:outputText value="#{item.cityOrgans.size()}" />
+                    <p:column style="text-align: center" headerText="Status" sortBy="#{item.expireDate}">                      
+                        <h:outputText value="#{agreementController.formatDate(item.expireDate)}" />
                     </p:column>   
                 </p:dataTable>
             </h:form>

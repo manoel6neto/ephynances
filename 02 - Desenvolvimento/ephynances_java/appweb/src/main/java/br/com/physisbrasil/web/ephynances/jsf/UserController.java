@@ -757,11 +757,11 @@ public class UserController extends BaseController {
 
     public void insertSellerEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "192.168.0.102";
+        String HOSTNAME = "localhost";
         int PORT = 3306;
         String USERNAME = "root";
-        String PASSWORD = "A7cbdd82@1";
-        String DATABASE = "physi971_wp";
+        String PASSWORD = "Physis_2013";
+        String DATABASE = "physis_esicar";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
 
@@ -874,11 +874,11 @@ public class UserController extends BaseController {
 
     public void changeStatusUserEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "192.168.0.102";
+        String HOSTNAME = "localhost";
         int PORT = 3306;
         String USERNAME = "root";
-        String PASSWORD = "A7cbdd82@1";
-        String DATABASE = "physi971_wp";
+        String PASSWORD = "Physis_2013";
+        String DATABASE = "physis_esicar";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
 
