@@ -18,6 +18,7 @@ import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.Utils;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -829,7 +830,11 @@ public class UserController extends BaseController {
                                 
                                 //Ativar usuário no esicar                              
                                 URL urlcon = new URL(URLESICAR + id);
-                                urlcon.openConnection();
+                                HttpURLConnection connect = (HttpURLConnection) urlcon.openConnection();
+                                connect.connect();
+                                if (HttpURLConnection.HTTP_OK != connect.getResponseCode()) {
+                                    JsfUtil.addErrorMessage("Falha ao solicitar ativação no esicar");
+                                }
                             }
                         }
 
