@@ -902,7 +902,7 @@ public class UserController extends BaseController {
                     }
                     rs.close();
 
-                    if (id == 0) {
+                    if (id != 0) {
                         if (tempUser.isIsVerified()) {
                             sql = String.format("UPDATE usuario SET status='%s' WHERE id_usuario=%s", "A", id);
                         } else {
