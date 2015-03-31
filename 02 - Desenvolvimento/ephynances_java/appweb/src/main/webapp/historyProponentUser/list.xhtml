@@ -19,7 +19,7 @@
                              emptyMessage="Nenhum registro encontrado!">
 
                     <p:column style="text-align: center" headerText="Date" sortBy="#{item.insertDate}" >                       
-                        <h:outputText value="#{item.insertDate}" />
+                        <h:outputText value="#{historyProponentUserController.formatDate(item.insertDate)}" />
                     </p:column>
                     <p:column style="text-align: center" headerText="Vendedor" sortBy="#{item.nameSeller}" filterBy="#{item.nameSeller}">
                         <h:outputText value="#{item.nameSeller}" />

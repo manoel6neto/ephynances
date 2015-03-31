@@ -2,7 +2,10 @@ package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.HistoryProponentUserBean;
 import br.com.physisbrasil.web.ephynances.model.HistoryProponentUser;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -36,5 +39,10 @@ public class HistoryProponentUserController extends BaseController {
 
     public void setHistoryProponentUsers(List<HistoryProponentUser> historyProponentUsers) {
         this.historyProponentUsers = historyProponentUsers;
+    }
+    
+    public String formatDate(Date dateToFormat) {
+        DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        return outputFormatter.format(dateToFormat);
     }
 }
