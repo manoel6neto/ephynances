@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -52,9 +53,8 @@ public class AgreementInstallment implements BaseModel {
     private Date liberationDate;
     
     //References
-    @OneToOne(optional = false)
-    @NotNull
-    @JoinColumn(name = "agreement_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "agreement_id", referencedColumnName = "id", nullable = true)
     private Agreement agreement;
     
     @OneToMany(mappedBy = "agreementInstallment", orphanRemoval = true)

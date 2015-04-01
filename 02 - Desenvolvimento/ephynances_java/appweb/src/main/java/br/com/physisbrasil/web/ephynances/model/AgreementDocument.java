@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -42,9 +43,8 @@ public class AgreementDocument implements BaseModel {
     private byte[] file;
     
     //References
-    @OneToOne(optional = false)
-    @NotNull
-    @JoinColumn(name = "agreement_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "agreement_id", referencedColumnName = "id", nullable = true)
     private Agreement agreement;
     
     /**

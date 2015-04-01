@@ -13,6 +13,7 @@ import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -80,7 +81,7 @@ public class AgreementController extends BaseController {
                 filteredAgreements = new ArrayList<Agreement>();
             }
         }
-        
+
         if ((ProponentSiconv) getFlash("proponent") != null) {
             proponentSiconv = (ProponentSiconv) getFlash("proponent");
         } else {
@@ -118,17 +119,17 @@ public class AgreementController extends BaseController {
 
         return "/agreement/list";
     }
-    
+
     public String editAgreement(Long agreementId) {
         if (agreementBean.find(agreementId) != null) {
             agreement = agreementBean.find(agreementId);
             proponentSiconv = agreement.getProponents().get(0);
             agreementUser = agreement.getUser();
-            
+
             putFlash("agreement", agreement);
             putFlash("userAgreement", agreementUser);
             putFlash("proponent", proponentSiconv);
-            
+
             return "/agreement/edit";
         } else {
             JsfUtil.addErrorMessage("Falha ao consultar o contrato informado.");
@@ -147,34 +148,42 @@ public class AgreementController extends BaseController {
                             return "/agreement/create";
                         }
 
-                        if (agreement.getId() > 0) {
+                        if (agreement.getId() != null) {
                             //Update  
                             agreementBean.edit(agreement);
                             agreementBean.clearCache();
-                            
+
                             JsfUtil.addSuccessMessage("Contrato atualizado com sucesso.");
                         } else {
                             //Create
                             //setuser and save agreement
                             agreement.setUser(agreementUser);
                             agreement.setStatus(Agreement.getSTATE_INCOMPLETO());
+
+                            //Calculando a data para expirar o contrato (limite - data atual + o periodo de vigencia em meses)
+                            Date d = new Date(System.currentTimeMillis());
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(d);
+                            c.set(Calendar.MONTH, c.get(Calendar.MONTH) + agreement.getPeriod());
+                            agreement.setExpireDate(c.getTime());
+
                             agreementBean.create(agreement);
                             agreementBean.clearCache();
-                            
+
                             //Save relationship agreement - proponent
                             proponentSiconv.setAgreement(agreement);
                             proponentSiconvBean.edit(proponentSiconv);
                             proponentSiconvBean.clearCache();
-                            
+
                             //save seed with a seed plus one
                             Configuration config = configurationBean.findAll().get(0);
                             config.setContractSeed(config.getContractSeed() + 1);
                             configurationBean.edit(config);
                             configurationBean.clearCache();
-                            
+
                             JsfUtil.addSuccessMessage("Contrato cadastrado com sucesso.");
                         }
-                        
+
                         return "/agreement/list";
                     }
                 }
@@ -182,7 +191,7 @@ public class AgreementController extends BaseController {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao cadastrar contrato.");
         }
-        
+
         return "/agreement/create";
     }
 

@@ -23,7 +23,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "ProponentSiconv.findBySphereStateCity",
             query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.municipio = :municipio AND p.user IS NULL AND p.agreement IS NULL"),
         @NamedQuery(name = "ProponentSiconv.findBySphereStateCityAll",
-            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.municipio = :municipio")
+            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.municipio = :municipio AND p.agreement IS NULL")
 })
 public class ProponentSiconv implements BaseModel {
 

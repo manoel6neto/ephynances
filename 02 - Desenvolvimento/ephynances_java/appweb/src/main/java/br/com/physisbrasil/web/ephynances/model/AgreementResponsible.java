@@ -1,13 +1,11 @@
 package br.com.physisbrasil.web.ephynances.model;
 
 import static br.com.physisbrasil.web.ephynances.model.BaseModel.EMAIL_REGEX;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
@@ -45,10 +43,6 @@ public class AgreementResponsible implements BaseModel {
     @Column(name = "cpf", length = 16, unique = true, nullable = false)
     @NotEmpty
     private String cpf;
-
-    //References
-    @OneToMany(mappedBy = "agreementResponsible", orphanRemoval = true)
-    private List<Agreement> agreements;
 
     /**
      *
@@ -97,14 +91,6 @@ public class AgreementResponsible implements BaseModel {
 
     public void setCpf(String cpf) {
         this.cpf = cpf;
-    }
-
-    public List<Agreement> getAgreements() {
-        return agreements;
-    }
-
-    public void setAgreements(List<Agreement> agreements) {
-        this.agreements = agreements;
     }
 
     @Override

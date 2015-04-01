@@ -109,9 +109,6 @@ public class Agreement implements BaseModel {
     @Column(name = "cnpj_amount", nullable = false)
     private int cnpjAmount;
 
-    @Column(name = "authority_amount")
-    private int authorityAmount;
-
     @NotEmpty
     @Size(max = 100)
     @Column(name = "document_number", length = 100, nullable = false)
@@ -147,11 +144,6 @@ public class Agreement implements BaseModel {
     @Size(max = 100)
     private String managerEntity;
     
-    //References
-    @OneToOne(optional = true)
-    @JoinColumn(name = "agreement_responsible_id", referencedColumnName = "id", nullable = true)
-    private AgreementResponsible agreementResponsible;
-
     @OneToOne(optional = false)
     @NotNull
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -255,14 +247,6 @@ public class Agreement implements BaseModel {
         return AGREEMENT_TYPES;
     }
 
-    public AgreementResponsible getAgreementResponsible() {
-        return agreementResponsible;
-    }
-
-    public void setAgreementResponsible(AgreementResponsible agreementResponsible) {
-        this.agreementResponsible = agreementResponsible;
-    }
-
     public User getUser() {
         return user;
     }
@@ -285,14 +269,6 @@ public class Agreement implements BaseModel {
 
     public void setAgreementDocuments(List<AgreementDocument> agreementDocuments) {
         this.agreementDocuments = agreementDocuments;
-    }
-
-    public int getAuthorityAmount() {
-        return authorityAmount;
-    }
-
-    public void setAuthorityAmount(int authorityAmount) {
-        this.authorityAmount = authorityAmount;
     }
 
     public String getStatus() {
