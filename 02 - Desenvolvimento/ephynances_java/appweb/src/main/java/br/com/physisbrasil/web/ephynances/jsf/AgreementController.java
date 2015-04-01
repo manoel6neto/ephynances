@@ -157,6 +157,7 @@ public class AgreementController extends BaseController {
                             //Create
                             //setuser and save agreement
                             agreement.setUser(agreementUser);
+                            agreement.setStatus(Agreement.getSTATE_INCOMPLETO());
                             agreementBean.create(agreement);
                             agreementBean.clearCache();
                             

@@ -51,6 +51,7 @@ public class Agreement implements BaseModel {
     private static final String TYPE_ESTADUAL = "ESTADUAL";
 
     private static final String STATE_ATIVO = "Ativo";
+    private static final String STATE_INCOMPLETO = "Incompleto";
     private static final String STATE_CANCELADO = "Cancelado";
     private static final String STATE_SUSPENSO = "Suspenso por falta de pagamento";
     private static final String STATE_FINALIZADO = "Finalizado";
@@ -240,6 +241,10 @@ public class Agreement implements BaseModel {
 
     public String getDocumentNumber() {
         return documentNumber;
+    }
+
+    public static String getSTATE_INCOMPLETO() {
+        return STATE_INCOMPLETO;
     }
 
     public void setDocumentNumber(String documentNumber) {
