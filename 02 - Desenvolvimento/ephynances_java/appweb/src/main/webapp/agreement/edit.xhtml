@@ -49,12 +49,33 @@
                         <p:outputLabel value="Código do contrato (Contratante): " for="codContractOwner" />
                         <p:inputText id="codContractOwner" style="width: 200px" value="#{agreementController.agreement.contactAgreementNumber}" required="true" requiredMessage="Código do contrato (Contratante) é necessário"/> 
                     </div>
+                    
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Email de contato: " for="emailContato" />
+                        <p:inputText id="emailContato" style="width: 200px" value="#{agreementController.agreement.contactEmail}" required="false"/> 
+                    </div>
+                    
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Telefone de contato: " for="phoneContact" />
+                        <p:inputMask id="phoneContact" style="width: 200px" value="#{agreementController.agreement.contactPhone}" required="false" mask="(99) 9999-9999" />
+                    </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Código do contrato (Physis): " for="codContractPhysis" />
                         <p:inputText id="codContractPhysis" style="width: 200px" value="#{agreementController.agreement.physisAgreementNumber}" disabled="false" readonly="true"/> 
+                    </div>
+                    
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Valor do contrato (R$): " for="valorTotal" />
+                        <p:inputText id="valorTotal" style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" readonly="true"/> 
                     </div>
 
                     <br class="clear" />

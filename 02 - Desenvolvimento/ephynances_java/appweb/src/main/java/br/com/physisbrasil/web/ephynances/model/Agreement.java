@@ -29,7 +29,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author Thomas
  */
 @Entity
-@Table(name = "agreement", uniqueConstraints = @UniqueConstraint(columnNames = {"physis_agreement_number", "manager_email", "manager_cpf"}))
+@Table(name = "agreement", uniqueConstraints = @UniqueConstraint(columnNames = {"physis_agreement_number"}))
 public class Agreement implements BaseModel {
 
     private static final List<String> AGREEMENT_TYPES = new ArrayList<String>() {
