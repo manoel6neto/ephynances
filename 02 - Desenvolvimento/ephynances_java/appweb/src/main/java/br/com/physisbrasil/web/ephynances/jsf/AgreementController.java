@@ -36,13 +36,15 @@ public class AgreementController extends BaseController {
     @EJB
     private UserBean userBean;
     private User agreementUser;
-    
+
     @EJB
     private ConfigurationBean configurationBean;
-    
+
     @EJB
     private ProponentSiconvBean proponentSiconvBean;
     private ProponentSiconv proponentSiconv;
+
+    private boolean disableQuantCnpjs;
 
     @PostConstruct
     public void init() {
@@ -68,7 +70,7 @@ public class AgreementController extends BaseController {
                 agreement.setPeriod(12);
             }
         }
-        
+
         if ((List<Agreement>) getFlash("agreements") != null) {
             filteredAgreements = (List<Agreement>) getFlash("agreements");
         } else {
@@ -76,6 +78,8 @@ public class AgreementController extends BaseController {
                 filteredAgreements = new ArrayList<Agreement>();
             }
         }
+        
+        disableQuantCnpjs = false;
     }
 
     public void getListFilteredBySeller(Long userId) {
@@ -86,11 +90,11 @@ public class AgreementController extends BaseController {
             } else {
                 filteredAgreements = tempUser.getAgreements();
             }
-            
+
             putFlash("agreements", getFilteredAgreements());
         }
     }
-    
+
     public String startAgreement(Long userId) {
         User tempUser = userBean.find(userId);
         if (tempUser != null) {
@@ -99,16 +103,16 @@ public class AgreementController extends BaseController {
             } else {
                 setAgreementUser(tempUser.getSellers().get(0).getSeller());
             }
-            
+
             putFlash("userAgreement", getAgreementUser());
             return "/agreement/create";
         }
-        
+
         return "/agreement/list";
     }
-    
+
     public void addAgreement() {
-        
+
     }
 
     public Agreement getAgreement() {
@@ -163,25 +167,33 @@ public class AgreementController extends BaseController {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(dateToFormat);
     }
-    
+
     public List<String> getAgreementTypes() {
         return Agreement.getAGREEMENT_TYPES();
     }
-    
+
+    public boolean isDisableQuantCnpjs() {
+        return disableQuantCnpjs;
+    }
+
+    public void setDisableQuantCnpjs(boolean disableQuantCnpjs) {
+        this.disableQuantCnpjs = disableQuantCnpjs;
+    }
+
     public String createPhysisAgreementNumber() {
         //5 digitos sequenciais / ANO
         Configuration config = configurationBean.findAll().get(0);
-        String number =  String.valueOf(config.getContractSeed());
-        while(number.length() < 6) {
+        String number = String.valueOf(config.getContractSeed());
+        while (number.length() < 6) {
             number = "0" + number;
         }
-        
+
         Date data = new Date(System.currentTimeMillis());
         DateFormat format = new SimpleDateFormat("yyyy");
         String contractNumber = number + "/" + format.format(data);
         return contractNumber;
     }
-    
+
     public void filterProponentsForAgreementType() {
         List<ProponentSiconv> tempList = new ArrayList<ProponentSiconv>();
         if (agreement != null) {
@@ -193,7 +205,30 @@ public class AgreementController extends BaseController {
                 }
             }
         }
-        
+
         setFilteredProponents(tempList);
+    }
+
+    public void checkQuantCnpjMunicipal() {
+        if (agreement != null) {
+            if (!agreement.getAgreementType().equals("")) {
+                if (agreement.getAgreementType().equalsIgnoreCase("MUNICIPAL")) {
+                    if (proponentSiconv != null) {
+                        if (proponentSiconv.getId() > 0) {
+                            agreement.setCnpjAmount(proponentSiconvBean.findBySphereStateCityAll(proponentSiconv.getEsferaAdministrativa(), proponentSiconv.getMunicipioUfNome(), proponentSiconv.getMunicipio()).size());
+                            disableQuantCnpjs = true;
+                        }
+                    } else {
+                        disableQuantCnpjs = false;
+                    }
+                } else {
+                    disableQuantCnpjs = false;
+                }
+            } else {
+                disableQuantCnpjs = false;
+            }
+        } else {
+            disableQuantCnpjs = false;
+        }
     }
 }

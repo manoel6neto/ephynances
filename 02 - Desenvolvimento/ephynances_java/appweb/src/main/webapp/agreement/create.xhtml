@@ -17,7 +17,7 @@
                 <p:fieldset legend="Dados do contrato" toggleable="true" collapsed="false">
                     <br class="clear" />
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Tipo de contrato " for="menuTipoContrato" />
+                        <p:outputLabel value="Tipo de contrato: " for="menuTipoContrato" />
                         <p:selectOneMenu id="menuTipoContrato" style="width: 200px" value="#{agreementController.agreement.agreementType}" required="false" effect="fade">
                             <p:ajax update="cnpjprincipal" listener="#{agreementController.filterProponentsForAgreementType()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
@@ -30,15 +30,16 @@
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Cnpj principal (Cadastro Esicar): " for="cnpjprincipal" />
                         <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="false" effect="fade" converter="proponentSiconvConverter">
+                            <p:ajax update="qntiCnpj" listener="#{agreementController.checkQuantCnpjMunicipal()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
-                            <f:selectItems value="#{agreementController.filteredProponents}" var="proponent" itemLabel="#{proponent.cnpj}" itemValue="#{proponent}"/>
+                            <f:selectItems value="#{agreementController.filteredProponents}" var="proponent" itemLabel="#{proponent.cnpj} - #{proponent.nome}" itemValue="#{proponent}"/>
                         </p:selectOneMenu>
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Número documento (Identificador do contratante): " for="numberDoc" />
+                        <p:outputLabel value="Número documento (Identificador): " for="numberDoc" />
                         <p:inputText id="numberDoc" style="width: 200px" value="#{agreementController.agreement.documentNumber}" required="true" requiredMessage="Documento necessário para cadastro do contrato"/> 
                     </div>
 
@@ -68,7 +69,7 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Quantidade CNPJ: " for="qntiCnpj" />
-                        <p:inputText id="qntiCnpj" style="width: 200px" value="#{agreementController.agreement.cnpjAmount}" required="true" requiredMessage="Informe quantos Cnpjs para o contrato"/> 
+                        <p:inputText id="qntiCnpj" style="width: 200px" value="#{agreementController.agreement.cnpjAmount}" required="true" requiredMessage="Informe quantos Cnpjs para o contrato" readonly="#{agreementController.disableQuantCnpjs}"/> 
                     </div>
 
                     <br class="clear" />
