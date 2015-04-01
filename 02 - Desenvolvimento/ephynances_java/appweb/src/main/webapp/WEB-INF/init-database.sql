@@ -13,8 +13,8 @@ insert into `user`(email, name, password, cpf, phone, cell_phone, profile_rule, 
 values ('admin@physisbrasil.com.br', 'Administrador', 'c0859afbb1427c8ead10835ae456db9', '111.111.111-11', '(00) 0000-0000', '(00) 0000-0000', 'Administrador Geral', 1);
 
 -------- Configurations ---------
-insert into configuration(smtp_server, user_name, password, smtp_port, email)
-values ('smtp.gmail.com', 'manoel.carvalho.neto', 'mxthomasmx', 587, 'manoel.carvalho.neto@gmail.com');
+insert into configuration(smtp_server, user_name, password, smtp_port, email, contract_seed)
+values ('smtp.gmail.com', 'manoel.carvalho.neto', 'mxthomasmx', 587, 'manoel.carvalho.neto@gmail.com', 1);
 
 --- Regions ---
 insert into region(name, acronym)

@@ -77,6 +77,9 @@ public class Configuration implements BaseModel {
     @Max(100)
     @DefaultValue(value = "0")
     private int ICMS;
+    
+    @Column(name = "contract_seed")
+    private int contractSeed;
 
     @Override
     public Long getId() {
@@ -169,6 +172,14 @@ public class Configuration implements BaseModel {
 
     public void setICMS(int ICMS) {
         this.ICMS = ICMS;
+    }
+
+    public int getContractSeed() {
+        return contractSeed;
+    }
+
+    public void setContractSeed(int contractSeed) {
+        this.contractSeed = contractSeed;
     }
     
     @Override

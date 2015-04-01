@@ -778,84 +778,42 @@ public class UserController extends BaseController {
         //Dados do sistema
         User tempUser = usuarioBean.find(userId);
         if (tempUser != null) {
-            if (tempUser.getProfileRule().equals(getRULER_SELLER())) {
-                try {
-                    Class.forName(JDBC_DRIVER);
-                    conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
-                    stmt = conn.createStatement();
-                    String sql;
-                    int id = 0;
+            try {
+                Class.forName(JDBC_DRIVER);
+                conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
+                stmt = conn.createStatement();
+                String sql;
+                int id = 0;
 
-                    sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
-                    ResultSet rs = stmt.executeQuery(sql);
-                    while (rs.next()) {
-                        id = rs.getInt("id_usuario");
-                    }
-                    rs.close();
+                sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    id = rs.getInt("id_usuario");
+                }
+                rs.close();
 
-                    if (id == 0) {
-                        //Insert
+                if (id == 0) {
+                    //Insert
+                    if (!tempUser.getProfileRule().equals(getRULER_ADMIN())) {
                         sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
                                 + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 4 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '')";
-
-                        if (stmt.executeUpdate(sql) == 1) {
-                            //ler o id
-                            sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
-                            rs = stmt.executeQuery(sql);
-                            while (rs.next()) {
-                                id = rs.getInt("id_usuario");
-                            }
-                            rs.close();
-
-                            if (id != 0) {
-                                //Salvar as outras tabelas
-                                //Estados
-                                for (State state : tempUser.getStates()) {
-                                    sql = "INSERT INTO estados_direito_vendedor (id_vendedor, estado_sigla) VALUES (" + id + ", '" + state.getAcronym() + "')";
-                                    stmt.executeUpdate(sql);
-                                }
-
-                                //Esferas
-                                for (AdministrativeSphere sphere : tempUser.getAdministrativeSpheres()) {
-                                    sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
-                                    stmt.executeUpdate(sql);
-                                }
-
-                                //Cnpj's
-                                for (ProponentSiconv prop : tempUser.getProponents()) {
-                                    sql = String.format("INSERT INTO proponente_direito_vendedor (id_vendedor, proponente) VALUES (%s, '%s')", id, prop.getCnpj());
-                                    stmt.executeUpdate(sql);
-                                }
-                                
-                                //Ativar usuário no esicar                              
-                                URL urlcon = new URL(URLESICAR + id);
-                                HttpURLConnection connect = (HttpURLConnection) urlcon.openConnection();
-                                connect.connect();
-                                if (HttpURLConnection.HTTP_OK != connect.getResponseCode()) {
-                                    JsfUtil.addErrorMessage("Falha ao solicitar ativação no esicar");
-                                }
-                            }
-                        }
-
-                        rs.close();
-                        stmt.close();
-                        conn.close();
                     } else {
-                        //update
-                        sql = String.format("UPDATE usuario SET nome='%s', email='%s', login='%s', entidade='%s' WHERE id_usuario=%s", tempUser.getName(), tempUser.getEmail(), tempUser.getCpf().replace(".", "").replace("-", ""), tempUser.getEntity(), id);
+                        sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
+                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 1 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '')";
+                    }
 
-                        if (stmt.executeUpdate(sql) == 1) {
-                            // Limpando estados e esferas
-                            sql = String.format("DELETE FROM estados_direito_vendedor WHERE id_vendedor = %s", id);
-                            stmt.executeUpdate(sql);
+                    if (stmt.executeUpdate(sql) == 1) {
+                        //ler o id
+                        sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
+                        rs = stmt.executeQuery(sql);
+                        while (rs.next()) {
+                            id = rs.getInt("id_usuario");
+                        }
+                        rs.close();
 
-                            sql = String.format("DELETE FROM esfadm_direito_vendedor WHERE id_vendedor = %s", id);
-                            stmt.executeUpdate(sql);
-
-                            sql = String.format("DELETE FROM proponente_direito_vendedor WHERE id_vendedor = %s", id);
-                            stmt.executeUpdate(sql);
-
-                            //Inserindo novamente (Update)
+                        if (id != 0) {
+                            //Salvar as outras tabelas
+                            //Estados
                             for (State state : tempUser.getStates()) {
                                 sql = "INSERT INTO estados_direito_vendedor (id_vendedor, estado_sigla) VALUES (" + id + ", '" + state.getAcronym() + "')";
                                 stmt.executeUpdate(sql);
@@ -872,21 +830,66 @@ public class UserController extends BaseController {
                                 sql = String.format("INSERT INTO proponente_direito_vendedor (id_vendedor, proponente) VALUES (%s, '%s')", id, prop.getCnpj());
                                 stmt.executeUpdate(sql);
                             }
+
+                            //Ativar usuário no esicar                              
+                            URL urlcon = new URL(URLESICAR + id);
+                            HttpURLConnection connect = (HttpURLConnection) urlcon.openConnection();
+                            connect.connect();
+                            if (HttpURLConnection.HTTP_OK != connect.getResponseCode()) {
+                                JsfUtil.addErrorMessage("Falha ao solicitar ativação no esicar");
+                            }
+                        }
+                    }
+
+                    rs.close();
+                    stmt.close();
+                    conn.close();
+                } else {
+                    //update
+                    sql = String.format("UPDATE usuario SET nome='%s', email='%s', login='%s', entidade='%s' WHERE id_usuario=%s", tempUser.getName(), tempUser.getEmail(), tempUser.getCpf().replace(".", "").replace("-", ""), tempUser.getEntity(), id);
+
+                    if (stmt.executeUpdate(sql) == 1) {
+                        // Limpando estados e esferas
+                        sql = String.format("DELETE FROM estados_direito_vendedor WHERE id_vendedor = %s", id);
+                        stmt.executeUpdate(sql);
+
+                        sql = String.format("DELETE FROM esfadm_direito_vendedor WHERE id_vendedor = %s", id);
+                        stmt.executeUpdate(sql);
+
+                        sql = String.format("DELETE FROM proponente_direito_vendedor WHERE id_vendedor = %s", id);
+                        stmt.executeUpdate(sql);
+
+                        //Inserindo novamente (Update)
+                        for (State state : tempUser.getStates()) {
+                            sql = "INSERT INTO estados_direito_vendedor (id_vendedor, estado_sigla) VALUES (" + id + ", '" + state.getAcronym() + "')";
+                            stmt.executeUpdate(sql);
                         }
 
-                        rs.close();
-                        stmt.close();
-                        conn.close();
+                        //Esferas
+                        for (AdministrativeSphere sphere : tempUser.getAdministrativeSpheres()) {
+                            sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
+                            stmt.executeUpdate(sql);
+                        }
+
+                        //Cnpj's
+                        for (ProponentSiconv prop : tempUser.getProponents()) {
+                            sql = String.format("INSERT INTO proponente_direito_vendedor (id_vendedor, proponente) VALUES (%s, '%s')", id, prop.getCnpj());
+                            stmt.executeUpdate(sql);
+                        }
                     }
-                } catch (ClassNotFoundException e) {
-                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
-                } catch (SQLException e) {
-                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
-                } catch (MalformedURLException ex) {
-                    Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+
+                    rs.close();
+                    stmt.close();
+                    conn.close();
                 }
+            } catch (ClassNotFoundException e) {
+                JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
+            } catch (SQLException e) {
+                JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o usuário no banco de dados");
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -906,39 +909,37 @@ public class UserController extends BaseController {
 
         User tempUser = usuarioBean.find(userId);
         if (tempUser != null) {
-            if (tempUser.getProfileRule().equals(getRULER_SELLER())) {
-                try {
-                    Class.forName(JDBC_DRIVER);
-                    conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
-                    stmt = conn.createStatement();
-                    String sql;
-                    int id = 0;
+            try {
+                Class.forName(JDBC_DRIVER);
+                conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
+                stmt = conn.createStatement();
+                String sql;
+                int id = 0;
 
-                    sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
-                    ResultSet rs = stmt.executeQuery(sql);
-                    while (rs.next()) {
-                        id = rs.getInt("id_usuario");
-                    }
-                    rs.close();
-
-                    if (id != 0) {
-                        if (tempUser.isIsVerified()) {
-                            sql = String.format("UPDATE usuario SET status='%s' WHERE id_usuario=%s", "A", id);
-                        } else {
-                            sql = String.format("UPDATE usuario SET status='%s' WHERE id_usuario=%s", "I", id);
-                        }
-
-                        stmt.executeUpdate(sql);
-                    }
-
-                    rs.close();
-                    stmt.close();
-                    conn.close();
-                } catch (ClassNotFoundException e) {
-                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o status no banco de dados");
-                } catch (SQLException e) {
-                    JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o status no banco de dados");
+                sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    id = rs.getInt("id_usuario");
                 }
+                rs.close();
+
+                if (id != 0) {
+                    if (tempUser.isIsVerified()) {
+                        sql = String.format("UPDATE usuario SET status='%s' WHERE id_usuario=%s", "A", id);
+                    } else {
+                        sql = String.format("UPDATE usuario SET status='%s' WHERE id_usuario=%s", "I", id);
+                    }
+
+                    stmt.executeUpdate(sql);
+                }
+
+                rs.close();
+                stmt.close();
+                conn.close();
+            } catch (ClassNotFoundException e) {
+                JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o status no banco de dados");
+            } catch (SQLException e) {
+                JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o status no banco de dados");
             }
         }
     }

@@ -17,6 +17,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -92,6 +93,7 @@ public class Agreement implements BaseModel {
     
     @NotNull
     @Column(name = "period", nullable = false)
+    @Max(12)
     @DefaultValue(value = "12")
     private int period;
 
@@ -104,8 +106,7 @@ public class Agreement implements BaseModel {
     @Column(name = "cnpj_amount", nullable = false)
     private int cnpjAmount;
 
-    @NotNull
-    @Column(name = "authority_amount", nullable = false)
+    @Column(name = "authority_amount")
     private int authorityAmount;
 
     @NotEmpty

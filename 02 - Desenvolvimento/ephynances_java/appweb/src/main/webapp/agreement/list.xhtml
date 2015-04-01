@@ -8,7 +8,7 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="Contratos do vendedor: #{agreementController.usuarioLogado}"></h:outputText>
+            <h:outputText value="Contratos de interesse de: #{agreementController.usuarioLogado}"></h:outputText>
         </ui:define>
 
         <ui:define name="body">
@@ -20,6 +20,9 @@
                              currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                              emptyMessage="Nenhum registro encontrado!">
 
+                    <p:column style="text-align: center" headerText="Núemro do contrato" sortBy="#{item.physisAgreementNumber}" filterBy="#{item.physisAgreementNumber}">                       
+                        <h:outputText value="#{item.physisAgreementNumber}" />
+                    </p:column>
                     <p:column style="text-align: center" headerText="Tipo de contrato" sortBy="#{item.agreementType}" filterBy="#{item.agreementType}">                       
                         <h:outputText value="#{item.agreementType}" />
                     </p:column>
@@ -37,7 +40,6 @@
                 <br />
                 <div class="alpha grid_2" >
                     <p:commandButton ajax="false" action="#{agreementController.startAgreement(loginController.loggedUser.id)}" value="Novo contrato" />
-                    
                 </div>
 
             </h:form>

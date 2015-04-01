@@ -1,9 +1,12 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.AgreementBean;
+import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
+import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Agreement;
-import br.com.physisbrasil.web.ephynances.model.SellerContributor;
+import br.com.physisbrasil.web.ephynances.model.Configuration;
+import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
 import br.com.physisbrasil.web.ephynances.model.User;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -32,6 +35,14 @@ public class AgreementController extends BaseController {
     @EJB
     private UserBean userBean;
     private User agreementUser;
+    
+    @EJB
+    private ConfigurationBean configurationBean;
+    
+    @EJB
+    private ProponentSiconvBean proponentSiconvBean;
+    private ProponentSiconv proponentSiconv;
+    
 
     @PostConstruct
     public void init() {
@@ -53,6 +64,7 @@ public class AgreementController extends BaseController {
         } else {
             if (agreement == null) {
                 agreement = new Agreement();
+                agreement.setPhysisAgreementNumber(createPhysisAgreementNumber());
             }
         }
         
@@ -93,6 +105,10 @@ public class AgreementController extends BaseController {
         
         return "list";
     }
+    
+    public void addAgreement() {
+        
+    }
 
     public Agreement getAgreement() {
         return agreement;
@@ -126,6 +142,14 @@ public class AgreementController extends BaseController {
         this.filteredAgreements = filteredAgreements;
     }
 
+    public ProponentSiconv getProponentSiconv() {
+        return proponentSiconv;
+    }
+
+    public void setProponentSiconv(ProponentSiconv proponentSiconv) {
+        this.proponentSiconv = proponentSiconv;
+    }
+
     public String formatDate(Date dateToFormat) {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(dateToFormat);
@@ -133,5 +157,31 @@ public class AgreementController extends BaseController {
     
     public List<String> getAgreementTypes() {
         return Agreement.getAGREEMENT_TYPES();
+    }
+    
+    public String createPhysisAgreementNumber() {
+        //5 digitos sequenciais / ANO
+        Configuration config = configurationBean.findAll().get(0);
+        String number =  String.valueOf(config.getContractSeed());
+        while(number.length() < 6) {
+            number = "0" + number;
+        }
+        String contractNumber = number + "/" + new Date(System.currentTimeMillis()).getYear();
+        return contractNumber;
+    }
+    
+    public List<ProponentSiconv> getProponentsForAgreementType() {
+        List<ProponentSiconv> tempList = new ArrayList<ProponentSiconv>();
+        if (agreement != null) {
+            if (!agreement.getAgreementType().equals("")) {
+                for (ProponentSiconv prop : agreementUser.getProponents()) {
+                    if (prop.getEsferaAdministrativa().equals(agreement.getAgreementType())) {
+                        tempList.add(prop);
+                    }
+                }
+            }
+        }
+        
+        return tempList;
     }
 }
