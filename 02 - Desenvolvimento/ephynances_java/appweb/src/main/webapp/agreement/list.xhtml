@@ -8,7 +8,7 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="Contratos de interesse de: #{agreementController.usuarioLogado}"></h:outputText>
+            <h:outputText value="Contratos de interesse de: #{agreementController.usuarioLogado.name}"></h:outputText>
         </ui:define>
 
         <ui:define name="body">

@@ -8,59 +8,67 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="Cadastrar novo usuário"/>
+            <h:outputText  value="Cadastrar novo contrato"/>
         </ui:define>
         <ui:define name="body"  >
-            <h:form id="form" >
+            <h:form id="form" styleClass="form">
                 <br class="clear" />
                 <br/>
                 <p:fieldset legend="Dados do contrato" toggleable="true" collapsed="false">
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Tipo de contrato " for="menuTipoContrato" />
-                        <p:selectOneMenu id="menuTipoContrato" style="width: auto" value="#{agreementController.agreement.agreementType}" required="false" effect="fade">
-                            <p:ajax update="cnpjprincipal"/>
+                        <p:selectOneMenu id="menuTipoContrato" style="width: 200px" value="#{agreementController.agreement.agreementType}" required="false" effect="fade">
+                            <p:ajax update="cnpjprincipal" listener="#{agreementController.filterProponentsForAgreementType()}"/>
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.agreementTypes}"/>
                         </p:selectOneMenu>
                     </div>
 
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Cnpj principal (Cadastro Esicar): " for="cnpjprincipal" />
-                        <p:selectOneMenu id="cnpjprincipal" style="width: auto" value="#{agreementController.proponentSiconv}" required="false" effect="fade" converter="proponentSiconvConverter">
-                            <f:selectItems value="#{agreementController.proponentsForAgreementType()}" var="proponent" itemLabel="#{proponent.cnpj}" itemValue="#{proponent}"/>
+                        <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="false" effect="fade" converter="proponentSiconvConverter">
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
+                            <f:selectItems value="#{agreementController.filteredProponents}" var="proponent" itemLabel="#{proponent.cnpj}" itemValue="#{proponent}"/>
                         </p:selectOneMenu>
                     </div>
 
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Número documento (Identificador do contratante): " for="numberDoc" />
-                        <p:inputText id="numberDoc" value="#{agreementController.agreement.documentNumber}" required="true" requiredMessage="Documento necessário para cadastro do contrato"/> 
+                        <p:inputText id="numberDoc" style="width: 200px" value="#{agreementController.agreement.documentNumber}" required="true" requiredMessage="Documento necessário para cadastro do contrato"/> 
                     </div>
 
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Código do contrato (Contratante): " for="codContractOwner" />
-                        <p:inputText id="codContractOwner" value="#{agreementController.agreement.contactAgreementNumber}" required="true" requiredMessage="Código do contrato (Contratante) é necessário"/> 
+                        <p:inputText id="codContractOwner" style="width: 200px" value="#{agreementController.agreement.contactAgreementNumber}" required="true" requiredMessage="Código do contrato (Contratante) é necessário"/> 
                     </div>
 
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Código do contrato (Physis): " for="codContractPhysis" />
-                        <p:inputText id="codContractPhysis" value="#{agreementController.agreement.physisAgreementNumber}" disabled="true"/> 
+                        <p:inputText id="codContractPhysis" style="width: 200px" value="#{agreementController.agreement.physisAgreementNumber}" disabled="false" readonly="true"/> 
                     </div>
 
                     <br class="clear" />
-                    <div class="grid_3" >
-                        <p:outputLabel value="Período: " for="periodo" />
-                        <p:inputText id="periodo" value="#{agreementController.agreement.period}" required="true" requiredMessage="Informe o tempo de vigência em meses" maxlength="2"/> 
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Período (Meses): " for="periodo" />
+                        <p:inputText id="periodo" style="width: 200px" value="#{agreementController.agreement.period}" required="true" requiredMessage="Informe o tempo de vigência em meses" maxlength="2"/> 
                         <p:watermark for="periodo" value="12"/>
                     </div>
 
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Quantidade CNPJ: " for="qntiCnpj" />
-                        <p:inputText id="qntiCnpj" value="#{agreementController.agreement.cnpjAmount}" required="true" requiredMessage="Informe quantos Cnpjs para o contrato"/> 
+                        <p:inputText id="qntiCnpj" style="width: 200px" value="#{agreementController.agreement.cnpjAmount}" required="true" requiredMessage="Informe quantos Cnpjs para o contrato"/> 
                     </div>
 
                     <br class="clear" />
@@ -71,39 +79,45 @@
                 <br/>
                 <p:fieldset legend="Dados do responsável" toggleable="true" collapsed="false">
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Nome do responsável: " for="nomeResp" />
-                        <p:inputText id="nomeResp" value="#{agreementController.agreement.managerName}" required="true" requiredMessage="Nome do responsável necessário"/> 
+                        <p:inputText id="nomeResp" style="width: 200px" value="#{agreementController.agreement.managerName}" required="true" requiredMessage="Nome do responsável necessário"/> 
                     </div>
 
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Entidade do responsável: " for="entityResp" />
-                        <p:inputText id="entityResp" value="#{agreementController.agreement.managerEntity}" required="true" requiredMessage="Entidade do responsável necessária"/> 
+                        <p:inputText id="entityResp" style="width: 200px" value="#{agreementController.agreement.managerEntity}" required="true" requiredMessage="Entidade do responsável necessária"/> 
                     </div>
 
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Email do responsável: " for="emailResp" />
-                        <p:inputText id="emailResp" value="#{agreementController.agreement.managerEmail}" required="true" requiredMessage="Email do responsável necessário"/> 
+                        <p:inputText id="emailResp" style="width: 200px" value="#{agreementController.agreement.managerEmail}" required="true" requiredMessage="Email do responsável necessário"/> 
                     </div>
 
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="CPF do responsável: " for="cpf" />
-                        <p:inputMask id="cpf" value="#{agreementController.agreement.managerCpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"/> 
+                        <p:inputMask id="cpf" style="width: 200px" value="#{agreementController.agreement.managerCpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"/> 
                     </div>
 
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Telefone do responsável: " for="phone" />
-                        <p:inputMask id="phone" value="#{agreementController.agreement.managerPhone}" required="false" mask="(99) 9999-9999" />
+                        <p:inputMask id="phone" style="width: 200px" value="#{agreementController.agreement.managerPhone}" required="false" mask="(99) 9999-9999" />
                     </div>
 
                     <br class="clear" />
-                    <div class="grid_3" >
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Celular do responsável: " for="cellphone" />
-                        <p:inputMask id="cellphone" value="#{agreementController.agreement.managerCellPhone}" required="false" mask="(99) 9999-9999?"/> 
+                        <p:inputMask id="cellphone" style="width: 200px" value="#{agreementController.agreement.managerCellPhone}" required="false" mask="(99) 9999-9999?"/> 
                     </div>
 
                     <br class="clear" />
@@ -115,6 +129,7 @@
                 <div class="grid_3" style="line-height: 30px;" >
                     <p:commandButton styleClass="grid_1 alpha" action="#{agreementController.addAgreement()}" value="Cadastrar" update="form" ajax="false"/>
                 </div>
+            </h:form>
         </ui:define>
     </ui:composition>
 </html>

@@ -763,11 +763,11 @@ public class UserController extends BaseController {
 
     public void insertSellerEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "localhost";
+        String HOSTNAME = "192.168.0.102";
         int PORT = 3306;
         String USERNAME = "root";
-        String PASSWORD = "Physis_2013";
-        String DATABASE = "physis_esicar";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
         String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";

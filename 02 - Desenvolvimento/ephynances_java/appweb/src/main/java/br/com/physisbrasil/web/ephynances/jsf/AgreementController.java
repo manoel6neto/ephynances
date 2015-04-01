@@ -31,6 +31,7 @@ public class AgreementController extends BaseController {
     private List<Agreement> agreements;
     private List<Agreement> filteredAgreements;
     private Agreement agreement;
+    private List<ProponentSiconv> filteredProponents;
 
     @EJB
     private UserBean userBean;
@@ -42,7 +43,6 @@ public class AgreementController extends BaseController {
     @EJB
     private ProponentSiconvBean proponentSiconvBean;
     private ProponentSiconv proponentSiconv;
-    
 
     @PostConstruct
     public void init() {
@@ -65,6 +65,7 @@ public class AgreementController extends BaseController {
             if (agreement == null) {
                 agreement = new Agreement();
                 agreement.setPhysisAgreementNumber(createPhysisAgreementNumber());
+                agreement.setPeriod(12);
             }
         }
         
@@ -93,17 +94,17 @@ public class AgreementController extends BaseController {
     public String startAgreement(Long userId) {
         User tempUser = userBean.find(userId);
         if (tempUser != null) {
-            if (tempUser.getProfileRule().equals(User.getRULER_CONTRIBUTOR())) {
+            if (!tempUser.getProfileRule().equals(User.getRULER_CONTRIBUTOR())) {
                 setAgreementUser(tempUser);
             } else {
                 setAgreementUser(tempUser.getSellers().get(0).getSeller());
             }
             
             putFlash("userAgreement", getAgreementUser());
-            return "create";
+            return "/agreement/create";
         }
         
-        return "list";
+        return "/agreement/list";
     }
     
     public void addAgreement() {
@@ -150,6 +151,14 @@ public class AgreementController extends BaseController {
         this.proponentSiconv = proponentSiconv;
     }
 
+    public List<ProponentSiconv> getFilteredProponents() {
+        return filteredProponents;
+    }
+
+    public void setFilteredProponents(List<ProponentSiconv> filteredProponents) {
+        this.filteredProponents = filteredProponents;
+    }
+
     public String formatDate(Date dateToFormat) {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(dateToFormat);
@@ -166,11 +175,14 @@ public class AgreementController extends BaseController {
         while(number.length() < 6) {
             number = "0" + number;
         }
-        String contractNumber = number + "/" + new Date(System.currentTimeMillis()).getYear();
+        
+        Date data = new Date(System.currentTimeMillis());
+        DateFormat format = new SimpleDateFormat("yyyy");
+        String contractNumber = number + "/" + format.format(data);
         return contractNumber;
     }
     
-    public List<ProponentSiconv> getProponentsForAgreementType() {
+    public void filterProponentsForAgreementType() {
         List<ProponentSiconv> tempList = new ArrayList<ProponentSiconv>();
         if (agreement != null) {
             if (!agreement.getAgreementType().equals("")) {
@@ -182,6 +194,6 @@ public class AgreementController extends BaseController {
             }
         }
         
-        return tempList;
+        setFilteredProponents(tempList);
     }
 }
