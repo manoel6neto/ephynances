@@ -18,7 +18,7 @@
                     <br class="clear" />
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Tipo de contrato: " for="menuTipoContrato" />
-                        <p:selectOneMenu id="menuTipoContrato" style="width: 200px" value="#{agreementController.agreement.agreementType}" required="false" effect="fade">
+                        <p:selectOneMenu id="menuTipoContrato" style="width: 200px" value="#{agreementController.agreement.agreementType}" required="true" effect="fade">
                             <p:ajax update="cnpjprincipal" listener="#{agreementController.filterProponentsForAgreementType()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.agreementTypes}"/>
@@ -29,7 +29,7 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Cnpj principal (Cadastro Esicar): " for="cnpjprincipal" />
-                        <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="false" effect="fade" converter="proponentSiconvConverter">
+                        <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="true" effect="fade" converter="proponentSiconvConverter">
                             <p:ajax update="qntiCnpj" listener="#{agreementController.checkQuantCnpjMunicipal()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.filteredProponents}" var="proponent" itemLabel="#{proponent.cnpj} - #{proponent.nome}" itemValue="#{proponent}"/>

@@ -8,6 +8,8 @@ import br.com.physisbrasil.web.ephynances.model.Agreement;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
 import br.com.physisbrasil.web.ephynances.model.User;
+import br.com.physisbrasil.web.ephynances.util.JsfUtil;
+import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -79,6 +81,12 @@ public class AgreementController extends BaseController {
             }
         }
         
+        if ((ProponentSiconv) getFlash("proponent") != null) {
+            proponentSiconv = (ProponentSiconv) getFlash("proponent");
+        } else {
+            proponentSiconv = null;
+        }
+
         disableQuantCnpjs = false;
     }
 
@@ -110,9 +118,71 @@ public class AgreementController extends BaseController {
 
         return "/agreement/list";
     }
+    
+    public String editAgreement(Long agreementId) {
+        if (agreementBean.find(agreementId) != null) {
+            agreement = agreementBean.find(agreementId);
+            proponentSiconv = agreement.getProponents().get(0);
+            agreementUser = agreement.getUser();
+            
+            putFlash("agreement", agreement);
+            putFlash("userAgreement", agreementUser);
+            putFlash("proponent", proponentSiconv);
+            
+            return "/agreement/edit";
+        } else {
+            JsfUtil.addErrorMessage("Falha ao consultar o contrato informado.");
+            return "/agreement/list";
+        }
+    }
 
-    public void addAgreement() {
+    public String addAgreement() {
+        try {
+            if (agreement != null) {
+                if (proponentSiconv != null) {
+                    if (agreement.getManagerCpf() != null && !agreement.getManagerCpf().equals("")) {
+                        if (!ValidaCpf.isCPF(agreement.getManagerCpf().replace(".", "").replace("-", ""))) {
+                            JsfUtil.addErrorMessage("Cpf inválido!");
+                            putFlash("userAgreement", getAgreementUser());
+                            return "/agreement/create";
+                        }
 
+                        if (agreement.getId() > 0) {
+                            //Update  
+                            agreementBean.edit(agreement);
+                            agreementBean.clearCache();
+                            
+                            JsfUtil.addSuccessMessage("Contrato atualizado com sucesso.");
+                        } else {
+                            //Create
+                            //setuser and save agreement
+                            agreement.setUser(agreementUser);
+                            agreementBean.create(agreement);
+                            agreementBean.clearCache();
+                            
+                            //Save relationship agreement - proponent
+                            proponentSiconv.setAgreement(agreement);
+                            proponentSiconvBean.edit(proponentSiconv);
+                            proponentSiconvBean.clearCache();
+                            
+                            //save seed with a seed plus one
+                            Configuration config = configurationBean.findAll().get(0);
+                            config.setContractSeed(config.getContractSeed() + 1);
+                            configurationBean.edit(config);
+                            configurationBean.clearCache();
+                            
+                            JsfUtil.addSuccessMessage("Contrato cadastrado com sucesso.");
+                        }
+                        
+                        return "/agreement/list";
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao cadastrar contrato.");
+        }
+        
+        return "/agreement/create";
     }
 
     public Agreement getAgreement() {
