@@ -187,7 +187,7 @@ public class AgreementController extends BaseController {
         if (agreement != null) {
             if (!agreement.getAgreementType().equals("")) {
                 for (ProponentSiconv prop : agreementUser.getProponents()) {
-                    if (prop.getEsferaAdministrativa().equals(agreement.getAgreementType())) {
+                    if (prop.getEsferaAdministrativa().equalsIgnoreCase(agreement.getAgreementType())) {
                         tempList.add(prop);
                     }
                 }
