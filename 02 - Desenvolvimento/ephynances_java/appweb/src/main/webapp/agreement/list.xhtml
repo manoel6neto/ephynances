@@ -38,8 +38,21 @@
                     <p:column style="text-align: center" headerText="Status" sortBy="#{item.status}" filterBy="#{item.status}">                      
                         <h:outputText value="#{item.status}" />
                     </p:column>
+                    <p:column width="160" style="text-align: center" headerText="Ações">
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementController.editAgreement(item.id)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar contrato" title="Editar"/></p:commandLink>
+                        <h:outputText value="   " />
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.view(item)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Visualizar contrato" title="Visualizar"/></p:commandLink>
+                        <h:outputText value="   " />
+                        <p:commandLink style="margin-right: 5px" actionListener="#{agreementController.delete(item.id)}" >
+                            <img src="../resources/img/remove.png" width="16" height="16" alt="Apagar contrato" title="Apagar"/>
+                            <p:confirm header="Confirmação" message="Você tem certeza que gostaria de apagar o contrato?" icon="ui-icon-alert"/>
+                        </p:commandLink>
+                    </p:column>
                 </p:dataTable>
-
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
                 <br />
                 <div class="alpha grid_2" >
                     <p:commandButton ajax="false" action="#{agreementController.startAgreement(loginController.loggedUser.id)}" value="Novo contrato" />

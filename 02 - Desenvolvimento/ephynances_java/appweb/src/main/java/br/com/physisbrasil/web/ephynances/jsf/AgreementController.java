@@ -136,6 +136,31 @@ public class AgreementController extends BaseController {
             return "/agreement/list";
         }
     }
+    
+    public String delete(Long agreementId) {
+        try {
+           if (agreementId > 0) {
+               Agreement tempAgreement = agreementBean.find(agreementId);
+               if (tempAgreement != null) {
+                   ProponentSiconv prop = agreement.getProponents().get(0);
+                   prop.setAgreement(null);
+                   proponentSiconvBean.edit(prop);
+                   proponentSiconvBean.clearCache();
+                   
+                   agreementBean.clearCache();
+                   agreement = agreementBean.find(agreement.getId());
+                   agreementBean.remove(agreement);
+                   agreementBean.clearCache();
+                   
+                   JsfUtil.addSuccessMessage("Contrato removido com sucesso.");
+               }
+           } 
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao apagar o contrato.");
+        }
+        
+        return "/agreement/list";
+    }
 
     public String addAgreement() {
         try {
