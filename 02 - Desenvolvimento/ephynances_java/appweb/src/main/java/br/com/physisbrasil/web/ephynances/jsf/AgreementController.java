@@ -140,22 +140,23 @@ public class AgreementController extends BaseController {
     public String delete(Long agreementId) {
         try {
             if (agreementId > 0) {
+                agreementBean.clearCache();
                 Agreement tempAgreement = agreementBean.find(agreementId);
                 if (tempAgreement != null) {
                     proponentSiconvBean.clearCache();
-                    for (ProponentSiconv p : agreement.getProponents()) {
+                    for (ProponentSiconv p : tempAgreement.getProponents()) {
                         p.setAgreement(null);
                         proponentSiconvBean.edit(p);
                         proponentSiconvBean.clearCache();
                     }
+
+                    agreementBean.clearCache();
+                    agreement = agreementBean.find(tempAgreement.getId());
+                    agreementBean.remove(agreement);
+                    agreementBean.clearCache();
+
+                    JsfUtil.addSuccessMessage("Contrato removido com sucesso.");
                 }
-
-                agreementBean.clearCache();
-                agreement = agreementBean.find(agreement.getId());
-                agreementBean.remove(agreement);
-                agreementBean.clearCache();
-
-                JsfUtil.addSuccessMessage("Contrato removido com sucesso.");
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao apagar o contrato.");
@@ -195,11 +196,12 @@ public class AgreementController extends BaseController {
                             c.set(Calendar.MONTH, c.get(Calendar.MONTH) + agreement.getPeriod());
                             agreement.setExpireDate(c.getTime());
 
+                            agreement.setIdPrimaryCnpj(proponentSiconv.getId());
+
                             agreementBean.create(agreement);
                             agreementBean.clearCache();
 
                             //Save relationship agreement - proponent
-                            agreement.setIdPrimaryCnpj(proponentSiconv.getId());
                             if (proponentSiconv.getEsferaAdministrativa().equals("MUNICIPAL")) {
                                 for (ProponentSiconv propSiconv : proponentSiconvBean.findBySphereStateCityAll(proponentSiconv.getEsferaAdministrativa(), proponentSiconv.getMunicipioUfNome(), proponentSiconv.getMunicipio())) {
                                     propSiconv.setAgreement(agreement);
