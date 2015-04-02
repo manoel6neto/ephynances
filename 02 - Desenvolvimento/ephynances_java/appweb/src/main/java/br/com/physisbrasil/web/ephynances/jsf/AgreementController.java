@@ -123,7 +123,7 @@ public class AgreementController extends BaseController {
     public String editAgreement(Long agreementId) {
         if (agreementBean.find(agreementId) != null) {
             agreement = agreementBean.find(agreementId);
-            proponentSiconv = agreement.getProponents().get(0);
+            proponentSiconv = proponentSiconvBean.find(agreement.getIdPrimaryCnpj());
             agreementUser = agreement.getUser();
 
             putFlash("agreement", agreement);
@@ -136,29 +136,31 @@ public class AgreementController extends BaseController {
             return "/agreement/list";
         }
     }
-    
+
     public String delete(Long agreementId) {
         try {
-           if (agreementId > 0) {
-               Agreement tempAgreement = agreementBean.find(agreementId);
-               if (tempAgreement != null) {
-                   ProponentSiconv prop = agreement.getProponents().get(0);
-                   prop.setAgreement(null);
-                   proponentSiconvBean.edit(prop);
-                   proponentSiconvBean.clearCache();
-                   
-                   agreementBean.clearCache();
-                   agreement = agreementBean.find(agreement.getId());
-                   agreementBean.remove(agreement);
-                   agreementBean.clearCache();
-                   
-                   JsfUtil.addSuccessMessage("Contrato removido com sucesso.");
-               }
-           } 
+            if (agreementId > 0) {
+                Agreement tempAgreement = agreementBean.find(agreementId);
+                if (tempAgreement != null) {
+                    proponentSiconvBean.clearCache();
+                    for (ProponentSiconv p : agreement.getProponents()) {
+                        p.setAgreement(null);
+                        proponentSiconvBean.edit(p);
+                        proponentSiconvBean.clearCache();
+                    }
+                }
+
+                agreementBean.clearCache();
+                agreement = agreementBean.find(agreement.getId());
+                agreementBean.remove(agreement);
+                agreementBean.clearCache();
+
+                JsfUtil.addSuccessMessage("Contrato removido com sucesso.");
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao apagar o contrato.");
         }
-        
+
         return "/agreement/list";
     }
 
@@ -173,6 +175,7 @@ public class AgreementController extends BaseController {
                             return "/agreement/create";
                         }
 
+                        proponentSiconvBean.clearCache();
                         if (agreement.getId() != null) {
                             //Update  
                             agreementBean.edit(agreement);
@@ -196,9 +199,18 @@ public class AgreementController extends BaseController {
                             agreementBean.clearCache();
 
                             //Save relationship agreement - proponent
-                            proponentSiconv.setAgreement(agreement);
-                            proponentSiconvBean.edit(proponentSiconv);
-                            proponentSiconvBean.clearCache();
+                            agreement.setIdPrimaryCnpj(proponentSiconv.getId());
+                            if (proponentSiconv.getEsferaAdministrativa().equals("MUNICIPAL")) {
+                                for (ProponentSiconv propSiconv : proponentSiconvBean.findBySphereStateCityAll(proponentSiconv.getEsferaAdministrativa(), proponentSiconv.getMunicipioUfNome(), proponentSiconv.getMunicipio())) {
+                                    propSiconv.setAgreement(agreement);
+                                    proponentSiconvBean.edit(propSiconv);
+                                    proponentSiconvBean.clearCache();
+                                }
+                            } else {
+                                proponentSiconv.setAgreement(agreement);
+                                proponentSiconvBean.edit(proponentSiconv);
+                                proponentSiconvBean.clearCache();
+                            }
 
                             //save seed with a seed plus one
                             Configuration config = configurationBean.findAll().get(0);
@@ -305,7 +317,9 @@ public class AgreementController extends BaseController {
             if (!agreement.getAgreementType().equals("")) {
                 for (ProponentSiconv prop : agreementUser.getProponents()) {
                     if (prop.getEsferaAdministrativa().equalsIgnoreCase(agreement.getAgreementType())) {
-                        tempList.add(prop);
+                        if (prop.getAgreement() == null) {
+                            tempList.add(prop);
+                        }
                     }
                 }
             }

@@ -108,6 +108,10 @@ public class Agreement implements BaseModel {
     @NotNull
     @Column(name = "cnpj_amount", nullable = false)
     private int cnpjAmount;
+    
+    @NotNull
+    @Column(name = "id_primary_cnpj", nullable = false)
+    private Long idPrimaryCnpj;
 
     @NotEmpty
     @Size(max = 100)
@@ -249,6 +253,14 @@ public class Agreement implements BaseModel {
 
     public User getUser() {
         return user;
+    }
+
+    public Long getIdPrimaryCnpj() {
+        return idPrimaryCnpj;
+    }
+
+    public void setIdPrimaryCnpj(Long idPrimaryCnpj) {
+        this.idPrimaryCnpj = idPrimaryCnpj;
     }
 
     public void setUser(User user) {
