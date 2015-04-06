@@ -19,9 +19,18 @@
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Tipo de contrato: " for="menuTipoContrato" />
                         <p:selectOneMenu id="menuTipoContrato" style="width: 200px" value="#{agreementController.agreement.agreementType}" required="true" effect="fade">
-                            <p:ajax update="cnpjprincipal" listener="#{agreementController.filterProponentsForAgreementType()}"/>
+                            <p:ajax update="cnpjprincipal menuTipoParlamentar fieldCnpjsPrivate" listener="#{agreementController.filterProponentsForAgreementType()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.agreementTypes}"/>
+                        </p:selectOneMenu>
+                    </div>
+
+                    <br class="clear" />
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Tipo de parlamentar: " for="menuTipoParlamentar" rendered="#{agreementController.agreement.agreementType.equalsIgnoreCase("PARLAMENTAR")}"/>
+                        <p:selectOneMenu id="menuTipoParlamentar" style="width: 200px" value="#{agreementController.agreement.agreementSubType}" required="false" effect="fade" rendered="#{agreementController.agreement.agreementType.equalsIgnoreCase("PARLAMENTAR")}">
+                            <f:selectItem noSelectionOption="false" itemLabel="Parcial" itemValue="Parcial"/>
+                            <f:selectItem noSelectionOption="false" itemLabel="Completo" itemValue="Completo"/>
                         </p:selectOneMenu>
                     </div>
 
@@ -29,7 +38,7 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Cnpj principal (Cadastro Esicar): " for="cnpjprincipal" />
-                        <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="true" effect="fade" converter="proponentSiconvConverter">
+                        <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="true" effect="fade" converter="proponentSiconvConverter" disabled="#{agreementController.agreement.agreementType.equalsIgnoreCase("PARLAMENTAR")}">
                             <p:ajax update="qntiCnpj" listener="#{agreementController.checkQuantCnpjMunicipal()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.filteredProponents}" var="proponent" itemLabel="#{proponent.cnpj} - #{proponent.nome}" itemValue="#{proponent}"/>
@@ -49,14 +58,14 @@
                         <p:outputLabel value="Código do contrato (Contratante): " for="codContractOwner" />
                         <p:inputText id="codContractOwner" style="width: 200px" value="#{agreementController.agreement.contactAgreementNumber}" required="true" requiredMessage="Código do contrato (Contratante) é necessário"/> 
                     </div>
-                    
+
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Email de contato: " for="emailContato" />
                         <p:inputText id="emailContato" style="width: 200px" value="#{agreementController.agreement.contactEmail}" required="false"/> 
                     </div>
-                    
+
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
@@ -77,7 +86,7 @@
                         <p:outputLabel value="Valor do contrato (R$): " for="valorTotal" />
                         <p:inputText id="valorTotal" style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" /> 
                     </div>
-                    
+
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
@@ -141,6 +150,14 @@
                         <p:outputLabel value="Celular do responsável: " for="cellphone" />
                         <p:inputMask id="cellphone" style="width: 200px" value="#{agreementController.agreement.managerCellPhone}" required="false" mask="(99) 9999-9999?"/> 
                     </div>
+
+                    <br class="clear" />
+                    <br/>
+                </p:fieldset>
+
+                <br class="clear" />
+                <br/>
+                <p:fieldset id="fieldCnpjsPrivate" legend="CNPJ's Contrato Privado" toggleable="true" collapsed="true" rendered="#{agreementController.agreement.agreementType.equalsIgnoreCase("PRIVADO")}">
 
                     <br class="clear" />
                     <br/>
