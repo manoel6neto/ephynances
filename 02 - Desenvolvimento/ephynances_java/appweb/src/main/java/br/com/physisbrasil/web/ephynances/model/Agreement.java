@@ -64,6 +64,9 @@ public class Agreement implements BaseModel {
     @Size(max = 100)
     @Column(name = "agreement_type", length = 100, nullable = false)
     private String agreementType;
+    
+    @Column(name = "agreement_sub_type", length = 100, nullable = true)
+    private String agreementSubType;
 
     @Column(name = "contact_email", length = 200, nullable = true)
     @Pattern(regexp = EMAIL_REGEX, message = "Email mal formatado")
@@ -177,6 +180,14 @@ public class Agreement implements BaseModel {
         this.agreementType = agreementType;
     }
 
+    public String getAgreementSubType() {
+        return agreementSubType;
+    }
+
+    public void setAgreementSubType(String agreementSubType) {
+        this.agreementSubType = agreementSubType;
+    }
+    
     public String getContactEmail() {
         return contactEmail;
     }
