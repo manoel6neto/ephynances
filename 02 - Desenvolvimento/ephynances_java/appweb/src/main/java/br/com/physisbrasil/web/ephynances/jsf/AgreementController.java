@@ -15,7 +15,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -48,6 +50,8 @@ public class AgreementController extends BaseController {
     private ProponentSiconv proponentSiconv;
 
     private boolean disableQuantCnpjs;
+
+    private Map<String, String> statesCapital;
 
     @PostConstruct
     public void init() {
@@ -89,6 +93,41 @@ public class AgreementController extends BaseController {
         }
 
         disableQuantCnpjs = false;
+
+        statesCapital = new HashMap<String, String>() {
+            {
+                put("Acre", "RIO BRANCO");
+                put("Amapá", "MACAPÁ");
+                put("Amazonas", "MANAUS");
+                put("Pará", "BELÉM");
+                put("Rondônia", "PORTO VELHO");
+                put("Roraima", "BOA VISTA");
+                put("Tocantins", "PALMAS");
+                put("Alagoas", "MACEIÓ");
+                put("Bahia", "SALVADOR");
+                put("Ceará", "FORTALEZA");
+                put("Maranhão", "SÃO LUÍS");
+                put("Paraíba", "JOÃO PESSOA");
+                put("Piauí", "TERESINA");
+                put("Pernambuco", "RECIFE");
+                put("Rio Grande do Norte", "NATAL");
+                put("Sergipe", "ARACAJU");
+                put("São Paulo", "SÃO PAULO");
+                put("Minas Gerais", "BELO HORIZONTE");
+                put("Rio de Janeiro", "RIO DE JANEIRO");
+                put("Espírito Santo", "VITÓRIA");
+                put("Goiás", "GOIANIA");
+                put("Distrito Federal", "BRASÍLIA");
+                put("Mato Grosso", "CUIABÁ");
+                put("Mato Grosso do Sul", "CAMPO GRANDE");
+                put("Paraná", "CURITÍBA");
+                put("Santa Catarina", "FLORIANÓPOLIS");
+                put("Rio Grande do Sul", "PORTO ALEGRE");
+            }
+        ;
+    }
+
+    ;
     }
 
     public void getListFilteredBySeller(Long userId) {
@@ -315,12 +354,25 @@ public class AgreementController extends BaseController {
 
     public void filterProponentsForAgreementType() {
         List<ProponentSiconv> tempList = new ArrayList<ProponentSiconv>();
+        String type = "";
         if (agreement != null) {
             if (!agreement.getAgreementType().equals("")) {
                 for (ProponentSiconv prop : agreementUser.getProponents()) {
-                    if (prop.getEsferaAdministrativa().equalsIgnoreCase(agreement.getAgreementType())) {
-                        if (prop.getAgreement() == null) {
-                            tempList.add(prop);
+                    if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_CONSORCIO())) {
+                        type = "CONSORCIO PUBLICO";
+                    } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL())) {
+                        type = "ESTADUAL";
+                    } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_MUNICIPAL())) {
+                        type = "MUNICIPAL";
+                    } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PRIVADO())) {
+                        type = "PRIVADA";
+                    }
+
+                    if (!agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PARLAMENTAR())) {
+                        if (prop.getEsferaAdministrativa().equalsIgnoreCase(type)) {
+                            if (prop.getAgreement() == null) {
+                                tempList.add(prop);
+                            }
                         }
                     }
                 }
@@ -333,7 +385,7 @@ public class AgreementController extends BaseController {
     public void checkQuantCnpjMunicipal() {
         if (agreement != null) {
             if (!agreement.getAgreementType().equals("")) {
-                if (agreement.getAgreementType().equalsIgnoreCase("MUNICIPAL")) {
+                if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_MUNICIPAL())) {
                     if (proponentSiconv != null) {
                         if (proponentSiconv.getId() > 0) {
                             agreement.setCnpjAmount(proponentSiconvBean.findBySphereStateCityAll(proponentSiconv.getEsferaAdministrativa(), proponentSiconv.getMunicipioUfNome(), proponentSiconv.getMunicipio()).size());
@@ -342,8 +394,26 @@ public class AgreementController extends BaseController {
                     } else {
                         disableQuantCnpjs = false;
                     }
-                } else {
-                    disableQuantCnpjs = false;
+                } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_CONSORCIO())) {
+                    agreement.setCnpjAmount(1);
+                    disableQuantCnpjs = true;
+                } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PARLAMENTAR())) {
+                    agreement.setCnpjAmount(0);
+                    disableQuantCnpjs = true;
+                } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL())) {
+                    List<ProponentSiconv> tempProp = proponentSiconvBean.findBySphereStateAll(proponentSiconv.getEsferaAdministrativa(), proponentSiconv.getMunicipioUfNome());
+                    if (getUsuarioLogado().getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
+                        agreement.setCnpjAmount(tempProp.size());
+                    } else {
+                        List<ProponentSiconv> tempPropNotAdmin = new ArrayList<ProponentSiconv>();
+                        for (ProponentSiconv p : tempProp) {
+                            if (!p.getMunicipio().equalsIgnoreCase(statesCapital.get(p.getMunicipioUfNome()))) {
+                                tempPropNotAdmin.add(p);
+                            }
+                        }
+                        agreement.setCnpjAmount(tempPropNotAdmin.size());
+                    }
+                    disableQuantCnpjs = true;
                 }
             } else {
                 disableQuantCnpjs = false;

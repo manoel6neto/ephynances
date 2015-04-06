@@ -36,18 +36,16 @@ public class Agreement implements BaseModel {
         {
             add(getTYPE_MUNICIPAL());
             add(getTYPE_PARLAMENTAR());
-            add(getTYPE_FUNDACAO());
+            add(getTYPE_PRIVADO());
             add(getTYPE_CONSORCIO());
-            add(getTYPE_ENTIDADE_PRIVADA());
             add(getTYPE_ESTADUAL());
         }
     };
 
     private static final String TYPE_MUNICIPAL = "MUNICIPAL";
-    private static final String TYPE_PARLAMENTAR = "FEDERAL";
-    private static final String TYPE_FUNDACAO = "ORGANISMO INTERNACIONAL";
-    private static final String TYPE_CONSORCIO = "CONSORCIO PUBLICO";
-    private static final String TYPE_ENTIDADE_PRIVADA = "PRIVADA";
+    private static final String TYPE_PARLAMENTAR = "PARLAMENTAR";
+    private static final String TYPE_PRIVADO = "PRIVADO";
+    private static final String TYPE_CONSORCIO = "CONSÓRCIO";
     private static final String TYPE_ESTADUAL = "ESTADUAL";
 
     private static final String STATE_ATIVO = "Ativo";
@@ -379,18 +377,14 @@ public class Agreement implements BaseModel {
         return TYPE_PARLAMENTAR;
     }
 
-    public static String getTYPE_FUNDACAO() {
-        return TYPE_FUNDACAO;
-    }
-
     public static String getTYPE_CONSORCIO() {
         return TYPE_CONSORCIO;
     }
 
-    public static String getTYPE_ENTIDADE_PRIVADA() {
-        return TYPE_ENTIDADE_PRIVADA;
+    public static String getTYPE_PRIVADO() {
+        return TYPE_PRIVADO;
     }
-
+    
     public static String getTYPE_ESTADUAL() {
         return TYPE_ESTADUAL;
     }

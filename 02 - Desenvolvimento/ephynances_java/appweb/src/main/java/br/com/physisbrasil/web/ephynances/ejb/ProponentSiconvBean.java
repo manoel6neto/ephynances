@@ -87,4 +87,20 @@ public class ProponentSiconvBean extends DAO<ProponentSiconv> {
 
         return proponentsSiconv;
     }
+    
+    public List<ProponentSiconv> findBySphereStateAll(String esferaAdministrativa, String municipioUfNome) {
+        TypedQuery<ProponentSiconv> namedQuery = getEntityManager().createNamedQuery("ProponentSiconv.findBySphereStateAll", ProponentSiconv.class);
+
+        namedQuery.setParameter("esferaAdministrativa", esferaAdministrativa);
+        namedQuery.setParameter("municipioUfNome", municipioUfNome);
+
+        List<ProponentSiconv> proponentsSiconv;
+        try {
+            proponentsSiconv = namedQuery.getResultList();
+        } catch (Exception e) {
+            proponentsSiconv = null;
+        }
+
+        return proponentsSiconv;
+    }
 }

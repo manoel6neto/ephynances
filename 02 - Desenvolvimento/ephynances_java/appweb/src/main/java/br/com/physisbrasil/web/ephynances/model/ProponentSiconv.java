@@ -22,8 +22,10 @@ import javax.persistence.Table;
             query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.user IS NULL AND p.agreement IS NULL"),
     @NamedQuery(name = "ProponentSiconv.findBySphereStateCity",
             query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.municipio = :municipio AND p.user IS NULL AND p.agreement IS NULL"),
-        @NamedQuery(name = "ProponentSiconv.findBySphereStateCityAll",
-            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.municipio = :municipio AND p.agreement IS NULL")
+    @NamedQuery(name = "ProponentSiconv.findBySphereStateCityAll",
+            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.municipio = :municipio AND p.agreement IS NULL"),
+    @NamedQuery(name = "ProponentSiconv.findBySphereStateAll",
+            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.agreement IS NULL")
 })
 public class ProponentSiconv implements BaseModel {
 
@@ -82,12 +84,12 @@ public class ProponentSiconv implements BaseModel {
 
     @Column(name = "situacao", length = 255, nullable = true)
     private String situacao;
-    
+
     //References
     @ManyToOne(optional = true)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true)
     private User user;
-    
+
     @ManyToOne(optional = true)
     @JoinColumn(name = "agreement_id", referencedColumnName = "id", nullable = true)
     private Agreement agreement;
@@ -100,7 +102,7 @@ public class ProponentSiconv implements BaseModel {
     public Long getId() {
         return idProponenteSiconv;
     }
-    
+
     @Override
     public String toString() {
         return idProponenteSiconv.toString();
@@ -272,7 +274,7 @@ public class ProponentSiconv implements BaseModel {
         hash = 97 * hash + (this.idProponenteSiconv != null ? this.idProponenteSiconv.hashCode() : 0);
         return hash;
     }
-    
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof ProponentSiconv)) {
@@ -282,7 +284,7 @@ public class ProponentSiconv implements BaseModel {
         if (this.idProponenteSiconv != null) {
             return this.idProponenteSiconv.equals(other.idProponenteSiconv);
         }
-        
+
         return false;
     }
 }
