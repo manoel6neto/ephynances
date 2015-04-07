@@ -196,9 +196,11 @@ public class AgreementController extends BaseController {
 
                     agreementBean.clearCache();
                     agreement = agreementBean.find(tempAgreement.getId());
+                    Long userId = agreement.getUser().getId();
                     agreementBean.remove(agreement);
                     agreementBean.clearCache();
 
+                    getListFilteredBySeller(userId);
                     JsfUtil.addSuccessMessage("Contrato removido com sucesso.");
                 }
             }
@@ -207,6 +209,10 @@ public class AgreementController extends BaseController {
         }
 
         return "/agreement/list";
+    }
+    
+    public void activateAgreement(Long agreementId) {
+        
     }
 
     public String addAgreement() {
@@ -281,11 +287,12 @@ public class AgreementController extends BaseController {
                             configurationBean.edit(config);
                             configurationBean.clearCache();
 
-                            if (agreement.getAgreementType().equalsIgnoreCase("PARLAMENTAR")) {
-                                insertGestorEsicar(agreement.getUser().getId(), "1");
-                            } else {
-                                insertGestorEsicar(agreement.getUser().getId(), "0");
-                            }
+                            //Inserir o gestor apenas quando ativar o contrato
+//                            if (agreement.getAgreementType().equalsIgnoreCase("PARLAMENTAR")) {
+//                                insertGestorEsicar(agreement.getUser().getId(), "1");
+//                            } else {
+//                                insertGestorEsicar(agreement.getUser().getId(), "0");
+//                            }
 
                             JsfUtil.addSuccessMessage("Contrato cadastrado com sucesso.");
                         }

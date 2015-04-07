@@ -43,7 +43,7 @@
                         <h:outputText value="   " />
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.view(item)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Visualizar contrato" title="Visualizar"/></p:commandLink>
                         <h:outputText value="   " />
-                        <p:commandLink style="margin-right: 5px" actionListener="#{agreementController.delete(item.id)}" >
+                        <p:commandLink ajax="false" style="margin-right: 5px" actionListener="#{agreementController.delete(item.id)}" >
                             <img src="../resources/img/remove.png" width="16" height="16" alt="Apagar contrato" title="Apagar"/>
                             <p:confirm header="Confirmação" message="Você tem certeza que gostaria de apagar o contrato?" icon="ui-icon-alert"/>
                         </p:commandLink>
