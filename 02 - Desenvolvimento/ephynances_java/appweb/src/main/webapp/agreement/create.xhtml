@@ -159,20 +159,16 @@
                     <br/>
                 </p:fieldset>
 
-                <h:panelGroup id="test" >
+                <p:fieldset id="fieldCnpjsPrivate" legend="CNPJ's Contrato Privado" toggleable="true" collapsed="true" rendered="#{agreementController.checkIsType('PRIVADO')}">
+
                     <br class="clear" />
                     <br/>
-                    <p:fieldset id="fieldCnpjsPrivate" legend="CNPJ's Contrato Privado" toggleable="true" collapsed="true" rendered="#{agreementController.checkIsType('PRIVADO')}">
-
-                        <br class="clear" />
-                        <br/>
-                    </p:fieldset>
-                </h:panelGroup>
+                </p:fieldset>
 
                 <br class="clear" />
                 <br/>
                 <div class="grid_3" style="line-height: 30px;" >
-                    <p:commandButton styleClass="grid_1 alpha" action="#{agreementController.addAgreement()}" value="Cadastrar" update="form" ajax="false"/>
+                    <p:commandButton styleClass="grid_1 alpha" action="#{agreementController.addAgreement()}" value="Cadastrar" update="@form" ajax="false"/>
                 </div>
             </h:form>
         </ui:define>

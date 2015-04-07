@@ -59,7 +59,7 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Código do contrato (Contratante): " for="codContractOwner" />
-                        <p:inputText id="codContractOwner" style="width: 200px" value="#{agreementController.agreement.contactAgreementNumber}" required="true" requiredMessage="Código do contrato (Contratante) é necessário"/> 
+                        <p:inputText id="codContractOwner" style="width: 200px" value="#{agreementController.agreement.contactAgreementNumber}" readonly="true" required="true" requiredMessage="Código do contrato (Contratante) é necessário"/> 
                     </div>
 
                     <br class="clear" />
@@ -159,20 +159,16 @@
                     <br/>
                 </p:fieldset>
 
-                <h:panelGroup id="test" >
+                <p:fieldset id="fieldCnpjsPrivate" legend="CNPJ's Contrato Privado" toggleable="true" collapsed="true" rendered="#{agreementController.checkIsType('PRIVADO')}">
+
                     <br class="clear" />
                     <br/>
-                    <p:fieldset id="fieldCnpjsPrivate" legend="CNPJ's Contrato Privado" toggleable="true" collapsed="true" rendered="#{agreementController.checkIsType('PRIVADO')}">
-
-                        <br class="clear" />
-                        <br/>
-                    </p:fieldset>
-                </h:panelGroup>
+                </p:fieldset>
 
                 <br class="clear" />
                 <br/>
                 <div class="grid_3" style="line-height: 30px;" >
-                    <p:commandButton styleClass="grid_1 alpha" action="#{agreementController.addAgreement()}" value="Salvar" update="form" ajax="false"/>
+                    <p:commandButton styleClass="grid_1 alpha" action="#{agreementController.addAgreement()}" value="Salvar" update="@form" ajax="false"/>
                 </div>
             </h:form>
         </ui:define>
