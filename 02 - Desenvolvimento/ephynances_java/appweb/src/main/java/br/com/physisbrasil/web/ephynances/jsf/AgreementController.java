@@ -210,9 +210,19 @@ public class AgreementController extends BaseController {
 
         return "/agreement/list";
     }
-    
+
     public void activateAgreement(Long agreementId) {
-        
+        Agreement tempAgreement = agreementBean.find(agreementId);
+        if (tempAgreement != null) {
+            //Check and activate
+
+            //register manager esicar
+            if (agreement.getAgreementType().equalsIgnoreCase("PARLAMENTAR")) {
+                insertGestorEsicar(agreement.getUser().getId(), "1");
+            } else {
+                insertGestorEsicar(agreement.getUser().getId(), "0");
+            }
+        }
     }
 
     public String addAgreement() {
@@ -293,7 +303,6 @@ public class AgreementController extends BaseController {
 //                            } else {
 //                                insertGestorEsicar(agreement.getUser().getId(), "0");
 //                            }
-
                             JsfUtil.addSuccessMessage("Contrato cadastrado com sucesso.");
                         }
 
@@ -360,7 +369,7 @@ public class AgreementController extends BaseController {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(dateToFormat);
     }
-    
+
     public String formatDateToMysql(Date dateToFormat) {
         DateFormat outputFormatter = new SimpleDateFormat("yyyyMMdd");
         return outputFormatter.format(dateToFormat);
