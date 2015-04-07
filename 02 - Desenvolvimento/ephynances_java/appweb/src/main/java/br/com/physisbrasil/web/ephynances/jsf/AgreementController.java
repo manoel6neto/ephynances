@@ -530,10 +530,10 @@ public class AgreementController extends BaseController {
                                 for (ProponentSiconv prop : agreement.getProponents()) {
                                     //insert
                                     id_cnpj = 0;
-                                    sql = String.format("INSERT INTO cnpj_siconv (cnpj, id_cidade, cnpj_instituicao, sigla, esfera_administrativa) VALUES (%s, %s, %s, %s, %s)", prop.getCnpj().replace(".", "").replace("-", "").replace("/", ""), prop.getCodigoMunicipio(), prop.getNome(), prop.getMunicipioUfSigla(), prop.getEsferaAdministrativa());
+                                    sql = String.format("INSERT INTO cnpj_siconv (cnpj, id_cidade, cnpj_instituicao, sigla, esfera_administrativa) VALUES ('%s', '%s', '%s', '%s', '%s')", prop.getCnpj().replace(".", "").replace("-", "").replace("/", ""), prop.getCodigoMunicipio(), prop.getNome(), prop.getMunicipioUfSigla(), prop.getEsferaAdministrativa());
                                     stmt.executeUpdate(sql);
                                     //get id cnpj
-                                    sql = String.format("SELECT id_cnpj_siconv FROM cnpj_siconv WHERE cnpj = %s", prop.getCnpj().replace(".", "").replace("-", ""));
+                                    sql = String.format("SELECT id_cnpj_siconv FROM cnpj_siconv WHERE cnpj = %s", prop.getCnpj().replace(".", "").replace("-", "").replace("/", ""));
                                     rs = stmt.executeQuery(sql);
                                     while (rs.next()) {
                                         id_cnpj = rs.getInt("id_cnpj_siconv");
