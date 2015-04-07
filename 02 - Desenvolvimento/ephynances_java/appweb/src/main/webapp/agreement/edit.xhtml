@@ -18,8 +18,7 @@
                     <br class="clear" />
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Tipo de contrato: " for="menuTipoContrato" />
-                        <p:selectOneMenu id="menuTipoContrato" style="width: 200px" value="#{agreementController.agreement.agreementType}" required="true" effect="fade">
-                            <p:ajax update="@form" listener="#{agreementController.filterProponentsForAgreementType()}"/>
+                        <p:selectOneMenu id="menuTipoContrato" style="width: 200px" value="#{agreementController.agreement.agreementType}" disabled="true" required="true" effect="fade">
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.agreementTypes}"/>
                         </p:selectOneMenu>
@@ -30,7 +29,7 @@
                         <br/>
                         <div class="grid_4 alpha" >
                             <p:outputLabel value="Tipo de parlamentar: " for="menuTipoParlamentar" />
-                            <p:selectOneMenu id="menuTipoParlamentar" style="width: 200px" value="#{agreementController.agreement.agreementSubType}" required="false" effect="fade" >
+                            <p:selectOneMenu id="menuTipoParlamentar" style="width: 200px" value="#{agreementController.agreement.agreementSubType}" disabled="true" required="false" effect="fade" >
                                 <f:selectItem noSelectionOption="false" itemLabel="Parcial" itemValue="Parcial"/>
                                 <f:selectItem noSelectionOption="false" itemLabel="Completo" itemValue="Completo"/>
                             </p:selectOneMenu>
@@ -44,7 +43,7 @@
                         <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="true" effect="fade" converter="proponentSiconvConverter" disabled="#{agreementController.checkIsType('PARLAMENTAR')}">
                             <p:ajax update="qntiCnpj" listener="#{agreementController.checkQuantCnpjMunicipal()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
-                            <f:selectItems value="#{agreementController.filteredProponents}" var="proponent" itemLabel="#{proponent.cnpj} - #{proponent.nome}" itemValue="#{proponent}"/>
+                            <f:selectItems value="#{agreementController.agreement.proponents}" var="proponent" itemLabel="#{proponent.cnpj} - #{proponent.nome}" itemValue="#{proponent}"/>
                         </p:selectOneMenu>
                     </div>
 
