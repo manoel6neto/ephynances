@@ -41,7 +41,9 @@
                     <p:column width="160" style="text-align: center" headerText="Ações">
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementController.editAgreement(item.id)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar contrato" title="Editar"/></p:commandLink>
                         <h:outputText value="   " />
-                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.view(item)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Visualizar contrato" title="Visualizar"/></p:commandLink>
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementController.viewAgreement(item.id)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Visualizar contrato" title="Visualizar"/></p:commandLink>
+                        <h:outputText value="   " rendered="#{agreementController.checkStatusAgreement(item.id)}"/>
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementController.activateAgreement(item.id)}" rendered="#{agreementController.checkStatusAgreement(item.id)}"><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Visualizar contrato" title="Visualizar"/></p:commandLink>
                         <h:outputText value="   " />
                         <p:commandLink ajax="false" style="margin-right: 5px" actionListener="#{agreementController.delete(item.id)}" >
                             <img src="../resources/img/remove.png" width="16" height="16" alt="Apagar contrato" title="Apagar"/>

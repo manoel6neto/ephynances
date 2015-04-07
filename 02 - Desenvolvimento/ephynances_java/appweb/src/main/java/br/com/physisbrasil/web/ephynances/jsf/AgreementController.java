@@ -164,6 +164,21 @@ public class AgreementController extends BaseController {
         return "/agreement/list";
     }
 
+    public String viewAgreement(Long agreementId) {
+        try {
+            Agreement tempAgreement = agreementBean.find(agreementId);
+            if (tempAgreement != null) {
+
+            }
+
+            return "/agreement/view";
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao carregar contrato para visualização");
+        }
+
+        return "/agreement/list";
+    }
+
     public String editAgreement(Long agreementId) {
         if (agreementBean.find(agreementId) != null) {
             agreement = agreementBean.find(agreementId);
@@ -223,6 +238,19 @@ public class AgreementController extends BaseController {
                 insertGestorEsicar(agreement.getUser().getId(), "0");
             }
         }
+    }
+
+    public String checkStatusAgreement(Long agreementId) {
+        if (getUsuarioLogado().getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
+            Agreement tempAgreement = agreementBean.find(agreementId);
+            if (tempAgreement != null) {
+                if (tempAgreement.getStatus().equalsIgnoreCase(Agreement.getSTATE_INCOMPLETO())) {
+                    return String.valueOf(true);
+                }
+            }
+        }
+
+        return String.valueOf(false);
     }
 
     public String addAgreement() {
@@ -297,12 +325,6 @@ public class AgreementController extends BaseController {
                             configurationBean.edit(config);
                             configurationBean.clearCache();
 
-                            //Inserir o gestor apenas quando ativar o contrato
-//                            if (agreement.getAgreementType().equalsIgnoreCase("PARLAMENTAR")) {
-//                                insertGestorEsicar(agreement.getUser().getId(), "1");
-//                            } else {
-//                                insertGestorEsicar(agreement.getUser().getId(), "0");
-//                            }
                             JsfUtil.addSuccessMessage("Contrato cadastrado com sucesso.");
                         }
 
