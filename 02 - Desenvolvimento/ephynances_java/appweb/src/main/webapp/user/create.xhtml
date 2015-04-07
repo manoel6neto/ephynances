@@ -24,7 +24,7 @@
                         <f:selectItem itemLabel="#{userController.RULER_SELLER}" itemValue="#{userController.RULER_SELLER}" />
                     </p:selectOneMenu>
                 </div>
-                
+
                 <div class="grid_4 alpha">
                     <p:outputLabel value="Administrador Regional: " for="menuAdminGestor" />
                     <p:selectOneMenu id="menuAdminGestor" style="width: auto" value="#{userController.adminGestor}" required="false" effect="fade" disabled="#{!userController.user.profileRule.equals(userController.RULER_SELLER)}" converter="userConverter">
@@ -54,7 +54,9 @@
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="CPF: " for="cpf" />
-                    <p:inputMask id="cpf" value="#{userController.user.cpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"/> 
+                    <p:inputMask id="cpf" value="#{userController.user.cpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"> 
+                        <f:validator validatorId="cpfValidator" />
+                    </p:inputMask>
                 </div>
 
                 <br class="clear" />
@@ -86,7 +88,7 @@
                     <p:outputLabel value="Quant. Cidades: " for="qntCidades" />
                     <p:inputText id="qntCidades" value="#{userController.user.numberCities}" required="false" disabled="#{!loginController.isUserInRuller(userController.RULER_ADMIN)}"/> 
                 </div>
-                
+
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Quant. Autarquias " for="qntAutarquias" />

@@ -47,13 +47,13 @@
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="Email: " for="email" />
-                    <p:inputText id="email" value="#{userController.user.email}" required="true" requiredMessage="Email é necessário" validatorMessage="Email mal formatado !!"/> 
+                    <p:inputText id="email" value="#{userController.user.email}" readonly="true" required="true" requiredMessage="Email é necessário" validatorMessage="Email mal formatado !!"/> 
                 </div>
 
                 <br class="clear" />
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="CPF: " for="cpf" />
-                    <p:inputMask id="cpf" value="#{userController.user.cpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"/> 
+                    <p:inputMask id="cpf" value="#{userController.user.cpf}" mask="999.999.999-99" readonly="true" required="true" requiredMessage="CPF é necessário"/> 
                 </div>
 
                 <br class="clear" />

@@ -19,26 +19,29 @@
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Tipo de contrato: " for="menuTipoContrato" />
                         <p:selectOneMenu id="menuTipoContrato" style="width: 200px" value="#{agreementController.agreement.agreementType}" required="true" effect="fade">
-                            <p:ajax update="cnpjprincipal menuTipoParlamentar fieldCnpjsPrivate" listener="#{agreementController.filterProponentsForAgreementType()}"/>
+                            <p:ajax update="@form" listener="#{agreementController.filterProponentsForAgreementType()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.agreementTypes}"/>
                         </p:selectOneMenu>
                     </div>
 
-                    <br class="clear" />
-                    <div class="grid_4 alpha" >
-                        <p:outputLabel value="Tipo de parlamentar: " for="menuTipoParlamentar" rendered="#{agreementController.agreement.agreementType.equalsIgnoreCase("PARLAMENTAR")}"/>
-                        <p:selectOneMenu id="menuTipoParlamentar" style="width: 200px" value="#{agreementController.agreement.agreementSubType}" required="false" effect="fade" rendered="#{agreementController.agreement.agreementType.equalsIgnoreCase("PARLAMENTAR")}">
-                            <f:selectItem noSelectionOption="false" itemLabel="Parcial" itemValue="Parcial"/>
-                            <f:selectItem noSelectionOption="false" itemLabel="Completo" itemValue="Completo"/>
-                        </p:selectOneMenu>
-                    </div>
+                    <h:panelGroup rendered="#{agreementController.checkIsType('PARLAMENTAR')}">
+                        <br class="clear" />
+                        <br/>
+                        <div class="grid_4 alpha" >
+                            <p:outputLabel value="Tipo de parlamentar: " for="menuTipoParlamentar" />
+                            <p:selectOneMenu id="menuTipoParlamentar" style="width: 200px" value="#{agreementController.agreement.agreementSubType}" required="false" effect="fade" >
+                                <f:selectItem noSelectionOption="false" itemLabel="Parcial" itemValue="Parcial"/>
+                                <f:selectItem noSelectionOption="false" itemLabel="Completo" itemValue="Completo"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </h:panelGroup>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Cnpj principal (Cadastro Esicar): " for="cnpjprincipal" />
-                        <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="true" effect="fade" converter="proponentSiconvConverter" disabled="#{agreementController.agreement.agreementType.equalsIgnoreCase("PARLAMENTAR")}">
+                        <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="true" effect="fade" converter="proponentSiconvConverter" disabled="#{agreementController.checkIsType('PARLAMENTAR')}">
                             <p:ajax update="qntiCnpj" listener="#{agreementController.checkQuantCnpjMunicipal()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.filteredProponents}" var="proponent" itemLabel="#{proponent.cnpj} - #{proponent.nome}" itemValue="#{proponent}"/>
@@ -84,7 +87,9 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Valor do contrato (R$): " for="valorTotal" />
-                        <p:inputText id="valorTotal" style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" /> 
+                        <p:inputText id="valorTotal" style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" > 
+                            <f:convertNumber type="currency" currencySymbol="R$"/>
+                        </p:inputText>
                     </div>
 
                     <br class="clear" />
@@ -110,7 +115,6 @@
                 <br/>
                 <p:fieldset legend="Dados do responsável" toggleable="true" collapsed="false">
                     <br class="clear" />
-                    <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Nome do responsável: " for="nomeResp" />
                         <p:inputText id="nomeResp" style="width: 200px" value="#{agreementController.agreement.managerName}" required="true" requiredMessage="Nome do responsável necessário"/> 
@@ -134,7 +138,9 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="CPF do responsável: " for="cpf" />
-                        <p:inputMask id="cpf" style="width: 200px" value="#{agreementController.agreement.managerCpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"/> 
+                        <p:inputMask id="cpf" style="width: 200px" value="#{agreementController.agreement.managerCpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"> 
+                            <f:validator validatorId="cpfValidator" />
+                        </p:inputMask>
                     </div>
 
                     <br class="clear" />
@@ -155,13 +161,15 @@
                     <br/>
                 </p:fieldset>
 
-                <br class="clear" />
-                <br/>
-                <p:fieldset id="fieldCnpjsPrivate" legend="CNPJ's Contrato Privado" toggleable="true" collapsed="true" rendered="#{agreementController.agreement.agreementType.equalsIgnoreCase("PRIVADO")}">
-
+                <h:panelGroup id="test" >
                     <br class="clear" />
                     <br/>
-                </p:fieldset>
+                    <p:fieldset id="fieldCnpjsPrivate" legend="CNPJ's Contrato Privado" toggleable="true" collapsed="true" rendered="#{agreementController.checkIsType('PRIVADO')}">
+
+                        <br class="clear" />
+                        <br/>
+                    </p:fieldset>
+                </h:panelGroup>
 
                 <br class="clear" />
                 <br/>

@@ -18,18 +18,30 @@
                     <br class="clear" />
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Tipo de contrato: " for="menuTipoContrato" />
-                        <p:selectOneMenu id="menuTipoContrato" style="width: 200px" value="#{agreementController.agreement.agreementType}" required="true" effect="fade" disabled="true">
-                            <p:ajax update="cnpjprincipal" listener="#{agreementController.filterProponentsForAgreementType()}"/>
+                        <p:selectOneMenu id="menuTipoContrato" style="width: 200px" value="#{agreementController.agreement.agreementType}" required="true" effect="fade">
+                            <p:ajax update="@form" listener="#{agreementController.filterProponentsForAgreementType()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.agreementTypes}"/>
                         </p:selectOneMenu>
                     </div>
 
+                    <h:panelGroup rendered="#{agreementController.checkIsType('PARLAMENTAR')}">
+                        <br class="clear" />
+                        <br/>
+                        <div class="grid_4 alpha" >
+                            <p:outputLabel value="Tipo de parlamentar: " for="menuTipoParlamentar" />
+                            <p:selectOneMenu id="menuTipoParlamentar" style="width: 200px" value="#{agreementController.agreement.agreementSubType}" required="false" effect="fade" >
+                                <f:selectItem noSelectionOption="false" itemLabel="Parcial" itemValue="Parcial"/>
+                                <f:selectItem noSelectionOption="false" itemLabel="Completo" itemValue="Completo"/>
+                            </p:selectOneMenu>
+                        </div>
+                    </h:panelGroup>
+
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Cnpj principal (Cadastro Esicar): " for="cnpjprincipal" />
-                        <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="true" effect="fade" converter="proponentSiconvConverter" disabled="true">
+                        <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="true" effect="fade" converter="proponentSiconvConverter" disabled="#{agreementController.checkIsType('PARLAMENTAR')}">
                             <p:ajax update="qntiCnpj" listener="#{agreementController.checkQuantCnpjMunicipal()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.filteredProponents}" var="proponent" itemLabel="#{proponent.cnpj} - #{proponent.nome}" itemValue="#{proponent}"/>
@@ -49,14 +61,14 @@
                         <p:outputLabel value="Código do contrato (Contratante): " for="codContractOwner" />
                         <p:inputText id="codContractOwner" style="width: 200px" value="#{agreementController.agreement.contactAgreementNumber}" required="true" requiredMessage="Código do contrato (Contratante) é necessário"/> 
                     </div>
-                    
+
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Email de contato: " for="emailContato" />
                         <p:inputText id="emailContato" style="width: 200px" value="#{agreementController.agreement.contactEmail}" required="false"/> 
                     </div>
-                    
+
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
@@ -70,19 +82,21 @@
                         <p:outputLabel value="Código do contrato (Physis): " for="codContractPhysis" />
                         <p:inputText id="codContractPhysis" style="width: 200px" value="#{agreementController.agreement.physisAgreementNumber}" disabled="false" readonly="true"/> 
                     </div>
-                    
+
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Valor do contrato (R$): " for="valorTotal" />
-                        <p:inputText id="valorTotal" style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" readonly="true"/> 
+                        <p:inputText id="valorTotal" style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" > 
+                            <f:convertNumber type="currency" currencySymbol="R$"/>
+                        </p:inputText>
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Período (Meses): " for="periodo" />
-                        <p:inputText id="periodo" style="width: 200px" value="#{agreementController.agreement.period}" required="true" requiredMessage="Informe o tempo de vigência em meses" maxlength="2" readonly="true"/> 
+                        <p:inputText id="periodo" style="width: 200px" value="#{agreementController.agreement.period}" required="true" requiredMessage="Informe o tempo de vigência em meses" maxlength="2"/> 
                         <p:watermark for="periodo" value="12"/>
                     </div>
 
@@ -101,10 +115,9 @@
                 <br/>
                 <p:fieldset legend="Dados do responsável" toggleable="true" collapsed="false">
                     <br class="clear" />
-                    <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Nome do responsável: " for="nomeResp" />
-                        <p:inputText id="nomeResp" style="width: 200px" value="#{agreementController.agreement.managerName}" required="true" requiredMessage="Nome do responsável necessário"/> 
+                        <p:inputText id="nomeResp" style="width: 200px" value="#{agreementController.agreement.managerName}" readonly="true" required="true" requiredMessage="Nome do responsável necessário"/> 
                     </div>
 
                     <br class="clear" />
@@ -118,14 +131,16 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Email do responsável: " for="emailResp" />
-                        <p:inputText id="emailResp" style="width: 200px" value="#{agreementController.agreement.managerEmail}" required="true" requiredMessage="Email do responsável necessário"/> 
+                        <p:inputText id="emailResp" style="width: 200px" value="#{agreementController.agreement.managerEmail}" readonly="true" required="true" requiredMessage="Email do responsável necessário"/> 
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="CPF do responsável: " for="cpf" />
-                        <p:inputMask id="cpf" style="width: 200px" value="#{agreementController.agreement.managerCpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário" readonly="true"/> 
+                        <p:inputMask id="cpf" style="width: 200px" value="#{agreementController.agreement.managerCpf}" readonly="true" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"> 
+                            <f:validator validatorId="cpfValidator" />
+                        </p:inputMask>
                     </div>
 
                     <br class="clear" />
@@ -146,10 +161,20 @@
                     <br/>
                 </p:fieldset>
 
+                <h:panelGroup id="test" >
+                    <br class="clear" />
+                    <br/>
+                    <p:fieldset id="fieldCnpjsPrivate" legend="CNPJ's Contrato Privado" toggleable="true" collapsed="true" rendered="#{agreementController.checkIsType('PRIVADO')}">
+
+                        <br class="clear" />
+                        <br/>
+                    </p:fieldset>
+                </h:panelGroup>
+
                 <br class="clear" />
                 <br/>
                 <div class="grid_3" style="line-height: 30px;" >
-                    <p:commandButton styleClass="grid_1 alpha" action="#{agreementController.addAgreement()}" value="Cadastrar" update="form" ajax="false"/>
+                    <p:commandButton styleClass="grid_1 alpha" action="#{agreementController.addAgreement()}" value="Salvar" update="form" ajax="false"/>
                 </div>
             </h:form>
         </ui:define>

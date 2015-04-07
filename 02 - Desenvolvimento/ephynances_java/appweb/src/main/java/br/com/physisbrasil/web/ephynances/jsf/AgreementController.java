@@ -4,12 +4,23 @@ import br.com.physisbrasil.web.ephynances.ejb.AgreementBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
+import br.com.physisbrasil.web.ephynances.model.AdministrativeSphere;
 import br.com.physisbrasil.web.ephynances.model.Agreement;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
+import br.com.physisbrasil.web.ephynances.model.State;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -235,19 +248,36 @@ public class AgreementController extends BaseController {
                             c.set(Calendar.MONTH, c.get(Calendar.MONTH) + agreement.getPeriod());
                             agreement.setExpireDate(c.getTime());
 
-                            agreement.setIdPrimaryCnpj(proponentSiconv.getId());
+                            // Salva o cnpj principal caso exista
+                            if (proponentSiconv != null) {
+                                if (proponentSiconv.getId() != null) {
+                                    agreement.setIdPrimaryCnpj(proponentSiconv.getId());
+                                }
+                            }
 
                             agreementBean.create(agreement);
                             agreementBean.clearCache();
 
-                            //Save relationship agreement - proponent
-                            if (proponentSiconv.getEsferaAdministrativa().equals("MUNICIPAL")) {
+                            //Save relationship agreement - proponent - PARLAMENTAR não tem relacionamento com nenhum cnpj
+                            if (agreement.getAgreementType().equalsIgnoreCase("MUNICIPAL")) {
                                 for (ProponentSiconv propSiconv : proponentSiconvBean.findBySphereStateCityAll(proponentSiconv.getEsferaAdministrativa(), proponentSiconv.getMunicipioUfNome(), proponentSiconv.getMunicipio())) {
                                     propSiconv.setAgreement(agreement);
                                     proponentSiconvBean.edit(propSiconv);
                                     proponentSiconvBean.clearCache();
                                 }
-                            } else {
+                            } else if (agreement.getAgreementType().equalsIgnoreCase("ESTADUAL")) {
+                                for (ProponentSiconv propSiconv : proponentSiconvBean.findBySphereStateAll(proponentSiconv.getEsferaAdministrativa(), proponentSiconv.getMunicipioUfNome())) {
+                                    propSiconv.setAgreement(agreement);
+                                    proponentSiconvBean.edit(propSiconv);
+                                    proponentSiconvBean.clearCache();
+                                }
+                            } else if (agreement.getAgreementType().equalsIgnoreCase("PRIVADO")) {
+                                proponentSiconv.setAgreement(agreement);
+                                proponentSiconvBean.edit(proponentSiconv);
+                                proponentSiconvBean.clearCache();
+
+                                //salvar proponentes do datatable
+                            } else if (agreement.getAgreementType().equalsIgnoreCase("CONSÓRCIO")) {
                                 proponentSiconv.setAgreement(agreement);
                                 proponentSiconvBean.edit(proponentSiconv);
                                 proponentSiconvBean.clearCache();
@@ -258,6 +288,12 @@ public class AgreementController extends BaseController {
                             config.setContractSeed(config.getContractSeed() + 1);
                             configurationBean.edit(config);
                             configurationBean.clearCache();
+
+                            if (agreement.getAgreementType().equalsIgnoreCase("PARLAMENTAR")) {
+                                insertGestorEsicar(agreement.getUser().getId(), "1");
+                            } else {
+                                insertGestorEsicar(agreement.getUser().getId(), "0");
+                            }
 
                             JsfUtil.addSuccessMessage("Contrato cadastrado com sucesso.");
                         }
@@ -420,6 +456,113 @@ public class AgreementController extends BaseController {
             }
         } else {
             disableQuantCnpjs = false;
+        }
+    }
+
+    public String checkIsType(String type) {
+        if (agreement.getAgreementType() != null) {
+            return String.valueOf(agreement.getAgreementType().equalsIgnoreCase(type));
+        } else {
+            return String.valueOf(false);
+        }
+    }
+
+    public void insertGestorEsicar(Long userId, String tipoGestor) {
+        //Propriedades de conexao
+        String HOSTNAME = "192.168.0.105";
+        String USERNAME = "root";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
+        String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+        String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
+        //String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+
+        Connection conn;
+        Statement stmt;
+
+        //Dados do sistema
+        if (agreement.getManagerCpf() != null && !agreement.getManagerCpf().equalsIgnoreCase("")) {
+            try {
+                Class.forName(JDBC_DRIVER);
+                conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
+                stmt = conn.createStatement();
+                String sql;
+                int id = 0;
+                int id_gestor = 0;
+                int id_cnpj = 0;
+
+                sql = "SELECT id_usuario FROM usuario WHERE login = " + agreement.getManagerCpf().replace(".", "").replace("-", "");
+                ResultSet rs = stmt.executeQuery(sql);
+                while (rs.next()) {
+                    id = rs.getInt("id_usuario");
+                }
+                rs.close();
+
+                if (id == 0) {
+                    //Insert
+                    sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha, status) VALUES ('" + agreement.getManagerName() + "', '" + agreement.getManagerEmail() + "', '"
+                            + agreement.getManagerCpf().replace(".", "").replace("-", "") + "', " + 2 + ", '" + agreement.getManagerEntity() + "', " + "NOW()" + ", '', 'I')";
+
+                    if (stmt.executeUpdate(sql) == 1) {
+                        //ler o id
+                        sql = "SELECT id_usuario FROM usuario WHERE login = " + agreement.getManagerCpf().replace(".", "").replace("-", "");
+                        rs = stmt.executeQuery(sql);
+                        while (rs.next()) {
+                            id = rs.getInt("id_usuario");
+                        }
+                        rs.close();
+
+                        if (id != 0) {
+                            //Salvar as outras tabelas
+
+                            // gestor //
+                            sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor) VALUES (%s, %s, %s, %s, %s)", formatDate(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor);
+                            stmt.executeUpdate(sql);
+
+                            sql = String.format("SELECT id_gestor FROM gestor WHERE id_usuario = %s", id);
+                            rs = stmt.executeQuery(sql);
+                            while (rs.next()) {
+                                id_gestor = rs.getInt("id_gestor");
+                            }
+                            rs.close();
+                            // fim gestor //
+                            if (id_gestor != 0) {
+                                // cnpj_siconv && usuario_cnpj //
+                                for (ProponentSiconv prop : agreement.getProponents()) {
+                                    //insert
+                                    id_cnpj = 0;
+                                    sql = String.format("INSERT INTO cnpj_siconv (cnpj, id_cidade, cnpj_instituicao, sigla, esfera_administrativa) VALUES (%s, %s, %s, %s, %s)", prop.getCnpj().replace(".", "").replace("-", ""), prop.getCodigoMunicipio(), prop.getNome(), prop.getMunicipioUfSigla(), prop.getEsferaAdministrativa());
+                                    stmt.executeUpdate(sql);
+                                    //get id cnpj
+                                    sql = String.format("SELECT id_cnpj_siconv FROM cnpj_siconv WHERE cnpj = %s", prop.getCnpj().replace(".", "").replace("-", ""));
+                                    rs = stmt.executeQuery(sql);
+                                    while (rs.next()) {
+                                        id_cnpj = rs.getInt("id_cnpj_siconv");
+                                    }
+                                    rs.close();
+                                    if (id_cnpj != 0) {
+                                        sql = String.format("INSERT INTO usuario_cnpj (id_usuario, id_cnpj) VALUES (%s, %s)", id, id_cnpj);
+                                        stmt.executeUpdate(sql);
+                                    }
+                                }
+                                // fim cnpj_siconv && usuario_cnpj //
+                            } else {
+                                //rollback
+                                sql = String.format("DELETE FROM usuario WHERE id_usuario = %s", id);
+                                stmt.executeUpdate(sql);
+                            }
+                        }
+                    }
+
+                    rs.close();
+                    stmt.close();
+                    conn.close();
+                }
+            } catch (ClassNotFoundException e) {
+                JsfUtil.addErrorMessage(e, "Falha ao inserir o gestor no banco de dados");
+            } catch (SQLException e) {
+                JsfUtil.addErrorMessage(e, "Falha ao inserir o gestor no banco de dados");
+            }
         }
     }
 }
