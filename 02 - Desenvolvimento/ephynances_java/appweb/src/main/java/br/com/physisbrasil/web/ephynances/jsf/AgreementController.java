@@ -515,7 +515,7 @@ public class AgreementController extends BaseController {
                             //Salvar as outras tabelas
 
                             // gestor //
-                            sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor) VALUES (%s, %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor);
+                            sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor) VALUES ('%s', %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor);
                             stmt.executeUpdate(sql);
 
                             sql = String.format("SELECT id_gestor FROM gestor WHERE id_usuario = %s", id);
@@ -530,7 +530,7 @@ public class AgreementController extends BaseController {
                                 for (ProponentSiconv prop : agreement.getProponents()) {
                                     //insert
                                     id_cnpj = 0;
-                                    sql = String.format("INSERT INTO cnpj_siconv (cnpj, id_cidade, cnpj_instituicao, sigla, esfera_administrativa) VALUES (%s, %s, %s, %s, %s)", prop.getCnpj().replace(".", "").replace("-", ""), prop.getCodigoMunicipio(), prop.getNome(), prop.getMunicipioUfSigla(), prop.getEsferaAdministrativa());
+                                    sql = String.format("INSERT INTO cnpj_siconv (cnpj, id_cidade, cnpj_instituicao, sigla, esfera_administrativa) VALUES (%s, %s, %s, %s, %s)", prop.getCnpj().replace(".", "").replace("-", "").replace("/", ""), prop.getCodigoMunicipio(), prop.getNome(), prop.getMunicipioUfSigla(), prop.getEsferaAdministrativa());
                                     stmt.executeUpdate(sql);
                                     //get id cnpj
                                     sql = String.format("SELECT id_cnpj_siconv FROM cnpj_siconv WHERE cnpj = %s", prop.getCnpj().replace(".", "").replace("-", ""));
