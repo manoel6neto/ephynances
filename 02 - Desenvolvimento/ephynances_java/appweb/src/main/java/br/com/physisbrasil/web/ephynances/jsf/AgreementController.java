@@ -526,7 +526,7 @@ public class AgreementController extends BaseController {
                 String sql;
                 int id = 0;
                 int id_gestor = 0;
-                int id_cnpj = 0;
+                int id_cnpj;
 
                 sql = "SELECT id_usuario FROM usuario WHERE login = " + agreement.getManagerCpf().replace(".", "").replace("-", "");
                 ResultSet rs = stmt.executeQuery(sql);
