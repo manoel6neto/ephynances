@@ -55,7 +55,7 @@
                 <div class="grid_4 alpha" >
                     <p:outputLabel value="CPF: " for="cpf" />
                     <p:inputMask id="cpf" value="#{userController.user.cpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"> 
-                        <f:validator validatorId="cpfValidator" />
+                        <f:validator for="cpf" validatorId="cpfValidator" />
                     </p:inputMask>
                 </div>
 
@@ -100,7 +100,6 @@
                     <p:outputLabel value="Logradouro: " for="logradouro" />
                     <p:inputText id="logradouro" value="#{userController.user.street}" required="false" /> 
                 </div>
-
 
                 <br class="clear" />
                 <div class="grid_4 alpha" >

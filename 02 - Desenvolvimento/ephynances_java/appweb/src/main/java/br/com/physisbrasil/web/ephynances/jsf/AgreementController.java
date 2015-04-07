@@ -4,18 +4,12 @@ import br.com.physisbrasil.web.ephynances.ejb.AgreementBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
-import br.com.physisbrasil.web.ephynances.model.AdministrativeSphere;
 import br.com.physisbrasil.web.ephynances.model.Agreement;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
-import br.com.physisbrasil.web.ephynances.model.State;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -29,8 +23,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -361,6 +353,11 @@ public class AgreementController extends BaseController {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(dateToFormat);
     }
+    
+    public String formatDateToMysql(Date dateToFormat) {
+        DateFormat outputFormatter = new SimpleDateFormat("yyyyMMdd");
+        return outputFormatter.format(dateToFormat);
+    }
 
     public List<String> getAgreementTypes() {
         return Agreement.getAGREEMENT_TYPES();
@@ -481,6 +478,8 @@ public class AgreementController extends BaseController {
         Statement stmt;
 
         //Dados do sistema
+        //Recarregando o objeto para carregar as referencias dos proponentes siconv
+        agreement = agreementBean.find(agreement.getId());
         if (agreement.getManagerCpf() != null && !agreement.getManagerCpf().equalsIgnoreCase("")) {
             try {
                 Class.forName(JDBC_DRIVER);
@@ -516,7 +515,7 @@ public class AgreementController extends BaseController {
                             //Salvar as outras tabelas
 
                             // gestor //
-                            sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor) VALUES (%s, %s, %s, %s, %s)", formatDate(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor);
+                            sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor) VALUES (%s, %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor);
                             stmt.executeUpdate(sql);
 
                             sql = String.format("SELECT id_gestor FROM gestor WHERE id_usuario = %s", id);

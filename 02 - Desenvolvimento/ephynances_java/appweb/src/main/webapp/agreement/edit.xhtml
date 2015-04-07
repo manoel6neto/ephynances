@@ -87,9 +87,7 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Valor do contrato (R$): " for="valorTotal" />
-                        <p:inputText id="valorTotal" style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" > 
-                            <f:convertNumber type="currency" currencySymbol="R$"/>
-                        </p:inputText>
+                        <p:inputText id="valorTotal" style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" /> 
                     </div>
 
                     <br class="clear" />
@@ -139,7 +137,7 @@
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="CPF do responsável: " for="cpf" />
                         <p:inputMask id="cpf" style="width: 200px" value="#{agreementController.agreement.managerCpf}" readonly="true" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"> 
-                            <f:validator validatorId="cpfValidator" />
+                            <f:validator for="cpf" validatorId="cpfValidator" />
                         </p:inputMask>
                     </div>
 

@@ -17,7 +17,7 @@ public class CpfValidator implements Validator {
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        if (!ValidaCpf.isCPF(value.toString())) {
+        if (!ValidaCpf.isCPF(value.toString().replace(".", "").replace("-", ""))) {
             FacesMessage msg
                     = new FacesMessage(" CPF inválido.", "Por favor insira um cpf correto.");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);

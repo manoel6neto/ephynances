@@ -55,7 +55,7 @@
                 </p:confirmDialog>
                 <br />
                 <div class="alpha grid_2" >
-                    <p:commandButton ajax="false" action="#{agreementController.startAgreement(loginController.loggedUser.id)}" value="Novo contrato" />
+                    <p:commandButton ajax="false" update="@form" action="#{agreementController.startAgreement(loginController.loggedUser.id)}" value="Novo contrato" />
                 </div>
 
             </h:form>
