@@ -59,6 +59,7 @@
                         <p:outputLabel value="Perfil: " for="menu"  />
                         <p:selectOneMenu id="menu" style="width: auto" value="#{loginController.profileRule}" required="true" effect="fade">
                             <f:selectItem itemLabel="#{userController.RULER_ADMIN}" itemValue="#{userController.RULER_ADMIN}" />
+                            <f:selectItem itemLabel="#{userController.RULER_ADMIN_GESTOR}" itemValue="#{userController.RULER_ADMIN_GESTOR}"/>
                             <f:selectItem itemLabel="#{userController.RULER_SELLER}" itemValue="#{userController.RULER_SELLER}" />
                             <f:selectItem itemLabel="#{userController.RULER_CONTRIBUTOR}" itemValue="#{userController.RULER_CONTRIBUTOR}" />
                         </p:selectOneMenu>
