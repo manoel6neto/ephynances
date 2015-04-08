@@ -8,9 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -30,13 +28,16 @@ public class AgreementDocument implements BaseModel {
 
     @Column(name = "extension", length = 5, nullable = false)
     private String extension;
+    
+    @Column(name = "mime", length = 200, nullable = false)
+    private String mime;
 
     @Lob
     @Column(name = "description", length = 512)
     private String description;
 
     @Column(name = "size")
-    private int size;
+    private Long size;
 
     @Lob
     @Column(name = "file")
@@ -80,11 +81,11 @@ public class AgreementDocument implements BaseModel {
         this.description = description;
     }
 
-    public int getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
@@ -102,6 +103,14 @@ public class AgreementDocument implements BaseModel {
 
     public void setAgreement(Agreement agreement) {
         this.agreement = agreement;
+    }
+
+    public String getMime() {
+        return mime;
+    }
+
+    public void setMime(String mime) {
+        this.mime = mime;
     }
     
     @Override

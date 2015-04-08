@@ -5,6 +5,7 @@ import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Agreement;
+import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
 import br.com.physisbrasil.web.ephynances.model.User;
@@ -136,6 +137,7 @@ public class AgreementController extends BaseController {
     }
 
     public void getListFilteredBySeller(Long userId) {
+        userBean.clearCache();
         User tempUser = userBean.find(userId);
         if (tempUser != null) {
             if (tempUser.getProfileRule().equals(User.getRULER_CONTRIBUTOR())) {
@@ -149,6 +151,7 @@ public class AgreementController extends BaseController {
     }
 
     public String startAgreement(Long userId) {
+        userBean.clearCache();
         User tempUser = userBean.find(userId);
         if (tempUser != null) {
             if (!tempUser.getProfileRule().equals(User.getRULER_CONTRIBUTOR())) {
@@ -165,6 +168,7 @@ public class AgreementController extends BaseController {
     }
 
     public String viewAgreement(Long agreementId) {
+        agreementBean.clearCache();
         try {
             Agreement tempAgreement = agreementBean.find(agreementId);
             if (tempAgreement != null) {
@@ -180,6 +184,7 @@ public class AgreementController extends BaseController {
     }
 
     public String editAgreement(Long agreementId) {
+        agreementBean.clearCache();
         if (agreementBean.find(agreementId) != null) {
             agreement = agreementBean.find(agreementId);
             proponentSiconv = proponentSiconvBean.find(agreement.getIdPrimaryCnpj());
@@ -227,15 +232,25 @@ public class AgreementController extends BaseController {
     }
 
     public void activateAgreement(Long agreementId) {
+        agreementBean.clearCache();
         Agreement tempAgreement = agreementBean.find(agreementId);
         if (tempAgreement != null) {
             //Check and activate
-
-            //register manager esicar
-            if (agreement.getAgreementType().equalsIgnoreCase("PARLAMENTAR")) {
-                insertGestorEsicar(agreement.getUser().getId(), "1");
+            if (tempAgreement.getAgreementInstallments() == null) {
+                JsfUtil.addErrorMessage("Não pode ativar contrato sem parcelas definidas.");
             } else {
-                insertGestorEsicar(agreement.getUser().getId(), "0");
+                //Ativa
+                tempAgreement.setStatus(Agreement.getSTATE_ATIVO());
+                agreementBean.edit(tempAgreement);
+                agreementBean.clearCache();
+                
+                //register manager esicar
+                if (agreement.getAgreementType().equalsIgnoreCase("PARLAMENTAR")) {
+                    insertGestorEsicar(agreement.getUser().getId(), "1");
+                } else {
+                    insertGestorEsicar(agreement.getUser().getId(), "0");
+                }
+                JsfUtil.addSuccessMessage("Contrato ativado com sucesso!!");
             }
         }
     }
