@@ -111,7 +111,20 @@ public class AgreementInstallmentController extends BaseController {
     //Adiciona nova parcela
     public void addInstallment() {
         try {
-            
+            if (agreement != null) {
+                if (agreementInstallment.getValue().compareTo(getMissingValue()) == 0 || agreementInstallment.getValue().compareTo(getMissingValue()) == -1) {
+                    agreementInstallment.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
+                    agreementInstallmentBean.create(agreementInstallment);
+                    agreementInstallmentBean.clearCache();
+                    
+                    agreementBean.clearCache();
+                    agreement = agreementBean.find(agreement.getId());
+                    
+                    JsfUtil.addSuccessMessage("Parcela adicionada com sucesso !!");
+                } else {
+                    JsfUtil.addErrorMessage("Valor superior ao disponível para o contrato.");
+                }
+            }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao cadastrar nova parcela.");
         }
