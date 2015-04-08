@@ -7,7 +7,7 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="Documentos do contrato: #{agreementDocumentController.agreement.physisAgreementNumber}"/>
+            <h:outputText  value="Documentos do pagamento: #{paymentDocumentController.payment.paymentDate}"/>
         </ui:define>
         <ui:define name="body"  >
             <h:form id="form" enctype="multipart/form-data" prependId="true">
@@ -17,26 +17,26 @@
                     <br class="clear" />
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Nome do documento: " for="nameDocument" />
-                        <p:inputText id="nameDocument" style="width: 200px" value="#{agreementDocumentController.agreementDocument.name}" required="false" /> 
+                        <p:inputText id="nameDocument" style="width: 200px" value="#{paymentDocumentController.paymentDocument.name}" required="false" /> 
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Descrição do documento: " for="descriptionDocument" />
-                        <p:inputTextarea id="descriptionDocument" rows="6" cols="60" value="#{agreementDocumentController.agreementDocument.description}" required="false" /> 
+                        <p:inputTextarea id="descriptionDocument" rows="6" cols="60" value="#{paymentDocumentController.paymentDocument.description}" required="false" /> 
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_3 alpha" >
-                        <p:fileUpload value="#{agreementDocumentController.file}" mode="simple" previewWidth="200" />
+                        <p:fileUpload value="#{paymentDocumentController.file}" mode="simple" previewWidth="200" />
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_3 alpha" >
-                        <p:commandButton id="uploadFileButton" value="Upload" update="@form" ajax="false" actionListener="#{agreementDocumentController.upload()}" />
+                        <p:commandButton id="uploadFileButton" value="Upload" update="@form" ajax="false" actionListener="#{paymentDocumentController.upload()}" />
                     </div>
 
                     <br class="clear" />
@@ -48,7 +48,7 @@
                 <p:fieldset legend="Documentos do contrato" toggleable="true" collapsed="false">
                     <br class="clear" />
                     <br/>
-                    <p:dataTable id="table" widgetVar="table" value="#{agreementDocumentController.agreement.agreementDocuments}" var="item" lazy="false" 
+                    <p:dataTable id="table" widgetVar="table" value="#{paymentDocumentController.payment.paymentDocuments}" var="item" lazy="false" 
                                  rows="15" paginator="true"  paginatorPosition="bottom" 
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                  currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
@@ -64,10 +64,10 @@
 
                         <p:column width="60" style="text-align: center" headerText="Ações">
                             <p:commandLink update="table" style="margin-right: 5px" ajax="false" ><img src="../resources/img/edit.png" width="16" height="16" alt="Baixar documento" title="Baixar documento"/>
-                                <p:fileDownload value="#{agreementDocumentController.downloadDocument(item.id)}" />
+                                <p:fileDownload value="#{paymentDocumentController.downloadDocument(item.id)}" />
                             </p:commandLink>
                             <h:outputText value="   " />
-                            <p:commandLink ajax="false" update="table" style="margin-right: 5px" actionListener="#{agreementDocumentController.removeDocument(item.id)}" >
+                            <p:commandLink ajax="false" update="table" style="margin-right: 5px" actionListener="#{paymentDocumentController.removeDocument(item.id)}" >
                                 <img src="../resources/img/remove.png" width="16" height="16" alt="Apagar documento" title="Apagar documento"/>
                                 <p:confirm header="Confirmação" message="Você tem certeza que gostaria de apagar o documento?" icon="ui-icon-alert"/>
                             </p:commandLink>

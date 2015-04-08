@@ -7,9 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -29,22 +28,24 @@ public class PaymentDocument implements BaseModel {
 
     @Column(name = "extension", length = 5, nullable = false)
     private String extension;
+    
+    @Column(name = "mime", length = 200, nullable = false)
+    private String mime;
 
     @Lob
     @Column(name = "description", length = 512)
     private String description;
 
     @Column(name = "size")
-    private int size;
+    private Long size;
 
     @Lob
     @Column(name = "file")
     private byte[] file;
     
     //References
-    @OneToOne(optional = false)
-    @NotNull
-    @JoinColumn(name = "payment_id", referencedColumnName = "id", nullable = false)
+    @ManyToOne(optional = true)
+    @JoinColumn(name = "payment_id", referencedColumnName = "id", nullable = true)
     private Payment payment;
     
     /**
@@ -80,11 +81,11 @@ public class PaymentDocument implements BaseModel {
         this.description = description;
     }
 
-    public int getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
@@ -102,6 +103,14 @@ public class PaymentDocument implements BaseModel {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
+    }
+
+    public String getMime() {
+        return mime;
+    }
+
+    public void setMime(String mime) {
+        this.mime = mime;
     }
     
     @Override

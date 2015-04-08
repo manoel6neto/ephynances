@@ -7,10 +7,12 @@ import br.com.physisbrasil.web.ephynances.model.AgreementDocument;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.apache.commons.io.IOUtils;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
@@ -77,7 +79,7 @@ public class AgreementDocumentController extends BaseController {
                 agreementDocumentBean.remove(tempAgreementDocument);
                 agreementDocumentBean.clearCache();
                 agreementBean.clearCache();
-                agreement = agreementBean.find(agreement);
+                agreement = agreementBean.find(agreement.getId());
 
                 putFlash("agreement", agreement);
                 JsfUtil.addSuccessMessage("Documento removido com sucesso!!");
@@ -108,17 +110,19 @@ public class AgreementDocumentController extends BaseController {
     public void upload() {
         try {
             if (!Boolean.parseBoolean(checkFile())) {
-                if (file.getContents() != null) {
-                    agreementDocument.setExtension(file.getFileName().split(".")[1]);
+                if (file.getInputstream() != null) {
+                    agreementDocument.setExtension(file.getFileName().trim().split(Pattern.quote("."))[1]);
                     agreementDocument.setMime(file.getContentType());
                     agreementDocument.setSize(file.getSize());
-                    agreementDocument.setFile(file.getContents());
+                    agreementDocument.setFile(IOUtils.toByteArray(file.getInputstream()));
                     agreementDocument.setAgreement(agreement);
 
                     agreementDocumentBean.create(agreementDocument);
                     agreementDocumentBean.clearCache();
                     agreementBean.clearCache();
                     agreement = agreementBean.find(agreement.getId());
+                    
+                    agreementDocument = new AgreementDocument();
 
                     putFlash("agreement", agreement);
                     JsfUtil.addSuccessMessage("Upload do documento realizado com sucesso!!");

@@ -2,12 +2,14 @@ package br.com.physisbrasil.web.ephynances.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -50,6 +52,9 @@ public class Payment implements BaseModel {
     @OneToOne(optional = true)
     @JoinColumn(name = "sub_agreement_installment_id", referencedColumnName = "id", nullable = true)
     private SubAgreementInstallment subAgreementInstallment;
+    
+    @OneToMany(mappedBy = "payment", orphanRemoval = true)
+    private List<PaymentDocument> paymentDocuments;
 
     /**
      *
@@ -98,6 +103,14 @@ public class Payment implements BaseModel {
 
     public void setSubAgreementInstallment(SubAgreementInstallment subAgreementInstallment) {
         this.subAgreementInstallment = subAgreementInstallment;
+    }
+
+    public List<PaymentDocument> getPaymentDocuments() {
+        return paymentDocuments;
+    }
+
+    public void setPaymentDocuments(List<PaymentDocument> paymentDocuments) {
+        this.paymentDocuments = paymentDocuments;
     }
     
     @Override
