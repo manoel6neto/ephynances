@@ -3,15 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:ui="http://java.sun.com/jsf/facelets">
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
             <h:outputText  value="Documentos do contrato: #{agreementDocumentController.agreement.physisAgreementNumber}"/>
         </ui:define>
         <ui:define name="body"  >
-            <h:form id="form" styleClass="form">
+            <h:form id="form" enctype="multipart/form-data" prependId="true">
                 <br class="clear" />
                 <br/>
 
@@ -21,29 +20,28 @@
 
                 <p:fieldset legend="Upload de documento" toggleable="true" collapsed="false">
                     <br class="clear" />
-                    <br/>
-                    <div class="grid_4 alpha" >
+                    <div class="grid_3 alpha" >
                         <p:outputLabel value="Nome do documento: " for="nameDocument" />
                         <p:inputText id="nameDocument" style="width: 200px" value="#{agreementDocumentController.agreementDocument.name}" required="true" requiredMessage="Nome do documento necessário para cadastro"/> 
                     </div>
 
                     <br class="clear" />
                     <br/>
-                    <div class="grid_4 alpha" >
+                    <div class="grid_3 alpha" >
                         <p:outputLabel value="Descrição do documento: " for="descriptionDocument" />
                         <p:inputTextarea id="descriptionDocument" rows="6" cols="60" value="#{agreementDocumentController.agreementDocument.description}" required="true" requiredMessage="Descrição do documento necessária para cadastro"/> 
                     </div>
 
                     <br class="clear" />
                     <br/>
-                    <div class="grid_4 alpha" >
-                        <p:fileUpload value="#{agreementDocumentController.file}" mode="simple" previewWidth="200" update="uploadFileButton"/>
+                    <div class="grid_3 alpha" >
+                        <p:fileUpload value="#{agreementDocumentController.file}" mode="simple" previewWidth="200" />
                     </div>
 
                     <br class="clear" />
                     <br/>
-                    <div class="grid_4 alpha" >
-                        <p:commandButton id="uploadFileButton" value="Submit" update="@form" ajax="false" actionListener="#{agreementDocumentController.upload()}" disabled="#{agreementDocumentController.checkFile()}" />
+                    <div class="grid_3 alpha" >
+                        <p:commandButton id="uploadFileButton" value="Upload" update="@form" ajax="false" actionListener="#{agreementDocumentController.upload()}" />
                     </div>
 
                     <br class="clear" />
@@ -55,17 +53,17 @@
                 <p:fieldset legend="Documentos do contrato" toggleable="true" collapsed="false">
                     <br class="clear" />
                     <br/>
-                    <p:dataTable id="tableDocuments" widgetVar="table" value="#{agreementDocumentController.agreement.agreementDocuments}" var="item" lazy="false" 
+                    <p:dataTable id="table" widgetVar="table" value="#{agreementDocumentController.agreement.agreementDocuments}" var="item" lazy="false" 
                                  rows="15" paginator="true"  paginatorPosition="bottom" 
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                  currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                                  emptyMessage="Nenhum documento encontrado!">
 
-                        <p:column style="text-align: center" headerText="Nome" filterBy="#{item.name}">                       
+                        <p:column style="text-align: center" headerText="Nome" filterBy="#{item.name}" filterStyle="text-align: center; width: 140px;">                       
                             <h:outputText value="#{item.name}" />
                         </p:column>
 
-                        <p:column style="text-align: center" headerText="Descrição" filterBy="#{item.description}">                       
+                        <p:column style="text-align: center" headerText="Descrição" filterBy="#{item.description}" filterStyle="text-align: center; width: 140px;">                       
                             <h:outputText value="#{item.description}" />
                         </p:column>
 
