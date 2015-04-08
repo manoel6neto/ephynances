@@ -4,16 +4,54 @@
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets">
-    
+
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
             <h:outputText  value="Parcelas do contrato: #{agreementInstallmentController.agreement.physisAgreementNumber}"/>
         </ui:define>
         <ui:define name="body"  >
             <h:form id="form">
-                
+                <p:fieldset legend="Adicionar parcela" toggleable="true" collapsed="false">
+                    <br class="clear" />
+                    <br/>
+                </p:fieldset>
+
+                <br class="clear" />
+                <br/>
+                <p:fieldset legend="Parcelas existentes" toggleable="true" collapsed="false">
+                    <br class="clear" />
+                    <br/>
+                    <p:dataTable id="table" widgetVar="table" value="#{agreementInstallmentController.agreement.agreementInstallments}" var="item" lazy="false" 
+                                 rows="15" paginator="true"  paginatorPosition="bottom" 
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                 currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
+                                 emptyMessage="Nenhum documento encontrado!" sortBy="#{item.dueDate}">
+
+                        <p:column style="text-align: center" headerText="Valor" filterBy="#{item.value}" sortBy="#{item.value}" filterStyle="text-align: center; width: 70px;">                       
+                            <h:outputText value="#{item.value}" />
+                        </p:column>
+
+                        <p:column style="text-align: center" headerText="Vencimento" sortBy="#{item.dueDate}" filterStyle="text-align: center; width: 70px;">                       
+                            <h:outputText value="#{item.dueDate}" />
+                        </p:column>
+
+                        <p:column style="text-align: center" headerText="Status" filterBy="#{item.status}" sortBy="#{item.status}" filterStyle="text-align: center; width: 100px;">                       
+                            <h:outputText value="#{item.status}" />
+                        </p:column>
+
+                        <p:column width="60" style="text-align: center" headerText="Ações">
+                            <p:commandLink style="margin-right: 5px" ajax="false" action="#{paymentController.addInstallmentPayment(item.id)}" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}"><img src="../resources/img/edit.png" width="16" height="16" alt="Adicionar pagamento" title="Adicionar pagamento"/></p:commandLink>
+                            <h:outputText value="   " />
+                            <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementInstallmentController.removeInstallment(item.id)}" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}"><img src="../resources/img/edit.png" width="16" height="16" alt="Adicionar pagamento" title="Adicionar pagamento"/></p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+
+                    <br class="clear" />
+                    <br/>
+                </p:fieldset>
+
             </h:form>
         </ui:define>
     </ui:composition>
-    
+
 </html>

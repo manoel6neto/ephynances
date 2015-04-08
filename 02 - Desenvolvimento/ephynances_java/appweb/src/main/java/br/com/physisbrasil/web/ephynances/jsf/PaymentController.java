@@ -28,6 +28,10 @@ public class PaymentController extends BaseController {
             setPayments(paymentBean.findAll());
         }
     }
+    
+    public void addInstallmentPayment(Long agreementInstallmentId) {
+        
+    }
 
     public List<Payment> getPayments() {
         return payments;

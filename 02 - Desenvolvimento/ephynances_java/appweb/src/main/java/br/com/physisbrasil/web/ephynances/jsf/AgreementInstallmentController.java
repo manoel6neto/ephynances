@@ -116,10 +116,10 @@ public class AgreementInstallmentController extends BaseController {
                     agreementInstallment.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
                     agreementInstallmentBean.create(agreementInstallment);
                     agreementInstallmentBean.clearCache();
-                    
+
                     agreementBean.clearCache();
                     agreement = agreementBean.find(agreement.getId());
-                    
+
                     JsfUtil.addSuccessMessage("Parcela adicionada com sucesso !!");
                 } else {
                     JsfUtil.addErrorMessage("Valor superior ao disponível para o contrato.");
@@ -128,6 +128,23 @@ public class AgreementInstallmentController extends BaseController {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao cadastrar nova parcela.");
         }
+    }
+
+    public String checkStatusInstallmentAndAgreement(Long agreementInstallmentId) {
+        try {
+            AgreementInstallment tempAgreementInstallment = agreementInstallmentBean.find(agreementInstallmentId);
+            if (tempAgreementInstallment != null) {
+                if (!tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO())) {
+                    if (tempAgreementInstallment.getAgreement().getStatus().equalsIgnoreCase(Agreement.getSTATE_INCOMPLETO())) {
+                        return String.valueOf(true);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao consultar parcela.");
+        }
+
+        return String.valueOf(false);
     }
 
     public AgreementInstallment getAgreementInstallment() {
