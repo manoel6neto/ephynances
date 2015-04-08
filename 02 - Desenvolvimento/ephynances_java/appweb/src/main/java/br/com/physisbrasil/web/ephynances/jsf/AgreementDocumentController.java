@@ -108,19 +108,23 @@ public class AgreementDocumentController extends BaseController {
     public void upload() {
         try {
             if (!Boolean.parseBoolean(checkFile())) {
-                agreementDocument.setExtension(file.getFileName());
-                agreementDocument.setMime(file.getContentType());
-                agreementDocument.setSize(file.getSize());
-                agreementDocument.setFile(file.getContents());
-                agreementDocument.setAgreement(agreement);
+                if (file.getContents() != null) {
+                    agreementDocument.setExtension(file.getFileName().split(".")[1]);
+                    agreementDocument.setMime(file.getContentType());
+                    agreementDocument.setSize(file.getSize());
+                    agreementDocument.setFile(file.getContents());
+                    agreementDocument.setAgreement(agreement);
 
-                agreementDocumentBean.create(agreementDocument);
-                agreementDocumentBean.clearCache();
-                agreementBean.clearCache();
-                agreement = agreementBean.find(agreement.getId());
+                    agreementDocumentBean.create(agreementDocument);
+                    agreementDocumentBean.clearCache();
+                    agreementBean.clearCache();
+                    agreement = agreementBean.find(agreement.getId());
 
-                putFlash("agreement", agreement);
-                JsfUtil.addSuccessMessage("Upload do documento realizado com sucesso!!");
+                    putFlash("agreement", agreement);
+                    JsfUtil.addSuccessMessage("Upload do documento realizado com sucesso!!");
+                } else {
+                    throw new Exception("Falha ao ler o arquivo");
+                }
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao fazer o upload do arquivo.");
@@ -138,7 +142,7 @@ public class AgreementDocumentController extends BaseController {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao preparar download do documento solicitado.");
         }
-        
+
         return null;
     }
 
