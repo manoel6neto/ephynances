@@ -72,11 +72,11 @@
                         <p:column width="60" style="text-align: center" headerText="Ações">
                             <p:commandLink id="linkAddPayment" style="margin-right: 5px" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}">
                                 <img src="../resources/img/edit.png" width="16" height="16" alt="Adicionar pagamento" title="Adicionar pagamento"/>
-                                <p:overlayPanel id="overlayAdd" for="linkAddPayment" dynamic="false" dismissable="false" showCloseIcon="true" hideEffect="fade" style="alignment-adjust: central">
+                                <p:overlayPanel id="overlayAdd" for="linkAddPayment" appendToBody="true" dynamic="false" style="alignment-adjust: central">
                                     <div class="grid_3" style="margin: 5px">
                                         <p:outputLabel value="Valor: " for="inputValueOverlay" />
                                         <p:inputText id="inputValueOverlay" value="#{paymentController.payment.totalValue}" style="margin-left: 10px;" />
-                                        <p:commandButton style="margin-left: 10px" ajax="false" update="@form" action="#{paymentController.addInstallmentPayment(item.id)}" value="Pagar"/>
+                                        <p:commandButton id="commandButtonAdd" style="margin-left: 10px" ajax="false" action="#{paymentController.addInstallmentPayment(item.id)}" value="Pagar"/>
                                     </div>
                                 </p:overlayPanel>
                             </p:commandLink>
