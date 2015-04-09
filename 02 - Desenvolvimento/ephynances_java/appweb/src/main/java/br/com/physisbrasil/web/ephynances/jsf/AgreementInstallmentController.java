@@ -117,6 +117,7 @@ public class AgreementInstallmentController extends BaseController {
             if (agreement != null) {
                 if (agreementInstallment.getValue().compareTo(getMissingValue()) == 0 || agreementInstallment.getValue().compareTo(getMissingValue()) == -1) {
                     agreementInstallment.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
+                    agreementInstallment.setAgreement(agreement);
                     agreementInstallmentBean.create(agreementInstallment);
                     agreementInstallmentBean.clearCache();
 
@@ -150,12 +151,12 @@ public class AgreementInstallmentController extends BaseController {
         return String.valueOf(false);
     }
 
-    public String getMinDate() {
+    public String checkMinDate() {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(new Date(System.currentTimeMillis()));
     }
 
-    public String getMaxDate() {
+    public String checkMaxDate() {
         if (agreement != null) {
             DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
             return outputFormatter.format(agreement.getExpireDate());
@@ -163,7 +164,6 @@ public class AgreementInstallmentController extends BaseController {
             DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
             return outputFormatter.format(new Date(System.currentTimeMillis()));
         }
-
     }
 
     public String formatDate(Date dateToFormat) {

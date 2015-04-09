@@ -11,6 +11,8 @@
         </ui:define>
         <ui:define name="body"  >
             <h:form id="form">
+                <br class="clear" />
+                <br/>
                 <p:fieldset legend="Adicionar parcela" toggleable="true" collapsed="false">
                     <br class="clear" />
                     <div class="grid_3 alpha" >
@@ -19,17 +21,19 @@
                     </div>
 
                     <br class="clear" />
+                    <br/>
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Valor da parcela: " for="installmentValue" />
-                        <p:inputText id="installmentValue" style="width: 100px" value="#{agreementInstallmentController.agreementInstallment.value}" required="false" /> 
+                        <p:inputText id="installmentValue" style="width: 200px" value="#{agreementInstallmentController.agreementInstallment.value}" required="false" /> 
                     </div>
 
                     <br class="clear" />
+                    <br/>
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Vencimento: " for="installmentDueDate" />
-                        <p:calendar id="installmentDueDate" value="#{agreementInstallmentController.agreementInstallment.dueDate}" mask="99/99/9999" pattern="dd/MM/yyyy" mindate="#{agreementInstallmentController.getMinDate}" maxdate="#{agreementInstallmentController.getMaxDate}" />
+                        <p:calendar id="installmentDueDate" size="37" value="#{agreementInstallmentController.agreementInstallment.dueDate}" mask="99/99/9999" pattern="dd/MM/yyyy" mindate="#{agreementInstallmentController.checkMinDate()}" maxdate="#{agreementInstallmentController.checkMaxDate()}" />
                     </div>
-                    
+
                     <br class="clear" />
                     <br/>
                     <div class="grid_3 alpha" >
