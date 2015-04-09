@@ -31,7 +31,7 @@
                     <br/>
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Vencimento: " for="installmentDueDate" />
-                        <p:calendar id="installmentDueDate" size="37" value="#{agreementInstallmentController.agreementInstallment.dueDate}" mask="99/99/9999" pattern="dd/MM/yyyy" mindate="#{agreementInstallmentController.checkMinDate()}" maxdate="#{agreementInstallmentController.checkMaxDate()}" />
+                        <p:calendar id="installmentDueDate" locale="pt_BR" size="37" value="#{agreementInstallmentController.agreementInstallment.dueDate}" mask="99/99/9999" pattern="dd/MM/yyyy" mindate="#{agreementInstallmentController.checkMinDate()}" maxdate="#{agreementInstallmentController.checkMaxDate()}" />
                     </div>
 
                     <br class="clear" />
