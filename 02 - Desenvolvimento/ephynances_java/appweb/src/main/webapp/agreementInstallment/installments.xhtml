@@ -13,6 +13,30 @@
             <h:form id="form">
                 <p:fieldset legend="Adicionar parcela" toggleable="true" collapsed="false">
                     <br class="clear" />
+                    <div class="grid_3 alpha" >
+                        <h:outputText value="Valor disponível: " style="font-style: oblique; font-size: large" />
+                        <h:outputText value="#{agreementInstallmentController.missingValue}" style="color: #FF0000; font-style: oblique; font-size: large" />
+                    </div>
+
+                    <br class="clear" />
+                    <div class="grid_3 alpha" >
+                        <p:outputLabel value="Valor da parcela: " for="installmentValue" />
+                        <p:inputText id="installmentValue" style="width: 100px" value="#{agreementInstallmentController.agreementInstallment.value}" required="false" /> 
+                    </div>
+
+                    <br class="clear" />
+                    <div class="grid_3 alpha" >
+                        <p:outputLabel value="Vencimento: " for="installmentDueDate" />
+                        <p:calendar id="installmentDueDate" value="#{agreementInstallmentController.agreementInstallment.dueDate}" mask="99/99/9999" pattern="dd/MM/yyyy" mindate="#{agreementInstallmentController.getMinDate}" maxdate="#{agreementInstallmentController.getMaxDate}" />
+                    </div>
+                    
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_3 alpha" >
+                        <p:commandButton id="addInstallmentButton" value="Adicionar" update="@form" ajax="false" actionListener="#{agreementInstallmentController.addInstallment()}" />
+                    </div>
+
+                    <br class="clear" />
                     <br/>
                 </p:fieldset>
 
@@ -32,7 +56,7 @@
                         </p:column>
 
                         <p:column style="text-align: center" headerText="Vencimento" sortBy="#{item.dueDate}" filterStyle="text-align: center; width: 70px;">                       
-                            <h:outputText value="#{item.dueDate}" />
+                            <h:outputText value="#{agreementInstallmentController.formatDate(item.dueDate)}" />
                         </p:column>
 
                         <p:column style="text-align: center" headerText="Status" filterBy="#{item.status}" sortBy="#{item.status}" filterStyle="text-align: center; width: 100px;">                       

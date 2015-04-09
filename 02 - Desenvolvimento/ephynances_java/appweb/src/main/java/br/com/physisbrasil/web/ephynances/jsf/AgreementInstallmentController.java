@@ -6,6 +6,9 @@ import br.com.physisbrasil.web.ephynances.model.Agreement;
 import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -145,6 +148,27 @@ public class AgreementInstallmentController extends BaseController {
         }
 
         return String.valueOf(false);
+    }
+
+    public String getMinDate() {
+        DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        return outputFormatter.format(new Date(System.currentTimeMillis()));
+    }
+
+    public String getMaxDate() {
+        if (agreement != null) {
+            DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
+            return outputFormatter.format(agreement.getExpireDate());
+        } else {
+            DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
+            return outputFormatter.format(new Date(System.currentTimeMillis()));
+        }
+
+    }
+
+    public String formatDate(Date dateToFormat) {
+        DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        return outputFormatter.format(dateToFormat);
     }
 
     public AgreementInstallment getAgreementInstallment() {
