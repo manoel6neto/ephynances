@@ -123,6 +123,8 @@ public class AgreementInstallmentController extends BaseController {
 
                     agreementBean.clearCache();
                     agreement = agreementBean.find(agreement.getId());
+                    
+                    agreementInstallment = new AgreementInstallment();
 
                     JsfUtil.addSuccessMessage("Parcela adicionada com sucesso !!");
                 } else {
