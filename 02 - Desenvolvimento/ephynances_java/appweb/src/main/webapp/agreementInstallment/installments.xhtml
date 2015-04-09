@@ -24,7 +24,7 @@
                     <br/>
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Valor da parcela: " for="installmentValue" />
-                        <p:inputText id="installmentValue" style="width: 200px" value="#{agreementInstallmentController.agreementInstallment.value}" required="false" /> 
+                        <p:inputText id="installmentValue" style="width: 200px" value="#{agreementInstallmentController.agreementInstallment.value}" /> 
                     </div>
 
                     <br class="clear" />
@@ -43,7 +43,9 @@
                     <br class="clear" />
                     <br/>
                 </p:fieldset>
+            </h:form>
 
+            <h:form id="form2">
                 <br class="clear" />
                 <br/>
                 <p:fieldset legend="Parcelas existentes" toggleable="true" collapsed="false">
@@ -68,9 +70,9 @@
                         </p:column>
 
                         <p:column width="60" style="text-align: center" headerText="Ações">
-                            <p:commandLink style="margin-right: 5px" ajax="false" action="#{paymentController.addInstallmentPayment(item.id)}" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}"><img src="../resources/img/edit.png" width="16" height="16" alt="Adicionar pagamento" title="Adicionar pagamento"/></p:commandLink>
+                            <p:commandLink update="@form" style="margin-right: 5px" ajax="false" action="#{paymentController.addInstallmentPayment(item.id)}" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}"><img src="../resources/img/edit.png" width="16" height="16" alt="Adicionar pagamento" title="Adicionar pagamento"/></p:commandLink>
                             <h:outputText value="   " />
-                            <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementInstallmentController.removeInstallment(item.id)}" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}"><img src="../resources/img/edit.png" width="16" height="16" alt="Remover parcela" title="Remover parcela"/></p:commandLink>
+                            <p:commandLink update="@form" style="margin-right: 5px" ajax="false" action="#{agreementInstallmentController.removeInstallment(item.id)}" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}"><img src="../resources/img/edit.png" width="16" height="16" alt="Remover parcela" title="Remover parcela"/></p:commandLink>
                         </p:column>
                     </p:dataTable>
 
