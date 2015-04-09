@@ -31,8 +31,8 @@ public class Payment implements BaseModel {
 
     @NotNull
     @DefaultValue(value = "0")
-    @Column(nullable = false, name = "value")
-    private BigDecimal value;
+    @Column(nullable = false, name = "total_value")
+    private BigDecimal totalValue;
 
     @NotNull
     @Column(name = "payment_date", nullable = false)
@@ -65,14 +65,14 @@ public class Payment implements BaseModel {
         return id;
     }
 
-    public BigDecimal getValue() {
-        return value;
+    public BigDecimal getTotalValue() {
+        return totalValue;
     }
 
-    public void setValue(BigDecimal value) {
-        this.value = value;
+    public void setTotalValue(BigDecimal totalValue) {
+        this.totalValue = totalValue;
     }
-
+    
     public Date getPaymentDate() {
         return paymentDate;
     }

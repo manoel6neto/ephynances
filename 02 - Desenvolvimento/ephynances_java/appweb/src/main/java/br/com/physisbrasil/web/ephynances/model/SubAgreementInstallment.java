@@ -30,10 +30,6 @@ public class SubAgreementInstallment implements BaseModel {
     @Column(nullable = false, name = "value")
     private BigDecimal value;
 
-    @DefaultValue(value = "0")
-    @Column(name = "status", nullable = false)
-    private boolean status;
-
     //References
     @OneToOne(optional = false)
     @NotNull
@@ -59,14 +55,6 @@ public class SubAgreementInstallment implements BaseModel {
 
     public void setValue(BigDecimal value) {
         this.value = value;
-    }
-
-    public boolean isStatus() {
-        return status;
-    }
-
-    public void setStatus(boolean status) {
-        this.status = status;
     }
 
     public AgreementInstallment getAgreementInstallment() {
