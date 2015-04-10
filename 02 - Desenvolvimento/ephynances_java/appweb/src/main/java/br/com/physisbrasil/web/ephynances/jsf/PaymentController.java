@@ -90,7 +90,7 @@ public class PaymentController extends BaseController {
             agreementInstallmentBean.clearCache();
             AgreementInstallment tempAgreementInstallment = agreementInstallmentBean.find(agreementInstallmentId);
             if (tempAgreementInstallment != null) {
-                if (!tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO())) {
+                if (!tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO()) && !tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO())) {
                     if (tempAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == 0) {
                         //Pagamento do valor total da parcela sem excedente e sem residuo. Cria o pagamento e marca a parcela como paga
                         payment.setAgreementInstallment(tempAgreementInstallment);
@@ -100,7 +100,7 @@ public class PaymentController extends BaseController {
                         
                         agreementInstallmentBean.clearCache();
                         tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
-                        tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO());
+                        tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
                         agreementInstallmentBean.edit(tempAgreementInstallment);
                         agreementInstallmentBean.clearCache();
                         
@@ -119,7 +119,7 @@ public class PaymentController extends BaseController {
 
                         agreementInstallmentBean.clearCache();
                         tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
-                        tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO());
+                        tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
                         agreementInstallmentBean.edit(tempAgreementInstallment);
                         agreementInstallmentBean.clearCache();
                         

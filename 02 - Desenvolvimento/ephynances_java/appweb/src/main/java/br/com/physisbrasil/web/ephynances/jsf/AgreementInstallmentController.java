@@ -140,7 +140,7 @@ public class AgreementInstallmentController extends BaseController {
         try {
             AgreementInstallment tempAgreementInstallment = agreementInstallmentBean.find(agreementInstallmentId);
             if (tempAgreementInstallment != null) {
-                if (!tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO())) {
+                if (!tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO()) && !tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO())) {
                     if (tempAgreementInstallment.getAgreement().getStatus().equalsIgnoreCase(Agreement.getSTATE_INCOMPLETO())) {
                         return String.valueOf(true);
                     }

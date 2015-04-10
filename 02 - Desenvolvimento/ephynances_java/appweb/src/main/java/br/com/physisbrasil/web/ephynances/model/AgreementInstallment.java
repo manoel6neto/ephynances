@@ -26,7 +26,8 @@ import javax.ws.rs.DefaultValue;
 public class AgreementInstallment implements BaseModel {
     
     private static final String STATUS_PENDENTE = "Pendente";
-    private static final String STATUS_PAGO = "Pago";
+    private static final String STATUS_PAGO_SEM_CONFIRMACAO = "Pago sem confirmação";
+    private static final String STATUS_PAGO_COM_CONFIRMACAO = "Pago e confirmação";
     private static final String STATUS_PENDENTE_COM_LIBERACAO = "Pendente - Liberado manualmente";
 
     @Id
@@ -133,8 +134,12 @@ public class AgreementInstallment implements BaseModel {
         return STATUS_PENDENTE;
     }
 
-    public static String getSTATUS_PAGO() {
-        return STATUS_PAGO;
+    public static String getSTATUS_PAGO_SEM_CONFIRMACAO() {
+        return STATUS_PAGO_SEM_CONFIRMACAO;
+    }
+
+    public static String getSTATUS_PAGO_COM_CONFIRMACAO() {
+        return STATUS_PAGO_COM_CONFIRMACAO;
     }
 
     public static String getSTATUS_PENDENTE_COM_LIBERACAO() {

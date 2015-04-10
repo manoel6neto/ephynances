@@ -79,11 +79,11 @@
                                         <p:watermark value="0" for="inputValueOverlay"/>
                                         <br class="clear" />
                                         <br/>
-                                        <p:commandButton id="commandButtonAdd" style="margin-left: 25px; margin-bottom: 2px;" ajax="false" action="#{paymentController.addInstallmentPayment(item.id)}" value="Pagar"/>
+                                        <p:commandButton id="commandButtonAdd" style="margin-left: 25px; margin-bottom: 2px;" update="@form" ajax="false" action="#{paymentController.addInstallmentPayment(item.id)}" value="Pagar"/>
                                     </div>
                                 </h:form>
                             </p:overlayPanel>
-                            <p:commandButton id="buttonRemove" style="margin-left: 5px" ajax="false" value="Remover" action="#{agreementInstallmentController.removeInstallment(item.id)}" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}" />
+                            <p:commandButton id="buttonRemove" style="margin-left: 5px" update="@form" ajax="false" value="Remover" action="#{agreementInstallmentController.removeInstallment(item.id)}" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}" />
                         </p:column>
                     </p:dataTable>
 
