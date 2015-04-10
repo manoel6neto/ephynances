@@ -85,60 +85,7 @@ public class PaymentController extends BaseController {
         return "/agreement/list";
     }
 
-    public void addInstallmentPayment(Long agreementInstallmentId) {
-        try {
-            agreementInstallmentBean.clearCache();
-            AgreementInstallment tempAgreementInstallment = agreementInstallmentBean.find(agreementInstallmentId);
-            if (tempAgreementInstallment != null) {
-                if (!tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO()) && !tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO())) {
-                    if (tempAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == 0) {
-                        //Pagamento do valor total da parcela sem excedente e sem residuo. Cria o pagamento e marca a parcela como paga
-                        payment.setAgreementInstallment(tempAgreementInstallment);
-                        payment.setPaymentDate(new Date(System.currentTimeMillis()));
-                        paymentBean.create(payment);
-                        paymentBean.clearCache();
-                        
-                        agreementInstallmentBean.clearCache();
-                        tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
-                        tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
-                        agreementInstallmentBean.edit(tempAgreementInstallment);
-                        agreementInstallmentBean.clearCache();
-                        
-                        agreementBean.clearCache();
-                        
-                        JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Parcela totalmente paga.");
-                    } else if (tempAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == -1) {
-                        //Pagamento acima do valor da parcela. Não pode aceitar.
-                        JsfUtil.addErrorMessage("Não é possível realizar pagamento acima do valor da parcela.");
-                    } else if (tempAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == 1) {
-                        //Pagamento abaixo do valor da parcela. Marcar a parcela como paga. E criar uma subparcela para a mesma com valor restante
-                        payment.setAgreementInstallment(tempAgreementInstallment);
-                        payment.setPaymentDate(new Date(System.currentTimeMillis()));
-                        paymentBean.create(payment);
-                        paymentBean.clearCache();
-
-                        agreementInstallmentBean.clearCache();
-                        tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
-                        tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
-                        agreementInstallmentBean.edit(tempAgreementInstallment);
-                        agreementInstallmentBean.clearCache();
-                        
-                        SubAgreementInstallment subAgreementInstallmentForPayment = new SubAgreementInstallment();
-                        subAgreementInstallmentForPayment.setAgreementInstallment(tempAgreementInstallment);
-                        subAgreementInstallmentForPayment.setPayment(payment);
-                        subAgreementInstallmentForPayment.setValue(tempAgreementInstallment.getValue().subtract(payment.getTotalValue()));
-                        subAgreementInstallmentBean.create(subAgreementInstallment);
-                        subAgreementInstallmentBean.clearCache();
-                        
-                        JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Parcela com pagamento parcial.");
-                        JsfUtil.addErrorMessage("Nova subparcela criada com o valor restante de R$ " + subAgreementInstallmentForPayment.getValue().toString());
-                    }
-                }
-            }
-        } catch (Exception e) {
-            JsfUtil.addErrorMessage(e, "Falha ao adicionar pagamento.");
-        }
-    }
+    
 
     public Payment getPayment() {
         return payment;

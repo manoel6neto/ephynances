@@ -2,8 +2,12 @@ package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.AgreementBean;
 import br.com.physisbrasil.web.ephynances.ejb.AgreementInstallmentBean;
+import br.com.physisbrasil.web.ephynances.ejb.PaymentBean;
+import br.com.physisbrasil.web.ephynances.ejb.SubAgreementInstallmentBean;
 import br.com.physisbrasil.web.ephynances.model.Agreement;
 import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;
+import br.com.physisbrasil.web.ephynances.model.Payment;
+import br.com.physisbrasil.web.ephynances.model.SubAgreementInstallment;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -29,6 +33,14 @@ public class AgreementInstallmentController extends BaseController {
     @EJB
     private AgreementBean agreementBean;
     private Agreement agreement;
+    
+    @EJB
+    private PaymentBean paymentBean;
+    private Payment payment;
+    
+    @EJB
+    private SubAgreementInstallmentBean subAgreementInstallmentBean;
+    private SubAgreementInstallment subAgreementInstallment;
 
     @PostConstruct
     public void init() {
@@ -46,6 +58,15 @@ public class AgreementInstallmentController extends BaseController {
         } else {
             if (agreementInstallment == null) {
                 agreementInstallment = new AgreementInstallment();
+            }
+        }
+        
+        if ((Payment) getFlash("payment") != null) {
+            payment = (Payment) getFlash("payment");
+        } else {
+            if (payment == null) {
+                payment = new Payment();
+                payment.setTotalValue(new BigDecimal(0));
             }
         }
     }
@@ -85,6 +106,67 @@ public class AgreementInstallmentController extends BaseController {
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao apagar a parcela solicitada.");
+        }
+    }
+    
+    public void addInstallmentPayment() {
+        try {
+            agreementInstallmentBean.clearCache();
+            AgreementInstallment tempAgreementInstallment = agreementInstallmentBean.find(agreementInstallment.getId());
+            if (tempAgreementInstallment != null) {
+                if (!tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO()) && !tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO())) {
+                    if (tempAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == 0) {
+                        //Pagamento do valor total da parcela sem excedente e sem residuo. Cria o pagamento e marca a parcela como paga
+                        payment.setAgreementInstallment(tempAgreementInstallment);
+                        payment.setPaymentDate(new Date(System.currentTimeMillis()));
+                        paymentBean.create(payment);
+                        paymentBean.clearCache();
+                        
+                        agreementInstallmentBean.clearCache();
+                        tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
+                        tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
+                        agreementInstallmentBean.edit(tempAgreementInstallment);
+                        agreementInstallmentBean.clearCache();
+                        
+                        agreementBean.clearCache();
+                        
+                        agreement = agreementBean.find(tempAgreementInstallment.getAgreement().getId());
+                        
+                        JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Parcela totalmente paga.");
+                    } else if (tempAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == -1) {
+                        //Pagamento acima do valor da parcela. Não pode aceitar.
+                        JsfUtil.addErrorMessage("Não é possível realizar pagamento acima do valor da parcela.");
+                    } else if (tempAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == 1) {
+                        //Pagamento abaixo do valor da parcela. Marcar a parcela como paga. E criar uma subparcela para a mesma com valor restante
+                        payment.setAgreementInstallment(tempAgreementInstallment);
+                        payment.setPaymentDate(new Date(System.currentTimeMillis()));
+                        paymentBean.create(payment);
+                        paymentBean.clearCache();
+
+                        agreementInstallmentBean.clearCache();
+                        tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
+                        tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
+                        agreementInstallmentBean.edit(tempAgreementInstallment);
+                        agreementInstallmentBean.clearCache();
+                        
+                        agreementBean.clearCache();
+                        
+                        SubAgreementInstallment subAgreementInstallmentForPayment = new SubAgreementInstallment();
+                        subAgreementInstallmentForPayment.setAgreementInstallment(tempAgreementInstallment);
+                        subAgreementInstallmentForPayment.setPayment(payment);
+                        subAgreementInstallmentForPayment.setValue(tempAgreementInstallment.getValue().subtract(payment.getTotalValue()));
+                        subAgreementInstallmentBean.create(subAgreementInstallmentForPayment);
+                        subAgreementInstallmentBean.clearCache();
+
+                        agreement = agreementBean.find(tempAgreementInstallment.getAgreement().getId());
+                        
+                        JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Parcela com pagamento parcial.");
+                        JsfUtil.addErrorMessage("Nova subparcela criada com o valor restante de R$ " + subAgreementInstallmentForPayment.getValue().toString());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao adicionar pagamento.");
         }
     }
 
@@ -187,6 +269,22 @@ public class AgreementInstallmentController extends BaseController {
 
     public void setAgreement(Agreement agreement) {
         this.agreement = agreement;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public SubAgreementInstallment getSubAgreementInstallment() {
+        return subAgreementInstallment;
+    }
+
+    public void setSubAgreementInstallment(SubAgreementInstallment subAgreementInstallment) {
+        this.subAgreementInstallment = subAgreementInstallment;
     }
 
 }
