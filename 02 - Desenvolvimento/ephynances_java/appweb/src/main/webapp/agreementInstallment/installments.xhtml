@@ -75,6 +75,9 @@
                                 <img src="../resources/img/activate_power.png" width="16" height="16" alt="Pagar" title="Pagar"/>
                                 <f:setPropertyActionListener target="#{agreementInstallmentController.agreementInstallment}" value="#{item}" />
                             </p:commandLink>
+                            <p:commandLink id="buttonConfirmPayment" style="margin-left: 5px" update="@form" ajax="false" action="#{agreementInstallmentController.confirmPayment(item.id)}"  rendered="#{agreementInstallmentController.chekcIsPaid(item.id)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Confirmar" title="Confirmar Pagamento"/></p:commandLink>
+                            <p:commandLink id="buttonConfirmPayment" style="margin-left: 5px" update="@form" ajax="false" action="#{paymentDocumentController.startPaymentDocuments(item.payment.id)}" rendered="#{agreementInstallmentController.chekcIsPaid(item.id)}"><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Detalhar" title="Detalhar"/></p:commandLink>
+                            <p:commandLink id="buttonConfirmPayment" style="margin-left: 5px" update="@form" ajax="false" action="" rendered="#{agreementInstallmentController.hasSubAgreementInstallments(item.id)}"><img src="../resources/img/view_lupa.png" width="16" height="16" alt="SubParcelas" title="Sub Parcelas"/></p:commandLink>
                             <p:commandLink id="buttonRemove" style="margin-left: 5px" update="@form" ajax="false" action="#{agreementInstallmentController.removeInstallment(item.id)}"  rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Remover" title="Remover"/></p:commandLink>
                         </p:column>
                     </p:dataTable>

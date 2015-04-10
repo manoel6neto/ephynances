@@ -13,6 +13,28 @@
             <h:form id="form" enctype="multipart/form-data" prependId="true">
                 <br class="clear" />
                 <br/>
+                <p:fieldset legend="Detalhes do Contrato/Pagamento/Parcela" toggleable="true" collapsed="false">
+                    <br class="clear" />
+                    <div class="grid_3 alpha" >
+                        <p:outputLabel value="Contrato: #{paymentDocumentController.payment.agreementInstallment.agreement.physisAgreementNumber}" />
+                    </div>
+                    
+                    <br class="clear" />
+                    <div class="grid_3 alpha" >
+                        <p:outputLabel value="Status contrato: #{paymentDocumentController.payment.agreementInstallment.agreement.status}" />
+                    </div>
+                    
+                    <br class="clear" />
+                    <div class="grid_3 alpha" >
+                        <p:outputLabel value="Valor da parcela: #{paymentDocumentController.payment.agreementInstallment.value}" />
+                    </div>
+                    
+                    <br class="clear" />
+                    <div class="grid_3 alpha" >
+                        <p:outputLabel value="Status da parcela: #{paymentDocumentController.payment.agreementInstallment.status}" />
+                    </div>
+                </p:fieldset>
+                
                 <p:fieldset legend="Upload de documento" toggleable="true" collapsed="false">
                     <br class="clear" />
                     <div class="grid_3 alpha" >

@@ -39,6 +39,8 @@
                         <h:outputText value="#{item.status}" />
                     </p:column>
                     <p:column width="160" style="text-align: center" headerText="Ações">
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementController.forgiveDebits(item.id)}" rendered="#{agreementController.hasMissingPayment(item.id)}"><img src="../resources/img/edit.png" width="16" height="16" alt="Liberar pendência financeira" title="Liberar pendência financeira"/></p:commandLink>
+                        <h:outputText value="   " rendered="#{agreementController.hasMissingPayment(item.id)}"/>
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementController.editAgreement(item.id)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar contrato" title="Editar"/></p:commandLink>
                         <h:outputText value="   " />
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementDocumentController.startAgreementDocuments(item.id)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Documentos" title="Documentos"/></p:commandLink>

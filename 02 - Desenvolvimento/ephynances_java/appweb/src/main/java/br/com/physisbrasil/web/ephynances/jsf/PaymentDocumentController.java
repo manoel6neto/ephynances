@@ -2,8 +2,6 @@ package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.PaymentBean;
 import br.com.physisbrasil.web.ephynances.ejb.PaymentDocumentBean;
-import br.com.physisbrasil.web.ephynances.model.Agreement;
-import br.com.physisbrasil.web.ephynances.model.AgreementDocument;
 import br.com.physisbrasil.web.ephynances.model.Payment;
 import br.com.physisbrasil.web.ephynances.model.PaymentDocument;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;

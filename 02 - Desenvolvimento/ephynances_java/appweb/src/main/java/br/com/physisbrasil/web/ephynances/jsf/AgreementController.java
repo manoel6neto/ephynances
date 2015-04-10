@@ -1,15 +1,21 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.AgreementBean;
+import br.com.physisbrasil.web.ephynances.ejb.AgreementInstallmentBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Agreement;
+import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,6 +29,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -53,6 +61,9 @@ public class AgreementController extends BaseController {
     @EJB
     private ProponentSiconvBean proponentSiconvBean;
     private ProponentSiconv proponentSiconv;
+
+    @EJB
+    private AgreementInstallmentBean agreementInstallmentBean;
 
     private boolean disableQuantCnpjs;
 
@@ -230,6 +241,53 @@ public class AgreementController extends BaseController {
         return "/agreement/list";
     }
 
+    public void forgiveDebits(Long agreementId) {
+        try {
+            agreementBean.clearCache();
+            Agreement tempAgreement = agreementBean.find(agreementId);
+            if (tempAgreement != null) {
+                if (tempAgreement.getStatus().equalsIgnoreCase(Agreement.getSTATE_SUSPENSO())) {
+                    for (AgreementInstallment installment : tempAgreement.getAgreementInstallments()) {
+                        if (installment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PENDENTE())) {
+                            installment.setStatus(AgreementInstallment.getSTATUS_PENDENTE_COM_LIBERACAO());
+                            agreementInstallmentBean.edit(installment);
+                        }
+                        agreementInstallmentBean.clearCache();
+
+                        //Change status Agreement
+                        agreementBean.clearCache();
+                        tempAgreement = agreementBean.find(tempAgreement.getId());
+                        tempAgreement.setStatus(Agreement.getSTATE_ATIVO());
+                        agreementBean.edit(tempAgreement);
+                        agreementBean.clearCache();
+
+                        //Mudar status no esicar
+                        changeStatusGestorEsicar(tempAgreement.getManagerCpf(), "A");
+
+                        JsfUtil.addSuccessMessage("Contrato reativado com sucesso !!");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao consultar/alterar status do contrato.");
+        }
+    }
+
+    public String hasMissingPayment(Long agreementId) {
+        try {
+            agreementBean.clearCache();
+            Agreement tempAgreement = agreementBean.find(agreementId);
+            if (tempAgreement != null) {
+                if (tempAgreement.getStatus().equalsIgnoreCase(Agreement.getSTATE_SUSPENSO())) {
+                    return String.valueOf(true);
+                }
+            }
+        } catch (Exception e) {
+            return String.valueOf(false);
+        }
+        return String.valueOf(false);
+    }
+
     public void activateAgreement(Long agreementId) {
         agreementBean.clearCache();
         Agreement tempAgreement = agreementBean.find(agreementId);
@@ -242,7 +300,7 @@ public class AgreementController extends BaseController {
                 tempAgreement.setStatus(Agreement.getSTATE_ATIVO());
                 agreementBean.edit(tempAgreement);
                 agreementBean.clearCache();
-                
+
                 //register manager esicar
                 if (agreement.getAgreementType().equalsIgnoreCase("PARLAMENTAR")) {
                     insertGestorEsicar(agreement.getUser().getId(), "1");
@@ -567,8 +625,13 @@ public class AgreementController extends BaseController {
                             //Salvar as outras tabelas
 
                             // gestor //
-                            sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor) VALUES ('%s', %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor);
-                            stmt.executeUpdate(sql);
+                            if (tipoGestor.equalsIgnoreCase("P")) {
+                                sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor, nivel_gestor) VALUES ('%s', %s, %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor, agreement.getAgreementSubType().subSequence(0, 0).toString().toUpperCase());
+                                stmt.executeUpdate(sql);
+                            } else {
+                                sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor) VALUES ('%s', %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor);
+                                stmt.executeUpdate(sql);
+                            }
 
                             sql = String.format("SELECT id_gestor FROM gestor WHERE id_usuario = %s", id);
                             rs = stmt.executeQuery(sql);
@@ -614,6 +677,57 @@ public class AgreementController extends BaseController {
             } catch (SQLException e) {
                 JsfUtil.addErrorMessage(e, "Falha ao inserir o gestor no banco de dados");
             }
+        }
+    }
+
+    public void changeStatusGestorEsicar(String cpf, String status) {
+        //Propriedades de conexao
+        String HOSTNAME = "localhost";
+        String USERNAME = "root";
+        String PASSWORD = "Physis_2013";
+        String DATABASE = "physis_esicar";
+        String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+        String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
+        String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/comunica_financeiro/ativa_desativa_usuario?id=";
+
+        Connection conn;
+        Statement stmt;
+
+        try {
+            Class.forName(JDBC_DRIVER);
+            conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
+            stmt = conn.createStatement();
+            String sql;
+            int id = 0;
+
+            sql = "SELECT id_usuario FROM usuario WHERE login = " + cpf.replace(".", "").replace("-", "");
+            ResultSet rs = stmt.executeQuery(sql);
+            while (rs.next()) {
+                id = rs.getInt("id_usuario");
+            }
+            rs.close();
+
+            if (id != 0) {
+                //Ativar usuário no esicar                              
+                URL urlcon = new URL(URLESICAR + id + "&status=" + status);
+                HttpURLConnection connect = (HttpURLConnection) urlcon.openConnection();
+                connect.connect();
+                if (HttpURLConnection.HTTP_OK != connect.getResponseCode()) {
+                    JsfUtil.addErrorMessage("Falha ao solicitar alteração de status no esicar");
+                }
+            }
+
+            rs.close();
+            stmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o status no banco de dados");
+        } catch (SQLException e) {
+            JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o status no banco de dados");
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(AgreementController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(AgreementController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
