@@ -7,6 +7,9 @@ import br.com.physisbrasil.web.ephynances.model.PaymentDocument;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.regex.Pattern;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -54,7 +57,7 @@ public class PaymentDocumentController extends BaseController {
             }
         }
     }
-    
+
     public String startPaymentDocuments(Long paymentId) {
         try {
             paymentBean.clearCache();
@@ -70,7 +73,7 @@ public class PaymentDocumentController extends BaseController {
 
         return "/payment/list";
     }
-    
+
     public void removeDocument(Long paymentDocumentId) {
         try {
             paymentDocumentBean.clearCache();
@@ -88,7 +91,7 @@ public class PaymentDocumentController extends BaseController {
             JsfUtil.addErrorMessage(e, "Falha ao apagar o documento solicitado.");
         }
     }
-    
+
     public String checkFile() {
         try {
             if (file != null) {
@@ -106,7 +109,7 @@ public class PaymentDocumentController extends BaseController {
 
         return String.valueOf(true);
     }
-    
+
     public void upload() {
         try {
             if (!Boolean.parseBoolean(checkFile())) {
@@ -121,7 +124,7 @@ public class PaymentDocumentController extends BaseController {
                     paymentDocumentBean.clearCache();
                     paymentBean.clearCache();
                     payment = paymentBean.find(payment.getId());
-                    
+
                     paymentDocument = new PaymentDocument();
 
                     putFlash("payment", payment);
@@ -134,7 +137,7 @@ public class PaymentDocumentController extends BaseController {
             JsfUtil.addErrorMessage(e, "Falha ao fazer o upload do arquivo.");
         }
     }
-    
+
     public StreamedContent downloadDocument(Long paymentDocumentId) {
         try {
             paymentDocumentBean.clearCache();
@@ -174,4 +177,8 @@ public class PaymentDocumentController extends BaseController {
         this.file = file;
     }
 
+    public String formatDate(Date dateToFormat) {
+        DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        return outputFormatter.format(dateToFormat);
+    }
 }

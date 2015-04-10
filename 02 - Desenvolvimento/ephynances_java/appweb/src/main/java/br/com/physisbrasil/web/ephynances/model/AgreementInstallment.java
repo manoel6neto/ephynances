@@ -26,8 +26,8 @@ import javax.ws.rs.DefaultValue;
 public class AgreementInstallment implements BaseModel {
     
     private static final String STATUS_PENDENTE = "Pendente";
-    private static final String STATUS_PAGO_SEM_CONFIRMACAO = "Pago sem confirmação";
-    private static final String STATUS_PAGO_COM_CONFIRMACAO = "Pago e confirmação";
+    private static final String STATUS_PAGO_SEM_CONFIRMACAO = "Paga sem confirmação";
+    private static final String STATUS_PAGO_COM_CONFIRMACAO = "Paga e confirmação";
     private static final String STATUS_PENDENTE_COM_LIBERACAO = "Pendente - Liberado manualmente";
 
     @Id

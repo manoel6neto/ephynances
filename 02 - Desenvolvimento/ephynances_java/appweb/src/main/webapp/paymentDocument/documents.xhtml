@@ -7,7 +7,7 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="Documentos do pagamento: #{paymentDocumentController.payment.paymentDate}"/>
+            <h:outputText  value="Detalhes do pagamento: #{paymentDocumentController.formatDate(paymentDocumentController.payment.paymentDate)}"/>
         </ui:define>
         <ui:define name="body"  >
             <h:form id="form" enctype="multipart/form-data" prependId="true">
@@ -15,26 +15,31 @@
                 <br/>
                 <p:fieldset legend="Detalhes do Contrato/Pagamento/Parcela" toggleable="true" collapsed="false">
                     <br class="clear" />
-                    <div class="grid_3 alpha" >
-                        <p:outputLabel value="Contrato: #{paymentDocumentController.payment.agreementInstallment.agreement.physisAgreementNumber}" />
+                    <div >
+                        <p:outputLabel value="Contrato: #{paymentDocumentController.payment.agreementInstallment.agreement.physisAgreementNumber}" style="color: #000000; font-style: oblique; font-size: medium"/>
+                    </div>
+
+                    <br class="clear" />
+                    <div >
+                        <p:outputLabel value="Status contrato: #{paymentDocumentController.payment.agreementInstallment.agreement.status}" style="color: #000000; font-style: oblique; font-size: medium"/>
+                    </div>
+
+                    <br class="clear" />
+                    <div >
+                        <p:outputLabel value="Valor da parcela: #{paymentDocumentController.payment.agreementInstallment.value}" style="color: #000000; font-style: oblique; font-size: medium"/>
+                    </div>
+
+                    <br class="clear" />
+                    <div >
+                        <p:outputLabel value="Status da parcela: #{paymentDocumentController.payment.agreementInstallment.status}" style="color: #000000; font-style: oblique; font-size: medium"/>
                     </div>
                     
                     <br class="clear" />
-                    <div class="grid_3 alpha" >
-                        <p:outputLabel value="Status contrato: #{paymentDocumentController.payment.agreementInstallment.agreement.status}" />
-                    </div>
-                    
-                    <br class="clear" />
-                    <div class="grid_3 alpha" >
-                        <p:outputLabel value="Valor da parcela: #{paymentDocumentController.payment.agreementInstallment.value}" />
-                    </div>
-                    
-                    <br class="clear" />
-                    <div class="grid_3 alpha" >
-                        <p:outputLabel value="Status da parcela: #{paymentDocumentController.payment.agreementInstallment.status}" />
-                    </div>
+                    <br/>
                 </p:fieldset>
-                
+
+                <br class="clear" />
+                <br/>
                 <p:fieldset legend="Upload de documento" toggleable="true" collapsed="false">
                     <br class="clear" />
                     <div class="grid_3 alpha" >
@@ -67,7 +72,7 @@
 
                 <br class="clear" />
                 <br/>
-                <p:fieldset legend="Documentos do contrato" toggleable="true" collapsed="false">
+                <p:fieldset legend="Documentos do pagamento" toggleable="true" collapsed="false">
                     <br class="clear" />
                     <br/>
                     <p:dataTable id="table" widgetVar="table" value="#{paymentDocumentController.payment.paymentDocuments}" var="item" lazy="false" 
