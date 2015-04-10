@@ -125,6 +125,7 @@ public class AgreementInstallmentController extends BaseController {
                         agreementInstallmentBean.clearCache();
                         tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
                         tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
+                        tempAgreementInstallment.setPayment(payment);
                         agreementInstallmentBean.edit(tempAgreementInstallment);
                         agreementInstallmentBean.clearCache();
 
@@ -143,20 +144,22 @@ public class AgreementInstallmentController extends BaseController {
                         paymentBean.create(payment);
                         paymentBean.clearCache();
 
-                        agreementInstallmentBean.clearCache();
-                        tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
-                        tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
-                        agreementInstallmentBean.edit(tempAgreementInstallment);
-                        agreementInstallmentBean.clearCache();
-
-                        agreementBean.clearCache();
-
                         SubAgreementInstallment subAgreementInstallmentForPayment = new SubAgreementInstallment();
                         subAgreementInstallmentForPayment.setAgreementInstallment(tempAgreementInstallment);
                         subAgreementInstallmentForPayment.setPayment(payment);
                         subAgreementInstallmentForPayment.setValue(tempAgreementInstallment.getValue().subtract(payment.getTotalValue()));
                         subAgreementInstallmentBean.create(subAgreementInstallmentForPayment);
                         subAgreementInstallmentBean.clearCache();
+
+                        agreementInstallmentBean.clearCache();
+                        tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
+                        tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
+                        tempAgreementInstallment.setPayment(payment);
+                        tempAgreementInstallment.setSubAgreementInstallment(subAgreementInstallmentForPayment);
+                        agreementInstallmentBean.edit(tempAgreementInstallment);
+                        agreementInstallmentBean.clearCache();
+
+                        agreementBean.clearCache();
 
                         agreement = agreementBean.find(tempAgreementInstallment.getAgreement().getId());
 
@@ -188,11 +191,11 @@ public class AgreementInstallmentController extends BaseController {
                         tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO());
                         agreementInstallmentBean.edit(tempAgreementInstallment);
                         agreementInstallmentBean.clearCache();
-                        
+
                         agreementBean.clearCache();
-                        
+
                         agreement = agreementBean.find(tempAgreementInstallment.getAgreement().getId());
-                        
+
                         JsfUtil.addSuccessMessage("Pagamento confirmado com sucesso!!");
                     } else {
                         JsfUtil.addErrorMessage("Status do pagamento não pode ser confirmado.");
@@ -203,7 +206,7 @@ public class AgreementInstallmentController extends BaseController {
             JsfUtil.addErrorMessage(e, "Falha ao mudar o status do pagamento!!");
         }
     }
-    
+
     //Retorna o valor restante para parcelar
     public BigDecimal getMissingValue() {
         try {
@@ -287,10 +290,8 @@ public class AgreementInstallmentController extends BaseController {
         try {
             AgreementInstallment installment = agreementInstallmentBean.find(agreementInstallmentId);
             if (installment != null) {
-                if (installment.getSubAgreementInstallments() != null) {
-                    if (installment.getSubAgreementInstallments().size() > 0) {
-                        return String.valueOf(true);
-                    }
+                if (installment.getSubAgreementInstallment() != null) {
+                    return String.valueOf(true);
                 }
             }
         } catch (Exception e) {

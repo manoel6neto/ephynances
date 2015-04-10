@@ -31,9 +31,7 @@ public class SubAgreementInstallment implements BaseModel {
     private BigDecimal value;
 
     //References
-    @OneToOne(optional = false)
-    @NotNull
-    @JoinColumn(name = "agreement_installment_id", referencedColumnName = "id", nullable = false)
+    @OneToOne(mappedBy = "subAgreementInstallment")
     private AgreementInstallment agreementInstallment;
     
     @OneToOne(optional = true)

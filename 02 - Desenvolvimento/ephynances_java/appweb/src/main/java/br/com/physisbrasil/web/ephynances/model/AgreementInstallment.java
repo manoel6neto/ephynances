@@ -58,8 +58,9 @@ public class AgreementInstallment implements BaseModel {
     @JoinColumn(name = "agreement_id", referencedColumnName = "id", nullable = true)
     private Agreement agreement;
     
-    @OneToMany(mappedBy = "agreementInstallment", orphanRemoval = true)
-    private List<SubAgreementInstallment> subAgreementInstallments;
+    @OneToOne(optional = true)
+    @JoinColumn(name = "sub_agreement_installment_id", referencedColumnName = "id", nullable = true)
+    private SubAgreementInstallment subAgreementInstallment;
     
     @OneToOne(optional = true)
     @JoinColumn(name = "payment_id", referencedColumnName = "id", nullable = true)
@@ -98,14 +99,14 @@ public class AgreementInstallment implements BaseModel {
         this.agreement = agreement;
     }
 
-    public List<SubAgreementInstallment> getSubAgreementInstallments() {
-        return subAgreementInstallments;
+    public SubAgreementInstallment getSubAgreementInstallment() {
+        return subAgreementInstallment;
     }
 
-    public void setSubAgreementInstallments(List<SubAgreementInstallment> subAgreementInstallments) {
-        this.subAgreementInstallments = subAgreementInstallments;
+    public void setSubAgreementInstallment(SubAgreementInstallment subAgreementInstallment) {
+        this.subAgreementInstallment = subAgreementInstallment;
     }
-
+    
     public Payment getPayment() {
         return payment;
     }

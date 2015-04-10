@@ -44,12 +44,10 @@ public class Payment implements BaseModel {
     private Date confirmationDate;
 
     //References
-    @OneToOne(optional = true)
-    @JoinColumn(name = "agreement_installment_id", referencedColumnName = "id", nullable = true)
+    @OneToOne(mappedBy = "payment")
     private AgreementInstallment agreementInstallment;
 
-    @OneToOne(optional = true)
-    @JoinColumn(name = "sub_agreement_installment_id", referencedColumnName = "id", nullable = true)
+    @OneToOne(mappedBy = "payment")
     private SubAgreementInstallment subAgreementInstallment;
     
     @OneToMany(mappedBy = "payment", orphanRemoval = true)
