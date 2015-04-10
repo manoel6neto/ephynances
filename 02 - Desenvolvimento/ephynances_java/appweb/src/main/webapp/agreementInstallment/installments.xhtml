@@ -69,19 +69,19 @@
                             <h:outputText value="#{item.status}" />
                         </p:column>
 
-                        <p:column width="60" style="text-align: center" headerText="Ações">
-                            <p:commandLink id="linkAddPayment" style="margin-right: 5px" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}">
-                                <img src="../resources/img/edit.png" width="16" height="16" alt="Adicionar pagamento" title="Adicionar pagamento"/>
-                                <p:overlayPanel id="overlayAdd" for="linkAddPayment" appendToBody="true" dynamic="false" style="alignment-adjust: central">
-                                    <div class="grid_3" style="margin: 5px">
-                                        <p:outputLabel value="Valor: " for="inputValueOverlay" />
-                                        <p:inputText id="inputValueOverlay" value="#{paymentController.payment.totalValue}" style="margin-left: 10px;" />
-                                        <p:commandButton id="commandButtonAdd" style="margin-left: 10px" ajax="false" action="#{paymentController.addInstallmentPayment(item.id)}" value="Pagar"/>
-                                    </div>
+                        <p:column width="180" style="text-align: center" headerText="Ações">
+                            <p:commandButton value="pagar" id="linkAddPayment" style="margin-right: 5px" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}"/>
+                                <p:overlayPanel id="overlayAdd" for="linkAddPayment" hideEffect="fade" my="right top" dynamic="false" dismissable="false" style="alignment-adjust: central">
+                                    <h:form>
+                                        <div class="grid_3" style="margin: 5px">
+                                            <p:outputLabel value="Valor: " for="inputValueOverlay" />
+                                            <p:inputText id="inputValueOverlay" value="#{paymentController.payment.totalValue}" style="margin-left: 10px;" />
+                                            <p:commandButton id="commandButtonAdd" style="margin-left: 10px" ajax="false" action="#{paymentController.addInstallmentPayment(item.id)}" value="Pagar"/>
+                                        </div>
+                                    </h:form>
                                 </p:overlayPanel>
-                            </p:commandLink>
                             <h:outputText value="   " />
-                            <p:commandLink update="@form" style="margin-right: 5px" ajax="false" action="#{agreementInstallmentController.removeInstallment(item.id)}" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}"><img src="../resources/img/edit.png" width="16" height="16" alt="Remover parcela" title="Remover parcela"/></p:commandLink>
+                            <p:commandButton value="Remover" update="@form" style="margin-right: 5px" ajax="false" action="#{agreementInstallmentController.removeInstallment(item.id)}" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}"/>
                         </p:column>
                     </p:dataTable>
 
