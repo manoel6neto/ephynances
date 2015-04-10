@@ -9,6 +9,7 @@ import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;
 import br.com.physisbrasil.web.ephynances.model.Payment;
 import br.com.physisbrasil.web.ephynances.model.SubAgreementInstallment;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
+import java.math.BigDecimal;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -55,6 +56,7 @@ public class PaymentController extends BaseController {
         } else {
             if (payment == null) {
                 payment = new Payment();
+                payment.setTotalValue(new BigDecimal(0));
             }
         }
 

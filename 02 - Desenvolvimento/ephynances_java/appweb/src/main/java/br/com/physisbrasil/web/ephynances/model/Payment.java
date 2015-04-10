@@ -39,8 +39,7 @@ public class Payment implements BaseModel {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date paymentDate;
 
-    @NotNull
-    @Column(name = "confirmation_date", nullable = false)
+    @Column(name = "confirmation_date", nullable = true)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date confirmationDate;
 
