@@ -130,6 +130,9 @@ public class Agreement implements BaseModel {
     @Column(name = "manager_name", length = 200, nullable = false)
     @Size(max = 200)
     private String managerName;
+    
+    @Column(name = "parlament_number", length = 20, nullable = true)
+    private String parlamentNumber;
 
     @NotNull
     @Column(name = "manager_cpf", length = 16, nullable = false, unique = true)
@@ -230,6 +233,14 @@ public class Agreement implements BaseModel {
 
     public Date getExpireDate() {
         return expireDate;
+    }
+
+    public String getParlamentNumber() {
+        return parlamentNumber;
+    }
+
+    public void setParlamentNumber(String parlamentNumber) {
+        this.parlamentNumber = parlamentNumber;
     }
 
     public void setExpireDate(Date expireDate) {

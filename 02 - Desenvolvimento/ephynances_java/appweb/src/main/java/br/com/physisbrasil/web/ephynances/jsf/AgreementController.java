@@ -626,7 +626,7 @@ public class AgreementController extends BaseController {
 
                             // gestor //
                             if (tipoGestor.equalsIgnoreCase("P")) {
-                                sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor, nivel_gestor) VALUES ('%s', %s, %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor, agreement.getAgreementSubType().subSequence(0, 0).toString().toUpperCase());
+                                sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor, nivel_gestor, numero_parlamentar) VALUES ('%s', %s, %s, %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor, agreement.getAgreementSubType().subSequence(0, 0).toString().toUpperCase(), agreement.getParlamentNumber());
                                 stmt.executeUpdate(sql);
                             } else {
                                 sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor) VALUES ('%s', %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor);
