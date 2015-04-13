@@ -2,7 +2,6 @@ package br.com.physisbrasil.web.ephynances.model;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -27,7 +25,7 @@ public class AgreementInstallment implements BaseModel {
     
     private static final String STATUS_PENDENTE = "Pendente";
     private static final String STATUS_PAGO_SEM_CONFIRMACAO = "Paga sem confirmação";
-    private static final String STATUS_PAGO_COM_CONFIRMACAO = "Paga e confirmação";
+    private static final String STATUS_PAGO_COM_CONFIRMACAO = "Paga com confirmação";
     private static final String STATUS_PENDENTE_COM_LIBERACAO = "Pendente - Liberado manualmente";
 
     @Id
