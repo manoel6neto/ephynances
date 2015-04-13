@@ -11,6 +11,7 @@ import br.com.physisbrasil.web.ephynances.model.SubAgreementInstallment;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -76,6 +77,15 @@ public class SubAgreementInstallmentController extends BaseController {
                 agreementInstallment = new AgreementInstallment();
             }
         }
+        
+        if ((Payment) getFlash("payment") != null) {
+            payment = (Payment) getFlash("payment");
+        } else {
+            if (payment == null) {
+                payment = new Payment();
+                payment.setTotalValue(new BigDecimal(0));
+            }
+        }
     }
 
     public void addSubInstallmentPayment() {
@@ -97,6 +107,9 @@ public class SubAgreementInstallmentController extends BaseController {
                             subAgreementInstallment.setPayment(payment);
                             subAgreementInstallmentBean.edit(subAgreementInstallment);
                             subAgreementInstallmentBean.clearCache();
+                            
+                            payment = new Payment();
+                            payment.setTotalValue(new BigDecimal(0));
 
                             JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Sub Parcela totalmente paga.");
                         } else {
@@ -110,6 +123,22 @@ public class SubAgreementInstallmentController extends BaseController {
         }
     }
 
+    public String checkStatusSubAgreementInstallment() {
+        try {
+            if (subAgreementInstallment != null) {
+                if (subAgreementInstallment.getPayment() == null) {
+                    return "Sem pagamento";
+                } else {
+                    return "Pagamento na data: " + formatDate(subAgreementInstallment.getPayment().getPaymentDate());
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao verificar status do pagamento da Sub Parcela");
+        }
+
+        return "Sem pagamento";
+    }
+    
     public void confirmPayment() {
         try {
             subAgreementInstallmentBean.clearCache();
