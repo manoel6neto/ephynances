@@ -3,15 +3,14 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core" >
+      xmlns:ui="http://java.sun.com/jsf/facelets" >
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
             <h:outputText  value="SubParcela: #{subAgreementInstallmentController.subAgreementInstallment.value}"/>
         </ui:define>
         <ui:define name="body"  >
-            <h:form id="formDetails">
+            <h:form id="form" enctype="multipart/form-data" prependId="true">
                 <br class="clear" />
                 <br/>
                 <p:fieldset legend="Detalhes" toggleable="true" collapsed="false">
@@ -43,9 +42,7 @@
                     <br class="clear" />
                     <br/>
                 </p:fieldset>
-            </h:form>
 
-            <h:form id="formPayment">
                 <br class="clear" />
                 <br/>
                 <p:fieldset legend="Dados pagamento" toggleable="true" collapsed="false">
@@ -62,25 +59,24 @@
                     <br class="clear" />
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Valor para pagamento: " for="paymentValue" />
-                        <p:inputText id="paymentValue" style="width: 200px" value="#{subAgreementInstallmentController.payment.totalValue}" required="false" readonly="#{subAgreementInstallmentController.subAgreementInstallment.payment == null}"/> 
-                        <p:watermark for="paymentValue" value="0" />
+                        <p:inputText id="paymentValue" style="width: 200px" value="#{subAgreementInstallmentController.payment.totalValue}" required="false" readonly="#{subAgreementInstallmentController.checkIsPaid()}"/> 
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_3 alpha" >
-                        <p:commandButton id="paymentButton" value="Pagar" update="@form" ajax="false" action="#{subAgreementInstallmentController.addSubInstallmentPayment()}" readonly="#{subAgreementInstallmentController.subAgreementInstallment.payment == null}"/>
+                        <p:commandButton id="paymentButton" value="Pagar" update="@form" ajax="false" action="#{subAgreementInstallmentController.addSubInstallmentPayment()}" disabled="#{subAgreementInstallmentController.checkIsPaid()}"/>
                     </div>
 
                     <br class="clear" />
                     <br/>
                 </p:fieldset>
-            </h:form>
 
-            <h:form id="formDocs" enctype="multipart/form-data" prependId="true">
                 <br class="clear" />
                 <br/>
                 <p:fieldset legend="Documentos do pagamento" toggleable="true" collapsed="false">
+                    <br class="clear" />
+                    <br/>
                     <p:fieldset legend="Adicionar documento" toggleable="true" collapsed="false">
                         <br class="clear" />
                         <div class="grid_3 alpha" >
@@ -111,7 +107,36 @@
                         <br/>
                     </p:fieldset>
 
+                    <br class="clear" />
+                    <br/>
                     <p:fieldset legend="Documentos existentes" toggleable="true" collapsed="false">
+                        <br class="clear" />
+                        <br/>
+                        <p:dataTable id="table" widgetVar="table" value="#{subAgreementInstallmentController.subAgreementInstallment.payment.paymentDocuments}" var="item" lazy="false" 
+                                     rows="15" paginator="true"  paginatorPosition="bottom" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
+                                     emptyMessage="Nenhum documento encontrado!">
+
+                            <p:column style="text-align: center" headerText="Nome" filterBy="#{item.name}" filterStyle="text-align: center; width: 140px;">                       
+                                <h:outputText value="#{item.name}" />
+                            </p:column>
+
+                            <p:column style="text-align: center" headerText="Descrição" filterBy="#{item.description}" filterStyle="text-align: center; width: 140px;">                       
+                                <h:outputText value="#{item.description}" />
+                            </p:column>
+
+                            <p:column width="60" style="text-align: center" headerText="Ações">
+                                <p:commandLink update="table" style="margin-right: 5px" ajax="false" ><img src="../resources/img/edit.png" width="16" height="16" alt="Baixar documento" title="Baixar documento"/>
+                                    <p:fileDownload value="#{subAgreementInstallmentController.downloadDocument(item.id)}" />
+                                </p:commandLink>
+                                <h:outputText value="   " />
+                                <p:commandLink ajax="false" update="table" style="margin-right: 5px" actionListener="#{subAgreementInstallmentController.removeDocument(item.id)}" >
+                                    <img src="../resources/img/remove.png" width="16" height="16" alt="Apagar documento" title="Apagar documento"/>
+                                    <p:confirm header="Confirmação" message="Você tem certeza que gostaria de apagar o documento?" icon="ui-icon-alert"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
 
                         <br class="clear" />
                         <br/>
@@ -120,6 +145,12 @@
                     <br class="clear" />
                     <br/>
                 </p:fieldset>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
+                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
             </h:form>
         </ui:define>
     </ui:composition>

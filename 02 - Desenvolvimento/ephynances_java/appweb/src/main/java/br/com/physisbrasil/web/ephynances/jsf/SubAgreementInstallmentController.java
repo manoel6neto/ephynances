@@ -225,6 +225,26 @@ public class SubAgreementInstallmentController extends BaseController {
 
         return null;
     }
+    
+    public void removeDocument(Long paymentDocumentId) {
+        try {
+            paymentDocumentBean.clearCache();
+            PaymentDocument tempPaymentDocument = paymentDocumentBean.find(paymentDocumentId);
+            if (tempPaymentDocument != null) {
+                paymentDocumentBean.remove(tempPaymentDocument);
+                paymentDocumentBean.clearCache();
+                paymentBean.clearCache();
+                subAgreementInstallmentBean.clearCache();
+                
+                subAgreementInstallment = subAgreementInstallmentBean.find(subAgreementInstallment.getId());
+                
+                putFlash("subAgreementInstallment", subAgreementInstallment);
+                JsfUtil.addSuccessMessage("Documento removido com sucesso!!");
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao apagar o documento solicitado.");
+        }
+    }
 
     public String startSubAgreementInstallmentActivity(Long agreementInstallmentId) {
         try {
@@ -246,6 +266,18 @@ public class SubAgreementInstallmentController extends BaseController {
         }
 
         return "/agreementInstallment/installments";
+    }
+    
+    public String checkIsPaid() {
+        if (subAgreementInstallment != null) {
+            if (subAgreementInstallment.getPayment() != null) {
+                return String.valueOf(true);
+            } else {
+                return String.valueOf(false);
+            }
+        }
+        
+        return String.valueOf(false);
     }
 
     public SubAgreementInstallment getSubAgreementInstallment() {

@@ -21,8 +21,8 @@ import javax.ws.rs.DefaultValue;
  */
 @Entity
 @Table(name = "agreement_installment")
-public class AgreementInstallment implements BaseModel {
-    
+public class AgreementInstallment implements BaseModel, Comparable<AgreementInstallment> {
+
     private static final String STATUS_PENDENTE = "Pendente";
     private static final String STATUS_PAGO_SEM_CONFIRMACAO = "Paga sem confirmação";
     private static final String STATUS_PAGO_COM_CONFIRMACAO = "Paga com confirmação";
@@ -46,24 +46,24 @@ public class AgreementInstallment implements BaseModel {
     @Column(name = "due_date", nullable = false)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dueDate;
-    
+
     @Column(name = "liberation_date", nullable = true)
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date liberationDate;
-    
+
     //References
     @ManyToOne(optional = true)
     @JoinColumn(name = "agreement_id", referencedColumnName = "id", nullable = true)
     private Agreement agreement;
-    
+
     @OneToOne(optional = true)
     @JoinColumn(name = "sub_agreement_installment_id", referencedColumnName = "id", nullable = true)
     private SubAgreementInstallment subAgreementInstallment;
-    
+
     @OneToOne(optional = true)
     @JoinColumn(name = "payment_id", referencedColumnName = "id", nullable = true)
     private Payment payment;
-    
+
     /**
      *
      * @return
@@ -104,7 +104,7 @@ public class AgreementInstallment implements BaseModel {
     public void setSubAgreementInstallment(SubAgreementInstallment subAgreementInstallment) {
         this.subAgreementInstallment = subAgreementInstallment;
     }
-    
+
     public Payment getPayment() {
         return payment;
     }
@@ -128,7 +128,7 @@ public class AgreementInstallment implements BaseModel {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
     public static String getSTATUS_PENDENTE() {
         return STATUS_PENDENTE;
     }
@@ -144,19 +144,19 @@ public class AgreementInstallment implements BaseModel {
     public static String getSTATUS_PENDENTE_COM_LIBERACAO() {
         return STATUS_PENDENTE_COM_LIBERACAO;
     }
-    
+
     @Override
     public String toString() {
         return id.toString();
     }
-    
-     @Override
+
+    @Override
     public int hashCode() {
         int hash = 5;
         hash = 97 * hash + (this.id != null ? this.id.hashCode() : 0);
         return hash;
     }
-    
+
     @Override
     public boolean equals(Object object) {
         if (!(object instanceof AgreementInstallment)) {
@@ -166,7 +166,18 @@ public class AgreementInstallment implements BaseModel {
         if (this.id != null) {
             return this.id.equals(other.id);
         }
-        
+
         return false;
+    }
+
+    @Override
+    public int compareTo(AgreementInstallment o) {
+        if (this.dueDate.before(o.dueDate)) {
+            return -1;
+        }
+        if (this.dueDate.after(o.dueDate)) {
+            return 1;
+        }
+        return 0;
     }
 }
