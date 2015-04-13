@@ -3,8 +3,6 @@ package br.com.physisbrasil.web.ephynances.util;
 import br.com.physisbrasil.web.ephynances.model.User;
 import java.io.UnsupportedEncodingException;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.*;
 import javax.mail.internet.*;
