@@ -1,13 +1,17 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.AgreementBean;
+import br.com.physisbrasil.web.ephynances.ejb.AgreementInstallmentBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Agreement;
+import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.Utils;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +32,9 @@ public class DaillyProcessController extends BaseController {
     @EJB
     private AgreementBean agreementBean;
     private List<Agreement> agreements;
+
+    @EJB
+    private AgreementInstallmentBean agreementInstallmentBean;
 
     @EJB
     private ConfigurationBean configurationBean;
@@ -67,10 +74,74 @@ public class DaillyProcessController extends BaseController {
 
     public void checkStatusPaymentsAndSubPayments() {
         try {
+            agreementBean.clearCache();
+            agreementInstallmentBean.clearCache();
             if (agreements != null) {
                 if (agreements.size() > 0) {
                     for (Agreement contract : agreements) {
-                        // Magic
+                        if (contract.getAgreementInstallments() != null) {
+                            if (contract.getAgreementInstallments().size() > 0) {
+                                for (AgreementInstallment installment : contract.getAgreementInstallments()) {
+                                    if (!installment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO()) && !installment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO())) {
+                                        if (installment.getLiberationDate() == null) {
+                                            //Data atual para verificar o prazo de 15 dias
+                                            Date d = new Date(System.currentTimeMillis());
+
+                                            // Calculando o atraso
+                                            Calendar c = Calendar.getInstance();
+                                            c.setTime(installment.getDueDate());
+                                            c.set(Calendar.DATE, c.get(Calendar.DATE) + 15);
+
+                                            //Comparando com a data atual (se maior contrato atrasado)
+                                            if (c.getTime().after(d)) {
+                                                installment.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
+                                                agreementInstallmentBean.edit(installment);
+                                                agreementInstallmentBean.clearCache();
+
+                                                contract.setStatus(Agreement.getSTATE_SUSPENSO());
+                                                agreementBean.edit(contract);
+                                            } else {
+                                                if (installment.getSubAgreementInstallment() != null) {
+                                                    if (installment.getSubAgreementInstallment().getPayment() == null) {
+                                                        if (!contract.getStatus().equalsIgnoreCase(Agreement.getSTATE_SUSPENSO())) {
+                                                            contract.setStatus(Agreement.getSTATE_ALERTA());
+                                                            agreementBean.edit(contract);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        } else {
+                                            //Data atual para verificar o prazo de 15 dias
+                                            Date d = new Date(System.currentTimeMillis());
+
+                                            // Calculando o atraso
+                                            Calendar c = Calendar.getInstance();
+                                            c.setTime(installment.getLiberationDate());
+                                            c.set(Calendar.DATE, c.get(Calendar.DATE) + 15);
+
+                                            //Comparando com a data atual (se maior contrato atrasado)
+                                            if (c.getTime().after(d)) {
+                                                installment.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
+                                                agreementInstallmentBean.edit(installment);
+                                                agreementInstallmentBean.clearCache();
+
+                                                contract.setStatus(Agreement.getSTATE_SUSPENSO());
+                                                agreementBean.edit(contract);
+                                            } else {
+                                                if (installment.getSubAgreementInstallment() != null) {
+                                                    if (installment.getSubAgreementInstallment().getPayment() == null) {
+                                                        if (!contract.getStatus().equalsIgnoreCase(Agreement.getSTATE_SUSPENSO())) {
+                                                            contract.setStatus(Agreement.getSTATE_ALERTA());
+                                                            agreementBean.edit(contract);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
