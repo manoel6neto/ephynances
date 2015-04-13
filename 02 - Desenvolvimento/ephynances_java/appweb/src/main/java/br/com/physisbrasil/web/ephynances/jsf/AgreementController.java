@@ -4,11 +4,13 @@ import br.com.physisbrasil.web.ephynances.ejb.AgreementBean;
 import br.com.physisbrasil.web.ephynances.ejb.AgreementInstallmentBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
+import br.com.physisbrasil.web.ephynances.ejb.SubAgreementInstallmentBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Agreement;
 import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
+import br.com.physisbrasil.web.ephynances.model.SubAgreementInstallment;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
@@ -64,6 +66,9 @@ public class AgreementController extends BaseController {
 
     @EJB
     private AgreementInstallmentBean agreementInstallmentBean;
+    
+    @EJB
+    private SubAgreementInstallmentBean subAgreementInstallmentBean;
 
     private boolean disableQuantCnpjs;
 

@@ -52,6 +52,7 @@ public class Agreement implements BaseModel {
     private static final String STATE_INCOMPLETO = "Incompleto";
     private static final String STATE_CANCELADO = "Cancelado";
     private static final String STATE_SUSPENSO = "Suspenso por falta de pagamento";
+    private static final String STATE_ALERTA = "Ausencia de pagamentos para subparcelas";
     private static final String STATE_FINALIZADO = "Finalizado";
 
     @Id
@@ -409,6 +410,10 @@ public class Agreement implements BaseModel {
     
     public static String getTYPE_ESTADUAL() {
         return TYPE_ESTADUAL;
+    }
+
+    public static String getSTATE_ALERTA() {
+        return STATE_ALERTA;
     }
 
     @Override

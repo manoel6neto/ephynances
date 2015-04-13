@@ -5,6 +5,7 @@ import br.com.physisbrasil.web.ephynances.ejb.PaymentBean;
 import br.com.physisbrasil.web.ephynances.ejb.PaymentDocumentBean;
 import br.com.physisbrasil.web.ephynances.ejb.SubAgreementInstallmentBean;
 import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;
+import br.com.physisbrasil.web.ephynances.model.Payment;
 import br.com.physisbrasil.web.ephynances.model.PaymentDocument;
 import br.com.physisbrasil.web.ephynances.model.SubAgreementInstallment;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
@@ -37,6 +38,7 @@ public class SubAgreementInstallmentController extends BaseController {
 
     @EJB
     private PaymentBean paymentBean;
+    private Payment payment;
 
     @EJB
     private PaymentDocumentBean paymentDocumentBean;
@@ -76,6 +78,62 @@ public class SubAgreementInstallmentController extends BaseController {
         }
     }
 
+    public void addSubInstallmentPayment() {
+        try {
+            subAgreementInstallmentBean.clearCache();
+            if (subAgreementInstallment != null) {
+                if (subAgreementInstallment.getPayment() != null) {
+                    JsfUtil.addErrorMessage("Sub Parcela já foi paga.");
+                } else {
+                    if (payment != null) {
+                        if (subAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == 0) {
+                            payment.setSubAgreementInstallment(subAgreementInstallment);
+                            payment.setPaymentDate(new Date(System.currentTimeMillis()));
+                            paymentBean.create(payment);
+                            paymentBean.clearCache();
+
+                            subAgreementInstallmentBean.clearCache();
+                            subAgreementInstallment = subAgreementInstallmentBean.find(subAgreementInstallment.getId());
+                            subAgreementInstallment.setPayment(payment);
+                            subAgreementInstallmentBean.edit(subAgreementInstallment);
+                            subAgreementInstallmentBean.clearCache();
+
+                            JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Sub Parcela totalmente paga.");
+                        } else {
+                            JsfUtil.addErrorMessage("Não é possível pagar valores superiores ou inferiores ao valor da sub parcela.");
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao adicionar pagamento.");
+        }
+    }
+
+    public void confirmPayment() {
+        try {
+            subAgreementInstallmentBean.clearCache();
+            if (subAgreementInstallment != null) {
+                if (subAgreementInstallment.getPayment() != null) {
+                    Payment tempPayment = paymentBean.find(subAgreementInstallment.getPayment().getId());
+                    tempPayment.setConfirmationDate(new Date(System.currentTimeMillis()));
+                    paymentBean.edit(tempPayment);
+                    paymentBean.clearCache();
+
+                    //Reload and set status
+                    subAgreementInstallmentBean.clearCache();
+                    subAgreementInstallment = subAgreementInstallmentBean.find(subAgreementInstallment.getId());
+
+                    JsfUtil.addSuccessMessage("Pagamento confirmado com sucesso!!");
+                } else {
+                    JsfUtil.addErrorMessage("Pagamento não encontrado.");
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao mudar o status do pagamento!!");
+        }
+    }
+
     public String checkFile() {
         try {
             if (file != null) {
@@ -93,7 +151,7 @@ public class SubAgreementInstallmentController extends BaseController {
 
         return String.valueOf(true);
     }
-    
+
     public void upload() {
         try {
             if (!Boolean.parseBoolean(checkFile())) {
@@ -108,7 +166,7 @@ public class SubAgreementInstallmentController extends BaseController {
                     paymentDocumentBean.clearCache();
                     paymentBean.clearCache();
                     subAgreementInstallmentBean.clearCache();
-                    
+
                     subAgreementInstallment = subAgreementInstallmentBean.find(subAgreementInstallment.getId());
 
                     paymentDocument = new PaymentDocument();
@@ -123,7 +181,7 @@ public class SubAgreementInstallmentController extends BaseController {
             JsfUtil.addErrorMessage(e, "Falha ao fazer o upload do arquivo.");
         }
     }
-    
+
     public StreamedContent downloadDocument(Long paymentDocumentId) {
         try {
             paymentDocumentBean.clearCache();
@@ -192,7 +250,15 @@ public class SubAgreementInstallmentController extends BaseController {
     public void setFile(UploadedFile file) {
         this.file = file;
     }
-    
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
     public String formatDate(Date dateToFormat) {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(dateToFormat);

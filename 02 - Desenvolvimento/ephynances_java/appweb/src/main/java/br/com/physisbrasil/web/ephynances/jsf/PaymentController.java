@@ -10,7 +10,6 @@ import br.com.physisbrasil.web.ephynances.model.Payment;
 import br.com.physisbrasil.web.ephynances.model.SubAgreementInstallment;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.math.BigDecimal;
-import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -84,8 +83,6 @@ public class PaymentController extends BaseController {
 
         return "/agreement/list";
     }
-
-    
 
     public Payment getPayment() {
         return payment;
