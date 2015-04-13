@@ -83,61 +83,44 @@ public class DaillyProcessController extends BaseController {
                             if (contract.getAgreementInstallments().size() > 0) {
                                 for (AgreementInstallment installment : contract.getAgreementInstallments()) {
                                     if (!installment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO()) && !installment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO())) {
-                                        if (installment.getLiberationDate() == null) {
-                                            //Data atual para verificar o prazo de 15 dias
-                                            Date d = new Date(System.currentTimeMillis());
 
-                                            // Calculando o atraso
-                                            Calendar c = Calendar.getInstance();
+                                        //Data atual para verificar o prazo de 15 dias
+                                        Date d = new Date(System.currentTimeMillis());
+
+                                        // Calculando o atraso
+                                        Calendar c = Calendar.getInstance();
+                                        if (installment.getLiberationDate() == null) {
                                             c.setTime(installment.getDueDate());
                                             c.set(Calendar.DATE, c.get(Calendar.DATE) + 15);
-
-                                            //Comparando com a data atual (se maior contrato atrasado)
-                                            if (c.getTime().after(d)) {
-                                                installment.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
-                                                agreementInstallmentBean.edit(installment);
-                                                agreementInstallmentBean.clearCache();
-
-                                                contract.setStatus(Agreement.getSTATE_SUSPENSO());
-                                                agreementBean.edit(contract);
-                                            } else {
-                                                if (installment.getSubAgreementInstallment() != null) {
-                                                    if (installment.getSubAgreementInstallment().getPayment() == null) {
-                                                        if (!contract.getStatus().equalsIgnoreCase(Agreement.getSTATE_SUSPENSO())) {
-                                                            contract.setStatus(Agreement.getSTATE_ALERTA());
-                                                            agreementBean.edit(contract);
-                                                        }
-                                                    }
-                                                }
-                                            }
                                         } else {
-                                            //Data atual para verificar o prazo de 15 dias
-                                            Date d = new Date(System.currentTimeMillis());
-
-                                            // Calculando o atraso
-                                            Calendar c = Calendar.getInstance();
                                             c.setTime(installment.getLiberationDate());
                                             c.set(Calendar.DATE, c.get(Calendar.DATE) + 15);
+                                        }
 
-                                            //Comparando com a data atual (se maior contrato atrasado)
-                                            if (c.getTime().after(d)) {
-                                                installment.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
-                                                agreementInstallmentBean.edit(installment);
-                                                agreementInstallmentBean.clearCache();
+                                        //Comparando com a data atual (se maior contrato atrasado)
+                                        if (c.getTime().after(d)) {
+                                            installment.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
+                                            agreementInstallmentBean.edit(installment);
+                                            agreementInstallmentBean.clearCache();
 
-                                                contract.setStatus(Agreement.getSTATE_SUSPENSO());
-                                                agreementBean.edit(contract);
-                                            } else {
-                                                if (installment.getSubAgreementInstallment() != null) {
-                                                    if (installment.getSubAgreementInstallment().getPayment() == null) {
-                                                        if (!contract.getStatus().equalsIgnoreCase(Agreement.getSTATE_SUSPENSO())) {
-                                                            contract.setStatus(Agreement.getSTATE_ALERTA());
-                                                            agreementBean.edit(contract);
-                                                        }
+                                            contract.setStatus(Agreement.getSTATE_SUSPENSO());
+                                            agreementBean.edit(contract);
+
+                                            //Alertar admins e vendedor responsável pelo contrato do atraso
+                                            sendEmailToAdmins("Contrato de número: " + contract.getPhysisAgreementNumber() + " em atraso!!");
+                                            sendEmailToSeller("Contrato de número: " + contract.getPhysisAgreementNumber() + " em atraso!!", contract.getUser());
+                                        } else {
+                                            if (installment.getSubAgreementInstallment() != null) {
+                                                if (installment.getSubAgreementInstallment().getPayment() == null) {
+                                                    if (!contract.getStatus().equalsIgnoreCase(Agreement.getSTATE_SUSPENSO())) {
+                                                        contract.setStatus(Agreement.getSTATE_ALERTA());
+                                                        agreementBean.edit(contract);
                                                     }
                                                 }
                                             }
                                         }
+
+                                        //Comparando se esta próximo da data (alerta de 15 dias restantes)
                                     }
                                 }
                             }
@@ -165,6 +148,17 @@ public class DaillyProcessController extends BaseController {
                     Logger.getLogger(DaillyProcessController.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+        }
+    }
+
+    public void sendEmailToSeller(String message, User user) {
+        try {
+            if (user != null) {
+                Utils.sendEmail(user.getEmail(), user.getName(), message, configuration.getSmtpServer(), configuration.getEmail(), "Função automática ephynances",
+                        configuration.getUserName(), configuration.getPassword(), configuration.getSmtpPort(), configuration.getEmail());
+            }
+        } catch (MessagingException ex) {
+            Logger.getLogger(DaillyProcessController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
