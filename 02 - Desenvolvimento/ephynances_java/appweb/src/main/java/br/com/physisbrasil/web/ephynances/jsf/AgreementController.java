@@ -10,7 +10,6 @@ import br.com.physisbrasil.web.ephynances.model.Agreement;
 import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;
 import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
-import br.com.physisbrasil.web.ephynances.model.SubAgreementInstallment;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
