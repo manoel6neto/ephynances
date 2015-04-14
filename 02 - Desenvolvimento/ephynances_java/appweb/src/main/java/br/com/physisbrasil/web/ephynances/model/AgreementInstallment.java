@@ -24,6 +24,7 @@ import javax.ws.rs.DefaultValue;
 public class AgreementInstallment implements BaseModel, Comparable<AgreementInstallment> {
 
     private static final String STATUS_PENDENTE = "Pendente";
+    private static final String STATUS_ATRASADO = "Atrasado";
     private static final String STATUS_PAGO_SEM_CONFIRMACAO = "Paga sem confirmação";
     private static final String STATUS_PAGO_COM_CONFIRMACAO = "Paga com confirmação";
     private static final String STATUS_PENDENTE_COM_LIBERACAO = "Pendente - Liberado manualmente";
@@ -143,6 +144,10 @@ public class AgreementInstallment implements BaseModel, Comparable<AgreementInst
 
     public static String getSTATUS_PENDENTE_COM_LIBERACAO() {
         return STATUS_PENDENTE_COM_LIBERACAO;
+    }
+
+    public static String getSTATUS_ATRASADO() {
+        return STATUS_ATRASADO;
     }
 
     @Override

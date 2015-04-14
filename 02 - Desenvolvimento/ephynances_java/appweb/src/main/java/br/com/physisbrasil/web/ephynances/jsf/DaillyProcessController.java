@@ -86,6 +86,7 @@ public class DaillyProcessController extends BaseController {
         try {
             agreementBean.clearCache();
             agreementInstallmentBean.clearCache();
+            agreements = agreementBean.findAll();
             if (agreements != null) {
                 if (agreements.size() > 0) {
                     for (Agreement contract : agreements) {
@@ -96,60 +97,66 @@ public class DaillyProcessController extends BaseController {
                                     boolean hasPendingPayment = false;
                                     boolean hasPendingSubAgreementInstallment = false;
                                     for (AgreementInstallment installment : contract.getAgreementInstallments()) {
+                                        if (installment.getPayment() == null) {
+                                            //Data atual para verificar o prazo de 15 dias
+                                            Date d = new Date(System.currentTimeMillis());
 
-                                        //Data atual para verificar o prazo de 15 dias
-                                        Date d = new Date(System.currentTimeMillis());
+                                            // Calculando o atraso
+                                            Calendar c = Calendar.getInstance();
+                                            c.setTime(d);
+                                            c.set(Calendar.DATE, c.get(Calendar.DATE) - 15);
 
-                                        // Calculando o atraso
-                                        Calendar c = Calendar.getInstance();
-                                        if (installment.getLiberationDate() == null) {
-                                            c.setTime(installment.getDueDate());
-                                            c.set(Calendar.DATE, c.get(Calendar.DATE) + 15);
-                                        } else {
-                                            c.setTime(installment.getLiberationDate());
-                                            c.set(Calendar.DATE, c.get(Calendar.DATE) + 15);
-                                        }
+                                            //Comparando com a data atual (se maior contrato atrasado)
+                                            if (installment.getLiberationDate() == null) {
+                                                if (installment.getDueDate().before(c.getTime())) {
+                                                    installment.setStatus(AgreementInstallment.getSTATUS_ATRASADO());
+                                                    agreementInstallmentBean.edit(installment);
+                                                    agreementInstallmentBean.clearCache();
 
-                                        //Comparando com a data atual (se maior contrato atrasado)
-                                        if (c.getTime().after(d)) {
-                                            installment.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
-                                            agreementInstallmentBean.edit(installment);
-                                            agreementInstallmentBean.clearCache();
+                                                    hasPendingPayment = true;
+                                                }
+                                            } else {
+                                                if (installment.getLiberationDate().before(c.getTime())) {
+                                                    installment.setStatus(AgreementInstallment.getSTATUS_ATRASADO());
+                                                    agreementInstallmentBean.edit(installment);
+                                                    agreementInstallmentBean.clearCache();
 
-                                            hasPendingPayment = true;
-                                        } else {
+                                                    hasPendingPayment = true;
+                                                }
+                                            }
+
                                             if (installment.getSubAgreementInstallment() != null) {
                                                 if (installment.getSubAgreementInstallment().getPayment() == null) {
                                                     hasPendingSubAgreementInstallment = true;
                                                 }
                                             }
-                                        }
 
-                                        //Comparando se esta próximo da data (alerta de 15 dias restantes)
-                                        //Data atual
-                                        d = new Date(System.currentTimeMillis());
+                                            //Comparando se esta próximo da data (alerta de 15 dias restantes)
+                                            //Data atual
+                                            d = new Date(System.currentTimeMillis());
 
-                                        //Calcula de hoje mais 15 dias
-                                        c = Calendar.getInstance();
-                                        c.setTime(d);
-                                        c.set(Calendar.DATE, c.get(Calendar.DATE) + 15);
+                                            //Calcula de hoje mais 15 dias
+                                            c = Calendar.getInstance();
+                                            c.setTime(d);
+                                            c.set(Calendar.DATE, c.get(Calendar.DATE) + 15);
 
-                                        //Se teve liberação utilizar a data da liberação como referência
-                                        if (installment.getLiberationDate() == null) {
-                                            if (c.getTime().equals(installment.getDueDate())) {
-                                                //Envia email alertando da proximidade do vencimento
-                                                sendEmailToAdmins("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com vencimento em 15 dias");
-                                                sendEmailToSeller("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com vencimento em 15 dias", contract.getUser());
-                                                sendEmailToManagerAndContact("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com vencimento em 15 dias",
-                                                        contract.getManagerEmail(), contract.getManagerName(), contract.getContactEmail());
-                                            }
-                                        } else {
-                                            if (c.getTime().equals(installment.getLiberationDate())) {
-                                                //Envia email alertando da proximidade do vencimento (após liberação)
-                                                sendEmailToAdmins("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com (novo) vencimento em 15 dias");
-                                                sendEmailToSeller("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com (novo) vencimento em 15 dias", contract.getUser());
-                                                sendEmailToManagerAndContact("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com vencimento em 15 dias",
-                                                        contract.getManagerEmail(), contract.getManagerName(), contract.getContactEmail());
+                                            //Se teve liberação utilizar a data da liberação como referência
+                                            if (installment.getLiberationDate() == null) {
+                                                if (c.getTime().equals(installment.getDueDate())) {
+                                                    //Envia email alertando da proximidade do vencimento
+                                                    sendEmailToAdmins("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com vencimento em 15 dias");
+                                                    sendEmailToSeller("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com vencimento em 15 dias", contract.getUser());
+                                                    sendEmailToManagerAndContact("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com vencimento em 15 dias",
+                                                            contract.getManagerEmail(), contract.getManagerName(), contract.getContactEmail());
+                                                }
+                                            } else {
+                                                if (c.getTime().equals(installment.getLiberationDate())) {
+                                                    //Envia email alertando da proximidade do vencimento (após liberação)
+                                                    sendEmailToAdmins("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com (novo) vencimento em 15 dias");
+                                                    sendEmailToSeller("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com (novo) vencimento em 15 dias", contract.getUser());
+                                                    sendEmailToManagerAndContact("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcela no valor de : R$" + installment.getValue() + " com vencimento em 15 dias",
+                                                            contract.getManagerEmail(), contract.getManagerName(), contract.getContactEmail());
+                                                }
                                             }
                                         }
                                     }
@@ -188,7 +195,7 @@ public class DaillyProcessController extends BaseController {
                                             contract.setStatus(Agreement.getSTATE_ATIVO());
                                             agreementBean.edit(contract);
                                             agreementBean.clearCache();
-                                            
+
                                             changeStatusGestorEsicar(contract.getManagerCpf(), "A");
                                         }
                                     }
