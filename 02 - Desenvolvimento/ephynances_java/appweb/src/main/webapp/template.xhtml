@@ -106,10 +106,7 @@
                                             <p:menuitem value="CONTRATOS" outcome="/agreement/list" />
                                             <p:menuitem value="NOVO CONTRATO" action="#{agreementController.startAgreement(loginController.loggedUser.id)}" />
                                         </p:submenu>
-                                        <p:submenu label="FINANCEIRO" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER) || loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}">
-                                            <p:menuitem value="PARCELAS" outcome="/index.xhtml" />
-                                            <p:menuitem value="PAGAMENTOS" outcome="/index.xhtml" />
-                                        </p:submenu>
+                                        <p:menuitem value="COMISSÕES" action="#{agreementController.startAgreement(loginController.loggedUser.id)}" />
                                         <p:submenu label="GERAL">
                                             <p:menuitem value="REGIÕES" outcome="/region/list" />
                                             <p:menuitem value="ESTADOS" outcome="/state/list" />

@@ -2,6 +2,7 @@ package br.com.physisbrasil.web.ephynances.ejb;
 
 import br.com.physisbrasil.web.ephynances.dao.DAO;
 import br.com.physisbrasil.web.ephynances.model.User;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.faces.bean.ViewScoped;
 import javax.persistence.TypedQuery;
@@ -30,7 +31,7 @@ public class UserBean extends DAO<User> {
 
         return usuario;
     }
-    
+
     public User findByCpfSenhaProfile(String cpf, String senha, String profile) {
         TypedQuery<User> namedQuery = getEntityManager().createNamedQuery("Usuario.findByCpfSenhaProfile", User.class);
 
@@ -62,7 +63,7 @@ public class UserBean extends DAO<User> {
 
         return usuario;
     }
-    
+
     public User findByEmailProfile(String email, String profile) {
         TypedQuery<User> namedQuery = getEntityManager().createNamedQuery("Usuario.findByEmailProfile", User.class);
 
@@ -77,5 +78,18 @@ public class UserBean extends DAO<User> {
         }
 
         return usuario;
+    }
+
+    public List<User> findSellers() {
+        TypedQuery<User> namedQuery = getEntityManager().createNamedQuery("Usuario.findSellers", User.class);
+
+        List<User> users;
+        try {
+            users = namedQuery.getResultList();
+        } catch (Exception e) {
+            users = null;
+        }
+
+        return users;
     }
 }

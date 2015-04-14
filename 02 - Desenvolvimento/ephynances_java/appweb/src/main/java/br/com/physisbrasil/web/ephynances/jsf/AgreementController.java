@@ -66,9 +66,6 @@ public class AgreementController extends BaseController {
     @EJB
     private AgreementInstallmentBean agreementInstallmentBean;
 
-    @EJB
-    private SubAgreementInstallmentBean subAgreementInstallmentBean;
-
     private boolean disableQuantCnpjs;
 
     private Map<String, String> statesCapital;

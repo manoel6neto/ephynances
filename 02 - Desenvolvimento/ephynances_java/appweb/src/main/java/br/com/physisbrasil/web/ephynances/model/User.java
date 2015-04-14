@@ -35,7 +35,9 @@ import javax.ws.rs.DefaultValue;
     @NamedQuery(name = "Usuario.findByEmail",
             query = "SELECT u FROM User u WHERE u.email = :email"),
     @NamedQuery(name = "Usuario.findByEmailProfile",
-            query = "SELECT u FROM User u WHERE u.email = :email AND u.profileRule = :profile")})
+            query = "SELECT u FROM User u WHERE u.email = :email AND u.profileRule = :profile"),
+    @NamedQuery(name = "Usuario.findSellers",
+            query = "SELECT u FROM User u WHERE u.profileRule = 'Representante'")})
 public class User implements BaseModel {
 
     private static final String RULER_ADMIN = "Administrador Geral";
@@ -94,7 +96,7 @@ public class User implements BaseModel {
 
     @Column(name = "number_autority", nullable = true)
     private int numberAutority;
-    
+
     @Column(name = "street", length = 200, nullable = true)
     private String street;
 
@@ -116,7 +118,7 @@ public class User implements BaseModel {
     @Column(name = "salary", nullable = false)
     @DefaultValue(value = "0")
     private int salary;
-    
+
     @Column(name = "id_admin_gestor", nullable = true)
     private Long idAdminGestor;
 
