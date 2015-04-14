@@ -14,7 +14,7 @@ values ('admin@physisbrasil.com.br', 'Administrador', 'c0859afbb1427c8ead10835ae
 
 -------- Configurations ---------
 insert into configuration(smtp_server, user_name, password, smtp_port, email, contract_seed)
-values ('smtp.gmail.com', 'manoel.carvalho.neto', 'mxthomasmx', 587, 'manoel.carvalho.neto@gmail.com', 1);
+values ('smtp.gmail.com', 'physisbrasil', 'Physis_2014', 587, 'physisbrasil@gmail.com', 1);
 
 --- Regions ---
 insert into region(name, acronym)

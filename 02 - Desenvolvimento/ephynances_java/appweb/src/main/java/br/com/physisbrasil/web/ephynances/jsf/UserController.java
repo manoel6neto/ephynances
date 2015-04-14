@@ -763,7 +763,7 @@ public class UserController extends BaseController {
 
     public void insertSellerEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "192.168.0.102";
+        String HOSTNAME = "192.168.0.103";
         String USERNAME = "root";
         String PASSWORD = "A7cbdd82@1";
         String DATABASE = "physi971_wp";

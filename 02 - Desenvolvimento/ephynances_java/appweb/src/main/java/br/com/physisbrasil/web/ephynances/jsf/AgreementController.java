@@ -44,42 +44,42 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 @ViewScoped
 public class AgreementController extends BaseController {
-
+    
     @EJB
     private AgreementBean agreementBean;
     private List<Agreement> agreements;
     private List<Agreement> filteredAgreements;
     private Agreement agreement;
     private List<ProponentSiconv> filteredProponents;
-
+    
     @EJB
     private UserBean userBean;
     private User agreementUser;
-
+    
     @EJB
     private ConfigurationBean configurationBean;
-
+    
     @EJB
     private ProponentSiconvBean proponentSiconvBean;
     private ProponentSiconv proponentSiconv;
-
+    
     @EJB
     private AgreementInstallmentBean agreementInstallmentBean;
     
     @EJB
     private SubAgreementInstallmentBean subAgreementInstallmentBean;
-
+    
     private boolean disableQuantCnpjs;
-
+    
     private Map<String, String> statesCapital;
-
+    
     @PostConstruct
     public void init() {
         if (agreements == null) {
             agreements = new ArrayList<Agreement>();
             setAgreements(agreementBean.findAll());
         }
-
+        
         if ((User) getFlash("userAgreement") != null) {
             agreementUser = (User) getFlash("userAgreement");
         } else {
@@ -87,7 +87,7 @@ public class AgreementController extends BaseController {
                 agreementUser = new User();
             }
         }
-
+        
         if ((Agreement) getFlash("agreement") != null) {
             agreement = (Agreement) getFlash("agreement");
         } else {
@@ -97,7 +97,7 @@ public class AgreementController extends BaseController {
                 agreement.setPeriod(12);
             }
         }
-
+        
         if ((List<Agreement>) getFlash("agreements") != null) {
             filteredAgreements = (List<Agreement>) getFlash("agreements");
         } else {
@@ -105,15 +105,15 @@ public class AgreementController extends BaseController {
                 filteredAgreements = new ArrayList<Agreement>();
             }
         }
-
+        
         if ((ProponentSiconv) getFlash("proponent") != null) {
             proponentSiconv = (ProponentSiconv) getFlash("proponent");
         } else {
             proponentSiconv = null;
         }
-
+        
         disableQuantCnpjs = false;
-
+        
         statesCapital = new HashMap<String, String>() {
             {
                 put("Acre", "RIO BRANCO");
@@ -146,7 +146,7 @@ public class AgreementController extends BaseController {
             }
         ;
     }
-
+    
     ;
     }
 
@@ -159,11 +159,11 @@ public class AgreementController extends BaseController {
             } else {
                 filteredAgreements = tempUser.getAgreements();
             }
-
+            
             putFlash("agreements", getFilteredAgreements());
         }
     }
-
+    
     public String startAgreement(Long userId) {
         userBean.clearCache();
         User tempUser = userBean.find(userId);
@@ -173,48 +173,48 @@ public class AgreementController extends BaseController {
             } else {
                 setAgreementUser(tempUser.getSellers().get(0).getSeller());
             }
-
+            
             putFlash("userAgreement", getAgreementUser());
             return "/agreement/create";
         }
-
+        
         return "/agreement/list";
     }
-
+    
     public String viewAgreement(Long agreementId) {
         agreementBean.clearCache();
         try {
             Agreement tempAgreement = agreementBean.find(agreementId);
             if (tempAgreement != null) {
-
+                
             }
-
+            
             return "/agreement/view";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao carregar contrato para visualização");
         }
-
+        
         return "/agreement/list";
     }
-
+    
     public String editAgreement(Long agreementId) {
         agreementBean.clearCache();
         if (agreementBean.find(agreementId) != null) {
             agreement = agreementBean.find(agreementId);
             proponentSiconv = proponentSiconvBean.find(agreement.getIdPrimaryCnpj());
             agreementUser = agreement.getUser();
-
+            
             putFlash("agreement", agreement);
             putFlash("userAgreement", agreementUser);
             putFlash("proponent", proponentSiconv);
-
+            
             return "/agreement/edit";
         } else {
             JsfUtil.addErrorMessage("Falha ao consultar o contrato informado.");
             return "/agreement/list";
         }
     }
-
+    
     public String delete(Long agreementId) {
         try {
             if (agreementId > 0) {
@@ -227,13 +227,13 @@ public class AgreementController extends BaseController {
                         proponentSiconvBean.edit(p);
                         proponentSiconvBean.clearCache();
                     }
-
+                    
                     agreementBean.clearCache();
                     agreement = agreementBean.find(tempAgreement.getId());
                     Long userId = agreement.getUser().getId();
                     agreementBean.remove(agreement);
                     agreementBean.clearCache();
-
+                    
                     getListFilteredBySeller(userId);
                     JsfUtil.addSuccessMessage("Contrato removido com sucesso.");
                 }
@@ -241,10 +241,10 @@ public class AgreementController extends BaseController {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao apagar o contrato.");
         }
-
+        
         return "/agreement/list";
     }
-
+    
     public void forgiveDebits(Long agreementId) {
         try {
             agreementBean.clearCache();
@@ -254,6 +254,16 @@ public class AgreementController extends BaseController {
                     for (AgreementInstallment installment : tempAgreement.getAgreementInstallments()) {
                         if (installment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PENDENTE())) {
                             installment.setStatus(AgreementInstallment.getSTATUS_PENDENTE_COM_LIBERACAO());
+
+                            //Definindo a data para vencimento após liberação
+                            Date d = new Date(System.currentTimeMillis());
+
+                            //Calcula de hoje mais 15 dias
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(d);
+                            c.set(Calendar.DATE, c.get(Calendar.DATE) + 15);
+                            installment.setLiberationDate(c.getTime());
+                            
                             agreementInstallmentBean.edit(installment);
                         }
                         agreementInstallmentBean.clearCache();
@@ -267,7 +277,7 @@ public class AgreementController extends BaseController {
 
                         //Mudar status no esicar
                         changeStatusGestorEsicar(tempAgreement.getManagerCpf(), "A");
-
+                        
                         JsfUtil.addSuccessMessage("Contrato reativado com sucesso !!");
                     }
                 }
@@ -276,7 +286,7 @@ public class AgreementController extends BaseController {
             JsfUtil.addErrorMessage(e, "Falha ao consultar/alterar status do contrato.");
         }
     }
-
+    
     public String hasMissingPayment(Long agreementId) {
         try {
             agreementBean.clearCache();
@@ -291,7 +301,7 @@ public class AgreementController extends BaseController {
         }
         return String.valueOf(false);
     }
-
+    
     public void activateAgreement(Long agreementId) {
         agreementBean.clearCache();
         Agreement tempAgreement = agreementBean.find(agreementId);
@@ -315,7 +325,7 @@ public class AgreementController extends BaseController {
             }
         }
     }
-
+    
     public String checkStatusAgreement(Long agreementId) {
         if (getUsuarioLogado().getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
             Agreement tempAgreement = agreementBean.find(agreementId);
@@ -325,10 +335,10 @@ public class AgreementController extends BaseController {
                 }
             }
         }
-
+        
         return String.valueOf(false);
     }
-
+    
     public String addAgreement() {
         try {
             if (agreement != null) {
@@ -339,13 +349,13 @@ public class AgreementController extends BaseController {
                             putFlash("userAgreement", getAgreementUser());
                             return "/agreement/create";
                         }
-
+                        
                         proponentSiconvBean.clearCache();
                         if (agreement.getId() != null) {
                             //Update  
                             agreementBean.edit(agreement);
                             agreementBean.clearCache();
-
+                            
                             JsfUtil.addSuccessMessage("Contrato atualizado com sucesso.");
                         } else {
                             //Create
@@ -366,7 +376,7 @@ public class AgreementController extends BaseController {
                                     agreement.setIdPrimaryCnpj(proponentSiconv.getId());
                                 }
                             }
-
+                            
                             agreementBean.create(agreement);
                             agreementBean.clearCache();
 
@@ -400,10 +410,10 @@ public class AgreementController extends BaseController {
                             config.setContractSeed(config.getContractSeed() + 1);
                             configurationBean.edit(config);
                             configurationBean.clearCache();
-
+                            
                             JsfUtil.addSuccessMessage("Contrato cadastrado com sucesso.");
                         }
-
+                        
                         return "/agreement/list";
                     }
                 }
@@ -411,80 +421,80 @@ public class AgreementController extends BaseController {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao cadastrar contrato.");
         }
-
+        
         return "/agreement/create";
     }
-
+    
     public Agreement getAgreement() {
         return agreement;
     }
-
+    
     public void setAgreement(Agreement agreement) {
         this.agreement = agreement;
     }
-
+    
     public User getAgreementUser() {
         return agreementUser;
     }
-
+    
     public void setAgreementUser(User agreementUser) {
         this.agreementUser = agreementUser;
     }
-
+    
     public List<Agreement> getAgreements() {
         return agreements;
     }
-
+    
     public void setAgreements(List<Agreement> agreements) {
         this.agreements = agreements;
     }
-
+    
     public List<Agreement> getFilteredAgreements() {
         return filteredAgreements;
     }
-
+    
     public void setFilteredAgreements(List<Agreement> filteredAgreements) {
         this.filteredAgreements = filteredAgreements;
     }
-
+    
     public ProponentSiconv getProponentSiconv() {
         return proponentSiconv;
     }
-
+    
     public void setProponentSiconv(ProponentSiconv proponentSiconv) {
         this.proponentSiconv = proponentSiconv;
     }
-
+    
     public List<ProponentSiconv> getFilteredProponents() {
         return filteredProponents;
     }
-
+    
     public void setFilteredProponents(List<ProponentSiconv> filteredProponents) {
         this.filteredProponents = filteredProponents;
     }
-
+    
     public String formatDate(Date dateToFormat) {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(dateToFormat);
     }
-
+    
     public String formatDateToMysql(Date dateToFormat) {
         DateFormat outputFormatter = new SimpleDateFormat("yyyyMMdd");
         return outputFormatter.format(dateToFormat);
     }
-
+    
     public List<String> getAgreementTypes() {
         return Agreement.getAGREEMENT_TYPES();
     }
-
+    
     public boolean isDisableQuantCnpjs() {
         return disableQuantCnpjs;
     }
-
+    
     public void setDisableQuantCnpjs(boolean disableQuantCnpjs) {
         this.disableQuantCnpjs = disableQuantCnpjs;
     }
-
+    
     public String createPhysisAgreementNumber() {
         //5 digitos sequenciais / ANO
         Configuration config = configurationBean.findAll().get(0);
@@ -492,13 +502,13 @@ public class AgreementController extends BaseController {
         while (number.length() < 6) {
             number = "0" + number;
         }
-
+        
         Date data = new Date(System.currentTimeMillis());
         DateFormat format = new SimpleDateFormat("yyyy");
         String contractNumber = number + "/" + format.format(data);
         return contractNumber;
     }
-
+    
     public void filterProponentsForAgreementType() {
         List<ProponentSiconv> tempList = new ArrayList<ProponentSiconv>();
         String type = "";
@@ -514,7 +524,7 @@ public class AgreementController extends BaseController {
                     } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PRIVADO())) {
                         type = "PRIVADA";
                     }
-
+                    
                     if (!agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PARLAMENTAR())) {
                         if (prop.getEsferaAdministrativa().equalsIgnoreCase(type)) {
                             if (prop.getAgreement() == null) {
@@ -525,10 +535,10 @@ public class AgreementController extends BaseController {
                 }
             }
         }
-
+        
         setFilteredProponents(tempList);
     }
-
+    
     public void checkQuantCnpjMunicipal() {
         if (agreement != null) {
             if (!agreement.getAgreementType().equals("")) {
@@ -569,7 +579,7 @@ public class AgreementController extends BaseController {
             disableQuantCnpjs = false;
         }
     }
-
+    
     public String checkIsType(String type) {
         if (agreement.getAgreementType() != null) {
             return String.valueOf(agreement.getAgreementType().equalsIgnoreCase(type));
@@ -577,7 +587,7 @@ public class AgreementController extends BaseController {
             return String.valueOf(false);
         }
     }
-
+    
     public void insertGestorEsicar(Long userId, String tipoGestor) {
         //Propriedades de conexao
         String HOSTNAME = "192.168.0.105";
@@ -603,19 +613,19 @@ public class AgreementController extends BaseController {
                 int id = 0;
                 int id_gestor = 0;
                 int id_cnpj;
-
+                
                 sql = "SELECT id_usuario FROM usuario WHERE login = " + agreement.getManagerCpf().replace(".", "").replace("-", "");
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     id = rs.getInt("id_usuario");
                 }
                 rs.close();
-
+                
                 if (id == 0) {
                     //Insert
                     sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha, status) VALUES ('" + agreement.getManagerName() + "', '" + agreement.getManagerEmail() + "', '"
                             + agreement.getManagerCpf().replace(".", "").replace("-", "") + "', " + 2 + ", '" + agreement.getManagerEntity() + "', " + "NOW()" + ", '', 'I')";
-
+                    
                     if (stmt.executeUpdate(sql) == 1) {
                         //ler o id
                         sql = "SELECT id_usuario FROM usuario WHERE login = " + agreement.getManagerCpf().replace(".", "").replace("-", "");
@@ -624,7 +634,7 @@ public class AgreementController extends BaseController {
                             id = rs.getInt("id_usuario");
                         }
                         rs.close();
-
+                        
                         if (id != 0) {
                             //Salvar as outras tabelas
 
@@ -636,7 +646,7 @@ public class AgreementController extends BaseController {
                                 sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor) VALUES ('%s', %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor);
                                 stmt.executeUpdate(sql);
                             }
-
+                            
                             sql = String.format("SELECT id_gestor FROM gestor WHERE id_usuario = %s", id);
                             rs = stmt.executeQuery(sql);
                             while (rs.next()) {
@@ -671,7 +681,7 @@ public class AgreementController extends BaseController {
                             }
                         }
                     }
-
+                    
                     rs.close();
                     stmt.close();
                     conn.close();
@@ -683,7 +693,7 @@ public class AgreementController extends BaseController {
             }
         }
     }
-
+    
     public void changeStatusGestorEsicar(String cpf, String status) {
         //Propriedades de conexao
         String HOSTNAME = "localhost";
@@ -693,24 +703,24 @@ public class AgreementController extends BaseController {
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
         String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/comunica_financeiro/ativa_desativa_usuario?id=";
-
+        
         Connection conn;
         Statement stmt;
-
+        
         try {
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
             stmt = conn.createStatement();
             String sql;
             int id = 0;
-
+            
             sql = "SELECT id_usuario FROM usuario WHERE login = " + cpf.replace(".", "").replace("-", "");
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 id = rs.getInt("id_usuario");
             }
             rs.close();
-
+            
             if (id != 0) {
                 //Ativar usuário no esicar                              
                 URL urlcon = new URL(URLESICAR + id + "&status=" + status);
@@ -720,7 +730,7 @@ public class AgreementController extends BaseController {
                     JsfUtil.addErrorMessage("Falha ao solicitar alteração de status no esicar");
                 }
             }
-
+            
             rs.close();
             stmt.close();
             conn.close();
