@@ -1,10 +1,17 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
+import br.com.physisbrasil.web.ephynances.model.Agreement;
 import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;
-import br.com.physisbrasil.web.ephynances.model.SubAgreementInstallment;
+import br.com.physisbrasil.web.ephynances.model.Payment;
 import br.com.physisbrasil.web.ephynances.model.User;
+import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,12 +33,15 @@ public class ComissionController extends BaseController {
     private List<User> users;
     private User selectedUser;
 
-    private List<AgreementInstallment> agreementInstallmentsForTotal;
-    private List<SubAgreementInstallment> subAgreementInstallmentsForTotal;
+    private List<Payment> payments;
     private BigDecimal total;
-    
-    private Map<Integer, String> months;
-    
+    private BigDecimal comission;
+
+    private Map<String, Integer> months;
+    private String selectedMonth;
+    private int selectedYear;
+
+    private boolean showForms;
 
     @PostConstruct
     public void init() {
@@ -51,50 +61,82 @@ public class ComissionController extends BaseController {
                 users = userBean.findSellers();
             }
         }
-        
-        months = new HashMap<Integer, String>() {
+
+        months = new HashMap<String, Integer>() {
             {
-                put(1, "RIO BRANCO");
-                put(2, "MACAPÁ");
-                put(3, "MANAUS");
-                put(4, "BELÉM");
-                put(5, "PORTO VELHO");
-                put(6, "BOA VISTA");
-                put(7, "PALMAS");
-                put("Alagoas", "MACEIÓ");
-                put("Bahia", "SALVADOR");
-                put("Ceará", "FORTALEZA");
-                put("Maranhão", "SÃO LUÍS");
-                put("Paraíba", "JOÃO PESSOA");
-                put("Piauí", "TERESINA");
-                put("Pernambuco", "RECIFE");
-                put("Rio Grande do Norte", "NATAL");
-                put("Sergipe", "ARACAJU");
-                put("São Paulo", "SÃO PAULO");
-                put("Minas Gerais", "BELO HORIZONTE");
-                put("Rio de Janeiro", "RIO DE JANEIRO");
-                put("Espírito Santo", "VITÓRIA");
-                put("Goiás", "GOIANIA");
-                put("Distrito Federal", "BRASÍLIA");
-                put("Mato Grosso", "CUIABÁ");
-                put("Mato Grosso do Sul", "CAMPO GRANDE");
-                put("Paraná", "CURITÍBA");
-                put("Santa Catarina", "FLORIANÓPOLIS");
-                put("Rio Grande do Sul", "PORTO ALEGRE");
+                put("Janeiro", 0);
+                put("Fevereiro", 1);
+                put("Março", 2);
+                put("Abril", 3);
+                put("Maio", 4);
+                put("Junho", 5);
+                put("Julho", 6);
+                put("Agosto", 7);
+                put("Setembro", 8);
+                put("Outubro", 9);
+                put("Novembro", 10);
+                put("Dezembro", 11);
             }
         ;
+        }
+    
+    ;
+        payments = new ArrayList<Payment>();
+        selectedYear = Calendar.getInstance().get(Calendar.YEAR);
+        total = new BigDecimal(0);
+        showForms = false;
     }
 
-    ;
-    }
-    
-    public void calcComission(int month) {
-        if (selectedUser != null) {
-            if (selectedUser.getAgreements() != null) {
-                if (selectedUser.getAgreements().size() > 0) {
-                    //create code to calculate comission
+    public void calcComission() {
+        try {
+            if (selectedUser != null) {
+                if (selectedUser.getAgreements() != null) {
+                    if (selectedUser.getAgreements().size() > 0) {
+                        for (Agreement agreement : selectedUser.getAgreements()) {
+                            if (agreement.getAgreementInstallments() != null) {
+                                if (agreement.getAgreementInstallments().size() > 0) {
+                                    for (AgreementInstallment installment : agreement.getAgreementInstallments()) {
+                                        if (installment.getPayment() != null) {
+                                            if (installment.getPayment().getConfirmationDate() != null) {
+                                                Calendar c = Calendar.getInstance();
+                                                c.setTime(installment.getPayment().getConfirmationDate());
+                                                if (c.get(Calendar.YEAR) == selectedYear && c.get(Calendar.MONTH) == months.get(selectedMonth)) {
+                                                    payments.add(installment.getPayment());
+                                                }
+
+                                                if (installment.getSubAgreementInstallment() != null) {
+                                                    if (installment.getSubAgreementInstallment().getPayment() != null) {
+                                                        if (installment.getSubAgreementInstallment().getPayment().getConfirmationDate() != null) {
+                                                            c = Calendar.getInstance();
+                                                            c.setTime(installment.getSubAgreementInstallment().getPayment().getConfirmationDate());
+                                                            if (c.get(Calendar.YEAR) == selectedYear && c.get(Calendar.MONTH) == months.get(selectedMonth)) {
+                                                                payments.add(installment.getSubAgreementInstallment().getPayment());
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        if (payments.size() > 0) {
+                            for (Payment pay : payments) {
+                                total = total.add(pay.getTotalValue());
+                            }
+
+                            comission = total.multiply(new BigDecimal(selectedUser.getCommission() / 100));
+                            showForms = true;
+                        } else {
+                            JsfUtil.addErrorMessage("Nenhum pagamento identificado no mês e ano informados. Nenhum valor a receber !!");
+                        }
+                    }
                 }
             }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao executar consultas para calcular a comissão do vendedor.");
         }
     }
 
@@ -114,14 +156,6 @@ public class ComissionController extends BaseController {
         this.selectedUser = selectedUser;
     }
 
-    public List<AgreementInstallment> getAgreementInstallmentsForTotal() {
-        return agreementInstallmentsForTotal;
-    }
-
-    public void setAgreementInstallmentsForTotal(List<AgreementInstallment> agreementInstallmentsForTotal) {
-        this.agreementInstallmentsForTotal = agreementInstallmentsForTotal;
-    }
-
     public BigDecimal getTotal() {
         return total;
     }
@@ -130,11 +164,75 @@ public class ComissionController extends BaseController {
         this.total = total;
     }
 
-    public List<SubAgreementInstallment> getSubAgreementInstallmentsForTotal() {
-        return subAgreementInstallmentsForTotal;
+    public String getSelectedMonth() {
+        return selectedMonth;
     }
 
-    public void setSubAgreementInstallmentsForTotal(List<SubAgreementInstallment> subAgreementInstallmentsForTotal) {
-        this.subAgreementInstallmentsForTotal = subAgreementInstallmentsForTotal;
+    public void setSelectedMonth(String selectedMonth) {
+        this.selectedMonth = selectedMonth;
+    }
+
+    public Map<String, Integer> getMonths() {
+        return months;
+    }
+
+    public void setMonths(Map<String, Integer> months) {
+        this.months = months;
+    }
+
+    public int getSelectedYear() {
+        return selectedYear;
+    }
+
+    public void setSelectedYear(int selectedYear) {
+        this.selectedYear = selectedYear;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
+    }
+
+    public BigDecimal getComission() {
+        return comission;
+    }
+
+    public void setComission(BigDecimal comission) {
+        this.comission = comission;
+    }
+
+    public boolean isShowForms() {
+        return showForms;
+    }
+
+    public void setShowForms(boolean showForms) {
+        this.showForms = showForms;
+    }
+
+    public List<String> returnListOfMonthsFromHashMap() {
+        List<String> tempList = new ArrayList<String>();
+
+        tempList.add("Janeiro");
+        tempList.add("Fevereiro");
+        tempList.add("Março");
+        tempList.add("Abril");
+        tempList.add("Maio");
+        tempList.add("Junho");
+        tempList.add("Julho");
+        tempList.add("Agosto");
+        tempList.add("Setembro");
+        tempList.add("Outubro");
+        tempList.add("Novembro");
+        tempList.add("Dezembro");
+        
+        return tempList;
+    }
+    
+    public String formatDate(Date dateToFormat) {
+        DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
+        return outputFormatter.format(dateToFormat);
     }
 }

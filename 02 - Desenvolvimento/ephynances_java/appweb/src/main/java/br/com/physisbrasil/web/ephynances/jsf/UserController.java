@@ -763,10 +763,10 @@ public class UserController extends BaseController {
 
     public void insertSellerEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "localhost";
+        String HOSTNAME = "192.168.0.103";
         String USERNAME = "root";
-        String PASSWORD = "Physis_2013";
-        String DATABASE = "physis_esicar";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
         String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
@@ -783,8 +783,15 @@ public class UserController extends BaseController {
                 stmt = conn.createStatement();
                 String sql;
                 int id = 0;
+                
+                int nivel = 0;
+                if (tempUser.getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
+                    nivel = 1;
+                } else {
+                    nivel = 4;
+                }
 
-                sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
+                sql = String.format("SELECT id_usuario FROM usuario WHERE login = '%s' AND id_nivel = %s", tempUser.getCpf().replace(".", "").replace("-", ""), nivel);
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     id = rs.getInt("id_usuario");
@@ -895,10 +902,10 @@ public class UserController extends BaseController {
 
     public void changeStatusUserEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "localhost";
+        String HOSTNAME = "192.168.0.103";
         String USERNAME = "root";
-        String PASSWORD = "Physis_2013";
-        String DATABASE = "physis_esicar";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
 
@@ -913,8 +920,15 @@ public class UserController extends BaseController {
                 stmt = conn.createStatement();
                 String sql;
                 int id = 0;
+                
+               int nivel = 0;
+                if (tempUser.getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
+                    nivel = 1;
+                } else {
+                    nivel = 4;
+                }
 
-                sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
+                sql = String.format("SELECT id_usuario FROM usuario WHERE login = '%s' AND id_nivel = %s", tempUser.getCpf().replace(".", "").replace("-", ""), nivel);
                 ResultSet rs = stmt.executeQuery(sql);
                 while (rs.next()) {
                     id = rs.getInt("id_usuario");

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html" 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core" >
+
+    <ui:composition template="/template.xhtml"> 
+        <ui:define name="title"> 
+            <h:outputText  value="Calculadora de comissões"/>
+        </ui:define>
+        <ui:define name="body"  >
+            <h:form id="form" styleClass="form">
+                <br class="clear" />
+                <br/>
+                <p:fieldset legend="Filtros" toggleable="true" collapsed="false">
+                    <br class="clear" />
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Representante: " for="menuRepresentantes" />
+                        <br/>
+                        <p:selectOneMenu id="menuRepresentantes" style="width: 200px" value="#{comissionController.selectedUser}" required="true" effect="fade" converter="userConverter">
+                            <f:selectItem noSelectionOption="true" itemLabel="Selecione um representante"/>
+                            <f:selectItems value="#{comissionController.users}" var="user" itemLabel="#{user.name}" itemValue="#{user}" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Mês: " for="menuMeses" />
+                        <br/>
+                        <p:selectOneMenu id="menuMeses" style="width: 200px" value="#{comissionController.selectedMonth}" required="true" effect="fade">
+                            <f:selectItems value="#{comissionController.returnListOfMonthsFromHashMap()}" var="month" itemLabel="#{month}" itemValue="#{month}" />
+                        </p:selectOneMenu>
+                    </div>
+
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Ano: " for="inputAno" />
+                        <br/>
+                        <p:inputText style="width: 200px" id="inputAno" value="#{comissionController.selectedYear}"/>
+                    </div>
+
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:commandButton id="filterButton" value="Calcular" update="@form" ajax="false" actionListener="#{comissionController.calcComission()}" />
+                    </div>
+
+                    <br class="clear" />
+                    <br/>
+                </p:fieldset>
+
+                <h:panelGroup rendered="#{comissionController.showForms}" >
+                    <br class="clear" />
+                    <br/>
+                    <p:fieldset legend="Comissão" toggleable="true" collapsed="false" >
+                        <br class="clear" />
+                        <br/>
+                        <p:dataTable id="table" widgetVar="table" value="#{comissionController.payments}" var="item" lazy="false" 
+                                     rows="15" paginator="true"  paginatorPosition="bottom" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
+                                     emptyMessage="Nenhum documento encontrado!"  sortBy="#{item.confirmationDate}">
+
+                            <p:column style="text-align: center" headerText="Data pagamento" sortBy="#{item.paymentDate}">                       
+                                <h:outputText value="#{comissionController.formatDate(item.paymentDate)}" />
+                            </p:column>
+
+                            <p:column style="text-align: center" headerText="Data confirmação" sortBy="#{item.confirmationDate}">                       
+                                <h:outputText value="#{comissionController.formatDate(item.confirmationDate)}" />
+                            </p:column>
+
+                            <p:column style="text-align: center" headerText="Valor pago" sortBy="#{item.totalValue}">                       
+                                <h:outputText value="#{item.totalValue}" />
+                            </p:column>
+                        </p:dataTable>
+
+                        <br class="clear" />
+                        <br/>
+                        <div class="grid_4 alpha" >
+                            <p:outputLabel value="TOTAL: " for="inputTotal" style="color: #000000; font-style: oblique; font-size: medium"/>
+                            <p:inputText id="inputTotal" value="#{comissionController.total}" readonly="true"/>
+                        </div>
+
+                        <br class="clear" />
+                        <br/>
+                    </p:fieldset>
+                </h:panelGroup>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>

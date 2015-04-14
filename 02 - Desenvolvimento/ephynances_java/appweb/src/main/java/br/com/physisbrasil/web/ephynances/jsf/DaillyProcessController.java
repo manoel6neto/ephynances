@@ -254,10 +254,10 @@ public class DaillyProcessController extends BaseController {
 
     public void changeStatusGestorEsicar(String cpf, String status) {
         //Propriedades de conexao
-        String HOSTNAME = "localhost";
+        String HOSTNAME = "192.168.0.103";
         String USERNAME = "root";
-        String PASSWORD = "Physis_2013";
-        String DATABASE = "physis_esicar";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
         String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/comunica_financeiro/ativa_desativa_usuario?id=";
@@ -272,7 +272,7 @@ public class DaillyProcessController extends BaseController {
             String sql;
             int id = 0;
 
-            sql = "SELECT id_usuario FROM usuario WHERE login = " + cpf.replace(".", "").replace("-", "");
+            sql = String.format("SELECT id_usuario FROM usuario WHERE login = '%s' AND id_nivel = %s", cpf.replace(".", "").replace("-", ""), 2);
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()) {
                 id = rs.getInt("id_usuario");
