@@ -4,7 +4,6 @@ import br.com.physisbrasil.web.ephynances.ejb.AgreementBean;
 import br.com.physisbrasil.web.ephynances.ejb.AgreementInstallmentBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
-import br.com.physisbrasil.web.ephynances.ejb.SubAgreementInstallmentBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Agreement;
 import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;

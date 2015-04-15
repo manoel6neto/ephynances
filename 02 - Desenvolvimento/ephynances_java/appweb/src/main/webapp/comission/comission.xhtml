@@ -83,14 +83,14 @@
                         <br/>
                         <div class="grid_4 alpha" >
                             <p:outputLabel value="TOTAL EM PAGAMENTOS: " for="inputTotal" style="color: #000000; font-style: oblique; font-size: medium"/>
-                            <pe:inputNumber id="inputTotal" symbol="R$ " value="#{comissionController.total}" />
+                            <pe:inputNumber id="inputTotal" symbol="R$ " value="#{comissionController.total.setScale(2)}" />
                         </div>
                         
                         <br class="clear" />
                         <br/>
                         <div class="grid_4 alpha" >
                             <p:outputLabel value="COMISSÃO: " for="inputComissao" style="color: #000000; font-style: oblique; font-size: medium"/>
-                            <pe:inputNumber id="inputComissao" symbol="R$ " value="#{comissionController.comission}" />
+                            <pe:inputNumber id="inputComissao" symbol="R$ " value="#{comissionController.comission.setScale(2)}" />
                         </div>
 
                         <br class="clear" />

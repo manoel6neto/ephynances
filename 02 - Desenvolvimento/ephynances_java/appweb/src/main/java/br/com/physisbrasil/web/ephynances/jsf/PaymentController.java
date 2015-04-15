@@ -1,9 +1,6 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
-import br.com.physisbrasil.web.ephynances.ejb.AgreementBean;
-import br.com.physisbrasil.web.ephynances.ejb.AgreementInstallmentBean;
 import br.com.physisbrasil.web.ephynances.ejb.PaymentBean;
-import br.com.physisbrasil.web.ephynances.ejb.SubAgreementInstallmentBean;
 import br.com.physisbrasil.web.ephynances.model.Agreement;
 import br.com.physisbrasil.web.ephynances.model.AgreementInstallment;
 import br.com.physisbrasil.web.ephynances.model.Payment;
@@ -28,15 +25,12 @@ public class PaymentController extends BaseController {
     private Payment payment;
 
     @EJB
-    private AgreementInstallmentBean agreementInstallmentBean;
     private AgreementInstallment agreementInstallment;
 
     @EJB
-    private AgreementBean agreementBean;
     private Agreement agreement;
     
     @EJB
-    private SubAgreementInstallmentBean subAgreementInstallmentBean;
     private SubAgreementInstallment subAgreementInstallment;
 
     @PostConstruct
