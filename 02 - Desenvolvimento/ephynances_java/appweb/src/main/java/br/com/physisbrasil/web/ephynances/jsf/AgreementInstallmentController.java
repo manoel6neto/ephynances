@@ -142,7 +142,6 @@ public class AgreementInstallmentController extends BaseController {
                         //Pagamento acima do valor da parcela. Pagar as parcelas na ordem.
                         //Pagando a parcela informada primeiramente (mesmo que essa não esteja na ordem)
                         BigDecimal extra = payment.getTotalValue().subtract(tempAgreementInstallment.getValue());
-                        extra = extra;
                         
                         payment.setAgreementInstallment(tempAgreementInstallment);
                         payment.setPaymentDate(new Date(System.currentTimeMillis()));
@@ -366,7 +365,7 @@ public class AgreementInstallmentController extends BaseController {
             AgreementInstallment tempAgreementInstallment = agreementInstallmentBean.find(agreementInstallmentId);
             if (tempAgreementInstallment != null) {
                 if (!tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO()) && !tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO())) {
-                    if (tempAgreementInstallment.getAgreement().getStatus().equalsIgnoreCase(Agreement.getSTATE_INCOMPLETO())) {
+                    if (!tempAgreementInstallment.getAgreement().getStatus().equalsIgnoreCase(Agreement.getSTATE_INCOMPLETO())) {
                         return String.valueOf(true);
                     }
                 }
