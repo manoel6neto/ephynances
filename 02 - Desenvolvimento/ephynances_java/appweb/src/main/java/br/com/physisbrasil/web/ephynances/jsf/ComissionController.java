@@ -127,11 +127,11 @@ public class ComissionController extends BaseController {
                         if (payments.size() > 0) {
                             for (Payment pay : payments) {
                                 total = total.add(pay.getTotalValue());
-                                total = total.setScale(2, RoundingMode.CEILING);
+                                total = total.setScale(2);
                             }
 
                             comission = total.multiply(new BigDecimal(Double.valueOf(String.valueOf(selectedUser.getCommission())) / 100));
-                            comission = comission.setScale(2, RoundingMode.CEILING);
+                            comission = comission.setScale(2);
                             showForms = true;
                         } else {
                             JsfUtil.addErrorMessage("Nenhum pagamento identificado no mês e ano informados. Nenhum valor a receber !!");

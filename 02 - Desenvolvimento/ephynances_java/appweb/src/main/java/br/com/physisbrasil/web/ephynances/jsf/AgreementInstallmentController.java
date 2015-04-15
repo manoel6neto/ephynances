@@ -121,7 +121,7 @@ public class AgreementInstallmentController extends BaseController {
                     if (tempAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == 0) {
                         //Pagamento do valor total da parcela sem excedente e sem residuo. Cria o pagamento e marca a parcela como paga
                         payment.setAgreementInstallment(tempAgreementInstallment);
-                        payment.setTotalValue(payment.getTotalValue().setScale(2, RoundingMode.CEILING));
+                        payment.setTotalValue(payment.getTotalValue().setScale(2));
                         payment.setPaymentDate(new Date(System.currentTimeMillis()));
                         paymentBean.create(payment);
                         paymentBean.clearCache();
@@ -142,11 +142,11 @@ public class AgreementInstallmentController extends BaseController {
                         //Pagamento acima do valor da parcela. Pagar as parcelas na ordem.
                         //Pagando a parcela informada primeiramente (mesmo que essa não esteja na ordem)
                         BigDecimal extra = payment.getTotalValue().subtract(tempAgreementInstallment.getValue());
-                        extra = extra.setScale(2, RoundingMode.CEILING);
+                        extra = extra.setScale(2);
                         
                         payment.setAgreementInstallment(tempAgreementInstallment);
                         payment.setPaymentDate(new Date(System.currentTimeMillis()));
-                        payment.setTotalValue(tempAgreementInstallment.getValue().setScale(2, RoundingMode.CEILING));
+                        payment.setTotalValue(tempAgreementInstallment.getValue().setScale(2));
                         paymentBean.create(payment);
                         paymentBean.clearCache();
                         agreementInstallmentBean.clearCache();
@@ -192,7 +192,7 @@ public class AgreementInstallmentController extends BaseController {
                                     payment = new Payment();
                                     payment.setAgreementInstallment(install);
                                     payment.setPaymentDate(new Date(System.currentTimeMillis()));
-                                    payment.setTotalValue(install.getValue().setScale(2, RoundingMode.CEILING));
+                                    payment.setTotalValue(install.getValue().setScale(2));
                                     paymentBean.create(payment);
                                     paymentBean.clearCache();
                                     agreementInstallmentBean.clearCache();
@@ -237,7 +237,7 @@ public class AgreementInstallmentController extends BaseController {
                                     agreement = agreementBean.find(install.getAgreement().getId());
                                     
                                     JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Mais de uma parcela contemplada.");
-                                    JsfUtil.addErrorMessage("Nova subparcela gerada no valor de R$ " + subAgreementInstallmentForPayment.getValue().setScale(2, RoundingMode.CEILING));
+                                    JsfUtil.addErrorMessage("Nova subparcela gerada no valor de R$ " + subAgreementInstallmentForPayment.getValue().setScale(2));
                                     break;
                                 }
                             }
@@ -245,14 +245,14 @@ public class AgreementInstallmentController extends BaseController {
                     } else if (tempAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == 1) {
                         //Pagamento abaixo do valor da parcela. Marcar a parcela como paga. E criar uma subparcela para a mesma com valor restante
                         payment.setAgreementInstallment(tempAgreementInstallment);
-                        payment.setTotalValue(payment.getTotalValue().setScale(2, RoundingMode.CEILING));
+                        payment.setTotalValue(payment.getTotalValue().setScale(2));
                         payment.setPaymentDate(new Date(System.currentTimeMillis()));
                         paymentBean.create(payment);
                         paymentBean.clearCache();
                         
                         SubAgreementInstallment subAgreementInstallmentForPayment = new SubAgreementInstallment();
                         subAgreementInstallmentForPayment.setAgreementInstallment(tempAgreementInstallment);
-                        subAgreementInstallmentForPayment.setValue(tempAgreementInstallment.getValue().subtract(payment.getTotalValue().setScale(2, RoundingMode.CEILING)));
+                        subAgreementInstallmentForPayment.setValue(tempAgreementInstallment.getValue().subtract(payment.getTotalValue().setScale(2)));
                         subAgreementInstallmentBean.create(subAgreementInstallmentForPayment);
                         subAgreementInstallmentBean.clearCache();
                         
@@ -269,7 +269,7 @@ public class AgreementInstallmentController extends BaseController {
                         agreement = agreementBean.find(tempAgreementInstallment.getAgreement().getId());
                         
                         JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Parcela com pagamento parcial.");
-                        JsfUtil.addErrorMessage("Nova subparcela criada com o valor restante de R$ " + subAgreementInstallmentForPayment.getValue().setScale(2, RoundingMode.CEILING).toString());
+                        JsfUtil.addErrorMessage("Nova subparcela criada com o valor restante de R$ " + subAgreementInstallmentForPayment.getValue().setScale(2).toString());
                     }
                 }
             }
@@ -322,10 +322,10 @@ public class AgreementInstallmentController extends BaseController {
                         for (AgreementInstallment installment : agreement.getAgreementInstallments()) {
                             installmentsTotal = installmentsTotal.add(installment.getValue());
                         }
-                        return agreement.getTotalPrice().subtract(installmentsTotal).setScale(2, RoundingMode.CEILING);
+                        return agreement.getTotalPrice().subtract(installmentsTotal).setScale(2);
                     }
                 }
-                return agreement.getTotalPrice().setScale(2, RoundingMode.CEILING);
+                return agreement.getTotalPrice().setScale(2);
             }
             JsfUtil.addErrorMessage("Contrato não encontrado.");
             return new BigDecimal(0);
@@ -340,7 +340,7 @@ public class AgreementInstallmentController extends BaseController {
         try {
             if (agreement != null) {
                 if (agreementInstallment.getValue().compareTo(getMissingValue()) == 0 || agreementInstallment.getValue().compareTo(getMissingValue()) == -1) {
-                    agreementInstallment.setValue(agreementInstallment.getValue().setScale(2, RoundingMode.CEILING));
+                    agreementInstallment.setValue(agreementInstallment.getValue().setScale(2));
                     agreementInstallment.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
                     agreementInstallment.setAgreement(agreement);
                     agreementInstallmentBean.create(agreementInstallment);

@@ -99,7 +99,7 @@ public class SubAgreementInstallmentController extends BaseController {
                     if (payment != null) {
                         if (subAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == 0) {
                             payment.setSubAgreementInstallment(subAgreementInstallment);
-                            payment.setTotalValue(payment.getTotalValue().setScale(2, RoundingMode.CEILING));
+                            payment.setTotalValue(payment.getTotalValue().setScale(2));
                             payment.setPaymentDate(new Date(System.currentTimeMillis()));
                             paymentBean.create(payment);
                             paymentBean.clearCache();

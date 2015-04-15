@@ -19,14 +19,14 @@
                     <br class="clear" />
                     <div class="grid_3 alpha" >
                         <h:outputText value="Valor disponível: " style="font-style: oblique; font-size: large" />
-                        <h:outputText value="R$ #{agreementInstallmentController.missingValue.setScale(2, RoundingMode.CEILING)}" style="color: #FF0000; font-style: oblique; font-size: large" />
+                        <h:outputText value="R$ #{agreementInstallmentController.missingValue.setScale(2)}" style="color: #FF0000; font-style: oblique; font-size: large" />
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Valor da parcela: " for="installmentValue" />
-                        <pe:inputNumber id="installmentValue" symbol="R$ " style="width: 200px" value="#{agreementInstallmentController.agreementInstallment.value.setScale(2, RoundingMode.CEILING)}" /> 
+                        <pe:inputNumber id="installmentValue" symbol="R$ " style="width: 200px" value="#{agreementInstallmentController.agreementInstallment.value.setScale(2)}" /> 
                     </div>
 
                     <br class="clear" />
@@ -60,7 +60,7 @@
                                  emptyMessage="Nenhum documento encontrado!" sortBy="#{item.dueDate}">
 
                         <p:column style="text-align: center" headerText="Valor" filterBy="#{item.value}" sortBy="#{item.value}" filterStyle="text-align: center; width: 70px;">                       
-                            <h:outputText value="R$ #{item.value.setScale(2, RoundingMode.CEILING)}" />
+                            <h:outputText value="R$ #{item.value}" />
                         </p:column>
 
                         <p:column style="text-align: center" headerText="Vencimento" sortBy="#{item.dueDate}" filterStyle="text-align: center; width: 70px;">                       
