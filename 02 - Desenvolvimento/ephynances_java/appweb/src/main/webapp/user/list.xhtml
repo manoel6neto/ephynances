@@ -39,7 +39,7 @@
                     <p:column width="160" style="text-align: center" headerText="Ações">
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.edit(item)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar" title="Editar"/></p:commandLink>
                         <h:outputText value="   " />
-                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.view(item)}" styleClass="fa-binoculars"><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Detalhes" title="Detalhes"/></p:commandLink>
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.view(item)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Detalhes" title="Detalhes"/></p:commandLink>
                         <h:outputText value="   " />
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.active_desactive(item.id)}" rendered="#{item.isVerified}">
                             <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Desativar" title="Desativar"/>
@@ -49,18 +49,18 @@
                         </p:commandLink>
                         <h:outputText value="   " />
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.delete(item.id)}" rendered="#{item.profileRule.equals(userController.RULER_SELLER)}">
-                            <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Apagar" title="Apagar"/>
+                            <img src="../resources/img/remove.png" width="16" height="16" alt="Apagar" title="Apagar"/>
                         </p:commandLink>
                         <p:commandLink ajax="false" action="#{userController.delete(item.id)}" rendered="#{not item.profileRule.equals(userController.RULER_SELLER)}">
                             <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Apagar" title="Apagar"/>
                         </p:commandLink>
                         <h:outputText value="   " rendered="#{item.profileRule.equals(userController.RULER_SELLER)}"/>
                         <p:commandLink ajax="false" action="#{sellerContributorController.listBySeller(item.id)}" rendered="#{item.profileRule.equals(userController.RULER_SELLER)}">
-                            <img src="../resources/img/activate_power.png" width="16" height="16" alt="Colaboradores" title="Colaboradores"/>
+                            <img src="../resources/img/arrow_up.png" width="16" height="16" alt="Colaboradores" title="Colaboradores"/>
                         </p:commandLink>
                         <h:outputText value="   " rendered="#{item.profileRule.equals(userController.RULER_SELLER)}"/>
                         <p:commandLink style="margin-left: 5px" ajax="false" action="#{userController.setSellerExternal(item.id)}" rendered="#{item.profileRule.equals(userController.RULER_SELLER)}">
-                            <img src="../resources/img/activate_power.png" width="16" height="16" alt="Atrelar Cnpjs" title="Atrelar Cnpj`s"/>
+                            <img src="../resources/img/anexo.png" width="16" height="16" alt="Atrelar Cnpjs" title="Atrelar Cnpj`s"/>
                         </p:commandLink>
                     </p:column>
                 </p:dataTable>

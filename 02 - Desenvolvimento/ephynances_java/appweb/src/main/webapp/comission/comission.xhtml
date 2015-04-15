@@ -75,7 +75,7 @@
                             </p:column>
 
                             <p:column style="text-align: center" headerText="Valor pago" sortBy="#{item.totalValue}">                       
-                                <h:outputText value="R$ #{item.totalValue}" />
+                                <h:outputText value="R$ #{item.totalValue.setScale(2)}" />
                             </p:column>
                         </p:dataTable>
 

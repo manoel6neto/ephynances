@@ -60,7 +60,7 @@
                                  emptyMessage="Nenhum documento encontrado!" sortBy="#{item.dueDate}">
 
                         <p:column style="text-align: center" headerText="Valor" filterBy="#{item.value}" sortBy="#{item.value}" filterStyle="text-align: center; width: 70px;">                       
-                            <h:outputText value="R$ #{item.value}" />
+                            <h:outputText value="R$ #{item.value.setScale(2)}" />
                         </p:column>
 
                         <p:column style="text-align: center" headerText="Vencimento" sortBy="#{item.dueDate}" filterStyle="text-align: center; width: 70px;">                       
@@ -73,13 +73,13 @@
 
                         <p:column width="160" style="text-align: center" headerText="Ações">
                             <p:commandLink onclick="PF('cd').show()" id="linkAddPayment" style="margin-right: 5px" rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}">
-                                <img src="../resources/img/activate_power.png" width="16" height="16" alt="Pagar" title="Pagar"/>
+                                <img src="../resources/img/add.png" width="16" height="16" alt="Pagar" title="Pagar"/>
                                 <f:setPropertyActionListener target="#{agreementInstallmentController.agreementInstallment}" value="#{item}" />
                             </p:commandLink>
-                            <p:commandLink id="buttonConfirmPayment" style="margin-left: 5px" update="@form" ajax="false" action="#{agreementInstallmentController.confirmPayment(item.id)}"  rendered="#{agreementInstallmentController.chekcIsPaid(item.id)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Confirmar" title="Confirmar Pagamento"/></p:commandLink>
+                            <p:commandLink id="buttonConfirmPayment" style="margin-left: 5px" update="@form" ajax="false" action="#{agreementInstallmentController.confirmPayment(item.id)}"  rendered="#{agreementInstallmentController.chekcIsPaid(item.id)}" ><img src="../resources/img/activate_power.png" width="16" height="16" alt="Confirmar" title="Confirmar Pagamento"/></p:commandLink>
                             <p:commandLink id="buttonStartPayment" style="margin-left: 5px" update="@form" ajax="false" action="#{paymentDocumentController.startPaymentDocuments(item.payment.id)}" rendered="#{agreementInstallmentController.chekcIsPaid(item.id)}"><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Detalhar" title="Detalhar"/></p:commandLink>
-                            <p:commandLink id="buttonSubPayment" style="margin-left: 5px" update="@form" ajax="false" rendered="#{agreementInstallmentController.hasSubAgreementInstallments(item.id)}" action="#{subAgreementInstallmentController.startSubAgreementInstallmentActivity(item.id)}"><img src="../resources/img/view_lupa.png" width="16" height="16" alt="SubParcela" title="Sub Parcela"/></p:commandLink>
-                            <p:commandLink id="buttonRemove" style="margin-left: 5px" update="@form" ajax="false" action="#{agreementInstallmentController.removeInstallment(item.id)}"  rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Remover" title="Remover"/></p:commandLink>
+                            <p:commandLink id="buttonSubPayment" style="margin-left: 5px" update="@form" ajax="false" rendered="#{agreementInstallmentController.hasSubAgreementInstallments(item.id)}" action="#{subAgreementInstallmentController.startSubAgreementInstallmentActivity(item.id)}"><img src="../resources/img/anexo.png" width="16" height="16" alt="SubParcela" title="Sub Parcela"/></p:commandLink>
+                            <p:commandLink id="buttonRemove" style="margin-left: 5px" update="@form" ajax="false" action="#{agreementInstallmentController.removeInstallment(item.id)}"  rendered="#{agreementInstallmentController.checkStatusInstallmentAndAgreement(item.id)}" ><img src="../resources/img/remove.png" width="16" height="16" alt="Remover" title="Remover"/></p:commandLink>
                         </p:column>
                     </p:dataTable>
 
