@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core" >
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions">
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
@@ -40,7 +41,7 @@
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Ano: " for="inputAno" />
                         <br/>
-                        <p:inputText style="width: 200px" id="inputAno" value="#{comissionController.selectedYear}"/>
+                        <p:keyboard style="width: 200px" id="inputAno" value="#{comissionController.selectedYear}" keypadOnly="true"/>
                     </div>
 
                     <br class="clear" />
@@ -74,15 +75,22 @@
                             </p:column>
 
                             <p:column style="text-align: center" headerText="Valor pago" sortBy="#{item.totalValue}">                       
-                                <h:outputText value="#{item.totalValue}" />
+                                <h:outputText value="R$ #{item.totalValue}" />
                             </p:column>
                         </p:dataTable>
 
                         <br class="clear" />
                         <br/>
                         <div class="grid_4 alpha" >
-                            <p:outputLabel value="TOTAL: " for="inputTotal" style="color: #000000; font-style: oblique; font-size: medium"/>
-                            <p:inputText id="inputTotal" value="#{comissionController.total}" readonly="true"/>
+                            <p:outputLabel value="TOTAL EM PAGAMENTOS: " for="inputTotal" style="color: #000000; font-style: oblique; font-size: medium"/>
+                            <pe:inputNumber id="inputTotal" symbol="R$ " value="#{comissionController.total}" />
+                        </div>
+                        
+                        <br class="clear" />
+                        <br/>
+                        <div class="grid_4 alpha" >
+                            <p:outputLabel value="COMISSÃO: " for="inputComissao" style="color: #000000; font-style: oblique; font-size: medium"/>
+                            <pe:inputNumber id="inputComissao" symbol="R$ " value="#{comissionController.comission}" />
                         </div>
 
                         <br class="clear" />

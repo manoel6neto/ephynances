@@ -12,6 +12,7 @@ import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -98,6 +99,7 @@ public class SubAgreementInstallmentController extends BaseController {
                     if (payment != null) {
                         if (subAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == 0) {
                             payment.setSubAgreementInstallment(subAgreementInstallment);
+                            payment.setTotalValue(payment.getTotalValue().setScale(2, RoundingMode.CEILING));
                             payment.setPaymentDate(new Date(System.currentTimeMillis()));
                             paymentBean.create(payment);
                             paymentBean.clearCache();

@@ -7,6 +7,7 @@ import br.com.physisbrasil.web.ephynances.model.Payment;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -84,6 +85,7 @@ public class ComissionController extends BaseController {
         payments = new ArrayList<Payment>();
         selectedYear = Calendar.getInstance().get(Calendar.YEAR);
         total = new BigDecimal(0);
+        comission = new BigDecimal(0);
         showForms = false;
     }
 
@@ -125,9 +127,11 @@ public class ComissionController extends BaseController {
                         if (payments.size() > 0) {
                             for (Payment pay : payments) {
                                 total = total.add(pay.getTotalValue());
+                                total = total.setScale(2, RoundingMode.CEILING);
                             }
 
-                            comission = total.multiply(new BigDecimal(selectedUser.getCommission() / 100));
+                            comission = total.multiply(new BigDecimal(Double.valueOf(String.valueOf(selectedUser.getCommission())) / 100));
+                            comission = comission.setScale(2, RoundingMode.CEILING);
                             showForms = true;
                         } else {
                             JsfUtil.addErrorMessage("Nenhum pagamento identificado no mês e ano informados. Nenhum valor a receber !!");

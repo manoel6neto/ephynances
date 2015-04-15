@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://java.sun.com/jsf/facelets" >
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:pe="http://primefaces.org/ui/extensions" >
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
@@ -26,7 +27,7 @@
 
                     <br class="clear" />
                     <div >
-                        <p:outputLabel value="Parcela de origem: #{subAgreementInstallmentController.subAgreementInstallment.agreementInstallment.value}" style="color: #000000; font-style: oblique; font-size: medium"/>
+                        <p:outputLabel value="Parcela de origem: #{subAgreementInstallmentController.subAgreementInstallment.agreementInstallment.value.setScale(2, RoundingMode.CEILING)}" style="color: #000000; font-style: oblique; font-size: medium"/>
                     </div>
 
                     <br class="clear" />
@@ -48,7 +49,7 @@
                 <p:fieldset legend="Dados pagamento" toggleable="true" collapsed="false">
                     <br class="clear" />
                     <div >
-                        <p:outputLabel value="Valor da subparcela: #{subAgreementInstallmentController.subAgreementInstallment.value}" style="color: #000000; font-style: oblique; font-size: medium"/>
+                        <p:outputLabel value="Valor da subparcela: #{subAgreementInstallmentController.subAgreementInstallment.value.setScale(2, RoundingMode.CEILING)}" style="color: #000000; font-style: oblique; font-size: medium"/>
                     </div>
 
                     <br class="clear" />
@@ -59,7 +60,7 @@
                     <br class="clear" />
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Valor para pagamento: " for="paymentValue" />
-                        <p:inputText id="paymentValue" style="width: 200px" value="#{subAgreementInstallmentController.payment.totalValue}" required="false" readonly="#{subAgreementInstallmentController.checkIsPaid()}"/> 
+                        <pe:inputNumber id="paymentValue" symbol="R$" style="width: 200px" value="#{subAgreementInstallmentController.payment.totalValue}" required="false" disabled="#{subAgreementInstallmentController.checkIsPaid()}"/> 
                     </div>
 
                     <br class="clear" />

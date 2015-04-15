@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions" >
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
@@ -87,7 +88,7 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Valor do contrato (R$): " for="valorTotal" />
-                        <p:inputText id="valorTotal" style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" /> 
+                        <pe:inputNumber id="valorTotal" symbol="R$ " style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" /> 
                     </div>
 
                     <br class="clear" />
@@ -129,7 +130,7 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Número do parlamentar: " for="parlamentNumberI" />
-                        <p:inputText id="parlamentNumberI" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" requiredMessage="Número do parlamentar necessária"/> 
+                        <p:keyboard id="parlamentNumberI" keypadOnly="true" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" requiredMessage="Número do parlamentar necessária"/> 
                     </div>
 
                     <br class="clear" />

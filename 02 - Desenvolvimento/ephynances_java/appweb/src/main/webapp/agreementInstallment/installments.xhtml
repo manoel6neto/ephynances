@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core" >
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:pe="http://primefaces.org/ui/extensions" >
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
@@ -18,14 +19,14 @@
                     <br class="clear" />
                     <div class="grid_3 alpha" >
                         <h:outputText value="Valor disponível: " style="font-style: oblique; font-size: large" />
-                        <h:outputText value="#{agreementInstallmentController.missingValue}" style="color: #FF0000; font-style: oblique; font-size: large" />
+                        <h:outputText value="R$ #{agreementInstallmentController.missingValue.setScale(2, RoundingMode.CEILING)}" style="color: #FF0000; font-style: oblique; font-size: large" />
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Valor da parcela: " for="installmentValue" />
-                        <p:inputText id="installmentValue" style="width: 200px" value="#{agreementInstallmentController.agreementInstallment.value}" /> 
+                        <pe:inputNumber id="installmentValue" symbol="R$ " style="width: 200px" value="#{agreementInstallmentController.agreementInstallment.value.setScale(2, RoundingMode.CEILING)}" /> 
                     </div>
 
                     <br class="clear" />
@@ -59,7 +60,7 @@
                                  emptyMessage="Nenhum documento encontrado!" sortBy="#{item.dueDate}">
 
                         <p:column style="text-align: center" headerText="Valor" filterBy="#{item.value}" sortBy="#{item.value}" filterStyle="text-align: center; width: 70px;">                       
-                            <h:outputText value="#{item.value}" />
+                            <h:outputText value="R$ #{item.value.setScale(2, RoundingMode.CEILING)}" />
                         </p:column>
 
                         <p:column style="text-align: center" headerText="Vencimento" sortBy="#{item.dueDate}" filterStyle="text-align: center; width: 70px;">                       
@@ -90,8 +91,7 @@
                     <h:form styleClass="form">
                         <div class="grid_3" style="margin: 5px">
                             <p:outputLabel value="Valor: " for="inputValueOverlay" />
-                            <p:inputText id="inputValueOverlay" value="#{agreementInstallmentController.payment.totalValue}" />
-                            <p:watermark value="0" for="inputValueOverlay"/>
+                            <pe:inputNumber id="inputValueOverlay" symbol="R$ " value="#{agreementInstallmentController.payment.totalValue}" />
                             <br class="clear" />
                             <br/>
                             <p:commandButton id="commandButtonAdd" style="margin-left: 25px; margin-bottom: 2px;" update="@form" ajax="false" action="#{agreementInstallmentController.addInstallmentPayment()}" value="Pagar"/>

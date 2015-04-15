@@ -26,12 +26,12 @@
 
                     <br class="clear" />
                     <div >
-                        <p:outputLabel value="Valor da parcela: #{paymentDocumentController.payment.agreementInstallment.value}" style="color: #000000; font-style: oblique; font-size: medium"/>
+                        <p:outputLabel value="Valor da parcela: R$ #{paymentDocumentController.payment.agreementInstallment.value.setScale(2, RoundingMode.CEILING)}" style="color: #000000; font-style: oblique; font-size: medium"/>
                     </div>
                     
                     <br class="clear" />
                     <div >
-                        <p:outputLabel value="Valor do pagamento: #{paymentDocumentController.payment.totalValue}" style="color: #000000; font-style: oblique; font-size: medium"/>
+                        <p:outputLabel value="Valor do pagamento: R$ #{paymentDocumentController.payment.totalValue.setScale(2, RoundingMode.CEILING)}" style="color: #000000; font-style: oblique; font-size: medium"/>
                     </div>
 
                     <br class="clear" />

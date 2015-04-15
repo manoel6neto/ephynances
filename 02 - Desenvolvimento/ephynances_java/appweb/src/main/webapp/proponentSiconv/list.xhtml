@@ -24,16 +24,16 @@
                     <p:column style="text-align: center" headerText="Nome" sortBy="#{item.nome}" filterBy="#{item.nome}">
                         <h:outputText value="#{item.nome}" />
                     </p:column>     
-                    <p:column style="text-align: center" headerText="Esfera" sortBy="#{item.esferaAdministrativa}" filterBy="#{item.esferaAdministrativa}">
+                    <p:column style="text-align: center" headerText="Esfera" sortBy="#{item.esferaAdministrativa}" filterBy="#{item.esferaAdministrativa}" filterStyle="width: 100px; text-align: center;">
                         <h:outputText value="#{item.esferaAdministrativa}" />
                     </p:column> 
-                    <p:column style="text-align: center" headerText="Municipio" sortBy="#{item.municipio}" filterBy="#{item.municipio}">                      
+                    <p:column style="text-align: center" headerText="Municipio" sortBy="#{item.municipio}" filterBy="#{item.municipio}" filterStyle="width: 80px; text-align: center;">                      
                         <h:outputText value="#{item.municipio}" />
                     </p:column>   
-                    <p:column style="text-align: center; width: 30px" headerText="UF" sortBy="#{item.municipioUfSigla}" filterBy="#{item.municipioUfSigla}">                      
+                    <p:column style="text-align: center; width: 30px" headerText="UF" sortBy="#{item.municipioUfSigla}" filterBy="#{item.municipioUfSigla}" filterStyle="width: 30px; text-align: center;">                      
                         <h:outputText value="#{item.municipioUfSigla}" />
                     </p:column>
-                    <p:column style="text-align: center; width: 100px" headerText="Cod. Municipio" sortBy="#{item.codigoMunicipio}" filterBy="#{item.codigoMunicipio}">                      
+                    <p:column style="text-align: center; width: 100px" headerText="Cod. Municipio" sortBy="#{item.codigoMunicipio}" filterBy="#{item.codigoMunicipio}" filterStyle="width: 40px; text-align: center;">                      
                         <h:outputText value="#{item.codigoMunicipio}" />
                     </p:column>
                 </p:dataTable>
