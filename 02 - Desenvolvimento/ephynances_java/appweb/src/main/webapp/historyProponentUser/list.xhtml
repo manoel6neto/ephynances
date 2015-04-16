@@ -18,7 +18,7 @@
                              currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                              emptyMessage="Nenhum registro encontrado!">
 
-                    <p:column style="text-align: center" headerText="Date" sortBy="#{item.insertDate}" >                       
+                    <p:column style="text-align: center" headerText="Data atrelamento" sortBy="#{item.insertDate}" >                       
                         <h:outputText value="#{historyProponentUserController.formatDate(item.insertDate)}" />
                     </p:column>
                     <p:column style="text-align: center" headerText="Vendedor" sortBy="#{item.nameSeller}" filterBy="#{item.nameSeller}">

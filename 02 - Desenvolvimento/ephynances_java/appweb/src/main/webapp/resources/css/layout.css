@@ -28,11 +28,11 @@ ol, ul
 #header {
     font-family: cursive, Arial, Helvetica, sans-serif;
     height: 60px;
-    margin-bottom: 70px;
+    margin-bottom: 30px;
 }
 #rodape_ext {
     display: table;
-    background: #F8F8F8 url('../img/body_bg_blue.png.jsf') repeat-x top left; 
+    background: #F8F8F8 url('../img/header.png.jsf') repeat-x top left; 
     width: 100%;
     position: fixed;
     bottom: 0px;
