@@ -90,6 +90,11 @@ public class Agreement implements BaseModel {
     @Size(max = 100)
     @Column(name = "physis_agreement_number", length = 100, unique = true, nullable = false)
     private String physisAgreementNumber;
+    
+    @NotNull
+    @Column(name = "assignment_date", nullable = false)
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date assignmentDate;
 
     @NotNull
     @Column(name = "expire_date", nullable = false)
@@ -414,6 +419,14 @@ public class Agreement implements BaseModel {
 
     public static String getSTATE_ALERTA() {
         return STATE_ALERTA;
+    }
+
+    public Date getAssignmentDate() {
+        return assignmentDate;
+    }
+
+    public void setAssignmentDate(Date assignmentDate) {
+        this.assignmentDate = assignmentDate;
     }
 
     @Override

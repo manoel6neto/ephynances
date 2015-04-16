@@ -783,8 +783,9 @@ public class UserController extends BaseController {
                 stmt = conn.createStatement();
                 String sql;
                 int id = 0;
+                String usuarioSistema = "T";
                 
-                int nivel = 0;
+                int nivel;
                 if (tempUser.getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
                     nivel = 1;
                 } else {
@@ -801,11 +802,11 @@ public class UserController extends BaseController {
                 if (id == 0) {
                     //Insert
                     if (!tempUser.getProfileRule().equals(getRULER_ADMIN())) {
-                        sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
-                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 4 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '')";
+                        sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha, usuario_sistema) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
+                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 4 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", ''" + usuarioSistema + "')";
                     } else {
                         sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
-                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 1 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '')";
+                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 1 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", ''" + usuarioSistema + "')";
                     }
 
                     if (stmt.executeUpdate(sql) == 1) {

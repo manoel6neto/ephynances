@@ -28,26 +28,26 @@ import javax.faces.bean.ViewScoped;
 @ManagedBean
 @ViewScoped
 public class AgreementInstallmentController extends BaseController {
-    
+
     @EJB
     private AgreementInstallmentBean agreementInstallmentBean;
     private AgreementInstallment agreementInstallment;
-    
+
     @EJB
     private AgreementBean agreementBean;
     private Agreement agreement;
-    
+
     @EJB
     private PaymentBean paymentBean;
     private Payment payment;
-    
+
     @EJB
     private SubAgreementInstallmentBean subAgreementInstallmentBean;
     private SubAgreementInstallment subAgreementInstallment;
-    
+
     @PostConstruct
     public void init() {
-        
+
         if ((Agreement) getFlash("agreement") != null) {
             agreement = (Agreement) getFlash("agreement");
         } else {
@@ -55,7 +55,7 @@ public class AgreementInstallmentController extends BaseController {
                 agreement = new Agreement();
             }
         }
-        
+
         if ((AgreementInstallment) getFlash("agreementInstallment") != null) {
             agreementInstallment = (AgreementInstallment) getFlash("agreementInstallment");
         } else {
@@ -63,7 +63,7 @@ public class AgreementInstallmentController extends BaseController {
                 agreementInstallment = new AgreementInstallment();
             }
         }
-        
+
         if ((Payment) getFlash("payment") != null) {
             payment = (Payment) getFlash("payment");
         } else {
@@ -73,23 +73,23 @@ public class AgreementInstallmentController extends BaseController {
             }
         }
     }
-    
+
     public String setAgreementInstallments(Long agreementId) {
         try {
             agreementBean.clearCache();
             agreement = agreementBean.find(agreementId);
             if (agreement != null) {
-                
+
                 putFlash("agreement", agreement);
                 return "/agreementInstallment/installments";
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao carregar as parcelas para o contrato.");
         }
-        
+
         return "/agreement/list";
     }
-    
+
     public void removeInstallment(Long agreementInstallmentId) {
         try {
             agreementInstallmentBean.clearCache();
@@ -100,7 +100,7 @@ public class AgreementInstallmentController extends BaseController {
                     agreementInstallmentBean.clearCache();
                     agreementBean.clearCache();
                     agreement = agreementBean.find(agreement.getId());
-                    
+
                     putFlash("agreement", agreement);
                     JsfUtil.addSuccessMessage("Parcela removida com sucesso!!");
                 }
@@ -111,7 +111,7 @@ public class AgreementInstallmentController extends BaseController {
             JsfUtil.addErrorMessage(e, "Falha ao apagar a parcela solicitada.");
         }
     }
-    
+
     public void addInstallmentPayment() {
         try {
             agreementInstallmentBean.clearCache();
@@ -125,24 +125,24 @@ public class AgreementInstallmentController extends BaseController {
                         payment.setPaymentDate(new Date(System.currentTimeMillis()));
                         paymentBean.create(payment);
                         paymentBean.clearCache();
-                        
+
                         agreementInstallmentBean.clearCache();
                         tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
                         tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
                         tempAgreementInstallment.setPayment(payment);
                         agreementInstallmentBean.edit(tempAgreementInstallment);
                         agreementInstallmentBean.clearCache();
-                        
+
                         agreementBean.clearCache();
-                        
+
                         agreement = agreementBean.find(tempAgreementInstallment.getAgreement().getId());
-                        
+
                         JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Parcela totalmente paga.");
                     } else if (tempAgreementInstallment.getValue().compareTo(payment.getTotalValue()) == -1) {
                         //Pagamento acima do valor da parcela. Pagar as parcelas na ordem.
                         //Pagando a parcela informada primeiramente (mesmo que essa não esteja na ordem)
                         BigDecimal extra = payment.getTotalValue().subtract(tempAgreementInstallment.getValue());
-                        
+
                         payment.setAgreementInstallment(tempAgreementInstallment);
                         payment.setPaymentDate(new Date(System.currentTimeMillis()));
                         payment.setTotalValue(tempAgreementInstallment.getValue());
@@ -150,17 +150,17 @@ public class AgreementInstallmentController extends BaseController {
                         paymentBean.clearCache();
                         agreementInstallmentBean.clearCache();
                         agreementBean.clearCache();
-                        
+
                         tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
                         tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
                         tempAgreementInstallment.setPayment(payment);
                         agreementInstallmentBean.edit(tempAgreementInstallment);
                         agreementInstallmentBean.clearCache();
-                        
+
                         agreement = agreementBean.find(tempAgreementInstallment.getAgreement().getId());
                         List<AgreementInstallment> installmentsForAgreement = agreement.getAgreementInstallments();
                         Collections.sort(installmentsForAgreement);
-                        
+
                         for (AgreementInstallment install : installmentsForAgreement) {
                             if (install.getPayment() == null) {
                                 if (install.getValue().compareTo(extra) == 0) {
@@ -173,19 +173,19 @@ public class AgreementInstallmentController extends BaseController {
                                     paymentBean.clearCache();
                                     agreementInstallmentBean.clearCache();
                                     agreementBean.clearCache();
-                                    
+
                                     install = agreementInstallmentBean.find(install.getId());
                                     install.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
                                     install.setPayment(payment);
                                     agreementInstallmentBean.edit(install);
                                     agreementInstallmentBean.clearCache();
-                                    
+
                                     agreement = agreementBean.find(install.getAgreement().getId());
-                                    
+
                                     JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Mais de uma parcela contemplada.");
                                     break;
                                 }
-                                
+
                                 if (install.getValue().compareTo(extra) == -1) {
                                     //Valor maior que a parcela
                                     payment = new Payment();
@@ -196,18 +196,18 @@ public class AgreementInstallmentController extends BaseController {
                                     paymentBean.clearCache();
                                     agreementInstallmentBean.clearCache();
                                     agreementBean.clearCache();
-                                    
+
                                     install = agreementInstallmentBean.find(install.getId());
                                     install.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
                                     install.setPayment(payment);
                                     agreementInstallmentBean.edit(install);
                                     agreementInstallmentBean.clearCache();
-                                    
+
                                     agreement = agreementBean.find(install.getAgreement().getId());
-                                    
+
                                     extra = extra.subtract(install.getValue());
                                 }
-                                
+
                                 if (install.getValue().compareTo(extra) == 1) {
                                     //Valor menor que a parcela
                                     payment = new Payment();
@@ -217,24 +217,24 @@ public class AgreementInstallmentController extends BaseController {
                                     paymentBean.create(payment);
                                     paymentBean.clearCache();
                                     agreementInstallmentBean.clearCache();
-                                    
+
                                     SubAgreementInstallment subAgreementInstallmentForPayment = new SubAgreementInstallment();
                                     subAgreementInstallmentForPayment.setAgreementInstallment(install);
                                     subAgreementInstallmentForPayment.setValue(install.getValue().subtract(extra));
                                     subAgreementInstallmentBean.create(subAgreementInstallmentForPayment);
                                     subAgreementInstallmentBean.clearCache();
-                                    
+
                                     install = agreementInstallmentBean.find(install.getId());
                                     install.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
                                     install.setPayment(payment);
                                     install.setSubAgreementInstallment(subAgreementInstallmentForPayment);
                                     agreementInstallmentBean.edit(install);
                                     agreementInstallmentBean.clearCache();
-                                    
+
                                     agreementBean.clearCache();
-                                    
+
                                     agreement = agreementBean.find(install.getAgreement().getId());
-                                    
+
                                     JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Mais de uma parcela contemplada.");
                                     JsfUtil.addErrorMessage("Nova subparcela gerada no valor de R$ " + subAgreementInstallmentForPayment.getValue());
                                     break;
@@ -248,13 +248,13 @@ public class AgreementInstallmentController extends BaseController {
                         payment.setPaymentDate(new Date(System.currentTimeMillis()));
                         paymentBean.create(payment);
                         paymentBean.clearCache();
-                        
+
                         SubAgreementInstallment subAgreementInstallmentForPayment = new SubAgreementInstallment();
                         subAgreementInstallmentForPayment.setAgreementInstallment(tempAgreementInstallment);
                         subAgreementInstallmentForPayment.setValue(tempAgreementInstallment.getValue().subtract(payment.getTotalValue()));
                         subAgreementInstallmentBean.create(subAgreementInstallmentForPayment);
                         subAgreementInstallmentBean.clearCache();
-                        
+
                         agreementInstallmentBean.clearCache();
                         tempAgreementInstallment = agreementInstallmentBean.find(tempAgreementInstallment.getId());
                         tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO());
@@ -262,11 +262,11 @@ public class AgreementInstallmentController extends BaseController {
                         tempAgreementInstallment.setSubAgreementInstallment(subAgreementInstallmentForPayment);
                         agreementInstallmentBean.edit(tempAgreementInstallment);
                         agreementInstallmentBean.clearCache();
-                        
+
                         agreementBean.clearCache();
-                        
+
                         agreement = agreementBean.find(tempAgreementInstallment.getAgreement().getId());
-                        
+
                         JsfUtil.addSuccessMessage("Pagamento realizado com sucesso. Parcela com pagamento parcial.");
                         JsfUtil.addErrorMessage("Nova subparcela criada com o valor restante de R$ " + subAgreementInstallmentForPayment.getValue().toString());
                     }
@@ -276,7 +276,7 @@ public class AgreementInstallmentController extends BaseController {
             JsfUtil.addErrorMessage(e, "Falha ao adicionar pagamento.");
         }
     }
-    
+
     public void confirmPayment(Long agreementInstallmentId) {
         try {
             agreementInstallmentBean.clearCache();
@@ -295,11 +295,11 @@ public class AgreementInstallmentController extends BaseController {
                         tempAgreementInstallment.setStatus(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO());
                         agreementInstallmentBean.edit(tempAgreementInstallment);
                         agreementInstallmentBean.clearCache();
-                        
+
                         agreementBean.clearCache();
-                        
+
                         agreement = agreementBean.find(tempAgreementInstallment.getAgreement().getId());
-                        
+
                         JsfUtil.addSuccessMessage("Pagamento confirmado com sucesso!!");
                     } else {
                         JsfUtil.addErrorMessage("Status do pagamento não pode ser confirmado.");
@@ -344,12 +344,12 @@ public class AgreementInstallmentController extends BaseController {
                     agreementInstallment.setAgreement(agreement);
                     agreementInstallmentBean.create(agreementInstallment);
                     agreementInstallmentBean.clearCache();
-                    
+
                     agreementBean.clearCache();
                     agreement = agreementBean.find(agreement.getId());
-                    
+
                     agreementInstallment = new AgreementInstallment();
-                    
+
                     JsfUtil.addSuccessMessage("Parcela adicionada com sucesso !!");
                 } else {
                     JsfUtil.addErrorMessage("Valor superior ao disponível para o contrato.");
@@ -359,7 +359,7 @@ public class AgreementInstallmentController extends BaseController {
             JsfUtil.addErrorMessage(e, "Falha ao cadastrar nova parcela.");
         }
     }
-    
+
     public String checkStatusInstallmentAndAgreement(Long agreementInstallmentId) {
         try {
             AgreementInstallment tempAgreementInstallment = agreementInstallmentBean.find(agreementInstallmentId);
@@ -373,10 +373,10 @@ public class AgreementInstallmentController extends BaseController {
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao consultar parcela.");
         }
-        
+
         return String.valueOf(false);
     }
-    
+
     public String chekcIsPaid(Long agreementInstallmentId) {
         try {
             AgreementInstallment installment = agreementInstallmentBean.find(agreementInstallmentId);
@@ -390,7 +390,7 @@ public class AgreementInstallmentController extends BaseController {
         }
         return String.valueOf(false);
     }
-    
+
     public String hasSubAgreementInstallments(Long agreementInstallmentId) {
         try {
             AgreementInstallment installment = agreementInstallmentBean.find(agreementInstallmentId);
@@ -404,12 +404,17 @@ public class AgreementInstallmentController extends BaseController {
         }
         return String.valueOf(false);
     }
-    
+
     public String checkMinDate() {
-        DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
-        return outputFormatter.format(new Date(System.currentTimeMillis()));
+        if (agreement != null) {
+            DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
+            return outputFormatter.format(agreement.getAssignmentDate());
+        } else {
+            DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
+            return outputFormatter.format(new Date(System.currentTimeMillis()));
+        }
     }
-    
+
     public String checkMaxDate() {
         if (agreement != null) {
             DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -419,42 +424,42 @@ public class AgreementInstallmentController extends BaseController {
             return outputFormatter.format(new Date(System.currentTimeMillis()));
         }
     }
-    
+
     public String formatDate(Date dateToFormat) {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(dateToFormat);
     }
-    
+
     public AgreementInstallment getAgreementInstallment() {
         return agreementInstallment;
     }
-    
+
     public void setAgreementInstallment(AgreementInstallment agreementInstallment) {
         this.agreementInstallment = agreementInstallment;
     }
-    
+
     public Agreement getAgreement() {
         return agreement;
     }
-    
+
     public void setAgreement(Agreement agreement) {
         this.agreement = agreement;
     }
-    
+
     public Payment getPayment() {
         return payment;
     }
-    
+
     public void setPayment(Payment payment) {
         this.payment = payment;
     }
-    
+
     public SubAgreementInstallment getSubAgreementInstallment() {
         return subAgreementInstallment;
     }
-    
+
     public void setSubAgreementInstallment(SubAgreementInstallment subAgreementInstallment) {
         this.subAgreementInstallment = subAgreementInstallment;
     }
-    
+
 }

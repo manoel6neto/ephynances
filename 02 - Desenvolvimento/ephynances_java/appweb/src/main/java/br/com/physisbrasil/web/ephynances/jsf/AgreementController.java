@@ -364,7 +364,7 @@ public class AgreementController extends BaseController {
                             agreement.setStatus(Agreement.getSTATE_INCOMPLETO());
 
                             //Calculando a data para expirar o contrato (limite - data atual + o periodo de vigencia em meses)
-                            Date d = new Date(System.currentTimeMillis());
+                            Date d = agreement.getAssignmentDate();
                             Calendar c = Calendar.getInstance();
                             c.setTime(d);
                             c.set(Calendar.MONTH, c.get(Calendar.MONTH) + agreement.getPeriod());
@@ -613,6 +613,7 @@ public class AgreementController extends BaseController {
                 int id = 0;
                 int id_gestor = 0;
                 int id_cnpj;
+                String usuarioSistema = "";
 
                 sql = String.format("SELECT id_usuario FROM usuario WHERE login = '%s' AND id_nivel = %s", agreement.getManagerCpf().replace(".", "").replace("-", ""), 2);
                 ResultSet rs = stmt.executeQuery(sql);
@@ -622,9 +623,18 @@ public class AgreementController extends BaseController {
                 rs.close();
 
                 if (id == 0) {
+                    
+                    if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_MUNICIPAL())) {
+                        usuarioSistema = "M";
+                    } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PARLAMENTAR())) {
+                        usuarioSistema = "P";
+                    } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PRIVADO())) {
+                        usuarioSistema = "E";
+                    }
+                    
                     //Insert
-                    sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha, status) VALUES ('" + agreement.getManagerName() + "', '" + agreement.getManagerEmail() + "', '"
-                            + agreement.getManagerCpf().replace(".", "").replace("-", "") + "', " + 2 + ", '" + agreement.getManagerEntity() + "', " + "NOW()" + ", '', 'I')";
+                    sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha, status, usuario_sistema) VALUES ('" + agreement.getManagerName() + "', '" + agreement.getManagerEmail() + "', '"
+                            + agreement.getManagerCpf().replace(".", "").replace("-", "") + "', " + 2 + ", '" + agreement.getManagerEntity() + "', " + "NOW()" + ", '', 'I', " + "'" + usuarioSistema + "')";
 
                     if (stmt.executeUpdate(sql) == 1) {
                         //ler o id

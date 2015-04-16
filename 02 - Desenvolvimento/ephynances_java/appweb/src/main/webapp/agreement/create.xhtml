@@ -90,6 +90,13 @@
                         <p:outputLabel value="Valor do contrato (R$): " for="valorTotal" />
                         <pe:inputNumber id="valorTotal" symbol="R$ " style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" /> 
                     </div>
+                    
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Data assinatura do contrato: " for="assignmentDate" />
+                        <p:calendar id="assignmentDate" locale="pt_BR" size="37" value="#{agreementController.agreement.assignmentDate}" mask="99/99/9999" pattern="dd/MM/yyyy" />
+                    </div>
 
                     <br class="clear" />
                     <br/>

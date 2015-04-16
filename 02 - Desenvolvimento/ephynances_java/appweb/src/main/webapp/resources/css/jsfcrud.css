@@ -6,7 +6,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     color: #3a4f54;
     background-color: #dfecf1;
-    font-size: small;
+    font-size: medium;
 }
 
 a {
@@ -18,7 +18,7 @@ table {
 }
 
 form.jsfcrud_list_form th, td th {
-    font-size: x-small;
+    font-size: small;
     color: #4e6a71;
     border-top-style: solid;
     border-bottom-style: solid;
@@ -44,7 +44,7 @@ form.jsfcrud_list_form th, td th {
 td {
     vertical-align: top;
     padding-bottom: 8px;
-    font-size: small;
+    font-size: medium;
 }
 
 form.jsfcrud_list_form td, td td {
