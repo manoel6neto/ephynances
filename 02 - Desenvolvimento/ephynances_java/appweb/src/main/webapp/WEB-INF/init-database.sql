@@ -1,3 +1,8 @@
+SET FOREIGN_KEY_CHECKS=0;
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+
+USE `physis_ephynances`;
+
 insert into `user`(email, name, password, cpf, phone, cell_phone, profile_rule, is_verified) 
 values ('admin@physisbrasil.com.br', 'Administrador', 'c0859afbb1427c8ead10835ae456db9', '111.111.111-11', '(00) 0000-0000', '(00) 0000-0000', 'Administrador Geral', 1);
 
