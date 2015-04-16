@@ -12,7 +12,7 @@ table, caption, tbody, tfoot, thead, tr, th, td{
 body {
     font-family: cursive, Arial, Helvetica, sans-serif;
     font-size: 11px;
-    background: #F8F8F8 url('../img/body_bg_blue.png.jsf') repeat-x top left;
+    background: #F8F8F8 url('../img/header.png.jsf') repeat-x top left;
     margin-bottom: 55px;
 }
 
