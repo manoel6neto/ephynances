@@ -62,7 +62,7 @@
                         <p:commandLink style="margin-left: 5px" ajax="false" action="#{userController.setSellerExternal(item.id)}" rendered="#{item.profileRule.equals(userController.RULER_SELLER)}">
                             <img src="../resources/img/anexo.png" width="16" height="16" alt="Atrelar Cnpjs" title="Atrelar Cnpj`s"/>
                         </p:commandLink>
-                        <p:commandLink style="margin-left: 5px" ajax="false" action="#{agreementController.startAgreement(item.id)}" rendered="#{item.profileRule.equals(userController.RULER_ADMIN)}"><img src="../resources/img/arrow_up.png" width="16" height="16" alt="Fechar contrato como o vendedor" title="Fechar contrato como o vendedor"/>
+                        <p:commandLink style="margin-left: 5px" ajax="false" action="#{agreementController.startAgreement(item.id)}" rendered="#{item.profileRule.equals(userController.RULER_SELLER)}"><img src="../resources/img/arrow_up.png" width="16" height="16" alt="Fechar contrato como o vendedor" title="Fechar contrato como o vendedor"/>
                         </p:commandLink>
                     </p:column>
                 </p:dataTable>

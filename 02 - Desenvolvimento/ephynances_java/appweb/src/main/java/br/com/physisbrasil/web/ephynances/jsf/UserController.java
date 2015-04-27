@@ -769,7 +769,7 @@ public class UserController extends BaseController {
         String DATABASE = "physis_esicar";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
-        String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+        String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
 
         Connection conn;
         Statement stmt;
@@ -803,10 +803,10 @@ public class UserController extends BaseController {
                     //Insert
                     if (!tempUser.getProfileRule().equals(getRULER_ADMIN())) {
                         sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha, usuario_sistema) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
-                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 4 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", ''" + usuarioSistema + "')";
+                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 4 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '', '" + usuarioSistema + "')";
                     } else {
-                        sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
-                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 1 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", ''" + usuarioSistema + "')";
+                        sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha, usuario_sistema) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
+                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 1 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '', '" + usuarioSistema + "')";
                     }
 
                     if (stmt.executeUpdate(sql) == 1) {

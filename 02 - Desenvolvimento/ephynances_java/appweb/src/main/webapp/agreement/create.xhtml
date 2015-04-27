@@ -137,7 +137,14 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Número do parlamentar: " for="parlamentNumberI" />
-                        <p:keyboard id="parlamentNumberI" keypadOnly="true" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" requiredMessage="Número do parlamentar necessária"/> 
+                        <p:keyboard id="parlamentNumberI" keypadOnly="true" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" /> 
+                    </div>
+                    
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Estado do parlamentar (Sigla): " for="parlamentState" />
+                        <p:inputText id="parlamentState" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" maxlength="2"/> 
                     </div>
 
                     <br class="clear" />

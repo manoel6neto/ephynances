@@ -376,6 +376,23 @@ public class AgreementInstallmentController extends BaseController {
 
         return String.valueOf(false);
     }
+    
+    public String checkStatusInstallmentAndAgreementRemove(Long agreementInstallmentId) {
+        try {
+            AgreementInstallment tempAgreementInstallment = agreementInstallmentBean.find(agreementInstallmentId);
+            if (tempAgreementInstallment != null) {
+                if (!tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO()) && !tempAgreementInstallment.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO())) {
+                    if (tempAgreementInstallment.getAgreement().getStatus().equalsIgnoreCase(Agreement.getSTATE_INCOMPLETO())) {
+                        return String.valueOf(true);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao consultar parcela.");
+        }
+
+        return String.valueOf(false);
+    }
 
     public String chekcIsPaid(Long agreementInstallmentId) {
         try {

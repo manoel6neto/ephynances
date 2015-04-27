@@ -317,9 +317,9 @@ public class AgreementController extends BaseController {
 
                 //register manager esicar
                 if (tempAgreement.getAgreementType().equalsIgnoreCase("PARLAMENTAR")) {
-                    insertGestorEsicar(tempAgreement.getUser().getId(), "1");
+                    insertGestorEsicar(tempAgreement.getId(), "1");
                 } else {
-                    insertGestorEsicar(tempAgreement.getUser().getId(), "0");
+                    insertGestorEsicar(tempAgreement.getId(), "0");
                 }
                 JsfUtil.addSuccessMessage("Contrato ativado com sucesso!!");
             }
@@ -588,7 +588,7 @@ public class AgreementController extends BaseController {
         }
     }
 
-    public void insertGestorEsicar(Long userId, String tipoGestor) {
+    public void insertGestorEsicar(Long agreementId, String tipoGestor) {
         //Propriedades de conexao
         String HOSTNAME = "localhost";
         String USERNAME = "root";
@@ -603,7 +603,7 @@ public class AgreementController extends BaseController {
 
         //Dados do sistema
         //Recarregando o objeto para carregar as referencias dos proponentes siconv
-        agreement = agreementBean.find(agreement.getId());
+        agreement = agreementBean.find(agreementId);
         if (agreement.getManagerCpf() != null && !agreement.getManagerCpf().equalsIgnoreCase("")) {
             try {
                 Class.forName(JDBC_DRIVER);
@@ -650,7 +650,7 @@ public class AgreementController extends BaseController {
 
                             // gestor //
                             if (tipoGestor.equalsIgnoreCase("P")) {
-                                sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor, nivel_gestor, numero_parlamentar) VALUES ('%s', %s, %s, %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor, agreement.getAgreementSubType().subSequence(0, 0).toString().toUpperCase(), agreement.getParlamentNumber());
+                                sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor, nivel_gestor, numero_parlamentar, estado_parlamentar) VALUES ('%s', %s, %s, %s, %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor, agreement.getAgreementSubType().subSequence(0, 0).toString().toUpperCase(), agreement.getParlamentNumber(), agreement.getParlamentState());
                                 stmt.executeUpdate(sql);
                             } else {
                                 sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor) VALUES ('%s', %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor);

@@ -139,6 +139,9 @@ public class Agreement implements BaseModel {
     
     @Column(name = "parlament_number", length = 20, nullable = true)
     private String parlamentNumber;
+    
+    @Column(name = "parlament_state", length = 2, nullable = true)
+    private String parlamentState;
 
     @NotNull
     @Column(name = "manager_cpf", length = 16, nullable = false, unique = true)
@@ -249,6 +252,14 @@ public class Agreement implements BaseModel {
         this.parlamentNumber = parlamentNumber;
     }
 
+    public String getParlamentState() {
+        return parlamentState;
+    }
+
+    public void setParlamentState(String parlamentState) {
+        this.parlamentState = parlamentState;
+    }
+    
     public void setExpireDate(Date expireDate) {
         this.expireDate = expireDate;
     }
