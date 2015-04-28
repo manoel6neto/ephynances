@@ -47,8 +47,9 @@
                 <br class="clear" />
 
                 <br class="clear" />
+                <br />
                 <div class="grid_3" >
-                    <p:commandButton action="#{loginController.login}" value="Login" class="grid_1 alpha" />
+                    <p:commandButton action="#{loginController.login}" value="Login" class="grid_1 alpha" style="color: #FF0000" />
                     <a onclick="PF('cd').show()" href="#">Esqueci minha senha</a>
                 </div>                
             </h:form>
@@ -71,9 +72,10 @@
                     </div>
 
                     <br class="clear" />
+                    <br />
                     <p:separator/>
-                    <p:commandButton value="Enviar" action="#{loginController.recoverPassword}" icon="ui-icon-closethick" />
-                    <p:commandButton value="Cancelar" onclick="PF('cd').hide();" type="button" /> 
+                    <p:commandButton style="color: #FF0000" value="Enviar" action="#{loginController.recoverPassword}" icon="ui-icon-closethick" />
+                    <p:commandButton style="color: #FF0000; margin-left: 5px" value="Cancelar" onclick="PF('cd').hide();" type="button" /> 
                 </h:form>
             </p:dialog>
 

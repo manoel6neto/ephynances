@@ -9,7 +9,7 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="Cadastrar novo contrato"/>
+            <h:outputText style="font-size: large" value="CADASTRAR NOVO CONTRATO"/>
         </ui:define>
         <ui:define name="body"  >
             <h:form id="form" styleClass="form">
@@ -192,7 +192,7 @@
                 <br class="clear" />
                 <br/>
                 <div class="grid_3" style="line-height: 30px;" >
-                    <p:commandButton styleClass="grid_1 alpha" action="#{agreementController.addAgreement()}" value="Cadastrar" update="@form" ajax="false"/>
+                    <p:commandButton style="color: #FF0000" styleClass="grid_1 alpha" action="#{agreementController.addAgreement()}" value="Cadastrar" update="@form" ajax="false"/>
                 </div>
             </h:form>
         </ui:define>

@@ -590,13 +590,14 @@ public class AgreementController extends BaseController {
 
     public void insertGestorEsicar(Long agreementId, String tipoGestor) {
         //Propriedades de conexao
-        String HOSTNAME = "localhost";
+        String HOSTNAME = "192.168.0.103";
         String USERNAME = "root";
-        String PASSWORD = "Physis_2013";
-        String DATABASE = "physis_esicar";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
-        //String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+        //String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+        String URLESICAR = "http://192.168.0.103/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
 
         Connection conn;
         Statement stmt;
@@ -623,7 +624,7 @@ public class AgreementController extends BaseController {
                 rs.close();
 
                 if (id == 0) {
-                    
+
                     if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_MUNICIPAL())) {
                         usuarioSistema = "M";
                     } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PARLAMENTAR())) {
@@ -631,7 +632,7 @@ public class AgreementController extends BaseController {
                     } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PRIVADO())) {
                         usuarioSistema = "E";
                     }
-                    
+
                     //Insert
                     sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha, status, usuario_sistema) VALUES ('" + agreement.getManagerName() + "', '" + agreement.getManagerEmail() + "', '"
                             + agreement.getManagerCpf().replace(".", "").replace("-", "") + "', " + 2 + ", '" + agreement.getManagerEntity() + "', " + "NOW()" + ", '', 'I', " + "'" + usuarioSistema + "')";
@@ -650,7 +651,7 @@ public class AgreementController extends BaseController {
 
                             // gestor //
                             if (tipoGestor.equalsIgnoreCase("P")) {
-                                sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor, nivel_gestor, numero_parlamentar, estado_parlamentar) VALUES ('%s', %s, %s, %s, %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor, agreement.getAgreementSubType().subSequence(0, 0).toString().toUpperCase(), agreement.getParlamentNumber(), agreement.getParlamentState());
+                                sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor, nivel_gestor, numero_parlamentar, estado_parlamentar) VALUES ('%s', %s, %s, %s, %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor, agreement.getAgreementSubType().substring(0, 1), agreement.getParlamentNumber(), agreement.getParlamentState());
                                 stmt.executeUpdate(sql);
                             } else {
                                 sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor) VALUES ('%s', %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor);
@@ -683,6 +684,14 @@ public class AgreementController extends BaseController {
                                         stmt.executeUpdate(sql);
                                     }
                                 }
+
+                                //Ativar usuário no esicar                              
+                                URL urlcon = new URL(URLESICAR + id);
+                                HttpURLConnection connect = (HttpURLConnection) urlcon.openConnection();
+                                connect.connect();
+                                if (HttpURLConnection.HTTP_OK != connect.getResponseCode()) {
+                                    JsfUtil.addErrorMessage("Falha ao solicitar ativação no esicar");
+                                }
                                 // fim cnpj_siconv && usuario_cnpj //
                             } else {
                                 //rollback
@@ -700,18 +709,23 @@ public class AgreementController extends BaseController {
                 JsfUtil.addErrorMessage(e, "Falha ao inserir o gestor no banco de dados");
             } catch (SQLException e) {
                 JsfUtil.addErrorMessage(e, "Falha ao inserir o gestor no banco de dados");
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(AgreementController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(AgreementController.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
     public void changeStatusGestorEsicar(String cpf, String status) {
         //Propriedades de conexao
-        String HOSTNAME = "localhost";
+        String HOSTNAME = "192.168.0.103";
         String USERNAME = "root";
-        String PASSWORD = "Physis_2013";
-        String DATABASE = "physis_esicar";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
+        //String URLESICAR = "http://" + HOSTNAME + "/esicar/index.php/comunica_financeiro/ativa_desativa_usuario?id=";
         String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/comunica_financeiro/ativa_desativa_usuario?id=";
 
         Connection conn;

@@ -7,7 +7,7 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="Cadastrar novo colaborador"/>
+            <h:outputText style="font-size: large" value="CADASTRAR NOVO COLABORADOR"/>
         </ui:define>
         <ui:define name="body"  >
             <h:form id="form" styleClass="form" >
@@ -89,7 +89,7 @@
                 <br class="clear" />
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >
-                    <p:commandButton styleClass="grid_1 alpha" action="#{sellerContributorController.save}" value="Salvar" update="form" ajax="false"/>
+                    <p:commandButton style="color: #FF0000" styleClass="grid_1 alpha" action="#{sellerContributorController.save}" value="Salvar" update="form" ajax="false"/>
                     <h:link styleClass="grid_1" outcome="list" value="Voltar" />
                 </div>
             </h:form>

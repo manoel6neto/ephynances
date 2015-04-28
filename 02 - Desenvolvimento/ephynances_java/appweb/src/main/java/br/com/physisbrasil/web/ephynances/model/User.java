@@ -1,5 +1,6 @@
 package br.com.physisbrasil.web.ephynances.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -44,7 +45,16 @@ public class User implements BaseModel {
     private static final String RULER_ADMIN_GESTOR = "Administrador Regional";
     private static final String RULER_SELLER = "Representante";
     private static final String RULER_CONTRIBUTOR = "Colaborador";
-
+    
+    private static final List<String> SYSTEMS;
+    static
+    {
+        SYSTEMS = new ArrayList<String>();
+        SYSTEMS.add("Todos");
+        SYSTEMS.add("Parlamentar");
+        SYSTEMS.add("Municipal");
+    }
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 50)
@@ -55,6 +65,11 @@ public class User implements BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    
+    @Column(name = "system_esicar", length = 50, nullable = false)
+    @NotNull
+    @DefaultValue(value = "Todos")
+    private String systemEsicar;
 
     @Column(name = "name", length = 150, nullable = false)
     @Size(max = 150)
@@ -74,7 +89,7 @@ public class User implements BaseModel {
     @Column(name = "cpf", length = 16, nullable = false)
     private String cpf;
 
-    @Column(name = "rg", length = 11, nullable = false)
+    @Column(name = "rg", length = 11, nullable = true)
     private String rg;
 
     @Column(name = "entity", length = 100, nullable = false)
@@ -183,6 +198,14 @@ public class User implements BaseModel {
         this.name = name;
     }
 
+    public String getSystemEsicar() {
+        return systemEsicar;
+    }
+
+    public void setSystemEsicar(String systemEsicar) {
+        this.systemEsicar = systemEsicar;
+    }
+    
     public String getEmail() {
         return email;
     }
@@ -333,6 +356,10 @@ public class User implements BaseModel {
 
     public void setSalary(int salary) {
         this.salary = salary;
+    }
+
+    public static List<String> getSYSTEMS() {
+        return SYSTEMS;
     }
 
     public List<Agreement> getAgreements() {

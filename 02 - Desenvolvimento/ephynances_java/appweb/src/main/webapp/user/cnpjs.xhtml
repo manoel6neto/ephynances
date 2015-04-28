@@ -8,7 +8,7 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="CNPJ's" />
+            <h:outputText  style="font-size: large"  value="VINCULAR ENTIDADES" />
         </ui:define>
         <ui:define name="body"  >
             <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER, userController.RULER_ADMIN_GESTOR])}" />
@@ -66,7 +66,7 @@
                     <br class="clear" />
                     <br/>
                     <div class="grid_3" style="line-height: 30px;" >
-                        <p:commandButton styleClass="grid_1 alpha" action="#{userController.addCpnjSeller}" value="Adicionar" update="menuProponents table" ajax="false"/>
+                        <p:commandButton style="color: #FF0000" styleClass="grid_1 alpha" action="#{userController.addCpnjSeller}" value="Adicionar" update="menuProponents table" ajax="false"/>
                     </div>
 
                     <br class="clear" />
@@ -106,7 +106,7 @@
                     <br class="clear" />
                     <br/>
                     <div class="grid_3" style="line-height: 30px;" >
-                        <p:commandButton styleClass="grid_1 alpha" action="#{userController.clearCnpjs()}" value="Limpar" update="table" ajax="false"/>
+                        <p:commandButton  style="color: #FF0000" styleClass="grid_1 alpha" action="#{userController.clearCnpjs()}" value="Limpar" update="table" ajax="false"/>
                     </div>
 
                     <br class="clear" />

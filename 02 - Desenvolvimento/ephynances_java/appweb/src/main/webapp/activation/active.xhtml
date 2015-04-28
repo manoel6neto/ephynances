@@ -7,15 +7,15 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="Ativação de novo usuário"/>
+            <h:outputText style="font-size: large" value="ATIVAÇÃO DE USUÁRIO"/>
         </ui:define>
         <ui:define name="body" >
             <p:growl showDetail="false" showSummary="true" autoUpdate="true"/>
             <h:form id="form" class="form loginForm" rendered="#{activationController.activation != null}">
                 <br class="clear" />
                 <div class="grid_3" >
-                    <p:outputLabel value="CPF: " for="cpf" rendered="#{activationController.activation.dueDate != null}"/>
-                    <p:inputMask styleClass="grid_2" id="cpf" value="#{activationController.cpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário" rendered="#{activationController.activation.dueDate != null}"/> 
+                    <p:outputLabel value="CPF: " for="cpf" rendered="#{activationController.checkActivationOrRecoverPassword()}"/>
+                    <p:inputMask styleClass="grid_2" id="cpf" value="#{activationController.cpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário" rendered="#{activationController.checkActivationOrRecoverPassword()}"/> 
                 </div>
 
                 <br class="clear" />
@@ -32,7 +32,7 @@
                 <br class="clear" />
                 <br/>
                 <div class="grid_3" >
-                    <p:commandButton class="grid_1 alpha" action="#{activationController.activeUserAndDropRegister()}" value="Ativar" update="form" ajax="false"/>
+                    <p:commandButton style="color: #FF0000" class="grid_1 alpha" action="#{activationController.activeUserAndDropRegister()}" value="Ativar" update="form" ajax="false"/>
                 </div>
             </h:form>
         </ui:define>

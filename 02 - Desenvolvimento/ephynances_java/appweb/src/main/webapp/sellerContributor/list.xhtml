@@ -7,7 +7,7 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="Colaboradores do vendedor: #{sellerContributorController.seller.name}"></h:outputText>
+            <h:outputText style="font-size: large" value="COLABORADORES DO REPRESENTANTE: #{sellerContributorController.seller.name.toUpperCase(locale)}"></h:outputText>
         </ui:define>
 
         <ui:define name="body">
@@ -51,7 +51,7 @@
                 <br class="clear" />
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >
-                    <p:commandButton styleClass="grid_1 alpha" style="width: 120px" ajax="false" action="#{sellerContributorController.create}" value="Novo colaborador" />
+                    <p:commandButton style="color: #FF0000" styleClass="grid_1 alpha" style="width: 120px" ajax="false" action="#{sellerContributorController.create}" value="Novo colaborador" />
                     <h:link styleClass="grid_1" outcome="/user/list" value="Voltar" />
                 </div>
             </h:form>

@@ -4,13 +4,13 @@
     font-family: cursive;
     font-size: 2.4em;
     color: white;
-    font-weight: bold;
+    font-weight: normal;
 }
 .title2{
     font-family: cursive;
     font-size: 2.4em;
-    color: #508CAA;
-    font-weight: bold;
+    color: #FF0000;
+    font-weight: normal;
 }
 .accountInfo, .accountInfo a, .accountInfo a:visited, .accountInfo a:active{
     font-size: 1.1em;
@@ -24,16 +24,16 @@
 /* ---------- BODY STYLES ------------------------------------------------------ */
 
 h1{
-    color: #508CAA;
+    color: #FF0000;
     font-family: cursive;
 }
 h2{
-    color:#6A6A6A;
+    color:#FF0000;
     font-family: cursive;
     font-variant: small-caps;
 }
 h3{
-    color:#6A6A6A;
+    color:#FF0000;
     font-family: cursive;
     font-variant: small-caps;
     margin-top: 0.7em;

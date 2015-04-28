@@ -9,7 +9,7 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="Parcelas do contrato: #{agreementInstallmentController.agreement.physisAgreementNumber}"/>
+            <h:outputText style="font-size: large" value="PARCELAS DO CONTRATO: #{agreementInstallmentController.agreement.physisAgreementNumber.toUpperCase()}"/>
         </ui:define>
         <ui:define name="body"  >
             <h:form id="form">
@@ -39,7 +39,7 @@
                     <br class="clear" />
                     <br/>
                     <div class="grid_3 alpha" >
-                        <p:commandButton id="addInstallmentButton" value="Adicionar" update="@form" ajax="false" actionListener="#{agreementInstallmentController.addInstallment()}" />
+                        <p:commandButton style="color: #FF0000" id="addInstallmentButton" value="Adicionar" update="@form" ajax="false" actionListener="#{agreementInstallmentController.addInstallment()}" />
                     </div>
 
                     <br class="clear" />
@@ -94,8 +94,8 @@
                             <pe:inputNumber id="inputValueOverlay" symbol="R$ " value="#{agreementInstallmentController.payment.totalValue}" />
                             <br class="clear" />
                             <br/>
-                            <p:commandButton id="commandButtonAdd" style="margin-left: 25px; margin-bottom: 2px;" update="@form" ajax="false" action="#{agreementInstallmentController.addInstallmentPayment()}" value="Pagar"/>
-                            <p:commandButton value="Cancelar" onclick="PF('cd').hide()" type="button" /> 
+                            <p:commandButton style="color: #FF0000" id="commandButtonAdd" style="margin-left: 25px; margin-bottom: 2px;" update="@form" ajax="false" action="#{agreementInstallmentController.addInstallmentPayment()}" value="Pagar"/>
+                            <p:commandButton style="color: #FF0000" value="Cancelar" onclick="PF('cd').hide()" type="button" /> 
                         </div>
                     </h:form>
                 </p:dialog>

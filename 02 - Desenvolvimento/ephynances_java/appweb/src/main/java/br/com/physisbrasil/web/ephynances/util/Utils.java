@@ -22,6 +22,7 @@ public class Utils {
         props.put("mail.transport.protocol", "smtp");
         props.put("mail.smtp.host", smtpServer);
         props.put("mail.smtp.user", sender);
+        //props.put("mail.smtp.user", "Physis Brasil");
         props.put("mail.smtp.password", passwd);
         props.put("mail.smtp.port", smtpPort.toString());
         props.put("mail.debug", "true");
@@ -41,7 +42,7 @@ public class Utils {
 
         try {
             MimeMessage msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress(user, sender));
+            msg.setFrom(new InternetAddress(user, "Physis Brasil"));
             msg.setRecipients(Message.RecipientType.TO, toEmail);
             msg.setSubject(subject);
             msg.setText(message, "utf-8", "html");

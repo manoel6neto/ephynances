@@ -99,6 +99,8 @@ public class ActivationController extends BaseController {
                     if (new Date(System.currentTimeMillis()).after(activation.getDueDate())) {
                         activation = null;
                         JsfUtil.addErrorMessage("Token expirado inicie o processo de recuperação de senha novamente.");
+                    } else {
+                        JsfUtil.putFlash("activation", activation);
                     }
                 }
             }
@@ -138,6 +140,16 @@ public class ActivationController extends BaseController {
             JsfUtil.addErrorMessage("Falha ao ativar o usuário. Entre em contato com o administrador.");
         }
 
-        return "/login?faces-redirect=true";
+        return "/login";
+    }
+    
+    public String checkActivationOrRecoverPassword() {
+        if (activation != null) {
+            if (activation.getDueDate() != null) {
+                return String.valueOf(true);
+            }
+        }
+        
+        return String.valueOf(false);
     }
 }

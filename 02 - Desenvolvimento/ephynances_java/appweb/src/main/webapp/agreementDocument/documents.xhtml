@@ -7,7 +7,7 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="Documentos do contrato: #{agreementDocumentController.agreement.physisAgreementNumber}"/>
+            <h:outputText style="font-size: large" value="DOCUMENTOS DO CONTRATO: #{agreementDocumentController.agreement.physisAgreementNumber.toUpperCase()}"/>
         </ui:define>
         <ui:define name="body"  >
             <h:form id="form" enctype="multipart/form-data" prependId="true">
@@ -36,7 +36,7 @@
                     <br class="clear" />
                     <br/>
                     <div class="grid_3 alpha" >
-                        <p:commandButton id="uploadFileButton" value="Upload" update="@form" ajax="false" actionListener="#{agreementDocumentController.upload()}" />
+                        <p:commandButton style="color: #FF0000" id="uploadFileButton" value="Upload" update="@form" ajax="false" actionListener="#{agreementDocumentController.upload()}" />
                     </div>
 
                     <br class="clear" />
@@ -79,8 +79,8 @@
                 </p:fieldset>
 
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="explode">
-                    <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                    <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    <p:commandButton style="color: #FF0000" value="Sim" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton style="color: #FF0000" value="Não" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
                 </p:confirmDialog>
             </h:form>
         </ui:define>

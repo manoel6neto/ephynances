@@ -1,10 +1,12 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.ActivationBean;
+import br.com.physisbrasil.web.ephynances.ejb.AdministrativeSphereBean;
 import br.com.physisbrasil.web.ephynances.ejb.ConfigurationBean;
 import br.com.physisbrasil.web.ephynances.ejb.HistoryProponentUserBean;
 import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
 import br.com.physisbrasil.web.ephynances.ejb.SellerContributorBean;
+import br.com.physisbrasil.web.ephynances.ejb.StateBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Activation;
 import br.com.physisbrasil.web.ephynances.model.AdministrativeSphere;
@@ -27,6 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -70,6 +73,12 @@ public class UserController extends BaseController {
 
     @EJB
     private HistoryProponentUserBean historyProponentUserBean;
+    
+    @EJB
+    private StateBean stateBean;
+    
+    @EJB
+    private AdministrativeSphereBean administrativeSphereBean;
 
     //Cadastro AdminGestor
     private User adminGestor;
@@ -102,6 +111,7 @@ public class UserController extends BaseController {
                     user = requestUser;
                 } else {
                     user = new User();
+                    user.setCommission(20);
                 }
             }
         } else {
@@ -110,6 +120,7 @@ public class UserController extends BaseController {
                 user = requestUser;
             } else {
                 user = new User();
+                user.setCommission(20);
             }
         }
 
@@ -199,6 +210,15 @@ public class UserController extends BaseController {
                     if (adminGestor != null) {
                         user.setIdAdminGestor(adminGestor.getId());
                     }
+                    
+                    if (user.getStates() == null || user.getStates().isEmpty()) {
+                        user.setStates(stateBean.findAll());
+                    } 
+                    
+                    if (user.getAdministrativeSpheres() == null || user.getAdministrativeSpheres().isEmpty()) {
+                        user.setAdministrativeSpheres(administrativeSphereBean.findAll());
+                    }
+                    
                     usuarioBean.edit(user);
                     usuarioBean.clearCache();
                     insertSellerEsicar(user.getId());
@@ -213,9 +233,19 @@ public class UserController extends BaseController {
                     }
                     user.setIsVerified(false);
                     user.setPassword(Criptografia.criptografar(user.getCpf() + String.valueOf(System.currentTimeMillis())));
+                    
                     if (adminGestor != null) {
                         user.setIdAdminGestor(adminGestor.getId());
                     }
+                    
+                    if (user.getStates() == null || user.getStates().isEmpty()) {
+                        user.setStates(stateBean.findAll());
+                    } 
+                    
+                    if (user.getAdministrativeSpheres() == null || user.getAdministrativeSpheres().isEmpty()) {
+                        user.setAdministrativeSpheres(administrativeSphereBean.findAll());
+                    }
+                    
                     usuarioBean.create(user);
                     usuarioBean.clearCache();
                     insertSellerEsicar(user.getId());
@@ -228,7 +258,7 @@ public class UserController extends BaseController {
                     activationBean.clearCache();
 
                     Configuration config = configurationBean.findAll().get(0);
-                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Ativar Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
+                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Ativar e-Phynance</a></body></html>", config.getSmtpServer(), config.getUserName(), "Ativação e-Phynance", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis e-Phynance");
 
                     JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
                 }
@@ -494,6 +524,15 @@ public class UserController extends BaseController {
 
                 if (loggedUser.getProfileRule().equalsIgnoreCase(getRULER_ADMIN())) {
                     listUser = usuarioBean.findAll();
+                } else if (loggedUser.getProfileRule().equalsIgnoreCase(getRULER_ADMIN_GESTOR())) {
+                     List<User> tempUsers = usuarioBean.findAll();
+                     for (User tempUser : tempUsers) {
+                         if (tempUser.getIdAdminGestor() != null) {
+                             if (tempUser.getIdAdminGestor().equals(loggedUser.getId())) {
+                                 listUser.add(tempUser);
+                             }
+                         }
+                     }
                 } else {
                     listUser = new ArrayList<User>();
                     listUser.add(loggedUser);
@@ -763,13 +802,14 @@ public class UserController extends BaseController {
 
     public void insertSellerEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "localhost";
+        String HOSTNAME = "192.168.0.103";
         String USERNAME = "root";
-        String PASSWORD = "Physis_2013";
-        String DATABASE = "physis_esicar";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
-        String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+        //String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+        String URLESICAR = "http://192.168.0.103/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
 
         Connection conn;
         Statement stmt;
@@ -783,7 +823,6 @@ public class UserController extends BaseController {
                 stmt = conn.createStatement();
                 String sql;
                 int id = 0;
-                String usuarioSistema = "T";
                 
                 int nivel;
                 if (tempUser.getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
@@ -803,10 +842,10 @@ public class UserController extends BaseController {
                     //Insert
                     if (!tempUser.getProfileRule().equals(getRULER_ADMIN())) {
                         sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha, usuario_sistema) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
-                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 4 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '', '" + usuarioSistema + "')";
+                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 4 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '', '" + tempUser.getSystemEsicar().substring(0, 1) + "')";
                     } else {
                         sql = "INSERT INTO usuario (nome, email, login, id_nivel, entidade, data_cadastro, senha, usuario_sistema) VALUES ('" + tempUser.getName() + "', '" + tempUser.getEmail() + "', '"
-                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 1 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '', '" + usuarioSistema + "')";
+                                + tempUser.getCpf().replace(".", "").replace("-", "") + "', " + 1 + ", '" + tempUser.getEntity() + "', " + "NOW()" + ", '', '" + tempUser.getSystemEsicar().substring(0, 1) + "')";
                     }
 
                     if (stmt.executeUpdate(sql) == 1) {
@@ -853,7 +892,7 @@ public class UserController extends BaseController {
                     conn.close();
                 } else {
                     //update
-                    sql = String.format("UPDATE usuario SET nome='%s', email='%s', login='%s', entidade='%s' WHERE id_usuario=%s", tempUser.getName(), tempUser.getEmail(), tempUser.getCpf().replace(".", "").replace("-", ""), tempUser.getEntity(), id);
+                    sql = String.format("UPDATE usuario SET nome='%s', email='%s', login='%s', entidade='%s', usuario_sistema='%s' WHERE id_usuario=%s", tempUser.getName(), tempUser.getEmail(), tempUser.getCpf().replace(".", "").replace("-", ""), tempUser.getEntity(), tempUser.getSystemEsicar().substring(0, 1), id);
 
                     if (stmt.executeUpdate(sql) == 1) {
                         // Limpando estados e esferas
@@ -903,10 +942,10 @@ public class UserController extends BaseController {
 
     public void changeStatusUserEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "localhost";
+        String HOSTNAME = "192.168.0.103";
         String USERNAME = "root";
-        String PASSWORD = "Physis_2013";
-        String DATABASE = "physis_esicar";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
 
@@ -955,5 +994,9 @@ public class UserController extends BaseController {
                 JsfUtil.addErrorMessage(e, "Falha ao inserir/atualizar o status no banco de dados");
             }
         }
+    }
+    
+    public List<String> getSystems() {
+        return User.getSYSTEMS();
     }
 }

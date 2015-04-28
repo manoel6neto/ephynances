@@ -179,6 +179,6 @@ public class PaymentDocumentController extends BaseController {
 
     public String formatDate(Date dateToFormat) {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
-        return outputFormatter.format(dateToFormat);
+        return outputFormatter.format(dateToFormat).toUpperCase();
     }
 }

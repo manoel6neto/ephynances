@@ -8,7 +8,7 @@
     konsole
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText  value="Configurações do Sistema" />
+            <h:outputText style="font-size: large" value="CONFIGURAÇÕES DO SISTEMA" />
         </ui:define>
         <ui:define name="body">
             <f:event type="preRenderView" listener="#{loginController.isUserInRuller(userController.RULER_ADMIN)}" />
@@ -100,7 +100,7 @@
                 <br class="clear" />
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >
-                    <p:commandButton styleClass="grid_1 alpha" action="#{configurationController.save}" ajax="false" value="Salvar" update="form"/>
+                    <p:commandButton style="color: #FF0000" styleClass="grid_1 alpha" action="#{configurationController.save}" ajax="false" value="Salvar" update="form"/>
                     <h:link styleClass="grid_1" outcome="/index.xhtml" value="Voltar" />
                 </div>
             </h:form>

@@ -8,14 +8,14 @@
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
-            <h:outputText value="Usuários"></h:outputText>
+            <h:outputText style="font-size: large" value="USUÁRIOS"></h:outputText>
         </ui:define>
 
         <ui:define name="body">
             <f:event type="preRenderView" listener="#{userController.ruleCheck([userController.RULER_ADMIN, userController.RULER_SELLER, userController.RULER_ADMIN_GESTOR])}" />
             <h:form id="form">
                 <p:dataTable id="table" widgetVar="table" value="#{userController.listUsers}" var="item" lazy="false" 
-                             rows="25" paginator="true"  paginatorPosition="bottom" 
+                             rows="15" paginator="true"  paginatorPosition="bottom" 
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                              currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                              emptyMessage="Nenhum registro encontrado!">
@@ -26,17 +26,17 @@
                     <p:column style="text-align: center" headerText="Cpf" sortBy="#{item.cpf}" filterBy="#{item.cpf}">
                         <h:outputText value="#{item.cpf}" />
                     </p:column> 
-                    <p:column style="text-align: center" headerText="Email" sortBy="#{item.email}" filterBy="#{item.email}">
-                        <h:outputText value="#{item.email}" />
-                    </p:column>   
                     <p:column style="text-align: center" headerText="Perfil" >                      
                         <h:outputText value="#{item.profileRule}" />
                     </p:column>   
+                    <p:column style="text-align: center" headerText="Sistema" >                      
+                        <h:outputText value="#{item.systemEsicar}" />
+                    </p:column>
                     <p:column width="30" style="text-align: center" headerText="Status" >                      
                         <p:graphicImage cache="off" alt="Ativo" title="Ativo" url="../resources/img/on.png" height="16" width="16" rendered="#{item.isVerified}" />
                         <p:graphicImage cache="off" alt="Inativo" title="Inativo" url="../resources/img/off.png" height="16" width="16" rendered="#{!item.isVerified}" />
                     </p:column>
-                    <p:column width="160" style="text-align: center" headerText="Ações">
+                    <p:column width="190" style="text-align: center" headerText="Ações">
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.edit(item)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar" title="Editar"/></p:commandLink>
                         <h:outputText value="   " />
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{userController.view(item)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Detalhes" title="Detalhes"/></p:commandLink>
@@ -69,7 +69,7 @@
 
                 <br />
                 <div class="alpha grid_2" >
-                    <p:commandButton ajax="false" action="#{userController.create}" value="Novo usuário" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) or loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}"/>
+                    <p:commandButton style="color: #FF0000" ajax="false" action="#{userController.create}" value="Novo usuário" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) or loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}"/>
                 </div>
 
             </h:form>

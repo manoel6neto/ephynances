@@ -109,8 +109,7 @@ public class LoginController implements Serializable {
                 setShowPdfContract(false);
 
                 JsfUtil.addSuccessMessage("Contrato aceito com sucesso !!");
-                logout();
-                return "login";
+                return "/redirect";
             } else {
                 sellerContractBean.remove(contract);
                 sellerContractBean.clearCache();
@@ -122,6 +121,10 @@ public class LoginController implements Serializable {
         }
 
         return "/login?faces-redirect=true";
+    }
+    
+    public String redirect() {
+        return "/index";
     }
 
     public String recoverPassword() {
@@ -144,7 +147,7 @@ public class LoginController implements Serializable {
                     activationBean.clearCache();
 
                     Configuration config = configurationBean.findAll().get(0);
-                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Recuperar Senha Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
+                    Utils.sendEmail(user.getEmail(), user.getName(), "<html><body><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Recuperar Senha e-Phynance</a></body></html>", config.getSmtpServer(), config.getUserName(), "Ativação e-Phynance", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Recuperação de senha Physis e-Phynance");
 
                     JsfUtil.addSuccessMessage("Recuperação solicitada com sucesso!");
                 }
@@ -153,7 +156,7 @@ public class LoginController implements Serializable {
             JsfUtil.addErrorMessage("Falha ao recuperar informações para recuperação de senha.");
         }
 
-        return "/login?faces-redirect=true";
+        return "/login";
     }
 
     public String logout() {
