@@ -18,7 +18,7 @@
                 <p:dialog modal="true" widgetVar="statusDialog" header="Status" draggable="false" closable="false" resizable="false">
                     <p:graphicImage name="./resources/img/ajaxloadingbar.gif" url="./resources/img/ajaxloadingbar.gif" alt="loading..." cache="true"/>
                 </p:dialog>
-                <p:commandButton style="color: #FF0000" value="Baixar (Docx)" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);" icon="ui-icon-arrowthick-1-s">
+                <p:commandButton style="color: #FF0000" value="Baixar (Docx)" ajax="false" icon="ui-icon-arrowthick-1-s">
                     <p:fileDownload value="#{loginController.file}" />
                 </p:commandButton>
             </h:form>

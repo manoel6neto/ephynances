@@ -6,6 +6,7 @@ import br.com.physisbrasil.web.ephynances.model.Activation;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,9 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 /**
  *
@@ -23,6 +27,8 @@ import javax.faces.context.FacesContext;
 @ManagedBean
 @ViewScoped
 public class ActivationController extends BaseController {
+
+    private StreamedContent file;
 
     @EJB
     private ActivationBean activationBean;
@@ -37,6 +43,9 @@ public class ActivationController extends BaseController {
 
     @PostConstruct
     public void init() {
+        InputStream stream = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/resources/documents/contrato.docx");
+        file = new DefaultStreamedContent(stream, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", "contrato.docx");
+
         if (activations == null) {
             activations = new ArrayList<Activation>();
             setActivations(activationBean.findAll());
@@ -45,14 +54,14 @@ public class ActivationController extends BaseController {
         if (password == null) {
             password = new String();
         }
-        
+
         activation = (Activation) getFlash("activation");
         if (activation == null) {
             activation = new Activation();
         }
-        
+
         active();
-        
+
         //putFlash("activation", null);
     }
 
@@ -112,18 +121,18 @@ public class ActivationController extends BaseController {
     public String activeUserAndDropRegister() {
         try {
             User user = activation.getUser();
-            
+
             if (activation.getDueDate() != null) {
                 if (!getCpf().equals(user.getCpf())) {
                     JsfUtil.addErrorMessage("Cpf inválido.");
-                    
+
                     activationBean.remove(activation);
                     activationBean.clearCache();
-                    
+
                     return "/login?faces-redirect=true";
                 }
             }
-            
+
             user.setPassword(Criptografia.criptografar(password));
             user.setIsVerified(true);
             userBean.edit(user);
@@ -132,7 +141,7 @@ public class ActivationController extends BaseController {
 
             userBean.clearCache();
             activationBean.clearCache();
-            
+
             JsfUtil.addSuccessMessage("Usuário ativado com sucesso !!");
 
             return "/login?faces-redirect=true";
@@ -142,14 +151,22 @@ public class ActivationController extends BaseController {
 
         return "/login";
     }
-    
+
     public String checkActivationOrRecoverPassword() {
         if (activation != null) {
             if (activation.getDueDate() != null) {
                 return String.valueOf(true);
             }
         }
-        
+
         return String.valueOf(false);
+    }
+
+    public StreamedContent getFile() {
+        return file;
+    }
+
+    public void setFile(StreamedContent file) {
+        this.file = file;
     }
 }

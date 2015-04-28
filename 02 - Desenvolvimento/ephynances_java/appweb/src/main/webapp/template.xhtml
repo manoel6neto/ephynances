@@ -114,8 +114,12 @@
                                             <p:menuitem value="PROPONENTE SICONV" outcome="/proponentSiconv/list" />
                                             <p:menuitem value="HISTORICO PROP E REPRESENTANTES" outcome="/historyProponentUser/list" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>
                                             <p:menuitem value="ESFERAS ADMINISTRATIVAS" outcome="/administrativeSphere/list" />
-                                        </p:submenu>     
-                                        <p:menuitem value="CONFIGURAÇÕES" outcome="/admin/form" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>                                        
+                                        </p:submenu>
+                                        <p:submenu label="CONFIGURAÇÕES DO USUÁRIO">
+                                            <p:menuitem value="ALTERAR SENHA" outcome="/user/password" />
+                                            <p:menuitem value="CONTRATO DO REPRESENTANTE" outcome="/contract" rendered="#{loginController.isUserInRuller(userController.RULER_SELLER)}"/>
+                                        </p:submenu>
+                                        <p:menuitem value="CONFIGURAÇÕES DO SISTEMA" outcome="/admin/form" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>                                        
                                     </p:menubar>
                                 </ui:insert>
                             </div>
