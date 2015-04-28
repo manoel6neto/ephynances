@@ -29,7 +29,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -73,12 +72,15 @@ public class UserController extends BaseController {
 
     @EJB
     private HistoryProponentUserBean historyProponentUserBean;
-    
+
     @EJB
     private StateBean stateBean;
-    
+
     @EJB
     private AdministrativeSphereBean administrativeSphereBean;
+
+    //remove propronents
+    private List<ProponentSiconv> selectedRemoveProponents;
 
     //Cadastro AdminGestor
     private User adminGestor;
@@ -210,15 +212,15 @@ public class UserController extends BaseController {
                     if (adminGestor != null) {
                         user.setIdAdminGestor(adminGestor.getId());
                     }
-                    
+
                     if (user.getStates() == null || user.getStates().isEmpty()) {
                         user.setStates(stateBean.findAll());
-                    } 
-                    
+                    }
+
                     if (user.getAdministrativeSpheres() == null || user.getAdministrativeSpheres().isEmpty()) {
                         user.setAdministrativeSpheres(administrativeSphereBean.findAll());
                     }
-                    
+
                     usuarioBean.edit(user);
                     usuarioBean.clearCache();
                     insertSellerEsicar(user.getId());
@@ -233,19 +235,19 @@ public class UserController extends BaseController {
                     }
                     user.setIsVerified(false);
                     user.setPassword(Criptografia.criptografar(user.getCpf() + String.valueOf(System.currentTimeMillis())));
-                    
+
                     if (adminGestor != null) {
                         user.setIdAdminGestor(adminGestor.getId());
                     }
-                    
+
                     if (user.getStates() == null || user.getStates().isEmpty()) {
                         user.setStates(stateBean.findAll());
-                    } 
-                    
+                    }
+
                     if (user.getAdministrativeSpheres() == null || user.getAdministrativeSpheres().isEmpty()) {
                         user.setAdministrativeSpheres(administrativeSphereBean.findAll());
                     }
-                    
+
                     usuarioBean.create(user);
                     usuarioBean.clearCache();
                     insertSellerEsicar(user.getId());
@@ -517,6 +519,14 @@ public class UserController extends BaseController {
         this.statesCapital = statesCapital;
     }
 
+    public List<ProponentSiconv> getSelectedRemoveProponents() {
+        return selectedRemoveProponents;
+    }
+
+    public void setSelectedRemoveProponents(List<ProponentSiconv> selectedRemoveProponents) {
+        this.selectedRemoveProponents = selectedRemoveProponents;
+    }
+
     private void loadUsers() {
         try {
             if (getUsuarioLogado() != null) {
@@ -525,14 +535,14 @@ public class UserController extends BaseController {
                 if (loggedUser.getProfileRule().equalsIgnoreCase(getRULER_ADMIN())) {
                     listUser = usuarioBean.findAll();
                 } else if (loggedUser.getProfileRule().equalsIgnoreCase(getRULER_ADMIN_GESTOR())) {
-                     List<User> tempUsers = usuarioBean.findAll();
-                     for (User tempUser : tempUsers) {
-                         if (tempUser.getIdAdminGestor() != null) {
-                             if (tempUser.getIdAdminGestor().equals(loggedUser.getId())) {
-                                 listUser.add(tempUser);
-                             }
-                         }
-                     }
+                    List<User> tempUsers = usuarioBean.findAll();
+                    for (User tempUser : tempUsers) {
+                        if (tempUser.getIdAdminGestor() != null) {
+                            if (tempUser.getIdAdminGestor().equals(loggedUser.getId())) {
+                                listUser.add(tempUser);
+                            }
+                        }
+                    }
                 } else {
                     listUser = new ArrayList<User>();
                     listUser.add(loggedUser);
@@ -785,6 +795,41 @@ public class UserController extends BaseController {
         }
     }
 
+    public void removeCnpjs() {
+        try {
+            if (selectedRemoveProponents != null) {
+                if (selectedRemoveProponents.size() > 0) {
+                    for (ProponentSiconv prop : selectedRemoveProponents) {
+                        prop.setUser(null);
+                        proponentSiconvBean.edit(prop);
+                    }
+                    proponentSiconvBean.clearCache();
+                    insertSellerEsicar(user.getId());
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Falha ao remover CNPJ's");
+        }
+    }
+    
+    public void removeCnpjsExt() {
+        try {
+            if (selectedRemoveProponents != null) {
+                if (selectedRemoveProponents.size() > 0) {
+                    for (ProponentSiconv prop : selectedRemoveProponents) {
+                        prop.setUser(null);
+                        proponentSiconvBean.edit(prop);
+                    }
+                    proponentSiconvBean.clearCache();
+                    setSellerExternal(user.getId());
+                    insertSellerEsicar(user.getId());
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage("Falha ao remover CNPJ's");
+        }
+    }
+
     public void clearCnpjsExt() {
         try {
             proponentSiconvBean.clearCache();
@@ -823,7 +868,7 @@ public class UserController extends BaseController {
                 stmt = conn.createStatement();
                 String sql;
                 int id = 0;
-                
+
                 int nivel;
                 if (tempUser.getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
                     nivel = 1;
@@ -960,8 +1005,8 @@ public class UserController extends BaseController {
                 stmt = conn.createStatement();
                 String sql;
                 int id = 0;
-                
-               int nivel = 0;
+
+                int nivel = 0;
                 if (tempUser.getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
                     nivel = 1;
                 } else {
@@ -995,7 +1040,7 @@ public class UserController extends BaseController {
             }
         }
     }
-    
+
     public List<String> getSystems() {
         return User.getSYSTEMS();
     }

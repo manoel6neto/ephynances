@@ -78,12 +78,12 @@
 
                     <br class="clear" />
                     <br />
-                    <p:dataTable id="table" widgetVar="table" value="#{userController.user.proponents}" var="item" lazy="false" 
+                    <p:dataTable id="table" widgetVar="table" value="#{userController.user.proponents}" selection="#{userController.selectedRemoveProponents}" rowKey="#{proponent.id}" 
+                                 style="margin-bottom:0" var="item" lazy="false" 
                                  rows="25" paginator="true"  paginatorPosition="bottom" 
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                  currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                                  emptyMessage="Nenhum registro atrelado!">
-
 
                         <p:column style="text-align: center" headerText="CNPJ" sortBy="#{item.cnpj}" filterBy="#{item.cnpj}" filterStyle="text-align: center; width: 140px;">                       
                             <h:outputText value="#{item.cnpj}" />
@@ -101,11 +101,12 @@
                             <h:outputText value="#{item.esferaAdministrativa}" />
                         </p:column>
                     </p:dataTable>
-                    
+
                     <br class="clear" />
                     <br/>
-                    <div class="grid_3" style="line-height: 30px;" >
-                        <p:commandButton style="color: #FF0000" styleClass="grid_1 alpha" action="#{userController.clearCnpjsExt()}" value="Limpar" update="table" ajax="false"/>
+                    <div class="grid_3 alpha" >
+                        <p:commandButton  style="color: #FF0000;" styleClass="grid_1 alpha" action="#{userController.clearCnpjsExt()}" value="Limpar" update="table" ajax="false"/>
+                        <p:commandButton  style="color: #FF0000; margin-left: 5px;" styleClass="grid_1 alpha" action="#{userController.removeCnpjsExt()}" value="Apagar" update="table" ajax="false"/>
                     </div>
 
                     <br class="clear" />
