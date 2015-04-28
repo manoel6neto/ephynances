@@ -85,6 +85,7 @@
                                  currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                                  emptyMessage="Nenhum registro atrelado!">
 
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
                         <p:column style="text-align: center" headerText="CNPJ" sortBy="#{item.cnpj}" filterBy="#{item.cnpj}" filterStyle="text-align: center; width: 140px;">                       
                             <h:outputText value="#{item.cnpj}" />
                         </p:column>
