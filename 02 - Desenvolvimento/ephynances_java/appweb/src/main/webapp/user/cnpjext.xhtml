@@ -78,7 +78,7 @@
 
                     <br class="clear" />
                     <br />
-                    <p:dataTable id="table" widgetVar="table" value="#{userController.user.proponents}" selection="#{userController.selectedRemoveProponents}" rowKey="#{proponent.id}" 
+                    <p:dataTable id="table" widgetVar="table" value="#{userController.user.proponents}" selection="#{userController.selectedRemoveProponents}" rowKey="#{item.id}" 
                                  style="margin-bottom:0" var="item" lazy="false" 
                                  rows="25" paginator="true"  paginatorPosition="bottom" 
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
