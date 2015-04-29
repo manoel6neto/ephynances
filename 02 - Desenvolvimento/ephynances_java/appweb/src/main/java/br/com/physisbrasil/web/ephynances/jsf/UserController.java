@@ -800,8 +800,15 @@ public class UserController extends BaseController {
             if (selectedRemoveProponents != null) {
                 if (selectedRemoveProponents.size() > 0) {
                     for (ProponentSiconv prop : selectedRemoveProponents) {
-                        prop.setUser(null);
-                        proponentSiconvBean.edit(prop);
+                        if (prop.getEsferaAdministrativa().equalsIgnoreCase("MUNICIPAL")) {
+                            for (ProponentSiconv propMunicipal : proponentSiconvBean.findBySphereStateCity(prop.getEsferaAdministrativa(), prop.getMunicipioUfNome(), prop.getMunicipio())) {
+                                propMunicipal.setUser(null);
+                                proponentSiconvBean.edit(propMunicipal);
+                            }
+                        } else {
+                            prop.setUser(null);
+                            proponentSiconvBean.edit(prop);
+                        }
                     }
                     proponentSiconvBean.clearCache();
                     insertSellerEsicar(user.getId());
@@ -811,14 +818,21 @@ public class UserController extends BaseController {
             JsfUtil.addErrorMessage("Falha ao remover CNPJ's");
         }
     }
-    
+
     public void removeCnpjsExt() {
         try {
             if (selectedRemoveProponents != null) {
                 if (selectedRemoveProponents.size() > 0) {
                     for (ProponentSiconv prop : selectedRemoveProponents) {
-                        prop.setUser(null);
-                        proponentSiconvBean.edit(prop);
+                        if (prop.getEsferaAdministrativa().equalsIgnoreCase("MUNICIPAL")) {
+                            for (ProponentSiconv propMunicipal : proponentSiconvBean.findBySphereStateCity(prop.getEsferaAdministrativa(), prop.getMunicipioUfNome(), prop.getMunicipio())) {
+                                propMunicipal.setUser(null);
+                                proponentSiconvBean.edit(propMunicipal);
+                            }
+                        } else {
+                            prop.setUser(null);
+                            proponentSiconvBean.edit(prop);
+                        }
                     }
                     proponentSiconvBean.clearCache();
                     setSellerExternal(user.getId());
@@ -860,6 +874,7 @@ public class UserController extends BaseController {
         Statement stmt;
 
         //Dados do sistema
+        usuarioBean.clearCache();
         User tempUser = usuarioBean.find(userId);
         if (tempUser != null) {
             try {
@@ -997,6 +1012,7 @@ public class UserController extends BaseController {
         Connection conn;
         Statement stmt;
 
+        usuarioBean.clearCache();
         User tempUser = usuarioBean.find(userId);
         if (tempUser != null) {
             try {
