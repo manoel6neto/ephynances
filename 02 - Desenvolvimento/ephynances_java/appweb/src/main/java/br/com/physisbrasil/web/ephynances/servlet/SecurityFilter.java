@@ -44,6 +44,7 @@ public class SecurityFilter extends AbstractFilter implements Filter {
         if (user == null && !req.getRequestURI().contains("login.xhtml")
                 && !req.getRequestURI().contains("javax.faces.resource")
                 && !req.getRequestURI().contains("/rest/")
+                && !req.getRequestURI().contains("/resources/")
                 && !req.getRequestURI().contains("/routines/")
                 && !req.getRequestURI().contains("/upload/images/")
                 && !req.getRequestURI().contains("/activation/")) {
