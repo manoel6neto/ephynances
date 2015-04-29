@@ -147,7 +147,7 @@ public class LoginController implements Serializable {
                     activationBean.clearCache();
 
                     Configuration config = configurationBean.findAll().get(0);
-                    Utils.sendEmail(user.getEmail(), user.getName(), String.format("<html><div align='center' style='background-image: url(%s); width: 740px; height: 720px;'><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=%s'><img src='%s' width='300' height='50' style=\"margin-top: 400px;\"/></a></div></html>", "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bg_recover.png", activation.getToken(), "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bt_recover.png")
+                    Utils.sendEmail(user.getEmail(), user.getName(), String.format("<html><div align='center' style=\"background-image: url('%s'); width: 740px; height: 720px;\"><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=%s'><img src='%s' width='300' height='50' style=\"margin-top: 400px;\"/></a></div></html>", "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bg_recover.png", activation.getToken(), "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bt_recover.png")
                             , config.getSmtpServer(), config.getUserName(), "Ativação e-Phynance", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Recuperação de senha Physis e-Phynance");
 
                     JsfUtil.addSuccessMessage("Recuperação solicitada com sucesso!");

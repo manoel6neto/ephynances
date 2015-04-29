@@ -260,8 +260,8 @@ public class DaillyProcessController extends BaseController {
         String DATABASE = "physi971_wp";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
-        //String URLESICAR = "http://" + HOSTNAME + "/esicar/index.php/comunica_financeiro/ativa_desativa_usuario?id=";
-        String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/comunica_financeiro/ativa_desativa_usuario?id=";
+        String URLESICAR = "http://" + HOSTNAME + "/esicar/index.php/comunica_financeiro/ativa_desativa_usuario?id=";
+        //String URLESICAR = "http://" + HOSTNAME + "/esicar/esicar/index.php/comunica_financeiro/ativa_desativa_usuario?id=";
 
         Connection conn;
         Statement stmt;
