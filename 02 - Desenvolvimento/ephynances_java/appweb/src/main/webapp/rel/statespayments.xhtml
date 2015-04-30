@@ -4,7 +4,8 @@
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core" >
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
@@ -51,27 +52,16 @@
                                 <div>
                                     <br />
                                     <h:outputText value="#{relController.formatValueToReais(relController.calcTotalPaymentsForContract(agreement.id))}" style="color: #FAFAFA; font-style: oblique; font-size: large; background-color: green; padding: 10px;" />
-<!--                                    <br />
                                     <br />
                                     <br />
-                                    <h:outputLabel style="font-style: oblique; font-weight: bold;" value="Vendedor: " for="vendedor"/>
-                                    <h:outputText id="vendedor" value="#{agreement.user.name}" /><p></p>
-                                    <p:separator />
-                                    <h:outputLabel style="font-style: oblique; font-weight: bold;" value="Proponente: " for="proponente"/>
-                                    <h:outputText id="proponente" value="#{relController.checkProponent(agreement.idPrimaryCnpj)}" /><p></p>
-                                    <p:separator />
-                                    <h:outputLabel style="font-style: oblique; font-weight: bold;" value="N. Contrato do proponente: " for="contractPropo"/>
-                                    <h:outputText id="contractPropo" value="#{agreement.contactAgreementNumber}" /><p></p>
-                                    <p:separator />
-                                    <h:outputLabel style="font-style: oblique; font-weight: bold;" value="Data Assinatura: " for="dateAss"/>
-                                    <h:outputText id="dateAss" value="#{relController.formatDate(agreement.assignmentDate)}" /><p></p>
-                                    <p:separator />
-                                    <h:outputLabel style="font-style: oblique; font-weight: bold;" value="Data vencimento: " for="dateVenc"/>
-                                    <h:outputText id="dateVenc" value="#{relController.formatDate(agreement.expireDate)}" />
-                                    <p:separator />
-                                    <h:outputLabel style="font-style: oblique; font-weight: bold;" value="Quant. Parcelas: " for="countParc"/>
-                                    <h:outputText id="countParc" value="#{relController.countParc(agreement.id)}" /><p></p>
-                                    <br />-->
+                                    <br />
+                                    <ui:repeat value="#{relController.returnListPaymentsForKey(agreement.id)}" var="payment" varStatus="status" id="repeatPayments">
+                                        <h:outputText value="#{relController.formatDate(payment.paymentDate)}"/>
+                                        <h:outputText value="#{relController.formatValueToReais(payment.totalValue.setScale(2))}"/>
+                                        <p></p>
+                                        <p:separator />
+                                        <br />
+                                    </ui:repeat>
                                 </div>
                             </p:tab>
                         </p:accordionPanel>

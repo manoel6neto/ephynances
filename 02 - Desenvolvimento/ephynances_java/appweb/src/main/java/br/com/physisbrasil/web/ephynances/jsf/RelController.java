@@ -255,6 +255,17 @@ public class RelController extends BaseController {
             return new BigDecimal(0);
         }
     }
+    
+    public List<Payment> returnListPaymentsForKey(Long agreementId) {
+        Agreement tempAgreement = agreementBean.find(agreementId);
+        return agreementsListPayments.get(tempAgreement);
+    }
+    
+    public String changeTitleAndSetTempId(Long agreementId) {
+        Agreement tempAgreement = agreementBean.find(agreementId);
+        
+        return tempAgreement.getPhysisAgreementNumber();
+    }
 
     public List<Agreement> getAgreements() {
         return agreements;

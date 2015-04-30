@@ -376,7 +376,7 @@ public class AgreementInstallmentController extends BaseController {
 
         return String.valueOf(false);
     }
-    
+
     public String checkStatusInstallmentAndAgreementRemove(Long agreementInstallmentId) {
         try {
             AgreementInstallment tempAgreementInstallment = agreementInstallmentBean.find(agreementInstallmentId);
@@ -395,6 +395,22 @@ public class AgreementInstallmentController extends BaseController {
     }
 
     public String chekcIsPaid(Long agreementInstallmentId) {
+        try {
+            AgreementInstallment installment = agreementInstallmentBean.find(agreementInstallmentId);
+            if (installment != null) {
+                if (installment.getPayment() != null) {
+                    if (installment.getPayment().getConfirmationDate() != null) {
+                        return String.valueOf(true);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return String.valueOf(false);
+        }
+        return String.valueOf(false);
+    }
+
+    public String chekcIsPaidNotConfirmed(Long agreementInstallmentId) {
         try {
             AgreementInstallment installment = agreementInstallmentBean.find(agreementInstallmentId);
             if (installment != null) {
