@@ -4,8 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core" 
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:f="http://java.sun.com/jsf/core" >
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
@@ -56,15 +55,15 @@
                                     <br />
                                     <br />
                                     <table>
-                                        <thead>
+                                        <thead style="height: 30px;">
                                             <td width="200" style="font-weight: bold">Data de pagamento</td>
-                                            <td width="200" style="font-weight: bold">Valor do pagamento</td>
+                                            <td width="250" style="font-weight: bold">Valor do pagamento</td>
                                             <td width="400" style="font-weight: bold">Contrato e proponente</td>
                                             <td width="200" style="font-weight: bold">Vendedor</td>
                                         </thead>
                                         <tbody>
                                             <ui:repeat value="#{relController.returnListPaymentsForKey(agreement.id)}" var="payment" varStatus="status" id="repeatPayments">
-                                                <tr>
+                                                <tr style="height: 30px;">
                                                     <td>
                                                         <h:outputText value="#{relController.formatDate(payment.paymentDate)}"/>
                                                     </td>

@@ -21,6 +21,12 @@
     font-weight: bold;
 }
 
+table, th, td {
+    border: 1px solid #cccccc;
+    text-align: center;
+    vertical-align: central;
+}
+
 /* ---------- BODY STYLES ------------------------------------------------------ */
 
 h1{
