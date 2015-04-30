@@ -266,6 +266,40 @@ public class RelController extends BaseController {
         
         return tempAgreement.getPhysisAgreementNumber();
     }
+    
+    public String returnContactNumberAndProponenteAndUfSigla(Payment payment) {
+        String contactNumber = new String();
+        String municipio = new String();
+        String propUfSigla = new String();
+        
+        if (payment != null) {
+            if (payment.getAgreementInstallment() != null) {
+                contactNumber = payment.getAgreementInstallment().getAgreement().getContactAgreementNumber();
+                municipio = proponentSiconvBean.find(payment.getAgreementInstallment().getAgreement().getIdPrimaryCnpj()).getMunicipio();
+                propUfSigla = proponentSiconvBean.find(payment.getAgreementInstallment().getAgreement().getIdPrimaryCnpj()).getMunicipioUfSigla();
+            } else {
+                contactNumber = payment.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getContactAgreementNumber();
+                municipio = proponentSiconvBean.find(payment.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getIdPrimaryCnpj()).getMunicipio();
+                propUfSigla = proponentSiconvBean.find(payment.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getIdPrimaryCnpj()).getMunicipioUfSigla();
+            }
+        }
+        
+        return String.format("%s - %s - %s", contactNumber, municipio, propUfSigla);
+    }
+    
+    public String returnSellerName(Payment payment) {
+        String sellerName = new String();
+        
+        if (payment != null) {
+            if (payment.getAgreementInstallment() != null) {
+                sellerName = payment.getAgreementInstallment().getAgreement().getUser().getName();
+            } else {
+                sellerName = payment.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getUser().getName();
+            }
+        }
+        
+        return String.format("%s", sellerName);
+    }
 
     public List<Agreement> getAgreements() {
         return agreements;

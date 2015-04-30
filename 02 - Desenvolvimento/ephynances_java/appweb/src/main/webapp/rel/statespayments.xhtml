@@ -55,13 +55,33 @@
                                     <br />
                                     <br />
                                     <br />
-                                    <ui:repeat value="#{relController.returnListPaymentsForKey(agreement.id)}" var="payment" varStatus="status" id="repeatPayments">
-                                        <h:outputText value="#{relController.formatDate(payment.paymentDate)}"/>
-                                        <h:outputText value="#{relController.formatValueToReais(payment.totalValue.setScale(2))}"/>
-                                        <p></p>
-                                        <p:separator />
-                                        <br />
-                                    </ui:repeat>
+                                    <table>
+                                        <thead>
+                                            <td width="200" style="font-weight: bold">Data de pagamento</td>
+                                            <td width="200" style="font-weight: bold">Valor do pagamento</td>
+                                            <td width="400" style="font-weight: bold">Contrato e proponente</td>
+                                            <td width="200" style="font-weight: bold">Vendedor</td>
+                                        </thead>
+                                        <tbody>
+                                            <ui:repeat value="#{relController.returnListPaymentsForKey(agreement.id)}" var="payment" varStatus="status" id="repeatPayments">
+                                                <tr>
+                                                    <td>
+                                                        <h:outputText value="#{relController.formatDate(payment.paymentDate)}"/>
+                                                    </td>
+                                                    <td>
+                                                        <h:outputText value="#{relController.formatValueToReais(payment.totalValue.setScale(2))}"/>
+                                                    </td>
+                                                    <td>
+                                                        <h:outputText value="#{relController.returnContactNumberAndProponenteAndUfSigla(payment)}"/>
+                                                    </td>
+                                                    <td>
+                                                        <h:outputText value="#{relController.returnSellerName(payment)}"/>
+                                                    </td>
+                                                </tr>
+                                            </ui:repeat>
+                                        </tbody>
+                                    </table>
+                                    <br />
                                 </div>
                             </p:tab>
                         </p:accordionPanel>
