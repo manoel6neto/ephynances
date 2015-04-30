@@ -158,13 +158,17 @@ public class RelController extends BaseController {
                                 for (AgreementInstallment installment : agree.getAgreementInstallments()) {
                                     // check payments
                                     if (installment.getPayment() != null) {
-                                        payments.add(installment.getPayment());
+                                        if (installment.getPayment().getConfirmationDate() != null) {
+                                            payments.add(installment.getPayment());
+                                        }
                                     }
 
                                     //check subAgreementInstallment
                                     if (installment.getSubAgreementInstallment() != null) {
                                         if (installment.getSubAgreementInstallment().getPayment() != null) {
-                                            payments.add(installment.getSubAgreementInstallment().getPayment());
+                                            if (installment.getSubAgreementInstallment().getPayment().getConfirmationDate() != null) {
+                                                payments.add(installment.getSubAgreementInstallment().getPayment());
+                                            }
                                         }
                                     }
                                 }
@@ -231,6 +235,25 @@ public class RelController extends BaseController {
     public int countParc(Long agreementId) {
         Agreement tempAgreement = agreementBean.find(agreementId);
         return tempAgreement.getAgreementInstallments().size();
+    }
+
+    public List<Agreement> listKeys() {
+        List<Agreement> tempListString = new ArrayList<Agreement>(agreementsListPayments.keySet());
+        return tempListString;
+    }
+
+    public BigDecimal calcTotalPaymentsForContract(Long agreementId) {
+        try {
+            BigDecimal total = new BigDecimal(0);
+            Agreement tempAgreement = agreementBean.find(agreementId);
+            for (Payment pay : agreementsListPayments.get(tempAgreement)) {
+                total = total.add(pay.getTotalValue());
+            }
+
+            return total;
+        } catch (Exception e) {
+            return new BigDecimal(0);
+        }
     }
 
     public List<Agreement> getAgreements() {

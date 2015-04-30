@@ -94,7 +94,7 @@
                             <pe:inputNumber id="inputValueOverlay" symbol="R$ " value="#{agreementInstallmentController.payment.totalValue}" />
                             <br class="clear" />
                             <br/>
-                            <p:commandButton style="color: #FF0000" id="commandButtonAdd" style="margin-left: 25px; margin-bottom: 2px;" update="@form" ajax="false" action="#{agreementInstallmentController.addInstallmentPayment()}" value="Pagar"/>
+                            <p:commandButton id="commandButtonAdd" style="margin-left: 25px; margin-bottom: 2px; color: #FF0000;" update="@form" ajax="false" action="#{agreementInstallmentController.addInstallmentPayment()}" value="Pagar"/>
                             <p:commandButton style="color: #FF0000" value="Cancelar" onclick="PF('cd').hide()" type="button" /> 
                         </div>
                     </h:form>

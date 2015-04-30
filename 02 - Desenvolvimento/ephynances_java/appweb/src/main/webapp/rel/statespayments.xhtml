@@ -23,7 +23,7 @@
                             <f:selectItem noSelectionOption="true" itemLabel="Todos" />
                             <f:selectItems value="#{relController.states}" var="state" itemLabel="#{state.name}" itemValue="#{state}" />
                         </p:selectOneMenu>
-                        <p:commandButton style="color: #FF0000; vertical-align: top; alignment-adjust: central; margin-left: 10px; height: 25px;" action="#{relController.calcAgreementForState()}" value="Filtrar" update="form" ajax="false"/>
+                        <p:commandButton style="color: #FF0000; vertical-align: top; alignment-adjust: central; margin-left: 10px; height: 25px;" action="#{relController.calcPaymentsForStates()}" value="Filtrar" update="form" ajax="false"/>
                     </div>
                     <br class="clear" />
                     <br />
@@ -45,13 +45,13 @@
                     <br />
                     <br />
                     <div>
-                        <p:accordionPanel style="background-color: #D2D2D2; border: solid; border-width: 1px; border-color: #EBE9DE" value="#{relController.agreements}" var="agreement" multiple="true" rendered="#{relController.agreements.size() > 0}">
+                        <p:accordionPanel style="background-color: #D2D2D2; border: solid; border-width: 1px; border-color: #EBE9DE" value="#{relController.listKeys()}" var="agreement" multiple="true" rendered="#{relController.agreementsListPayments.size() > 0}">
                             <p:tab title="#{agreement.physisAgreementNumber}" titleStyle="color: #FF0000; font-style: oblique;" >
                                 <br class="clear" />
                                 <div>
                                     <br />
-                                    <h:outputText value="#{relController.formatValueToReais(agreement.totalPrice.setScale(2)) }" style="color: #FAFAFA; font-style: oblique; font-size: large; background-color: green; padding: 10px;" />
-                                    <br />
+                                    <h:outputText value="#{relController.formatValueToReais(relController.calcTotalPaymentsForContract(agreement.id))}" style="color: #FAFAFA; font-style: oblique; font-size: large; background-color: green; padding: 10px;" />
+<!--                                    <br />
                                     <br />
                                     <br />
                                     <h:outputLabel style="font-style: oblique; font-weight: bold;" value="Vendedor: " for="vendedor"/>
@@ -71,12 +71,12 @@
                                     <p:separator />
                                     <h:outputLabel style="font-style: oblique; font-weight: bold;" value="Quant. Parcelas: " for="countParc"/>
                                     <h:outputText id="countParc" value="#{relController.countParc(agreement.id)}" /><p></p>
-                                    <br />
+                                    <br />-->
                                 </div>
                             </p:tab>
                         </p:accordionPanel>
                         <br />
-                        <h:outputText value="Nenhum registro encontrado" style="font-style: oblique; font-size: medium; text-align: center;" rendered="#{relController.agreements.size() == 0}"/>
+                        <h:outputText value="Nenhum registro encontrado" style="font-style: oblique; font-size: medium; text-align: center;" rendered="#{relController.agreementsListPayments.size() == 0}"/>
                     </div>
                 </p:fieldset>
             </h:form>
