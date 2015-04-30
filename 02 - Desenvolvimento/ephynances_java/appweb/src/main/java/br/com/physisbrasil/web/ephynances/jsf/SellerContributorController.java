@@ -65,9 +65,9 @@ public class SellerContributorController extends BaseController {
             tempUser = new User();
         }
 
-        putFlash("seller", null);
-        putFlash("contributors", null);
-        putFlash("tempuser", null);
+        //putFlash("seller", null);
+        //putFlash("contributors", null);
+        //putFlash("tempuser", null);
     }
 
     public List<SellerContributor> getSellerContributors() {

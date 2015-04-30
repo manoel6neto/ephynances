@@ -254,10 +254,10 @@ public class DaillyProcessController extends BaseController {
 
     public void changeStatusGestorEsicar(String cpf, String status) {
         //Propriedades de conexao
-        String HOSTNAME = "192.168.0.103";
+        String HOSTNAME = "localhost";
         String USERNAME = "root";
-        String PASSWORD = "A7cbdd82@1";
-        String DATABASE = "physi971_wp";
+        String PASSWORD = "Physis_2013";
+        String DATABASE = "physis_esicar";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
         String URLESICAR = "http://" + HOSTNAME + "/esicar/index.php/comunica_financeiro/ativa_desativa_usuario?id=";

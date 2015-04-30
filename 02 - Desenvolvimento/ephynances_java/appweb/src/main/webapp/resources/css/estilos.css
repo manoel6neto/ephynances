@@ -53,7 +53,6 @@ h3{
 
 /* ---------- ----------- ------------------------------------------------------ */
 
-
 /* ---------- FORM STYLES ------------------------------------------------------ */
 .form label, .form input, .form select, .form textArea{
     font-size: 1.3em;
@@ -226,8 +225,6 @@ label.ui-state-error{
 .ui-selectmanymenu {
     width: 100% !important;
 }
-
-
 
 #dropzone {
     background: #cccccc !important;

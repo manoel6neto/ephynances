@@ -23,7 +23,7 @@ public class StateConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if (value != null && value.trim().length() > 0) {
-            if (!value.equals("Selecione um estado")) {
+            if (!value.equals("Selecione um estado") && !value.equalsIgnoreCase("Todos")) {
                 try {
                     State state = stateBean.find(Long.valueOf(value));
                     return state;

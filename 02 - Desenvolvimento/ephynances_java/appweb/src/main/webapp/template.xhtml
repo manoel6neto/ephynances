@@ -99,24 +99,30 @@
                         <h:panelGroup rendered="#{loginController.loggedUser != null}" >
                             <div class="grid_8 omega "  >
                                 <ui:insert name="header">
-                                    <p:menubar style="margin-top: 10px" rendered="#{loginController.showPdfContract == false}">  
+                                    <p:menubar style="margin-top: 10px" rendered="#{loginController.showPdfContract == false}" >  
                                         <p:menuitem value="HOME" outcome="/index.xhtml" />
-                                        <p:menuitem value="USUÁRIOS" outcome="/user/list" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_SELLER) || loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}" />  
+                                        <p:menuitem value="USUÁRIOS" outcome="/user/list" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}" />  
+                                        <p:menuitem value="COLABORADORES" action="#{sellerContributorController.listBySeller(loginController.loggedUser.id)}" rendered="#{loginController.isUserInRuller(userController.RULER_SELLER)}" />
                                         <p:menuitem value="VINCULAR CNPJ'S" outcome="/user/cnpjs" rendered="#{loginController.isUserInRuller(userController.RULER_SELLER) || loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}" />  
                                         <p:submenu label="CONTRATOS">
                                             <p:menuitem value="CONTRATOS CADASTRADOS" outcome="/agreement/list" />
                                             <p:menuitem value="NOVO CONTRATO" action="#{agreementController.startAgreement(loginController.loggedUser.id)}" />
                                         </p:submenu>
                                         <p:menuitem value="COMISSÕES" outcome="/comission/comission" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>
-                                        <p:submenu label="RELATÓRIOS">
-                                            <p:menuitem value="REGIÕES" outcome="/region/list" />
-                                            <p:menuitem value="ESTADOS" outcome="/state/list" />
-                                            <p:menuitem value="PROPONENTE SICONV" outcome="/proponentSiconv/list" />
-                                            <p:menuitem value="HISTORICO PROP E REPRESENTANTES" outcome="/historyProponentUser/list" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>
-                                            <p:menuitem value="ESFERAS ADMINISTRATIVAS" outcome="/administrativeSphere/list" />
+                                        <p:submenu label="RELATÓRIOS" rendered="#{!loginController.isUserInRuller(userController.RULER_CONTRIBUTOR)}" >
+                                            <p:submenu label="ESTADOS" >
+                                                <p:menuitem value="CONTRATOS FIRMADOS" outcome="/rel/statesagreements" />
+                                                <p:menuitem value="ENTRADAS FINANCEIRAS" outcome="/rel/statesagreements" />
+                                            </p:submenu>
+                                            <p:submenu label="REPRESENTANTES" >
+                                                <p:menuitem value="CONTRATOS FIRMADOS" outcome="/rel/statesagreements" />
+                                                <p:menuitem value="ENTRADAS FINANCEIRAS" outcome="/rel/statesagreements" />
+                                            </p:submenu>
+                                            <p:menuitem value="INADIMPLENTES" outcome="/rel/statesagreements" />
                                         </p:submenu>
                                         <p:submenu label="CONFIGURAÇÕES DO USUÁRIO">
                                             <p:menuitem value="ALTERAR SENHA" outcome="/user/password" />
+                                            <p:menuitem value="EDITAR USUÁRIO" outcome="/user/list" rendered="#{loginController.isUserInRuller(userController.RULER_SELLER)}" />
                                             <p:menuitem value="CONTRATO DO REPRESENTANTE" outcome="/contract" rendered="#{loginController.isUserInRuller(userController.RULER_SELLER)}"/>
                                         </p:submenu>
                                         <p:menuitem value="SISTEMA" outcome="/admin/form" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>                                        

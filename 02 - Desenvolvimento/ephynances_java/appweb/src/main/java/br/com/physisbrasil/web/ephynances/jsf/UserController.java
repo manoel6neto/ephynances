@@ -260,7 +260,7 @@ public class UserController extends BaseController {
                     activationBean.clearCache();
 
                     Configuration config = configurationBean.findAll().get(0);
-                    Utils.sendEmail(user.getEmail(), user.getName(),  String.format("<html><div align='center' style=\"background-image: url('%s'); width: 740px; height: 720px;\"><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=%s'><img src='%s' width='300' height='50' style=\"margin-top: 400px;\"/></a></div></html>", "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bg_ativar.png", activation.getToken(), "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bt_ativar.png"),
+                    Utils.sendEmail(user.getEmail(), user.getName(),  String.format("<html><div align='center' style=\"background-image: url('%s'); width: 542px; height: 549px; margin-left: 250px;\"><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=%s'><img src='%s' width='331' height='40' style=\"margin-top: 400px;\"/></a></div></html>", "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bg_ativar_1.png", activation.getToken(), "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bt_ativar_1.png"),
                              config.getSmtpServer(), config.getUserName(), "Ativação e-Phynance", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis e-Phynance");
 
                     JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
@@ -862,10 +862,10 @@ public class UserController extends BaseController {
 
     public void insertSellerEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "192.168.0.103";
+        String HOSTNAME = "localhost";
         String USERNAME = "root";
-        String PASSWORD = "A7cbdd82@1";
-        String DATABASE = "physi971_wp";
+        String PASSWORD = "Physis_2013";
+        String DATABASE = "physis_esicar";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
         String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
@@ -1003,10 +1003,10 @@ public class UserController extends BaseController {
 
     public void changeStatusUserEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "192.168.0.103";
+        String HOSTNAME = "localhost";
         String USERNAME = "root";
-        String PASSWORD = "A7cbdd82@1";
-        String DATABASE = "physi971_wp";
+        String PASSWORD = "Physis_2013";
+        String DATABASE = "physis_esicar";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
 
