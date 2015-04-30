@@ -22,9 +22,10 @@
 }
 
 table, th, td {
-    border: 1px solid #cccccc;
     text-align: center;
     vertical-align: central;
+    border-bottom: #cccccc;
+    border-bottom-style: solid;
 }
 
 /* ---------- BODY STYLES ------------------------------------------------------ */
