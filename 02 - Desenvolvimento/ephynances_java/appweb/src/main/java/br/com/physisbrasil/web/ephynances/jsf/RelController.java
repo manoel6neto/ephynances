@@ -18,7 +18,9 @@ import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -53,44 +55,13 @@ public class RelController extends BaseController {
     private List<Payment> payments;
     private BigDecimal totalValuePayments;
     private BigDecimal totalValueAgreements;
+    private Map<Agreement, List<Payment>> agreementsListPayments;
 
     @PostConstruct
     public void init() {
-
         //check stateAgreements
-        User logged = (User) JsfUtil.getSessionAttribute(AbstractFilter.USER_KEY);
-        if (!logged.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
-            agreementBean.clearCache();
-            if ((List<Agreement>) getFlash("agreements") != null) {
-                agreements = (List<Agreement>) getFlash("agreements");
-            } else {
-                if (agreements == null) {
-                    agreements = agreementBean.findAll();
-                    totalValueAgreements = new BigDecimal(0);
-                    for (Agreement a : agreements) {
-                        totalValueAgreements = totalValueAgreements.add(a.getTotalPrice());
-                    }
-                }
-            }
-        } else {
-            agreementBean.clearCache();
-            if ((List<Agreement>) getFlash("agreements") != null) {
-                agreements = (List<Agreement>) getFlash("agreements");
-            } else {
-                if (agreements == null) {
-                    agreements = agreementBean.findAll();
-                    for (Agreement tAgree : agreements) {
-                        if (!tAgree.getUser().equals(logged)) {
-                            agreements.remove(tAgree);
-                        }
-                    }
-                    totalValueAgreements = new BigDecimal(0);
-                    for (Agreement a : agreements) {
-                        totalValueAgreements = totalValueAgreements.add(a.getTotalPrice());
-                    }
-                }
-            }
-        }
+        calcAgreementForState();
+        calcPaymentsForStates();
 
         //check sellerList
         userBean.clearCache();
@@ -116,18 +87,37 @@ public class RelController extends BaseController {
     //get agreement for select state or all states
     public void calcAgreementForState() {
         try {
+            User logged = (User) JsfUtil.getSessionAttribute(AbstractFilter.USER_KEY);
             agreementBean.clearCache();
             if (selectedState != null) {
                 agreements = new ArrayList<Agreement>();
                 for (Agreement agree : agreementBean.findAll()) {
-                    if (agree.getProponents() != null) {
-                        if (agree.getProponents().size() > 0) {
-                            for (ProponentSiconv prop : agree.getProponents()) {
-                                if (prop.getMunicipioUfSigla().equalsIgnoreCase(selectedState.getAcronym())) {
-                                    if (!agreements.contains(agree)) {
-                                        agreements.add(agree);
-                                    } else {
-                                        break;
+                    if (logged.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
+                        if (agree.getUser().equals(logged)) {
+                            if (agree.getProponents() != null) {
+                                if (agree.getProponents().size() > 0) {
+                                    for (ProponentSiconv prop : agree.getProponents()) {
+                                        if (prop.getMunicipioUfSigla().equalsIgnoreCase(selectedState.getAcronym())) {
+                                            if (!agreements.contains(agree)) {
+                                                agreements.add(agree);
+                                            } else {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        if (agree.getProponents() != null) {
+                            if (agree.getProponents().size() > 0) {
+                                for (ProponentSiconv prop : agree.getProponents()) {
+                                    if (prop.getMunicipioUfSigla().equalsIgnoreCase(selectedState.getAcronym())) {
+                                        if (!agreements.contains(agree)) {
+                                            agreements.add(agree);
+                                        } else {
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -136,6 +126,13 @@ public class RelController extends BaseController {
                 }
             } else {
                 agreements = agreementBean.findAll();
+                if (logged.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
+                    for (Agreement tAgree : agreements) {
+                        if (!tAgree.getUser().equals(logged)) {
+                            agreements.remove(tAgree);
+                        }
+                    }
+                }
             }
 
             totalValueAgreements = new BigDecimal(0);
@@ -181,6 +178,33 @@ public class RelController extends BaseController {
             if (payments.size() > 0) {
                 for (Payment pay : payments) {
                     totalValuePayments = totalValuePayments.add(pay.getTotalValue());
+                }
+            }
+
+            //getGroupPaymentsForContracts
+            agreementsListPayments = new HashMap<Agreement, List<Payment>>();
+            List<Payment> tempListPayments;
+            for (Payment pay : payments) {
+                if (pay.getAgreementInstallment() != null) {
+                    if (agreementsListPayments.containsKey(pay.getAgreementInstallment().getAgreement())) {
+                        tempListPayments = agreementsListPayments.get(pay.getAgreementInstallment().getAgreement());
+                        tempListPayments.add(pay);
+                        agreementsListPayments.replace(pay.getAgreementInstallment().getAgreement(), tempListPayments);
+                    } else {
+                        tempListPayments = new ArrayList<Payment>();
+                        tempListPayments.add(pay);
+                        agreementsListPayments.put(pay.getAgreementInstallment().getAgreement(), tempListPayments);
+                    }
+                } else {
+                    if (agreementsListPayments.containsKey(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement())) {
+                        tempListPayments = agreementsListPayments.get(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement());
+                        tempListPayments.add(pay);
+                        agreementsListPayments.replace(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement(), tempListPayments);
+                    } else {
+                        tempListPayments = new ArrayList<Payment>();
+                        tempListPayments.add(pay);
+                        agreementsListPayments.put(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement(), tempListPayments);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -279,5 +303,13 @@ public class RelController extends BaseController {
 
     public void setTotalValueAgreements(BigDecimal totalValueAgreements) {
         this.totalValueAgreements = totalValueAgreements;
+    }
+
+    public Map<Agreement, List<Payment>> getAgreementsListPayments() {
+        return agreementsListPayments;
+    }
+
+    public void setAgreementsListPayments(Map<Agreement, List<Payment>> agreementsListPayments) {
+        this.agreementsListPayments = agreementsListPayments;
     }
 }
