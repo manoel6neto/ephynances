@@ -399,7 +399,7 @@ public class AgreementInstallmentController extends BaseController {
             AgreementInstallment installment = agreementInstallmentBean.find(agreementInstallmentId);
             if (installment != null) {
                 if (installment.getPayment() != null) {
-                    if (installment.getPayment().getConfirmationDate() != null) {
+                    if (installment.getPayment().getConfirmationDate() == null) {
                         return String.valueOf(true);
                     }
                 }

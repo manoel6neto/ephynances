@@ -23,7 +23,7 @@ public class UserConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if (value != null && value.trim().length() > 0) {
-            if (!value.equals("Selecione um administrador regional")) {
+            if (!value.equals("Selecione um administrador regional") || !value.equals("Todos")) {
                 try {
                     User user = userBean.find(Long.valueOf(value));
                     return user;

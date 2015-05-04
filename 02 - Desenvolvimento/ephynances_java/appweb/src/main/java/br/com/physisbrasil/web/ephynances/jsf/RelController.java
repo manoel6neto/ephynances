@@ -37,6 +37,7 @@ public class RelController extends BaseController {
     @EJB
     private AgreementBean agreementBean;
     private List<Agreement> agreements;
+    private List<Agreement> agreementsSellers;
     private Agreement selectAgreement;
 
     @EJB
@@ -53,12 +54,22 @@ public class RelController extends BaseController {
     private ProponentSiconvBean proponentSiconvBean;
 
     private List<Payment> payments;
+    private List<Payment> paymentsSeller;
     private BigDecimal totalValuePayments;
     private BigDecimal totalValueAgreements;
+    private BigDecimal totalValuePaymentsSeller;
+    private BigDecimal totalValueAgreementsSeller;
     private Map<Agreement, List<Payment>> agreementsListPayments;
+    private Map<User, List<Payment>> sellerListPayments;
 
     @PostConstruct
     public void init() {
+        
+        userBean.clearCache();
+        stateBean.clearCache();
+        agreementBean.clearCache();
+        proponentSiconvBean.clearCache();
+        
         //check stateAgreements
         calcAgreementForState();
         calcPaymentsForStates();
@@ -379,5 +390,45 @@ public class RelController extends BaseController {
 
     public void setAgreementsListPayments(Map<Agreement, List<Payment>> agreementsListPayments) {
         this.agreementsListPayments = agreementsListPayments;
+    }
+
+    public List<Agreement> getAgreementsSellers() {
+        return agreementsSellers;
+    }
+
+    public void setAgreementsSellers(List<Agreement> agreementsSellers) {
+        this.agreementsSellers = agreementsSellers;
+    }
+
+    public List<Payment> getPaymentsSeller() {
+        return paymentsSeller;
+    }
+
+    public void setPaymentsSeller(List<Payment> paymentsSeller) {
+        this.paymentsSeller = paymentsSeller;
+    }
+
+    public BigDecimal getTotalValuePaymentsSeller() {
+        return totalValuePaymentsSeller;
+    }
+
+    public void setTotalValuePaymentsSeller(BigDecimal totalValuePaymentsSeller) {
+        this.totalValuePaymentsSeller = totalValuePaymentsSeller;
+    }
+
+    public BigDecimal getTotalValueAgreementsSeller() {
+        return totalValueAgreementsSeller;
+    }
+
+    public void setTotalValueAgreementsSeller(BigDecimal totalValueAgreementsSeller) {
+        this.totalValueAgreementsSeller = totalValueAgreementsSeller;
+    }
+
+    public Map<User, List<Payment>> getSellerListPayments() {
+        return sellerListPayments;
+    }
+
+    public void setSellerListPayments(Map<User, List<Payment>> sellerListPayments) {
+        this.sellerListPayments = sellerListPayments;
     }
 }
