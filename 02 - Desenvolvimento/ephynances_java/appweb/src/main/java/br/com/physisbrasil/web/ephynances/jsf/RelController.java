@@ -38,6 +38,7 @@ public class RelController extends BaseController {
     private AgreementBean agreementBean;
     private List<Agreement> agreements;
     private List<Agreement> agreementsSellers;
+    private List<Agreement> agreementsMissingPayments;
     private Agreement selectAgreement;
 
     @EJB
@@ -59,6 +60,7 @@ public class RelController extends BaseController {
     private BigDecimal totalValueAgreements;
     private BigDecimal totalValuePaymentsSeller;
     private BigDecimal totalValueAgreementsSeller;
+    private BigDecimal totalMissingPayments;
     private Map<Agreement, List<Payment>> agreementsListPayments;
     private Map<User, List<Payment>> sellerListPayments;
 
@@ -77,6 +79,9 @@ public class RelController extends BaseController {
         //check sellers
         calcAgreementForSeller();
         calcPaymentsForSellers();
+        
+        //check MissingPayments
+        calcDontPaidForState();
 
         //check sellerList
         if ((List<User>) getFlash("sellerList") != null) {
@@ -321,6 +326,42 @@ public class RelController extends BaseController {
             JsfUtil.addErrorMessage(e, "Falha ao consultar os pagamentos para o representante informado");
         }
     }
+    
+    public void calcDontPaidForState() {
+        try {
+            totalMissingPayments = new BigDecimal(0);
+            agreementsMissingPayments = new ArrayList<Agreement>();
+            boolean status;
+            calcAgreementForState();
+            if (agreements != null) {
+                if (agreements.size() > 0) {
+                    for (Agreement agree : agreements) {
+                        status = false;
+                        if (!agree.getStatus().equalsIgnoreCase(Agreement.getSTATE_CANCELADO()) && !agree.getStatus().equalsIgnoreCase(Agreement.getSTATE_FINALIZADO())) {
+                            if (agree.getAgreementInstallments() != null) {
+                                if (agree.getAgreementInstallments().size() > 0) {
+                                    for (AgreementInstallment install : agree.getAgreementInstallments()) {
+                                        if (!install.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO()) && !install.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO())) {
+                                            if (install.getDueDate().before(new Date(System.currentTimeMillis()))) {
+                                                status = true;
+                                                totalMissingPayments = totalMissingPayments.add(install.getValue());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if (status) {
+                            agreementsMissingPayments.add(agree);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao consultar os contratos para o estado informado");
+        }
+    }
 
     public String formatValueToReais(BigDecimal value) {
         NumberFormat nf = NumberFormat.getCurrencyInstance();
@@ -436,6 +477,37 @@ public class RelController extends BaseController {
         }
 
         return String.format("%s", sellerName);
+    }
+    
+    public BigDecimal totalMissingForContract(Long agreementId) {
+        try {
+            BigDecimal tempTotal = new BigDecimal(0);
+            for (AgreementInstallment inst : returnListMissingInstallments(agreementId)) {
+                tempTotal = tempTotal.add(inst.getValue());
+            }
+            
+            return tempTotal;
+        } catch (Exception e) {
+            return new BigDecimal(0);
+        }
+    }
+    
+    public List<AgreementInstallment> returnListMissingInstallments(Long agreementId) {
+        try {
+            List<AgreementInstallment> tempListAgreementInstallment = new ArrayList<AgreementInstallment>();
+            Agreement tempAgree = agreementBean.find(agreementId);
+            for (AgreementInstallment install : tempAgree.getAgreementInstallments()) {
+                if (!install.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_COM_CONFIRMACAO()) && !install.getStatus().equalsIgnoreCase(AgreementInstallment.getSTATUS_PAGO_SEM_CONFIRMACAO())) {
+                    if (install.getDueDate().before(new Date(System.currentTimeMillis()))) {
+                        tempListAgreementInstallment.add(install);
+                    }
+                }
+            }
+            
+            return tempListAgreementInstallment;
+        } catch (Exception e) {
+            return new ArrayList<AgreementInstallment>();
+        }
     }
 
     public List<Agreement> getAgreements() {
@@ -556,5 +628,21 @@ public class RelController extends BaseController {
 
     public void setSellerListPayments(Map<User, List<Payment>> sellerListPayments) {
         this.sellerListPayments = sellerListPayments;
+    }
+
+    public List<Agreement> getAgreementsMissingPayments() {
+        return agreementsMissingPayments;
+    }
+
+    public void setAgreementsMissingPayments(List<Agreement> agreementsMissingPayments) {
+        this.agreementsMissingPayments = agreementsMissingPayments;
+    }
+
+    public BigDecimal getTotalMissingPayments() {
+        return totalMissingPayments;
+    }
+
+    public void setTotalMissingPayments(BigDecimal totalMissingPayments) {
+        this.totalMissingPayments = totalMissingPayments;
     }
 }

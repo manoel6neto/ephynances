@@ -114,11 +114,11 @@
                                                 <p:menuitem value="CONTRATOS FIRMADOS" outcome="/rel/statesagreements" />
                                                 <p:menuitem value="ENTRADAS FINANCEIRAS" outcome="/rel/statespayments" />
                                             </p:submenu>
-                                            <p:submenu label="REPRESENTANTES" >
+                                            <p:submenu label="REPRESENTANTES" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}">
                                                 <p:menuitem value="CONTRATOS FIRMADOS" outcome="/rel/selleragreements" />
                                                 <p:menuitem value="ENTRADAS FINANCEIRAS" outcome="/rel/sellerpayments" />
                                             </p:submenu>
-                                            <p:menuitem value="INADIMPLENTES" outcome="/rel/statesagreements" />
+                                            <p:menuitem value="INADIMPLENTES" outcome="/rel/contractsInad" />
                                         </p:submenu>
                                         <p:submenu label="CONFIGURAÇÕES DO USUÁRIO">
                                             <p:menuitem value="ALTERAR SENHA" outcome="/user/password" />
