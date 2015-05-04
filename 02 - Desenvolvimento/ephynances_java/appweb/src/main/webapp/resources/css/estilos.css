@@ -24,8 +24,8 @@
 table, th, td {
     text-align: center;
     vertical-align: central;
-    border-bottom: #cccccc;
-    border-bottom-style: solid;
+    /*border-bottom: #cccccc;*/
+    /*border-bottom-style: solid;*/
 }
 
 /* ---------- BODY STYLES ------------------------------------------------------ */

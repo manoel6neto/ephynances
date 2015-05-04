@@ -77,17 +77,19 @@
                                     <br />
                                     <table>
                                         <thead style="height: 30px;">
-                                            <td width="30%" style="font-weight: bold">Data vencimento</td>
-                                            <td width="70%" style="font-weight: bold">Valor da parcela</td>
+                                            <td width="30%" style="font-weight: bold">Data vencimento<p:separator /></td>
+                                            <td width="70%" style="font-weight: bold">Valor da parcela<p:separator /></td>
                                         </thead>
                                         <tbody>
                                             <ui:repeat value="#{relController.returnListMissingInstallments(agreement.id)}" var="installment" varStatus="status" id="repeatInstallments">
                                                 <tr style="height: 30px;">
                                                     <td>
                                                         <h:outputText value="#{relController.formatDate(installment.dueDate)}"/>
+                                                        <p:separator />
                                                     </td>
                                                     <td>
                                                         <h:outputText value="#{relController.formatValueToReais(installment.value.setScale(2))}"/>
+                                                        <p:separator />
                                                     </td>
                                                 </tr>
                                             </ui:repeat>

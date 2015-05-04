@@ -56,25 +56,29 @@
                                     <br />
                                     <table>
                                         <thead style="height: 30px;">
-                                            <td width="200" style="font-weight: bold">Data de pagamento</td>
-                                            <td width="250" style="font-weight: bold">Valor do pagamento</td>
-                                            <td width="400" style="font-weight: bold">Contrato e proponente</td>
-                                            <td width="200" style="font-weight: bold">Contrato Physis</td>
+                                            <td width="200" style="font-weight: bold">Data de pagamento<p:separator /></td>
+                                            <td width="250" style="font-weight: bold">Valor do pagamento<p:separator /></td>
+                                            <td width="400" style="font-weight: bold">Contrato e proponente<p:separator /></td>
+                                            <td width="200" style="font-weight: bold">Contrato Physis<p:separator /></td>
                                         </thead>
                                         <tbody>
                                             <ui:repeat value="#{relController.returnListPaymentsForKeySeller(seller.id)}" var="payment" varStatus="status" id="repeatPayments">
                                                 <tr style="height: 30px;">
                                                     <td>
                                                         <h:outputText value="#{relController.formatDate(payment.paymentDate)}"/>
+                                                        <p:separator />
                                                     </td>
                                                     <td>
                                                         <h:outputText value="#{relController.formatValueToReais(payment.totalValue.setScale(2))}"/>
+                                                        <p:separator />
                                                     </td>
                                                     <td>
                                                         <h:outputText value="#{relController.returnContactNumberAndProponenteAndUfSigla(payment)}"/>
+                                                        <p:separator />
                                                     </td>
                                                     <td>
                                                         <h:outputText value="#{relController.returnPhysisContractNumber(payment)}"/>
+                                                        <p:separator />
                                                     </td>
                                                 </tr>
                                             </ui:repeat>
