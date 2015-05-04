@@ -9,6 +9,7 @@ import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -135,7 +136,11 @@ public class ComissionController extends BaseController {
                         } else {
                             JsfUtil.addErrorMessage("Nenhum pagamento identificado no mês e ano informados. Nenhum valor a receber !!");
                         }
+                    } else {
+                        JsfUtil.addErrorMessage("Usuário não fechou nenhum contrato no período.");
                     }
+                } else {
+                    JsfUtil.addErrorMessage("Usuário não fechou nenhum contrato no período.");
                 }
             }
         } catch (Exception e) {
@@ -237,5 +242,12 @@ public class ComissionController extends BaseController {
     public String formatDate(Date dateToFormat) {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(dateToFormat);
+    }
+    
+    public String formatValueToReais(BigDecimal value) {
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        String formatado = nf.format(value);
+
+        return formatado;
     }
 }

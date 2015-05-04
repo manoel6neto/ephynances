@@ -13,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -324,5 +325,12 @@ public class SubAgreementInstallmentController extends BaseController {
     public String formatDate(Date dateToFormat) {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(dateToFormat);
+    }
+    
+    public String formatValueToReais(BigDecimal value) {
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        String formatado = nf.format(value);
+
+        return formatado;
     }
 }

@@ -8,7 +8,7 @@
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
-            <h:outputText style="font-size: large" value="SUBPARCELA: #{subAgreementInstallmentController.subAgreementInstallment.value}"/>
+            <h:outputText style="font-size: large" value="SUBPARCELA: #{subAgreementInstallmentController.formatValueToReais(subAgreementInstallmentController.subAgreementInstallment.value.setScale(2))}"/>
         </ui:define>
         <ui:define name="body"  >
             <h:form id="form" enctype="multipart/form-data" prependId="true">
@@ -27,7 +27,7 @@
 
                     <br class="clear" />
                     <div >
-                        <p:outputLabel value="Parcela de origem: #{subAgreementInstallmentController.subAgreementInstallment.agreementInstallment.value.setScale(2)}" style="color: #000000; font-style: oblique; font-size: medium"/>
+                        <p:outputLabel value="Parcela de origem: #{subAgreementInstallmentController.formatValueToReais(subAgreementInstallmentController.subAgreementInstallment.agreementInstallment.value.setScale(2))}" style="color: #000000; font-style: oblique; font-size: medium"/>
                     </div>
 
                     <br class="clear" />
@@ -49,7 +49,7 @@
                 <p:fieldset legend="Dados pagamento" toggleable="true" collapsed="false">
                     <br class="clear" />
                     <div >
-                        <p:outputLabel value="Valor da subparcela: #{subAgreementInstallmentController.subAgreementInstallment.value.setScale(2)}" style="color: #000000; font-style: oblique; font-size: medium"/>
+                        <p:outputLabel value="Valor da subparcela: #{subAgreementInstallmentController.formatValueToReais(subAgreementInstallmentController.subAgreementInstallment.value.setScale(2))}" style="color: #000000; font-style: oblique; font-size: medium"/>
                     </div>
 
                     <br class="clear" />
@@ -58,6 +58,7 @@
                     </div>
 
                     <br class="clear" />
+                    <br />
                     <div class="grid_3 alpha" >
                         <p:outputLabel value="Valor para pagamento: " for="paymentValue" />
                         <pe:inputNumber id="paymentValue" symbol="R$" style="width: 200px" value="#{subAgreementInstallmentController.payment.totalValue}" required="false" disabled="#{subAgreementInstallmentController.checkIsPaid()}"/> 

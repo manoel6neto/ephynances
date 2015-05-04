@@ -13,6 +13,7 @@ import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,6 +23,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -767,5 +769,12 @@ public class AgreementController extends BaseController {
         } catch (IOException ex) {
             Logger.getLogger(AgreementController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public String formatValueToReais(BigDecimal value) {
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        String formatado = nf.format(value);
+
+        return formatado;
     }
 }

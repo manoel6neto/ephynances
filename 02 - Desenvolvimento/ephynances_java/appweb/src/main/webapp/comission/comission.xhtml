@@ -4,8 +4,7 @@
       xmlns:h="http://java.sun.com/jsf/html" 
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:composition template="/template.xhtml"> 
         <ui:define name="title"> 
@@ -75,7 +74,7 @@
                             </p:column>
 
                             <p:column style="text-align: center" headerText="Valor pago" sortBy="#{item.totalValue}">                       
-                                <h:outputText value="R$ #{item.totalValue.setScale(2)}" />
+                                <h:outputText value="#{comissionController.formatValueToReais(item.totalValue.setScale(2))}" />
                             </p:column>
                         </p:dataTable>
 
@@ -83,16 +82,15 @@
                         <br/>
                         <div class="grid_4 alpha" >
                             <p:outputLabel value="TOTAL EM PAGAMENTOS: " for="inputTotal" style="color: #000000; font-style: oblique; font-size: medium"/>
-                            <pe:inputNumber id="inputTotal" symbol="R$ " value="#{comissionController.total.setScale(2)}" />
+                            <p:inputText id="inputTotal" value="#{comissionController.formatValueToReais(comissionController.total.setScale(2))}" readonly="true"/>
                         </div>
                         
                         <br class="clear" />
                         <br/>
                         <div class="grid_4 alpha" >
                             <p:outputLabel value="COMISSÃO: " for="inputComissao" style="color: #000000; font-style: oblique; font-size: medium"/>
-                            <pe:inputNumber id="inputComissao" symbol="R$ " value="#{comissionController.comission.setScale(2)}" />
+                            <p:inputText id="inputComissao" value="#{comissionController.formatValueToReais(comissionController.comission.setScale(2))}" readonly="true"/>
                         </div>
-
                         <br class="clear" />
                         <br/>
                     </p:fieldset>

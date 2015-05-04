@@ -30,7 +30,7 @@
                         <h:outputText value="#{item.managerEntity}" />
                     </p:column>     
                     <p:column style="text-align: center" headerText="Valor" sortBy="#{item.totalPrice}">
-                        <h:outputText value="R$ #{item.totalPrice.setScale(2)}" />
+                        <h:outputText value="#{agreementController.formatValueToReais(item.totalPrice.setScale(2))}" />
                     </p:column> 
                     <p:column style="text-align: center" headerText="Data Vencimento" sortBy="#{item.expireDate}">                      
                         <h:outputText value="#{agreementController.formatDate(item.expireDate)}" />
@@ -45,8 +45,8 @@
                         <h:outputText value="   " />
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementDocumentController.startAgreementDocuments(item.id)}" ><img src="../resources/img/anexo.png" width="16" height="16" alt="Documentos" title="Documentos"/></p:commandLink>
                         <h:outputText value="   " />
-                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementController.viewAgreement(item.id)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Visualizar contrato" title="Visualizar"/></p:commandLink>
-                        <h:outputText value="   " />
+<!--                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementController.viewAgreement(item.id)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Visualizar contrato" title="Visualizar"/></p:commandLink>
+                        <h:outputText value="   " />-->
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementInstallmentController.setAgreementInstallments(item.id)}" ><img src="../resources/img/arrow_down.png" width="16" height="16" alt="Parcelas" title="Parcelas"/></p:commandLink>
                         <h:outputText value="   " rendered="#{agreementController.checkStatusAgreement(item.id)}"/>
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementController.activateAgreement(item.id)}" rendered="#{agreementController.checkStatusAgreement(item.id)}"><img src="../resources/img/activate_power.png" width="16" height="16" alt="Ativar contrato" title="Ativar contrato"/></p:commandLink>

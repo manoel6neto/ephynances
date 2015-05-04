@@ -10,8 +10,8 @@ import br.com.physisbrasil.web.ephynances.model.Payment;
 import br.com.physisbrasil.web.ephynances.model.SubAgreementInstallment;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
@@ -495,4 +495,10 @@ public class AgreementInstallmentController extends BaseController {
         this.subAgreementInstallment = subAgreementInstallment;
     }
 
+    public String formatValueToReais(BigDecimal value) {
+        NumberFormat nf = NumberFormat.getCurrencyInstance();
+        String formatado = nf.format(value);
+
+        return formatado;
+    }
 }
