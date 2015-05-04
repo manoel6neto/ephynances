@@ -64,18 +64,21 @@ public class RelController extends BaseController {
 
     @PostConstruct
     public void init() {
-        
+
         userBean.clearCache();
         stateBean.clearCache();
         agreementBean.clearCache();
         proponentSiconvBean.clearCache();
-        
+
         //check stateAgreements
         calcAgreementForState();
         calcPaymentsForStates();
+        
+        //check sellers
+        calcAgreementForSeller();
+        calcPaymentsForSellers();
 
         //check sellerList
-        userBean.clearCache();
         if ((List<User>) getFlash("sellerList") != null) {
             sellerList = (List<User>) getFlash("sellerList");
         } else {
@@ -85,7 +88,6 @@ public class RelController extends BaseController {
         }
 
         //get states list
-        stateBean.clearCache();
         if ((List<State>) getFlash("states") != null) {
             states = (List<State>) getFlash("states");
         } else {
@@ -152,6 +154,29 @@ public class RelController extends BaseController {
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao consultar os contratos para o estado informado");
+        }
+    }
+
+    public void calcAgreementForSeller() {
+        try {
+            agreementBean.clearCache();
+            userBean.clearCache();
+            agreementsSellers = new ArrayList<Agreement>();
+            if (selectUser != null) {
+                if (selectUser.getAgreements() != null) {
+                    agreementsSellers = selectUser.getAgreements();
+                }
+            } else {
+                agreementsSellers = agreementBean.findAll();
+            }
+
+            totalValueAgreementsSeller = new BigDecimal(0);
+            for (Agreement a : agreementsSellers) {
+                totalValueAgreementsSeller = totalValueAgreementsSeller.add(a.getTotalPrice());
+            }
+
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao consultar os contratos para o representante informado");
         }
     }
 
@@ -227,6 +252,76 @@ public class RelController extends BaseController {
         }
     }
 
+    public void calcPaymentsForSellers() {
+        try {
+            calcAgreementForSeller();
+            paymentsSeller = new ArrayList<Payment>();
+            if (agreementsSellers != null) {
+                if (agreementsSellers.size() > 0) {
+                    for (Agreement agree : agreementsSellers) {
+                        // get first payments for installments
+                        if (agree.getAgreementInstallments() != null) {
+                            if (agree.getAgreementInstallments().size() > 0) {
+                                for (AgreementInstallment installment : agree.getAgreementInstallments()) {
+                                    // check payments
+                                    if (installment.getPayment() != null) {
+                                        if (installment.getPayment().getConfirmationDate() != null) {
+                                            paymentsSeller.add(installment.getPayment());
+                                        }
+                                    }
+
+                                    //check subAgreementInstallment
+                                    if (installment.getSubAgreementInstallment() != null) {
+                                        if (installment.getSubAgreementInstallment().getPayment() != null) {
+                                            if (installment.getSubAgreementInstallment().getPayment().getConfirmationDate() != null) {
+                                                paymentsSeller.add(installment.getSubAgreementInstallment().getPayment());
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            totalValuePaymentsSeller = new BigDecimal(0);
+            if (paymentsSeller.size() > 0) {
+                for (Payment pay : paymentsSeller) {
+                    totalValuePaymentsSeller = totalValuePaymentsSeller.add(pay.getTotalValue());
+                }
+            }
+
+            sellerListPayments = new HashMap<User, List<Payment>>();
+            List<Payment> tempListPayments;
+            for (Payment pay : paymentsSeller) {
+                if (pay.getAgreementInstallment() != null) {
+                    if (sellerListPayments.containsKey(pay.getAgreementInstallment().getAgreement().getUser())) {
+                        tempListPayments = sellerListPayments.get(pay.getAgreementInstallment().getAgreement().getUser());
+                        tempListPayments.add(pay);
+                        sellerListPayments.replace(pay.getAgreementInstallment().getAgreement().getUser(), tempListPayments);
+                    } else {
+                        tempListPayments = new ArrayList<Payment>();
+                        tempListPayments.add(pay);
+                        sellerListPayments.put(pay.getAgreementInstallment().getAgreement().getUser(), tempListPayments);
+                    }
+                } else {
+                    if (sellerListPayments.containsKey(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getUser())) {
+                        tempListPayments = sellerListPayments.get(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getUser());
+                        tempListPayments.add(pay);
+                        sellerListPayments.replace(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getUser(), tempListPayments);
+                    } else {
+                        tempListPayments = new ArrayList<Payment>();
+                        tempListPayments.add(pay);
+                        sellerListPayments.put(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getUser(), tempListPayments);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao consultar os pagamentos para o representante informado");
+        }
+    }
+
     public String formatValueToReais(BigDecimal value) {
         NumberFormat nf = NumberFormat.getCurrencyInstance();
         String formatado = nf.format(value);
@@ -252,6 +347,11 @@ public class RelController extends BaseController {
         List<Agreement> tempListString = new ArrayList<Agreement>(agreementsListPayments.keySet());
         return tempListString;
     }
+    
+    public List<User> listKeysSellers() {
+        List<User> tempListString = new ArrayList<User>(sellerListPayments.keySet());
+        return  tempListString;
+    }
 
     public BigDecimal calcTotalPaymentsForContract(Long agreementId) {
         try {
@@ -267,22 +367,48 @@ public class RelController extends BaseController {
         }
     }
     
+    public BigDecimal calcTotalPaymentsForSeller(Long sellerId) {
+        try {
+            BigDecimal total = new BigDecimal(0);
+            User sellerTemp = userBean.find(sellerId);
+            for (Payment pay : sellerListPayments.get(sellerTemp)) {
+                total = total.add(pay.getTotalValue());
+            }
+            return total;
+        } catch (Exception e) {
+            return new BigDecimal(0);
+        }
+    }
+
     public List<Payment> returnListPaymentsForKey(Long agreementId) {
         Agreement tempAgreement = agreementBean.find(agreementId);
         return agreementsListPayments.get(tempAgreement);
     }
     
-    public String changeTitleAndSetTempId(Long agreementId) {
-        Agreement tempAgreement = agreementBean.find(agreementId);
-        
-        return tempAgreement.getPhysisAgreementNumber();
+    public List<Payment> returnListPaymentsForKeySeller(Long sellerId) {
+        User sellerTemp = userBean.find(sellerId);
+        return sellerListPayments.get(sellerTemp);
+    }
+
+    public String returnPhysisContractNumber(Payment payment) {
+        if (payment.getAgreementInstallment() != null) {
+            return payment.getAgreementInstallment().getAgreement().getPhysisAgreementNumber();
+        } else {
+            return payment.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getPhysisAgreementNumber();
+        }
     }
     
+    public String changeTitleAndSetTempId(Long agreementId) {
+        Agreement tempAgreement = agreementBean.find(agreementId);
+
+        return tempAgreement.getPhysisAgreementNumber();
+    }
+
     public String returnContactNumberAndProponenteAndUfSigla(Payment payment) {
         String contactNumber = new String();
         String municipio = new String();
         String propUfSigla = new String();
-        
+
         if (payment != null) {
             if (payment.getAgreementInstallment() != null) {
                 contactNumber = payment.getAgreementInstallment().getAgreement().getContactAgreementNumber();
@@ -294,13 +420,13 @@ public class RelController extends BaseController {
                 propUfSigla = proponentSiconvBean.find(payment.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getIdPrimaryCnpj()).getMunicipioUfSigla();
             }
         }
-        
+
         return String.format("%s - %s - %s", contactNumber, municipio, propUfSigla);
     }
-    
+
     public String returnSellerName(Payment payment) {
         String sellerName = new String();
-        
+
         if (payment != null) {
             if (payment.getAgreementInstallment() != null) {
                 sellerName = payment.getAgreementInstallment().getAgreement().getUser().getName();
@@ -308,7 +434,7 @@ public class RelController extends BaseController {
                 sellerName = payment.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getUser().getName();
             }
         }
-        
+
         return String.format("%s", sellerName);
     }
 

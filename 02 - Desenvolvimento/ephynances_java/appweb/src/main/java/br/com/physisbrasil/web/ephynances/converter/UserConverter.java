@@ -23,12 +23,12 @@ public class UserConverter implements Converter {
     @Override
     public Object getAsObject(FacesContext fc, UIComponent uic, String value) {
         if (value != null && value.trim().length() > 0) {
-            if (!value.equals("Selecione um administrador regional") || !value.equals("Todos")) {
+            if (!value.equals("Selecione um administrador regional") && !value.equalsIgnoreCase("Todos")) {
                 try {
                     User user = userBean.find(Long.valueOf(value));
                     return user;
                 } catch (NumberFormatException e) {
-                    throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Não é um estado válido."));
+                    throw new ConverterException(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Conversion Error", "Não é um usuário válido."));
                 }
             } else {
                 return null;
