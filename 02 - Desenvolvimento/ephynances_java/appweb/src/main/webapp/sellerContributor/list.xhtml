@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:ui="http://java.sun.com/jsf/facelets" 
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
 
     <ui:composition template="/template.xhtml">
         <ui:define name="title">
@@ -12,6 +13,7 @@
 
         <ui:define name="body">
             <h:form id="form">
+                <f:event type="preRenderView" listener="#{sellerContributorController.listBySeller(loginController.loggedUser.id)}" />
                 <p:dataTable id="table" widgetVar="table" value="#{sellerContributorController.contributors}" var="item" lazy="false" 
                              rows="25" paginator="true"  paginatorPosition="bottom" 
                              paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -36,13 +38,6 @@
                         <h:outputText value="   " />
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{sellerContributorController.view(item)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Detalhes" title="Detalhes"/></p:commandLink>
                         <h:outputText value="   " />
-<!--                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{sellerContributorController.active_desactive(item.id)}" rendered="#{item.isVerified}">
-                            <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Desativar" title="Desativar"/>
-                        </p:commandLink>
-                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{sellerContributorController.active_desactive(item.id)}" rendered="#{!item.isVerified}">
-                            <img src="../resources/img/activate_power.png" width="16" height="16" alt="Ativar" title="Ativar"/>
-                        </p:commandLink>
-                        <h:outputText value="   " />-->
                         <p:commandLink ajax="false" action="#{sellerContributorController.delete(item.id)}">
                             <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Apagar" title="Apagar"/>
                         </p:commandLink>
@@ -52,7 +47,6 @@
                 <br/>
                 <div class="grid_12 alpha" style="line-height: 30px;" >
                     <p:commandButton styleClass="grid_1 alpha" style="width: 120px; color: #FF0000;" ajax="false" action="#{sellerContributorController.create}" value="Novo colaborador" />
-                    <h:link styleClass="grid_1" outcome="/user/list" value="Voltar" />
                 </div>
             </h:form>
         </ui:define>

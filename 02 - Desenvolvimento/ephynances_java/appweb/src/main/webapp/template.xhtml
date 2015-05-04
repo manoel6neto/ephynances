@@ -102,7 +102,7 @@
                                     <p:menubar style="margin-top: 10px" rendered="#{loginController.showPdfContract == false}" >  
                                         <p:menuitem value="HOME" outcome="/index.xhtml" />
                                         <p:menuitem value="USUÁRIOS" outcome="/user/list" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}" />  
-                                        <p:menuitem value="COLABORADORES" action="#{sellerContributorController.listBySeller(loginController.loggedUser.id)}" rendered="#{loginController.isUserInRuller(userController.RULER_SELLER)}" />
+                                        <p:menuitem value="COLABORADORES" outcome="/sellerContributor/list" rendered="#{loginController.isUserInRuller(userController.RULER_SELLER)}" />
                                         <p:menuitem value="VINCULAR CNPJ'S" outcome="/user/cnpjs" rendered="#{loginController.isUserInRuller(userController.RULER_SELLER) || loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}" />  
                                         <p:submenu label="CONTRATOS">
                                             <p:menuitem value="CONTRATOS CADASTRADOS" outcome="/agreement/list" />
