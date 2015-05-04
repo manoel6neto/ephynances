@@ -227,6 +227,8 @@ public class SellerContributorController extends BaseController {
                     tempUser.setNumberAutority(0);
                     tempUser.setIsVerified(false);
                     tempUser.setPassword(Criptografia.criptografar(tempUser.getCpf() + String.valueOf(System.currentTimeMillis())));
+                    tempUser.setSystemEsicar(seller.getSystemEsicar());
+                    tempUser.setProfileRule(User.getRULER_CONTRIBUTOR());
                     userBean.create(tempUser);
 
                     //Criando o relacionamento
@@ -246,7 +248,8 @@ public class SellerContributorController extends BaseController {
                     activationBean.clearCache();
 
                     Configuration config = configurationBean.findAll().get(0);
-                    Utils.sendEmail(tempUser.getEmail(), tempUser.getName(), "<html><body><a href='http://192.168.0.105:8080/ephynances/activation/active.xhtml?token=" + activation.getToken() + "'>Ativar Ephynances</a></body></html>", config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
+                    Utils.sendEmail(tempUser.getEmail(), tempUser.getName(), String.format("<html><div align='center' style=\"background-image: url('%s'); width: 542px; height: 549px; margin-left: 250px;\"><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=%s'><img src='%s' width='331' height='40' style=\"margin-top: 400px;\"/></a></div></html>", "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bg_ativar_1.png", activation.getToken(), "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bt_ativar_1.png"),
+                            config.getSmtpServer(), config.getEmail(), "Ativação Ephynances", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis Ephynances");
 
                     
                     JsfUtil.addSuccessMessage("Colaborador adicionado com sucesso!");
