@@ -79,6 +79,9 @@ public class RelController extends BaseController {
         stateBean.clearCache();
         agreementBean.clearCache();
         proponentSiconvBean.clearCache();
+        
+        Calendar tempC = Calendar.getInstance();
+        selectedYear = 2015;
 
         months = new HashMap<String, Integer>() {
             {
@@ -110,6 +113,9 @@ public class RelController extends BaseController {
 
         //check MissingPayments
         calcDontPaidForState();
+        
+        //check monthAgreements
+        calcAgreementForMonth();
 
         //check sellerList
         if ((List<User>) getFlash("sellerList") != null) {
