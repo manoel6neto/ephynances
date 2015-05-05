@@ -110,15 +110,17 @@
                                         </p:submenu>
                                         <p:menuitem value="COMISSÕES" outcome="/comission/comission" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN)}"/>
                                         <p:submenu label="RELATÓRIOS" rendered="#{!loginController.isUserInRuller(userController.RULER_CONTRIBUTOR)}" >
-                                            <p:submenu label="ESTADOS" >
-                                                <p:menuitem value="CONTRATOS FIRMADOS" outcome="/rel/statesagreements" />
-                                                <p:menuitem value="ENTRADAS FINANCEIRAS" outcome="/rel/statespayments" />
+                                            <p:submenu label="CONTRATOS FIRMADOS" >
+                                                <p:menuitem value="MÊS" outcome="/rel/monthagreements" />
+                                                <p:menuitem value="ESTADOS" outcome="/rel/statesagreements" />
+                                                <p:menuitem value="REPRESENTANTES" outcome="/rel/selleragreements" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}"/>
                                             </p:submenu>
-                                            <p:submenu label="REPRESENTANTES" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}">
-                                                <p:menuitem value="CONTRATOS FIRMADOS" outcome="/rel/selleragreements" />
-                                                <p:menuitem value="ENTRADAS FINANCEIRAS" outcome="/rel/sellerpayments" />
+                                            <p:submenu label="ENTRADAS FINANCEIRAS" >
+                                                <p:menuitem value="MÊS" outcome="/rel/monthpayments" />
+                                                <p:menuitem value="ESTADOS" outcome="/rel/statespayments" />
+                                                <p:menuitem value="REPRESENTANTES" outcome="/rel/sellerpayments" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}"/>
                                             </p:submenu>
-                                            <p:menuitem value="INADIMPLENTES" outcome="/rel/contractsInad" />
+                                            <p:menuitem value="INADIMPLENTES" outcome="/rel/contractsInad" rendered="#{loginController.isUserInRuller(userController.RULER_ADMIN) || loginController.isUserInRuller(userController.RULER_ADMIN_GESTOR)}"/>
                                         </p:submenu>
                                         <p:submenu label="CONFIGURAÇÕES DO USUÁRIO">
                                             <p:menuitem value="ALTERAR SENHA" outcome="/user/password" />
