@@ -17,6 +17,7 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -209,6 +210,55 @@ public class RelController extends BaseController {
 
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao consultar os contratos para o representante informado");
+        }
+    }
+
+    public void calcAgreementForMonth() {
+        try {
+            agreementBean.clearCache();
+            User logged = (User) JsfUtil.getSessionAttribute(AbstractFilter.USER_KEY);
+            Calendar c;
+            if (selectedMonth.equalsIgnoreCase("Todos")) {
+                //Filtra apenas pelo ano
+                List<Agreement> tempAgreements = agreementBean.findAll();
+                for (Agreement agree : tempAgreements) {
+                    c = Calendar.getInstance();
+                    c.setTime(agree.getAssignmentDate());
+                    
+                }
+                
+                //Removendo os contratos que não são do vendedor
+                if (logged.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
+                    for (Agreement ag : tempAgreements) {
+                        if (ag.getUser().equals(logged)) {
+                            agreementsMonth.add(ag);
+                        }
+                    }
+                } else {
+                    agreementsMonth = tempAgreements;
+                }
+            } else {
+                //Filtra pelo ano e pelo mês
+                List<Agreement> tempAgreements = agreementBean.findAll();
+                for (Agreement a : tempAgreements) {
+                    c = Calendar.getInstance();
+                    c.setTime(a.getAssignmentDate());
+                    
+                }
+                
+                //Removendo os contratos que não são do vendedor
+                if (logged.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
+                    for (Agreement ag : tempAgreements) {
+                        if (ag.getUser().equals(logged)) {
+                            agreementsMonth.add(ag);
+                        }
+                    }
+                } else {
+                    agreementsMonth = tempAgreements;
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao consultar os contratos para o mês informado");
         }
     }
 
@@ -536,7 +586,7 @@ public class RelController extends BaseController {
             return new ArrayList<AgreementInstallment>();
         }
     }
-    
+
     public List<String> returnListOfMonthsFromHashMap() {
         List<String> tempList = new ArrayList<String>();
 
@@ -552,7 +602,7 @@ public class RelController extends BaseController {
         tempList.add("Outubro");
         tempList.add("Novembro");
         tempList.add("Dezembro");
-        
+
         return tempList;
     }
 
