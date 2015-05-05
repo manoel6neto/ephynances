@@ -39,7 +39,11 @@ public class RelController extends BaseController {
     private List<Agreement> agreements;
     private List<Agreement> agreementsSellers;
     private List<Agreement> agreementsMissingPayments;
+    private List<Agreement> agreementsMonth;
     private Agreement selectAgreement;
+    private String selectedMonth;
+    private Map<String, Integer> months;
+    private int selectedYear;
 
     @EJB
     private UserBean userBean;
@@ -56,11 +60,14 @@ public class RelController extends BaseController {
 
     private List<Payment> payments;
     private List<Payment> paymentsSeller;
+    private List<Payment> paymentsMonth;
     private BigDecimal totalValuePayments;
     private BigDecimal totalValueAgreements;
     private BigDecimal totalValuePaymentsSeller;
     private BigDecimal totalValueAgreementsSeller;
     private BigDecimal totalMissingPayments;
+    private BigDecimal totalValueMonth;
+    private BigDecimal totalValueMonthPayments;
     private Map<Agreement, List<Payment>> agreementsListPayments;
     private Map<User, List<Payment>> sellerListPayments;
 
@@ -72,14 +79,34 @@ public class RelController extends BaseController {
         agreementBean.clearCache();
         proponentSiconvBean.clearCache();
 
+        months = new HashMap<String, Integer>() {
+            {
+                put("Janeiro", 0);
+                put("Fevereiro", 1);
+                put("Março", 2);
+                put("Abril", 3);
+                put("Maio", 4);
+                put("Junho", 5);
+                put("Julho", 6);
+                put("Agosto", 7);
+                put("Setembro", 8);
+                put("Outubro", 9);
+                put("Novembro", 10);
+                put("Dezembro", 11);
+            }
+        ;
+        }
+    
+    ;
+
         //check stateAgreements
         calcAgreementForState();
         calcPaymentsForStates();
-        
+
         //check sellers
         calcAgreementForSeller();
         calcPaymentsForSellers();
-        
+
         //check MissingPayments
         calcDontPaidForState();
 
@@ -326,7 +353,7 @@ public class RelController extends BaseController {
             JsfUtil.addErrorMessage(e, "Falha ao consultar os pagamentos para o representante informado");
         }
     }
-    
+
     public void calcDontPaidForState() {
         try {
             totalMissingPayments = new BigDecimal(0);
@@ -351,7 +378,7 @@ public class RelController extends BaseController {
                                 }
                             }
                         }
-                        
+
                         if (status) {
                             agreementsMissingPayments.add(agree);
                         }
@@ -388,10 +415,10 @@ public class RelController extends BaseController {
         List<Agreement> tempListString = new ArrayList<Agreement>(agreementsListPayments.keySet());
         return tempListString;
     }
-    
+
     public List<User> listKeysSellers() {
         List<User> tempListString = new ArrayList<User>(sellerListPayments.keySet());
-        return  tempListString;
+        return tempListString;
     }
 
     public BigDecimal calcTotalPaymentsForContract(Long agreementId) {
@@ -407,7 +434,7 @@ public class RelController extends BaseController {
             return new BigDecimal(0);
         }
     }
-    
+
     public BigDecimal calcTotalPaymentsForSeller(Long sellerId) {
         try {
             BigDecimal total = new BigDecimal(0);
@@ -425,7 +452,7 @@ public class RelController extends BaseController {
         Agreement tempAgreement = agreementBean.find(agreementId);
         return agreementsListPayments.get(tempAgreement);
     }
-    
+
     public List<Payment> returnListPaymentsForKeySeller(Long sellerId) {
         User sellerTemp = userBean.find(sellerId);
         return sellerListPayments.get(sellerTemp);
@@ -438,7 +465,7 @@ public class RelController extends BaseController {
             return payment.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getPhysisAgreementNumber();
         }
     }
-    
+
     public String changeTitleAndSetTempId(Long agreementId) {
         Agreement tempAgreement = agreementBean.find(agreementId);
 
@@ -478,20 +505,20 @@ public class RelController extends BaseController {
 
         return String.format("%s", sellerName);
     }
-    
+
     public BigDecimal totalMissingForContract(Long agreementId) {
         try {
             BigDecimal tempTotal = new BigDecimal(0);
             for (AgreementInstallment inst : returnListMissingInstallments(agreementId)) {
                 tempTotal = tempTotal.add(inst.getValue());
             }
-            
+
             return tempTotal;
         } catch (Exception e) {
             return new BigDecimal(0);
         }
     }
-    
+
     public List<AgreementInstallment> returnListMissingInstallments(Long agreementId) {
         try {
             List<AgreementInstallment> tempListAgreementInstallment = new ArrayList<AgreementInstallment>();
@@ -503,11 +530,30 @@ public class RelController extends BaseController {
                     }
                 }
             }
-            
+
             return tempListAgreementInstallment;
         } catch (Exception e) {
             return new ArrayList<AgreementInstallment>();
         }
+    }
+    
+    public List<String> returnListOfMonthsFromHashMap() {
+        List<String> tempList = new ArrayList<String>();
+
+        tempList.add("Janeiro");
+        tempList.add("Fevereiro");
+        tempList.add("Março");
+        tempList.add("Abril");
+        tempList.add("Maio");
+        tempList.add("Junho");
+        tempList.add("Julho");
+        tempList.add("Agosto");
+        tempList.add("Setembro");
+        tempList.add("Outubro");
+        tempList.add("Novembro");
+        tempList.add("Dezembro");
+        
+        return tempList;
     }
 
     public List<Agreement> getAgreements() {
@@ -644,5 +690,61 @@ public class RelController extends BaseController {
 
     public void setTotalMissingPayments(BigDecimal totalMissingPayments) {
         this.totalMissingPayments = totalMissingPayments;
+    }
+
+    public List<Agreement> getAgreementsMonth() {
+        return agreementsMonth;
+    }
+
+    public void setAgreementsMonth(List<Agreement> agreementsMonth) {
+        this.agreementsMonth = agreementsMonth;
+    }
+
+    public String getSelectedMonth() {
+        return selectedMonth;
+    }
+
+    public void setSelectedMonth(String selectedMonth) {
+        this.selectedMonth = selectedMonth;
+    }
+
+    public Map<String, Integer> getMonths() {
+        return months;
+    }
+
+    public void setMonths(Map<String, Integer> months) {
+        this.months = months;
+    }
+
+    public List<Payment> getPaymentsMonth() {
+        return paymentsMonth;
+    }
+
+    public void setPaymentsMonth(List<Payment> paymentsMonth) {
+        this.paymentsMonth = paymentsMonth;
+    }
+
+    public BigDecimal getTotalValueMonth() {
+        return totalValueMonth;
+    }
+
+    public void setTotalValueMonth(BigDecimal totalValueMonth) {
+        this.totalValueMonth = totalValueMonth;
+    }
+
+    public int getSelectedYear() {
+        return selectedYear;
+    }
+
+    public void setSelectedYear(int selectedYear) {
+        this.selectedYear = selectedYear;
+    }
+
+    public BigDecimal getTotalValueMonthPayments() {
+        return totalValueMonthPayments;
+    }
+
+    public void setTotalValueMonthPayments(BigDecimal totalValueMonthPayments) {
+        this.totalValueMonthPayments = totalValueMonthPayments;
     }
 }
