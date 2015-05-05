@@ -9,10 +9,15 @@
     <ui:composition template="/template.xhtml" >
 
         <ui:define name="title" ></ui:define>
-        <ui:define name="title2" >Login - Ephynances</ui:define>
+        <ui:define name="title2" >Login - e-Phynance</ui:define>
 
         <ui:define name="body" >
-            <h:form class="form loginForm" >
+            
+            <div style="margin-left: 300px; margin-top: 50px;">
+                <p:graphicImage name="img/name_system.png" alt="e-Phynance" url="img/name_system.png" width="500" height="50"/>
+            </div>
+            
+            <h:form class="form loginForm" style="margin-top: 50px;">
                 <h:outputText value="Usuário ou senha inválidos!"
                               rendered="#{param.error}"
                               style="color:darkred; font-size: 12px; margin-top: 5px;" />
@@ -25,7 +30,7 @@
                 <h:outputText value="Tentativa inválida de ativação de usuário!"
                               rendered="#{param.activated eq false}"
                               style="color:darkred; font-size: 12px; margin-top: 5px;" />
-
+                
                 <div class="grid_3" >
                     <p:outputLabel value="Perfil: " for="menu"  />
                     <p:selectOneMenu id="menu" style="width: auto" value="#{loginController.profileRule}" required="true" effect="fade">
@@ -35,11 +40,15 @@
                         <f:selectItem itemLabel="#{userController.RULER_CONTRIBUTOR}" itemValue="#{userController.RULER_CONTRIBUTOR}" />
                     </p:selectOneMenu>
                 </div>
+                
+                <br class="clear" />
+                <br />
                 <div class="grid_3" >
-                    <label for="loginEmail">Email/Cpf:</label>
+                    <label for="loginEmail">Email/Cpf(Somente números):</label>
                     <p:inputText id="loginEmail" value="#{loginController.email}" maxlength="200" />
                 </div>
                 <br class="clear" />
+                <br />
                 <div class="grid_3" >
                     <label for="loginPass">Senha:</label>
                     <p:password id="loginPass" value="#{loginController.senha}" maxlength="40" autocomplete="off" promptLabel="6 à 40 caracteres"/>
@@ -48,8 +57,9 @@
 
                 <br class="clear" />
                 <br />
+                <br />
                 <div class="grid_3" >
-                    <p:commandButton action="#{loginController.login}" value="Login" class="grid_1 alpha" style="color: #FF0000" />
+                    <p:commandButton action="#{loginController.login}" value="Login" class="grid_1 alpha" style="color: #FF0000; margin-right: 86px;" />
                     <a onclick="PF('cd').show()" href="#">Esqueci minha senha</a>
                 </div>                
             </h:form>

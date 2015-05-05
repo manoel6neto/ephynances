@@ -41,19 +41,12 @@
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Cnpj principal (Cadastro Esicar): " for="cnpjprincipal" />
+                        <p:outputLabel value="Cnpj principal (Cadastro e-Sicar): " for="cnpjprincipal" />
                         <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="true" effect="fade" converter="proponentSiconvConverter" disabled="#{agreementController.checkIsType('PARLAMENTAR')}">
                             <p:ajax update="qntiCnpj" listener="#{agreementController.checkQuantCnpjMunicipal()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.filteredProponents}" var="proponent" itemLabel="#{proponent.cnpj} - #{proponent.nome}" itemValue="#{proponent}"/>
                         </p:selectOneMenu>
-                    </div>
-
-                    <br class="clear" />
-                    <br/>
-                    <div class="grid_4 alpha" >
-                        <p:outputLabel value="Número documento (Identificador): " for="numberDoc" />
-                        <p:inputText id="numberDoc" style="width: 200px" value="#{agreementController.agreement.documentNumber}" required="true" requiredMessage="Documento necessário para cadastro do contrato"/> 
                     </div>
 
                     <br class="clear" />
@@ -95,7 +88,7 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Data assinatura do contrato: " for="assignmentDate" />
-                        <p:calendar id="assignmentDate" locale="pt_BR" size="37" value="#{agreementController.agreement.assignmentDate}" mask="99/99/9999" pattern="dd/MM/yyyy" />
+                        <p:calendar id="assignmentDate" locale="pt_BR" size="37" style="width: 200px;" value="#{agreementController.agreement.assignmentDate}" mask="99/99/9999" pattern="dd/MM/yyyy" />
                     </div>
 
                     <br class="clear" />
@@ -119,18 +112,18 @@
 
                 <br class="clear" />
                 <br/>
-                <p:fieldset legend="Dados do responsável" toggleable="true" collapsed="false">
+                <p:fieldset legend="Dados do Gestor do Sistema" toggleable="true" collapsed="false">
                     <br class="clear" />
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Nome do responsável: " for="nomeResp" />
-                        <p:inputText id="nomeResp" style="width: 200px" value="#{agreementController.agreement.managerName}" required="true" requiredMessage="Nome do responsável necessário"/> 
+                        <p:outputLabel value="Nome do Gestor: " for="nomeResp" />
+                        <p:inputText id="nomeResp" style="width: 200px" value="#{agreementController.agreement.managerName}" required="true" requiredMessage="Nome do Gestor necessário"/> 
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Entidade do responsável: " for="entityResp" />
-                        <p:inputText id="entityResp" style="width: 200px" value="#{agreementController.agreement.managerEntity}" required="true" requiredMessage="Entidade do responsável necessária"/> 
+                        <p:outputLabel value="Entidade do Gestor: " for="entityResp" />
+                        <p:inputText id="entityResp" style="width: 200px" value="#{agreementController.agreement.managerEntity}" required="true" requiredMessage="Entidade do Gestor necessária"/> 
                     </div>
                     
                     <br class="clear" />
@@ -144,20 +137,20 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Estado do parlamentar (Sigla): " for="parlamentState" />
-                        <p:inputText id="parlamentState" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" maxlength="2"/> 
+                        <p:inputText id="parlamentState" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" maxlength="2" /> 
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Email do responsável: " for="emailResp" />
-                        <p:inputText id="emailResp" style="width: 200px" value="#{agreementController.agreement.managerEmail}" required="true" requiredMessage="Email do responsável necessário"/> 
+                        <p:outputLabel value="Email do Gestor: " for="emailResp" />
+                        <p:inputText id="emailResp" style="width: 200px" value="#{agreementController.agreement.managerEmail}" required="true" requiredMessage="Email do Gestor necessário"/> 
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="CPF do responsável: " for="cpf" />
+                        <p:outputLabel value="CPF do Gestor: " for="cpf" />
                         <p:inputMask id="cpf" style="width: 200px" value="#{agreementController.agreement.managerCpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"> 
                             <f:validator for="cpf" validatorId="cpfValidator" />
                         </p:inputMask>
@@ -166,14 +159,14 @@
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Telefone do responsável: " for="phone" />
+                        <p:outputLabel value="Telefone do Gestor: " for="phone" />
                         <p:inputMask id="phone" style="width: 200px" value="#{agreementController.agreement.managerPhone}" required="false" mask="(99) 9999-9999" />
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Celular do responsável: " for="cellphone" />
+                        <p:outputLabel value="Celular do Gestor: " for="cellphone" />
                         <p:inputMask id="cellphone" style="width: 200px" value="#{agreementController.agreement.managerCellPhone}" required="false" mask="(99) 9999-9999?"/> 
                     </div>
 

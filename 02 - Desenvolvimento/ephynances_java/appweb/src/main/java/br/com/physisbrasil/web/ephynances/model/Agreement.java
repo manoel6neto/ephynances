@@ -120,9 +120,8 @@ public class Agreement implements BaseModel {
     @Column(name = "id_primary_cnpj", nullable = false)
     private Long idPrimaryCnpj;
 
-    @NotEmpty
     @Size(max = 100)
-    @Column(name = "document_number", length = 100, nullable = false)
+    @Column(name = "document_number", length = 100, nullable = true)
     private String documentNumber;
 
     //Manager Data

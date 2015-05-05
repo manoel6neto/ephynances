@@ -36,8 +36,6 @@
                     <p:column width="100" style="text-align: center" headerText="Ações">
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{sellerContributorController.edit(item)}" ><img src="../resources/img/edit.png" width="16" height="16" alt="Editar" title="Editar"/></p:commandLink>
                         <h:outputText value="   " />
-                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{sellerContributorController.view(item)}" ><img src="../resources/img/view_lupa.png" width="16" height="16" alt="Detalhes" title="Detalhes"/></p:commandLink>
-                        <h:outputText value="   " />
                         <p:commandLink ajax="false" action="#{sellerContributorController.delete(item.id)}">
                             <img src="../resources/img/desactive_shield.png" width="16" height="16" alt="Apagar" title="Apagar"/>
                         </p:commandLink>

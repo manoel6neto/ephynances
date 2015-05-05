@@ -40,19 +40,12 @@
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Cnpj principal (Cadastro Esicar): " for="cnpjprincipal" />
+                        <p:outputLabel value="Cnpj principal (Cadastro e-Sicar): " for="cnpjprincipal" />
                         <p:selectOneMenu id="cnpjprincipal" style="width: 200px" value="#{agreementController.proponentSiconv}" required="true" effect="fade" converter="proponentSiconvConverter" disabled="#{agreementController.checkIsType('PARLAMENTAR')}">
                             <p:ajax update="qntiCnpj" listener="#{agreementController.checkQuantCnpjMunicipal()}"/>
                             <f:selectItem noSelectionOption="true" itemLabel="Selecione" />
                             <f:selectItems value="#{agreementController.agreement.proponents}" var="proponent" itemLabel="#{proponent.cnpj} - #{proponent.nome}" itemValue="#{proponent}"/>
                         </p:selectOneMenu>
-                    </div>
-
-                    <br class="clear" />
-                    <br/>
-                    <div class="grid_4 alpha" >
-                        <p:outputLabel value="Número documento (Identificador): " for="numberDoc" />
-                        <p:inputText id="numberDoc" style="width: 200px" value="#{agreementController.agreement.documentNumber}" required="true" requiredMessage="Documento necessário para cadastro do contrato"/> 
                     </div>
 
                     <br class="clear" />
@@ -94,7 +87,7 @@
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Data assinatura do contrato: " for="assignmentDate" />
-                        <p:calendar id="assignmentDate" locale="pt_BR" size="37" value="#{agreementController.agreement.assignmentDate}" mask="99/99/9999" pattern="dd/MM/yyyy" />
+                        <p:calendar id="assignmentDate" locale="pt_BR" size="37" style="width: 200px;" value="#{agreementController.agreement.assignmentDate}" mask="99/99/9999" pattern="dd/MM/yyyy" />
                     </div>
 
                     <br class="clear" />

@@ -151,12 +151,27 @@ public class AgreementController extends BaseController {
     public void getListFilteredBySeller(Long userId) {
         userBean.clearCache();
         User tempUser = userBean.find(userId);
+        boolean isSetContributor = false;
         if (tempUser != null) {
             if (tempUser.getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
                 filteredAgreements = agreementBean.findAll();
             } else {
                 if (tempUser.getProfileRule().equals(User.getRULER_CONTRIBUTOR())) {
-                    filteredAgreements = tempUser.getSellers().get(0).getSeller().getAgreements();
+                    if (tempUser.getSellers() != null) {
+                        if (tempUser.getSellers().size() > 0) {
+                            filteredAgreements = tempUser.getSellers().get(0).getSeller().getAgreements();
+                            isSetContributor = true;
+                        }
+                    }
+                    
+                    if (!isSetContributor) {
+                        if (tempUser.getContributors() != null) {
+                            if (tempUser.getContributors().size() > 0) {
+                                filteredAgreements = tempUser.getContributors().get(0).getSeller().getAgreements();
+                            }
+                        }
+                    }
+                    
                 } else {
                     filteredAgreements = tempUser.getAgreements();
                 }
@@ -169,11 +184,26 @@ public class AgreementController extends BaseController {
     public String startAgreement(Long userId) {
         userBean.clearCache();
         User tempUser = userBean.find(userId);
+        boolean isSetContributor = false;
         if (tempUser != null) {
             if (!tempUser.getProfileRule().equals(User.getRULER_CONTRIBUTOR())) {
                 setAgreementUser(tempUser);
             } else {
-                setAgreementUser(tempUser.getSellers().get(0).getSeller());
+                if (tempUser.getSellers() != null) {
+                    if (tempUser.getSellers().size() > 0) {
+                        setAgreementUser(tempUser.getSellers().get(0).getSeller());
+                        isSetContributor = true;
+                    }
+                }
+                
+                if (!isSetContributor) {
+                    if (tempUser.getContributors() != null) {
+                        if (tempUser.getContributors().size() > 0) {
+                            setAgreementUser(tempUser.getContributors().get(0).getSeller());
+                        }
+                    }
+                }
+                
             }
 
             putFlash("userAgreement", getAgreementUser());
