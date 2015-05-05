@@ -79,9 +79,11 @@ public class RelController extends BaseController {
         stateBean.clearCache();
         agreementBean.clearCache();
         proponentSiconvBean.clearCache();
-        
+
+        selectedMonth = "Janeiro";
+
         Calendar tempC = Calendar.getInstance();
-        selectedYear = 2015;
+        selectedYear = tempC.get(Calendar.YEAR);
 
         months = new HashMap<String, Integer>() {
             {
@@ -113,7 +115,7 @@ public class RelController extends BaseController {
 
         //check MissingPayments
         calcDontPaidForState();
-        
+
         //check monthAgreements
         calcAgreementForMonth();
 
@@ -224,45 +226,36 @@ public class RelController extends BaseController {
             agreementBean.clearCache();
             User logged = (User) JsfUtil.getSessionAttribute(AbstractFilter.USER_KEY);
             Calendar c;
-            if (selectedMonth.equalsIgnoreCase("Todos")) {
-                //Filtra apenas pelo ano
-                List<Agreement> tempAgreements = agreementBean.findAll();
-                for (Agreement agree : tempAgreements) {
-                    c = Calendar.getInstance();
-                    c.setTime(agree.getAssignmentDate());
-                    
-                }
-                
-                //Removendo os contratos que não são do vendedor
-                if (logged.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
-                    for (Agreement ag : tempAgreements) {
-                        if (ag.getUser().equals(logged)) {
-                            agreementsMonth.add(ag);
-                        }
-                    }
-                } else {
-                    agreementsMonth = tempAgreements;
-                }
-            } else {
-                //Filtra pelo ano e pelo mês
-                List<Agreement> tempAgreements = agreementBean.findAll();
-                for (Agreement a : tempAgreements) {
-                    c = Calendar.getInstance();
-                    c.setTime(a.getAssignmentDate());
-                    
-                }
-                
-                //Removendo os contratos que não são do vendedor
-                if (logged.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
-                    for (Agreement ag : tempAgreements) {
-                        if (ag.getUser().equals(logged)) {
-                            agreementsMonth.add(ag);
-                        }
-                    }
-                } else {
-                    agreementsMonth = tempAgreements;
+            List<Agreement> removeAgreements = new ArrayList<Agreement>();
+            //Filtra pelo ano e pelo mês
+            List<Agreement> tempAgreements = agreementBean.findAll();
+            for (Agreement a : tempAgreements) {
+                c = Calendar.getInstance();
+                c.setTime(a.getAssignmentDate());
+                if (c.get(Calendar.YEAR) != selectedYear || c.get(Calendar.MONTH) != months.get(selectedMonth)) {
+                    removeAgreements.add(a);
                 }
             }
+            
+            //removendo fora do ano e mes
+            tempAgreements.removeAll(removeAgreements);
+
+            //Removendo os contratos que não são do vendedor
+            if (logged.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
+                for (Agreement ag : tempAgreements) {
+                    if (ag.getUser().equals(logged)) {
+                        agreementsMonth.add(ag);
+                    }
+                }
+            } else {
+                agreementsMonth = tempAgreements;
+            }
+
+            totalValueMonth = new BigDecimal(0);
+            for (Agreement g : agreementsMonth) {
+                totalValueMonth = totalValueMonth.add(g.getTotalPrice());
+            }
+
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao consultar os contratos para o mês informado");
         }
