@@ -1,6 +1,7 @@
 package br.com.physisbrasil.web.ephynances.jsf;
 
 import br.com.physisbrasil.web.ephynances.ejb.AgreementBean;
+import br.com.physisbrasil.web.ephynances.ejb.PaymentBean;
 import br.com.physisbrasil.web.ephynances.ejb.ProponentSiconvBean;
 import br.com.physisbrasil.web.ephynances.ejb.StateBean;
 import br.com.physisbrasil.web.ephynances.ejb.UserBean;
@@ -59,6 +60,9 @@ public class RelController extends BaseController {
     @EJB
     private ProponentSiconvBean proponentSiconvBean;
 
+    @EJB
+    private PaymentBean paymentBean;
+
     private List<Payment> payments;
     private List<Payment> paymentsSeller;
     private List<Payment> paymentsMonth;
@@ -70,6 +74,7 @@ public class RelController extends BaseController {
     private BigDecimal totalValueMonth;
     private BigDecimal totalValueMonthPayments;
     private Map<Agreement, List<Payment>> agreementsListPayments;
+    private Map<Agreement, List<Payment>> agreementsListPaymentsMonths;
     private Map<User, List<Payment>> sellerListPayments;
 
     @PostConstruct
@@ -79,6 +84,7 @@ public class RelController extends BaseController {
         stateBean.clearCache();
         agreementBean.clearCache();
         proponentSiconvBean.clearCache();
+        paymentBean.clearCache();
 
         selectedMonth = "Janeiro";
 
@@ -118,6 +124,7 @@ public class RelController extends BaseController {
 
         //check monthAgreements
         calcAgreementForMonth();
+        calcPaymentsForMonth();
 
         //check sellerList
         if ((List<User>) getFlash("sellerList") != null) {
@@ -236,7 +243,7 @@ public class RelController extends BaseController {
                     removeAgreements.add(a);
                 }
             }
-            
+
             //removendo fora do ano e mes
             tempAgreements.removeAll(removeAgreements);
 
@@ -330,6 +337,57 @@ public class RelController extends BaseController {
             }
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao consultar os pagamentos para o estado informado");
+        }
+    }
+
+    public void calcPaymentsForMonth() {
+        try {
+            Calendar c;
+            List<Payment> tempPayments = paymentBean.findAll();
+            paymentsMonth = new ArrayList<Payment>();
+            for (Payment payment : tempPayments) {
+                c = Calendar.getInstance();
+                c.setTime(payment.getPaymentDate());
+                if (c.get(Calendar.YEAR) == selectedYear || c.get(Calendar.MONTH) == months.get(selectedMonth)) {
+                    paymentsMonth.add(payment);
+                }
+            }
+            
+            totalValueMonthPayments = new BigDecimal(0);
+            if (paymentsMonth.size() > 0) {
+                for (Payment p : paymentsMonth) {
+                    totalValueMonthPayments = totalValueMonthPayments.add(p.getTotalValue());
+                }
+            }
+            
+            //GetPayments for contract for month
+            agreementsListPaymentsMonths = new HashMap<Agreement, List<Payment>>();
+            List<Payment> tempListPayments;
+            for (Payment pay : paymentsMonth) {
+                if (pay.getAgreementInstallment() != null) {
+                    if (agreementsListPaymentsMonths.containsKey(pay.getAgreementInstallment().getAgreement())) {
+                        tempListPayments = agreementsListPaymentsMonths.get(pay.getAgreementInstallment().getAgreement());
+                        tempListPayments.add(pay);
+                        agreementsListPaymentsMonths.replace(pay.getAgreementInstallment().getAgreement(), tempListPayments);
+                    } else {
+                        tempListPayments = new ArrayList<Payment>();
+                        tempListPayments.add(pay);
+                        agreementsListPaymentsMonths.put(pay.getAgreementInstallment().getAgreement(), tempListPayments);
+                    }
+                } else {
+                    if (agreementsListPaymentsMonths.containsKey(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement())) {
+                        tempListPayments = agreementsListPaymentsMonths.get(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement());
+                        tempListPayments.add(pay);
+                        agreementsListPaymentsMonths.replace(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement(), tempListPayments);
+                    } else {
+                        tempListPayments = new ArrayList<Payment>();
+                        tempListPayments.add(pay);
+                        agreementsListPaymentsMonths.put(pay.getSubAgreementInstallment().getAgreementInstallment().getAgreement(), tempListPayments);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao consultar os pagamentos para o mês informado");
         }
     }
 
@@ -462,6 +520,11 @@ public class RelController extends BaseController {
 
     public List<Agreement> listKeys() {
         List<Agreement> tempListString = new ArrayList<Agreement>(agreementsListPayments.keySet());
+        return tempListString;
+    }
+
+    public List<Agreement> listKeysMonth() {
+        List<Agreement> tempListString = new ArrayList<Agreement>(agreementsListPaymentsMonths.keySet());
         return tempListString;
     }
 
@@ -795,5 +858,13 @@ public class RelController extends BaseController {
 
     public void setTotalValueMonthPayments(BigDecimal totalValueMonthPayments) {
         this.totalValueMonthPayments = totalValueMonthPayments;
+    }
+
+    public Map<Agreement, List<Payment>> getAgreementsListPaymentsMonths() {
+        return agreementsListPaymentsMonths;
+    }
+
+    public void setAgreementsListPaymentsMonths(Map<Agreement, List<Payment>> agreementsListPaymentsMonths) {
+        this.agreementsListPaymentsMonths = agreementsListPaymentsMonths;
     }
 }
