@@ -12,8 +12,11 @@ import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -22,6 +25,7 @@ import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
 import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.HorizontalBarChartModel;
 import org.primefaces.model.chart.PieChartModel;
 
 /**
@@ -49,6 +53,9 @@ public class ChartController extends BaseController {
 
     private BarChartModel agreementsDateValueChartModel;
     private BarChartModel lastPayments;
+    private HorizontalBarChartModel contractPaymentsForMonth;
+
+    private Map<String, Integer> months;
 
     @PostConstruct
     public void init() {
@@ -73,8 +80,48 @@ public class ChartController extends BaseController {
             payments = payments.subList(0, 5);
         }
 
+        months = new HashMap<String, Integer>() {
+            {
+                put("Janeiro", 0);
+                put("Fevereiro", 1);
+                put("Março", 2);
+                put("Abril", 3);
+                put("Maio", 4);
+                put("Junho", 5);
+                put("Julho", 6);
+                put("Agosto", 7);
+                put("Setembro", 8);
+                put("Outubro", 9);
+                put("Novembro", 10);
+                put("Dezembro", 11);
+            }
+        ;
+        }
+    
+    ;
+
         createBarModel();
         createBarModelPayments();
+        createBarModelContractsPaymentsMonth();
+    }
+
+    public List<String> returnListOfMonthsFromHashMap() {
+        List<String> tempList = new ArrayList<String>();
+
+        tempList.add("Janeiro");
+        tempList.add("Fevereiro");
+        tempList.add("Março");
+        tempList.add("Abril");
+        tempList.add("Maio");
+        tempList.add("Junho");
+        tempList.add("Julho");
+        tempList.add("Agosto");
+        tempList.add("Setembro");
+        tempList.add("Outubro");
+        tempList.add("Novembro");
+        tempList.add("Dezembro");
+
+        return tempList;
     }
 
     public PieChartModel getChartActiveUsers() {
@@ -104,8 +151,82 @@ public class ChartController extends BaseController {
                 chartModel.set(sel.getName(), sel.getAgreements().size());
             }
         }
-        
+
         return chartModel;
+    }
+
+    private void createBarModelContractsPaymentsMonth() {
+        contractPaymentsForMonth = new HorizontalBarChartModel();
+
+        ChartSeries contractSeries = new ChartSeries();
+        contractSeries.setLabel("Contratos");
+        ChartSeries paymentSeries = new ChartSeries();
+        paymentSeries.setLabel("Pagametnos");
+
+        List<Agreement> contractList = agreementBean.findAll();
+        List<Payment> paymentList = paymentBean.findAll();
+
+        Calendar c;
+        Calendar atual = Calendar.getInstance();
+        atual.setTime(new Date(System.currentTimeMillis()));
+        Map<String, List<Agreement>> contractsForMonths = new HashMap<String, List<Agreement>>();
+        Map<String, List<Payment>> paymentsForMonths = new HashMap<String, List<Payment>>();
+        for (String month : returnListOfMonthsFromHashMap()) {
+            //Contracts
+            List<Agreement> tempListAgreement = new ArrayList<Agreement>();
+            for (Agreement a : contractList) {
+                c = Calendar.getInstance();
+                c.setTime(a.getAssignmentDate());
+                if (c.get(Calendar.YEAR) == atual.get(Calendar.YEAR) && c.get(Calendar.MONTH) == months.get(month)) {
+                    tempListAgreement.add(a);
+                }
+            }
+            contractsForMonths.put(month, tempListAgreement);
+            
+            //Payments
+            List<Payment> tempListPayments = new ArrayList<Payment>();
+            for (Payment p : paymentList) {
+                c = Calendar.getInstance();
+                c.setTime(p.getPaymentDate());
+                if (c.get(Calendar.YEAR) == atual.get(Calendar.YEAR) && c.get(Calendar.MONTH) == months.get(month)) {
+                    tempListPayments.add(p);
+                }
+            }
+            paymentsForMonths.put(month, tempListPayments);
+        }
+        
+        //Create chart logic
+        for (String month : returnListOfMonthsFromHashMap()) {
+            contractSeries.set(month, checkTotalListContracts(contractsForMonths.get(month)).intValue());
+            paymentSeries.set(month, checkTotalListPayments(paymentsForMonths.get(month)).intValue());
+        }
+        
+        contractPaymentsForMonth.addSeries(contractSeries);
+        contractPaymentsForMonth.addSeries(paymentSeries);
+        
+        contractPaymentsForMonth.setTitle("Contratos e Pagamentos por Mês");
+        contractPaymentsForMonth.setLegendPosition("nw");
+        contractPaymentsForMonth.setStacked(true);
+        
+        
+    }
+    
+    public BigDecimal checkTotalListPayments(List <Payment> paymentList) {
+        BigDecimal total = new BigDecimal(0);
+        for (Payment p : paymentList) {
+            total = total.add(p.getTotalValue());
+        }
+        
+        return total;
+    }
+    
+    public BigDecimal checkTotalListContracts(List <Agreement> agreementList) {
+        BigDecimal total = new BigDecimal(0);
+        for (Agreement a : agreementList) {
+            total = total.add(a.getTotalPrice());
+        }
+        
+        return total;
     }
 
     private void createBarModel() {
@@ -229,6 +350,18 @@ public class ChartController extends BaseController {
 
     public BarChartModel getLastPayments() {
         return lastPayments;
+    }
+
+    public Map<String, Integer> getMonths() {
+        return months;
+    }
+
+    public void setMonths(Map<String, Integer> months) {
+        this.months = months;
+    }
+
+    public HorizontalBarChartModel getContractPaymentsForMonth() {
+        return contractPaymentsForMonth;
     }
 
     public String formatDate(Date dateToFormat) {

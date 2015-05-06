@@ -25,21 +25,24 @@
 
             <h:form id="formDefault" rendered="#{loginController.showPdfContract == false}">
                 <div id="divDefault" style="float: left; display: block; overflow: hidden; margin-top: 40px;">
-                        <p:pieChart id="chartUsers" value="#{chartController.chartActiveUsers}" fill="true" legendPosition="nw" showDataLabels="true"  
+<!--                        <p:pieChart id="chartUsers" value="#{chartController.chartActiveUsers}" fill="true" legendPosition="nw" showDataLabels="true"  
                                     title="Usuários Ativos x Usuários Inativos" style="width:500px; height:300px; margin-left: 40px;" sliceMargin="05" diameter="185" shadow="true"/>                
-                        <p:effect for="chartUsers" type="shake" speed="250" event="load"/>
-                        
-                        <p:pieChart id="chartUsersContracts" value="#{chartController.sellerForContracts()}" fill="true" legendPosition="nw" showDataLabels="true"  
-                                    title="Contratos por Representante" style="width:500px; height:300px; margin-left: 40px;" sliceMargin="05" diameter="185" shadow="true"/>                
-                        <p:effect for="chartUsersContracts" type="shake" speed="250" event="load"/>
+                        <p:effect for="chartUsers" type="shake" speed="250" event="load"/>-->
+
+                    <p:chart id="chartBarsContractsPayments" type="bar" model="#{chartController.contractPaymentsForMonth}" style="width:550px; height:300px" />
+                    <p:effect for="chartBarsContractsPayments" type="shake" speed="250" event="load"/>
+
+                    <p:pieChart id="chartUsersContracts" value="#{chartController.sellerForContracts()}" fill="true" legendPosition="nw" showDataLabels="true"  
+                                title="Contratos por Representante" style="width:500px; height:300px; margin-left: 40px;" sliceMargin="05" diameter="185" shadow="true"/>                
+                    <p:effect for="chartUsersContracts" type="shake" speed="250" event="load"/>
                 </div>
 
                 <div id="divDefaultRight" style="float: right; display: block; overflow: hidden; margin-top: 40px;">
-                        <p:chart id="chartBarsAgrees" type="bar" model="#{chartController.agreementsDateValueChartModel}" style="width:550px; height:300px" />
-                        <p:effect for="chartBarsAgrees" type="shake" speed="250" event="load"/>
-                        
-                        <p:chart id="chartBarsPayments" type="bar" model="#{chartController.lastPayments}" style="width:550px; height:300px" />
-                        <p:effect for="chartBarsPayments" type="shake" speed="250" event="load"/>
+                    <p:chart id="chartBarsAgrees" type="bar" model="#{chartController.agreementsDateValueChartModel}" style="width:550px; height:300px" />
+                    <p:effect for="chartBarsAgrees" type="shake" speed="250" event="load"/>
+
+                    <p:chart id="chartBarsPayments" type="bar" model="#{chartController.lastPayments}" style="width:550px; height:300px" />
+                    <p:effect for="chartBarsPayments" type="shake" speed="250" event="load"/>
                 </div>
             </h:form>
         </ui:define>
