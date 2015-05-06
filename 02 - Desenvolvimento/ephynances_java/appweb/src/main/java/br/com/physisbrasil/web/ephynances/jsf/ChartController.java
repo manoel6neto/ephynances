@@ -161,7 +161,7 @@ public class ChartController extends BaseController {
         ChartSeries contractSeries = new ChartSeries();
         contractSeries.setLabel("Contratos");
         ChartSeries paymentSeries = new ChartSeries();
-        paymentSeries.setLabel("Pagametnos");
+        paymentSeries.setLabel("Pagamentos");
 
         List<Agreement> contractList = agreementBean.findAll();
         List<Payment> paymentList = paymentBean.findAll();
