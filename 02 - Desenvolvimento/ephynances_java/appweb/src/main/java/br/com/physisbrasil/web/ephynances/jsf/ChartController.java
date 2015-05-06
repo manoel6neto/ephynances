@@ -207,8 +207,6 @@ public class ChartController extends BaseController {
         contractPaymentsForMonth.setTitle("Contratos e Pagamentos por Mês");
         contractPaymentsForMonth.setLegendPosition("nw");
         contractPaymentsForMonth.setStacked(true);
-        
-        
     }
     
     public BigDecimal checkTotalListPayments(List <Payment> paymentList) {
