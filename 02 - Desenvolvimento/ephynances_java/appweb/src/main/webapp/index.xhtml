@@ -28,9 +28,8 @@
                     <p:chart id="chartBarsContractsPayments" type="bar" model="#{chartController.contractPaymentsForMonth}" style="width:540px; height:300px" />
                     <p:effect for="chartBarsContractsPayments" type="shake" speed="750" delay="100" event="load" />
 
-                    <p:pieChart id="chartUsersContracts" value="#{chartController.sellerForContracts()}" fill="true" legendPosition="nw" showDataLabels="true"  
-                                title="Contratos por Representante" style="width:500px; height:300px; margin-left: 40px; margin-top: 40px;" sliceMargin="05" diameter="185" shadow="true"/>                
-                    <p:effect for="chartUsersContracts" type="shake" speed="750" delay="100" event="load"/>
+                    <p:chart id="chartBarsContractsForTop10Sellers" type="bar" model="#{chartController.contractForTopSellers}" style="width:540px; height:300px" />
+                    <p:effect for="chartBarsContractsForTop10Sellers" type="shake" speed="750" delay="100" event="load" />
                 </div>
 
                 <div id="divDefaultRight" style="float: right; display: block; overflow: hidden; margin-top: 40px;">

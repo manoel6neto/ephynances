@@ -17,6 +17,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -54,6 +56,7 @@ public class ChartController extends BaseController {
     private BarChartModel agreementsDateValueChartModel;
     private BarChartModel lastPayments;
     private HorizontalBarChartModel contractPaymentsForMonth;
+    private HorizontalBarChartModel contractForTopSellers;
 
     private Map<String, Integer> months;
 
@@ -103,6 +106,7 @@ public class ChartController extends BaseController {
         createBarModel();
         createBarModelPayments();
         createBarModelContractsPaymentsMonth();
+        createBarModelContractsForTopSellers();
     }
 
     public List<String> returnListOfMonthsFromHashMap() {
@@ -182,7 +186,7 @@ public class ChartController extends BaseController {
                 }
             }
             contractsForMonths.put(month, tempListAgreement);
-            
+
             //Payments
             List<Payment> tempListPayments = new ArrayList<Payment>();
             for (Payment p : paymentList) {
@@ -194,36 +198,79 @@ public class ChartController extends BaseController {
             }
             paymentsForMonths.put(month, tempListPayments);
         }
-        
+
         //Create chart logic
         for (String month : returnListOfMonthsFromHashMap()) {
             contractSeries.set(month, checkTotalListContracts(contractsForMonths.get(month)).intValue());
             paymentSeries.set(month, checkTotalListPayments(paymentsForMonths.get(month)).intValue());
         }
-        
+
         contractPaymentsForMonth.addSeries(contractSeries);
         contractPaymentsForMonth.addSeries(paymentSeries);
-        
+
         contractPaymentsForMonth.setTitle("Contratos e Pagamentos por Mês");
         contractPaymentsForMonth.setLegendPosition("nw");
+        contractPaymentsForMonth.setAnimate(true);
         contractPaymentsForMonth.setStacked(true);
+        contractPaymentsForMonth.setShadow(true);
+        contractPaymentsForMonth.setShowDatatip(true);
+        contractPaymentsForMonth.setShowPointLabels(true);
     }
-    
-    public BigDecimal checkTotalListPayments(List <Payment> paymentList) {
+
+    private void createBarModelContractsForTopSellers() {
+        contractForTopSellers = new HorizontalBarChartModel();
+
+        ChartSeries contractSeries = new ChartSeries();
+        contractSeries.setLabel("Qntd. Contratos");
+
+        List<Agreement> contractList = agreementBean.findAll();
+
+        Map<String, Integer> contractsForSeller = new HashMap<String, Integer>();
+
+        for (Agreement a : contractList) {
+            if (contractsForSeller.containsKey(a.getUser().getName())) {
+                Integer tempQntd = contractsForSeller.get(a.getUser().getName());
+                tempQntd++;
+                contractsForSeller.replace(a.getUser().getName(), tempQntd);
+            } else {
+                contractsForSeller.put(a.getUser().getName(), 1);
+            }
+        }
+
+        //Create chart logic
+        int count = 0;
+        for (String name : contractsForSeller.keySet()) {
+            if (count < 10) {
+                contractSeries.set(name, (contractsForSeller.get(name)));
+            } else {
+                break;
+            }
+        }
+        contractForTopSellers.addSeries(contractSeries);
+
+        contractForTopSellers.setTitle("Top 10 representantes");
+        contractForTopSellers.setLegendPosition("nw");
+        contractForTopSellers.setAnimate(true);
+        contractForTopSellers.setShadow(true);
+        contractForTopSellers.setShowDatatip(true);
+        contractForTopSellers.setShowPointLabels(true);
+    }
+
+    public BigDecimal checkTotalListPayments(List<Payment> paymentList) {
         BigDecimal total = new BigDecimal(0);
         for (Payment p : paymentList) {
             total = total.add(p.getTotalValue());
         }
-        
+
         return total;
     }
-    
-    public BigDecimal checkTotalListContracts(List <Agreement> agreementList) {
+
+    public BigDecimal checkTotalListContracts(List<Agreement> agreementList) {
         BigDecimal total = new BigDecimal(0);
         for (Agreement a : agreementList) {
             total = total.add(a.getTotalPrice());
         }
-        
+
         return total;
     }
 
@@ -232,6 +279,10 @@ public class ChartController extends BaseController {
 
         agreementsDateValueChartModel.setTitle("Contratos Assinados");
         agreementsDateValueChartModel.setLegendPosition("nw");
+        agreementsDateValueChartModel.setAnimate(true);
+        agreementsDateValueChartModel.setShadow(true);
+        agreementsDateValueChartModel.setShowDatatip(true);
+        agreementsDateValueChartModel.setShowPointLabels(true);
 
         //Axis xAxis = agreementsDateValueChartModel.getAxis(AxisType.X);
         Axis yAxis = agreementsDateValueChartModel.getAxis(AxisType.Y);
@@ -272,6 +323,10 @@ public class ChartController extends BaseController {
 
         lastPayments.setTitle("Últimos Pagamentos");
         lastPayments.setLegendPosition("nw");
+        lastPayments.setAnimate(true);
+        lastPayments.setShadow(true);
+        lastPayments.setShowDatatip(true);
+        lastPayments.setShowPointLabels(true);
 
         //Axis xAxis = agreementsDateValueChartModel.getAxis(AxisType.X);
         Axis yAxis = lastPayments.getAxis(AxisType.Y);
@@ -360,6 +415,10 @@ public class ChartController extends BaseController {
 
     public HorizontalBarChartModel getContractPaymentsForMonth() {
         return contractPaymentsForMonth;
+    }
+
+    public HorizontalBarChartModel getContractForTopSellers() {
+        return contractForTopSellers;
     }
 
     public String formatDate(Date dateToFormat) {
