@@ -348,7 +348,7 @@ public class RelController extends BaseController {
             for (Payment payment : tempPayments) {
                 c = Calendar.getInstance();
                 c.setTime(payment.getPaymentDate());
-                if (c.get(Calendar.YEAR) == selectedYear || c.get(Calendar.MONTH) == months.get(selectedMonth)) {
+                if (c.get(Calendar.YEAR) == selectedYear && c.get(Calendar.MONTH) == months.get(selectedMonth)) {
                     paymentsMonth.add(payment);
                 }
             }
@@ -546,6 +546,20 @@ public class RelController extends BaseController {
             return new BigDecimal(0);
         }
     }
+    
+    public BigDecimal calcTotalPaymentsForContractMonth(Long agreementId) {
+        try {
+            BigDecimal total = new BigDecimal(0);
+            Agreement tempAgreement = agreementBean.find(agreementId);
+            for (Payment pay : agreementsListPaymentsMonths.get(tempAgreement)) {
+                total = total.add(pay.getTotalValue());
+            }
+
+            return total;
+        } catch (Exception e) {
+            return new BigDecimal(0);
+        }
+    }
 
     public BigDecimal calcTotalPaymentsForSeller(Long sellerId) {
         try {
@@ -568,6 +582,11 @@ public class RelController extends BaseController {
     public List<Payment> returnListPaymentsForKeySeller(Long sellerId) {
         User sellerTemp = userBean.find(sellerId);
         return sellerListPayments.get(sellerTemp);
+    }
+    
+    public List<Payment> returnListPaymentsForKeyMonth(Long agreementId) {
+        Agreement tempAgreement = agreementBean.find(agreementId);
+        return agreementsListPaymentsMonths.get(tempAgreement);
     }
 
     public String returnPhysisContractNumber(Payment payment) {
