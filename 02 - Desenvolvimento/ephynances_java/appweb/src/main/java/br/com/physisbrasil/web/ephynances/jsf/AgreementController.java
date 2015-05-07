@@ -342,21 +342,23 @@ public class AgreementController extends BaseController {
         Agreement tempAgreement = agreementBean.find(agreementId);
         if (tempAgreement != null) {
             //Check and activate
-            if (tempAgreement.getAgreementInstallments() == null) {
-                JsfUtil.addErrorMessage("Não pode ativar contrato sem parcelas definidas.");
-            } else {
-                //Ativa
-                tempAgreement.setStatus(Agreement.getSTATE_ATIVO());
-                agreementBean.edit(tempAgreement);
-                agreementBean.clearCache();
-
-                //register manager esicar
-                if (tempAgreement.getAgreementType().equalsIgnoreCase("PARLAMENTAR")) {
-                    insertGestorEsicar(tempAgreement.getId(), "1");
+            if (tempAgreement.getStatus().equalsIgnoreCase(Agreement.getSTATE_COMPLETO())) {
+                if (tempAgreement.getAgreementInstallments() == null) {
+                    JsfUtil.addErrorMessage("Não pode ativar contrato sem parcelas definidas.");
                 } else {
-                    insertGestorEsicar(tempAgreement.getId(), "0");
+                    //Ativa
+                    tempAgreement.setStatus(Agreement.getSTATE_ATIVO());
+                    agreementBean.edit(tempAgreement);
+                    agreementBean.clearCache();
+
+                    //register manager esicar
+                    if (tempAgreement.getAgreementType().equalsIgnoreCase("PARLAMENTAR")) {
+                        insertGestorEsicar(tempAgreement.getId(), "1");
+                    } else {
+                        insertGestorEsicar(tempAgreement.getId(), "0");
+                    }
+                    JsfUtil.addSuccessMessage("Contrato ativado com sucesso!!");
                 }
-                JsfUtil.addSuccessMessage("Contrato ativado com sucesso!!");
             }
         }
     }
@@ -365,7 +367,7 @@ public class AgreementController extends BaseController {
         if (getUsuarioLogado().getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
             Agreement tempAgreement = agreementBean.find(agreementId);
             if (tempAgreement != null) {
-                if (tempAgreement.getStatus().equalsIgnoreCase(Agreement.getSTATE_INCOMPLETO())) {
+                if (tempAgreement.getStatus().equalsIgnoreCase(Agreement.getSTATE_COMPLETO())) {
                     return String.valueOf(true);
                 }
             }
@@ -508,9 +510,9 @@ public class AgreementController extends BaseController {
     public void sendSmsToAdmins(String message) {
         List<String> telefones = new ArrayList<String>();
         /*telefones.add("557388223469");//Max
-        telefones.add("557388462781");//Eliumar
-        telefones.add("557388466588");//Dai
-        telefones.add("557391934769");//Allan*/
+         telefones.add("557388462781");//Eliumar
+         telefones.add("557388466588");//Dai
+         telefones.add("557391934769");//Allan*/
         telefones.add("557391192425");//Thomas-testes
 
         String baseWebServiceUrl = "http://www.mpgateway.com/v_2_00/smspush/enviasms.aspx?CREDENCIAL=";
@@ -522,7 +524,7 @@ public class AgreementController extends BaseController {
                 String auxuser = "USER_ATIVACAO";
                 String sendProj = "N"; //Não enviar o remetente
                 String url = String.format("%s%s&PRINCIPAL_USER=%s&AUX_USER=%s&MOBILE=%s&SEND_PROJECT=%s&MESSAGE=%s", baseWebServiceUrl, credencial, principal, auxuser, fone, sendProj, message);
-                
+
                 //Envio do sms
                 URL urlcon = new URL(url);
                 HttpURLConnection connect = (HttpURLConnection) urlcon.openConnection();
