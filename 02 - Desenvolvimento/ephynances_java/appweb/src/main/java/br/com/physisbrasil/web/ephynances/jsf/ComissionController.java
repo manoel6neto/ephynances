@@ -92,6 +92,10 @@ public class ComissionController extends BaseController {
 
     public void calcComission() {
         try {
+            comission = new BigDecimal(0);
+            payments = new ArrayList<Payment>();
+            showForms = false;
+            total = new BigDecimal(0);
             if (selectedUser != null) {
                 if (selectedUser.getAgreements() != null) {
                     if (selectedUser.getAgreements().size() > 0) {

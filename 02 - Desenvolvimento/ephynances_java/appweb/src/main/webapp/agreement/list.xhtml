@@ -49,6 +49,8 @@
                         <h:outputText value="   " rendered="#{agreementController.checkStatusAgreement(item.id)}"/>
                         <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementController.activateAgreement(item.id)}" rendered="#{agreementController.checkStatusAgreement(item.id)}"><img src="../resources/img/activate_power.png" width="16" height="16" alt="Ativar contrato" title="Ativar contrato"/></p:commandLink>
                         <h:outputText value="   " />
+                        <p:commandLink style="margin-right: 5px" ajax="false" action="#{agreementController.finishInsertAgreementAndNotifyAdmins(item.id)}" rendered="#{agreementController.checkStatusAgreementSeller(item.id)}"><img src="../resources/img/activate_power.png" width="16" height="16" alt="Finalizar cadastro do contrato" title="Finalizar cadastro do contrato"/></p:commandLink>
+                        <h:outputText value="   " />
                         <p:commandLink ajax="false" style="margin-right: 5px" actionListener="#{agreementController.delete(item.id)}" >
                             <img src="../resources/img/remove.png" width="16" height="16" alt="Apagar contrato" title="Apagar"/>
                             <p:confirm header="Confirmação" message="Você tem certeza que gostaria de apagar o contrato?" icon="ui-icon-alert"/>

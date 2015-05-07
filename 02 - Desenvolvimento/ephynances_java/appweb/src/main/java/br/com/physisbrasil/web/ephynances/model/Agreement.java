@@ -50,6 +50,7 @@ public class Agreement implements BaseModel {
 
     private static final String STATE_ATIVO = "Ativo";
     private static final String STATE_INCOMPLETO = "Incompleto";
+    private static final String STATE_COMPLETO = "Cadastro Completo";
     private static final String STATE_CANCELADO = "Cancelado";
     private static final String STATE_SUSPENSO = "Suspenso por falta de pagamento";
     private static final String STATE_ALERTA = "Ausencia de pagamentos para subparcelas";
@@ -119,10 +120,6 @@ public class Agreement implements BaseModel {
     @NotNull
     @Column(name = "id_primary_cnpj", nullable = false)
     private Long idPrimaryCnpj;
-
-    @Size(max = 100)
-    @Column(name = "document_number", length = 100, nullable = true)
-    private String documentNumber;
 
     //Manager Data
     @NotNull
@@ -271,16 +268,8 @@ public class Agreement implements BaseModel {
         this.cnpjAmount = cnpjAmount;
     }
 
-    public String getDocumentNumber() {
-        return documentNumber;
-    }
-
     public static String getSTATE_INCOMPLETO() {
         return STATE_INCOMPLETO;
-    }
-
-    public void setDocumentNumber(String documentNumber) {
-        this.documentNumber = documentNumber;
     }
 
     public static List<String> getAGREEMENT_TYPES() {
@@ -437,6 +426,10 @@ public class Agreement implements BaseModel {
 
     public void setAssignmentDate(Date assignmentDate) {
         this.assignmentDate = assignmentDate;
+    }
+
+    public static String getSTATE_COMPLETO() {
+        return STATE_COMPLETO;
     }
 
     @Override

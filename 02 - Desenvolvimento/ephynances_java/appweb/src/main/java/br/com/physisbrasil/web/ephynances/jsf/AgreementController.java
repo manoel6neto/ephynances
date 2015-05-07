@@ -11,6 +11,7 @@ import br.com.physisbrasil.web.ephynances.model.Configuration;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
 import br.com.physisbrasil.web.ephynances.model.User;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
+import br.com.physisbrasil.web.ephynances.util.Utils;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -37,6 +38,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.mail.MessagingException;
+import org.eclipse.persistence.internal.helper.ClassConstants;
 
 /**
  *
@@ -163,7 +166,7 @@ public class AgreementController extends BaseController {
                             isSetContributor = true;
                         }
                     }
-                    
+
                     if (!isSetContributor) {
                         if (tempUser.getContributors() != null) {
                             if (tempUser.getContributors().size() > 0) {
@@ -171,7 +174,7 @@ public class AgreementController extends BaseController {
                             }
                         }
                     }
-                    
+
                 } else {
                     filteredAgreements = tempUser.getAgreements();
                 }
@@ -195,7 +198,7 @@ public class AgreementController extends BaseController {
                         isSetContributor = true;
                     }
                 }
-                
+
                 if (!isSetContributor) {
                     if (tempUser.getContributors() != null) {
                         if (tempUser.getContributors().size() > 0) {
@@ -203,7 +206,7 @@ public class AgreementController extends BaseController {
                         }
                     }
                 }
-                
+
             }
 
             putFlash("userAgreement", getAgreementUser());
@@ -371,6 +374,23 @@ public class AgreementController extends BaseController {
         return String.valueOf(false);
     }
 
+    public String checkStatusAgreementSeller(Long agreementId) {
+        if (getUsuarioLogado().getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
+            Agreement tempAgreement = agreementBean.find(agreementId);
+            if (tempAgreement != null) {
+                if (tempAgreement.getStatus().equalsIgnoreCase(Agreement.getSTATE_INCOMPLETO())) {
+                    if (tempAgreement.getAgreementInstallments() != null) {
+                        if (tempAgreement.getAgreementInstallments().size() > 0) {
+                            return String.valueOf(true);
+                        }
+                    }
+                }
+            }
+        }
+
+        return String.valueOf(false);
+    }
+
     public String addAgreement() {
         try {
             if (agreement != null) {
@@ -455,6 +475,67 @@ public class AgreementController extends BaseController {
         }
 
         return "/agreement/create";
+    }
+
+    public void finishInsertAgreementAndNotifyAdmins(Long agreementId) {
+        try {
+            Agreement tempAgreement = agreementBean.find(agreementId);
+            tempAgreement.setStatus(Agreement.getSTATE_COMPLETO());
+            sendEmailToAdmins(String.format("Cadastro do contrato: %s finalizado no e-Phynance.", tempAgreement.getPhysisAgreementNumber()));
+            sendSmsToAdmins(String.format("Cadastro do contrato: %s finalizado no e-Phynance.", tempAgreement.getPhysisAgreementNumber()));
+
+            JsfUtil.addSuccessMessage("Cadastro do contrato finalizado com sucesso. Aguarde a ativação por um Administrador.");
+        } catch (Exception e) {
+            JsfUtil.addErrorMessage(e, "Falha ao finalizar o contrato.");
+        }
+    }
+
+    public void sendEmailToAdmins(String message) {
+        List<User> users = userBean.findAll();
+        Configuration configuration = configurationBean.findAll().get(0);
+        for (User u : users) {
+            if (u.getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
+                try {
+                    Utils.sendEmail(u.getEmail(), u.getName(), message, configuration.getSmtpServer(), configuration.getEmail(), "Alerta e-Phynance",
+                            configuration.getUserName(), configuration.getPassword(), configuration.getSmtpPort(), configuration.getEmail());
+                } catch (MessagingException ex) {
+                    Logger.getLogger(DaillyProcessController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+
+    public void sendSmsToAdmins(String message) {
+        List<String> telefones = new ArrayList<String>();
+        /*telefones.add("557388223469");//Max
+        telefones.add("557388462781");//Eliumar
+        telefones.add("557388466588");//Dai
+        telefones.add("557391934769");//Allan*/
+        telefones.add("557391192425");//Thomas-testes
+
+        String baseWebServiceUrl = "http://www.mpgateway.com/v_2_00/smspush/enviasms.aspx?CREDENCIAL=";
+
+        for (String fone : telefones) {
+            try {
+                String credencial = "218565391A8CE4A44253ABF179EBC1505B7A0A3F"; //credencial com 40 caracteres
+                String principal = "ESICAR"; //código de controle
+                String auxuser = "USER_ATIVACAO";
+                String sendProj = "N"; //Não enviar o remetente
+                String url = String.format("%s%s&PRINCIPAL_USER=%s&AUX_USER=%s&MOBILE=%s&SEND_PROJECT=%s&MESSAGE=%s", baseWebServiceUrl, credencial, principal, auxuser, fone, sendProj, message);
+                
+                //Envio do sms
+                URL urlcon = new URL(url);
+                HttpURLConnection connect = (HttpURLConnection) urlcon.openConnection();
+                connect.connect();
+                if (HttpURLConnection.HTTP_OK != connect.getResponseCode()) {
+                    JsfUtil.addErrorMessage("Falha ao notificar os Admins via SMS!");
+                }
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(AgreementController.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(AgreementController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     public Agreement getAgreement() {

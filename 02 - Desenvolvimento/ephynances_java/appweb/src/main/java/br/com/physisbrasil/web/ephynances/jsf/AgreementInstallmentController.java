@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -338,6 +339,13 @@ public class AgreementInstallmentController extends BaseController {
     public void addInstallment() {
         try {
             if (agreement != null) {
+                //check date for dont conflict with another payment (only day/month/year) togethers
+                for (AgreementInstallment i : agreement.getAgreementInstallments()) {
+                    if (i.getDueDate().equals(agreementInstallment.getDueDate())) {
+                        throw new Exception("Já existe um pagamento para a data selecionada.");
+                    }
+                }
+                
                 if (agreementInstallment.getValue().compareTo(getMissingValue()) == 0 || agreementInstallment.getValue().compareTo(getMissingValue()) == -1) {
                     agreementInstallment.setValue(agreementInstallment.getValue());
                     agreementInstallment.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
