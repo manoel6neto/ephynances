@@ -59,16 +59,24 @@
                                  currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
                                  emptyMessage="Nenhum documento encontrado!">
 
-                        <p:column style="text-align: center" headerText="Valor" sortBy="#{item.value}" >                       
-                            <h:outputText value="#{agreementInstallmentController.formatValueToReais(item.value.setScale(2))}" />
-                        </p:column>
-
                         <p:column style="text-align: center" headerText="Vencimento" sortBy="#{item.dueDate}" >                       
                             <h:outputText value="#{agreementInstallmentController.formatDate(item.dueDate)}" />
                         </p:column>
-
+                        
+                        <p:column style="text-align: center" headerText="Valor" sortBy="#{item.value}" >                       
+                            <h:outputText value="#{agreementInstallmentController.formatValueToReais(item.value.setScale(2))}" />
+                        </p:column>
+                        
                         <p:column style="text-align: center" headerText="Status" sortBy="#{item.status}" >                       
                             <h:outputText value="#{item.status}" />
+                        </p:column>
+                        
+                        <p:column style="text-align: center" headerText="Valor Pago" >                       
+                            <h:outputText value="#{agreementInstallmentController.formatValueToReais(agreementInstallmentController.checkPaidValue(item))}"/>
+                        </p:column>
+                        
+                        <p:column style="text-align: center" headerText="Data Pagamento" >                       
+                            <h:outputText value="#{agreementInstallmentController.checkPaymentDate(item)}"/>
                         </p:column>
 
                         <p:column width="160" style="text-align: center" headerText="Ações">

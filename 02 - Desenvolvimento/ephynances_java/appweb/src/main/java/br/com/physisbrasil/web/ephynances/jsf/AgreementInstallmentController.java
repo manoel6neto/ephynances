@@ -13,7 +13,6 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -508,5 +507,29 @@ public class AgreementInstallmentController extends BaseController {
         String formatado = nf.format(value);
 
         return formatado;
+    }
+    
+    public BigDecimal checkPaidValue(AgreementInstallment installment) {
+        try {
+            if (installment.getPayment() != null) {
+                return installment.getPayment().getTotalValue().setScale(2);
+            } else {
+                return new BigDecimal(0).setScale(2);
+            }
+        } catch (Exception e) {
+            return new BigDecimal(0).setScale(2);
+        }
+    }
+    
+    public String checkPaymentDate(AgreementInstallment installment) {
+        try {
+            if (installment.getPayment() != null) {
+                return formatDate(installment.getPayment().getPaymentDate());
+            } else {
+                return "Sem pagamento";
+            }
+        } catch (Exception e) {
+            return "Sem pagamento";
+        }
     }
 }
