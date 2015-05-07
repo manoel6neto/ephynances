@@ -28,13 +28,16 @@
                     </p:column>
                     <p:column style="text-align: center" headerText="Entidade do Gestor" sortBy="#{item.managerEntity}" filterBy="#{item.managerEntity}">
                         <h:outputText value="#{item.managerEntity}" />
-                    </p:column>     
-                    <p:column style="text-align: center" headerText="Valor" sortBy="#{item.totalPrice}">
-                        <h:outputText value="#{agreementController.formatValueToReais(item.totalPrice.setScale(2))}" />
-                    </p:column> 
+                    </p:column>    
                     <p:column style="text-align: center" headerText="Data Vencimento" sortBy="#{item.expireDate}">                      
                         <h:outputText value="#{agreementController.formatDate(item.expireDate)}" />
-                    </p:column>   
+                    </p:column> 
+                    <p:column style="text-align: center" headerText="Valor do contrato" sortBy="#{item.totalPrice}">
+                        <h:outputText value="#{agreementController.formatValueToReais(item.totalPrice.setScale(2))}" />
+                    </p:column> 
+                    <p:column style="text-align: center" headerText="Valor recebido" sortBy="#{item.totalPrice}">
+                        <h:outputText value="#{agreementController.formatValueToReais(agreementController.calcTotalPaymentsForContract(item.id))}" />
+                    </p:column> 
                     <p:column style="text-align: center" headerText="Status" sortBy="#{item.status}" filterBy="#{item.status}">                      
                         <h:outputText value="#{item.status}" />
                     </p:column>

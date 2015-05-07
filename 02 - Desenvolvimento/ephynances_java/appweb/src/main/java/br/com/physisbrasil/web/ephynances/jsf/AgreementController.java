@@ -40,7 +40,6 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.mail.MessagingException;
-import org.eclipse.persistence.internal.helper.ClassConstants;
 
 /**
  *
@@ -540,6 +539,27 @@ public class AgreementController extends BaseController {
             } catch (IOException ex) {
                 Logger.getLogger(AgreementController.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+
+    public BigDecimal calcTotalPaymentsForContract(Long agreementId) {
+        try {
+            BigDecimal total = new BigDecimal(0);
+            Agreement tempAgreement = agreementBean.find(agreementId);
+            for (AgreementInstallment i : tempAgreement.getAgreementInstallments()) {
+                if (i.getPayment() != null) {
+                    total = total.add(i.getPayment().getTotalValue());
+                }
+                if (i.getSubAgreementInstallment() != null) {
+                    if (i.getSubAgreementInstallment().getPayment() != null) {
+                        total = total.add(i.getSubAgreementInstallment().getPayment().getTotalValue());
+                    }
+                }
+            }
+            
+            return total.setScale(2);
+        } catch (Exception e) {
+            return new BigDecimal(0).setScale(2);
         }
     }
 
