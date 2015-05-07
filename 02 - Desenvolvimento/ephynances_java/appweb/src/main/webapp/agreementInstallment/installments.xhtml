@@ -57,17 +57,17 @@
                                  rows="15" paginator="true"  paginatorPosition="bottom" 
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                  currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
-                                 emptyMessage="Nenhum documento encontrado!" sortBy="#{item.dueDate}">
+                                 emptyMessage="Nenhum documento encontrado!">
 
-                        <p:column style="text-align: center" headerText="Valor" filterBy="#{item.value}" sortBy="#{item.value}" filterStyle="text-align: center; width: 70px;">                       
+                        <p:column style="text-align: center" headerText="Valor" sortBy="#{item.value}" >                       
                             <h:outputText value="#{agreementInstallmentController.formatValueToReais(item.value.setScale(2))}" />
                         </p:column>
 
-                        <p:column style="text-align: center" headerText="Vencimento" sortBy="#{item.dueDate}" filterStyle="text-align: center; width: 70px;">                       
+                        <p:column style="text-align: center" headerText="Vencimento" sortBy="#{item.dueDate}" >                       
                             <h:outputText value="#{agreementInstallmentController.formatDate(item.dueDate)}" />
                         </p:column>
 
-                        <p:column style="text-align: center" headerText="Status" filterBy="#{item.status}" sortBy="#{item.status}" filterStyle="text-align: center; width: 100px;">                       
+                        <p:column style="text-align: center" headerText="Status" sortBy="#{item.status}" >                       
                             <h:outputText value="#{item.status}" />
                         </p:column>
 

@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -484,8 +485,10 @@ public class AgreementController extends BaseController {
             Agreement tempAgreement = agreementBean.find(agreementId);
             tempAgreement.setStatus(Agreement.getSTATE_COMPLETO());
             sendEmailToAdmins(String.format("Cadastro do contrato: %s finalizado no e-Phynance.", tempAgreement.getPhysisAgreementNumber()));
-            sendSmsToAdmins(String.format("Cadastro do contrato: %s finalizado no e-Phynance.", tempAgreement.getPhysisAgreementNumber()));
+            sendSmsToAdmins(URLEncoder.encode(String.format("Cadastro do contrato: %s finalizado no e-Phynance.", tempAgreement.getPhysisAgreementNumber()), "UTF-8"));
 
+            agreementBean.edit(tempAgreement);
+            agreementBean.clearCache();
             JsfUtil.addSuccessMessage("Cadastro do contrato finalizado com sucesso. Aguarde a ativação por um Administrador.");
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, "Falha ao finalizar o contrato.");
@@ -509,11 +512,11 @@ public class AgreementController extends BaseController {
 
     public void sendSmsToAdmins(String message) {
         List<String> telefones = new ArrayList<String>();
-        /*telefones.add("557388223469");//Max
-         telefones.add("557388462781");//Eliumar
-         telefones.add("557388466588");//Dai
-         telefones.add("557391934769");//Allan*/
-        telefones.add("557391192425");//Thomas-testes
+        telefones.add("557388223469");//Max
+        telefones.add("557388462781");//Eliumar
+        telefones.add("557388466588");//Dai
+        telefones.add("557391934769");//Allan
+        //telefones.add("557391192425");//Thomas-testes
 
         String baseWebServiceUrl = "http://www.mpgateway.com/v_2_00/smspush/enviasms.aspx?CREDENCIAL=";
 
