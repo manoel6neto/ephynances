@@ -231,6 +231,7 @@ public class RelController extends BaseController {
     public void calcAgreementForMonth() {
         try {
             agreementBean.clearCache();
+            agreementsMonth = new ArrayList<Agreement>();
             User logged = (User) JsfUtil.getSessionAttribute(AbstractFilter.USER_KEY);
             Calendar c;
             List<Agreement> removeAgreements = new ArrayList<Agreement>();
