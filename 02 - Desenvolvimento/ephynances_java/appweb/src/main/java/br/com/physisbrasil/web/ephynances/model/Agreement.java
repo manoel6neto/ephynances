@@ -157,6 +157,19 @@ public class Agreement implements BaseModel {
     @Size(max = 100)
     private String managerEntity;
     
+    @Column(name = "contributor_name", length = 200, nullable = true)
+    @Size(max = 200)
+    private String contributorName;
+    
+    @Column(name = "contributor_email", length = 200, nullable = true)
+    @Pattern(regexp = EMAIL_REGEX, message = "Email mal formatado")
+    @Size(max = 200)
+    private String contributorEmail;
+    
+    @Column(name = "contributor_position", length = 200, nullable = true)
+    @Size(max = 200)
+    private String contributorPosition;
+    
     @OneToOne(optional = false)
     @NotNull
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -455,5 +468,29 @@ public class Agreement implements BaseModel {
         }
         
         return false;
+    }
+
+    public String getContributorName() {
+        return contributorName;
+    }
+
+    public void setContributorName(String contributorName) {
+        this.contributorName = contributorName;
+    }
+
+    public String getContributorEmail() {
+        return contributorEmail;
+    }
+
+    public void setContributorEmail(String contributorEmail) {
+        this.contributorEmail = contributorEmail;
+    }
+
+    public String getContributorPosition() {
+        return contributorPosition;
+    }
+
+    public void setContributorPosition(String contributorPosition) {
+        this.contributorPosition = contributorPosition;
     }
 }

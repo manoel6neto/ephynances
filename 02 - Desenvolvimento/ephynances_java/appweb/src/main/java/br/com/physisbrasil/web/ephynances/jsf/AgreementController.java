@@ -838,6 +838,10 @@ public class AgreementController extends BaseController {
                             rs.close();
                             // fim gestor //
                             if (id_gestor != 0) {
+                                //Insert Colaborador
+                                sql = String.format("INSERT INTO encarregado (nome, email, id_gestor) VALUES ('%s', '%s', %s)", agreement.getContributorName(), agreement.getContributorEmail(), id_gestor);
+                                stmt.executeUpdate(sql);
+                                
                                 // cnpj_siconv && usuario_cnpj //
                                 for (ProponentSiconv prop : agreement.getProponents()) {
                                     //insert

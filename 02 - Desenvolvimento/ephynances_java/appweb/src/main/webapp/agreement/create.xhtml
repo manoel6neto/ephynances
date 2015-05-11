@@ -177,6 +177,27 @@
                         <p:outputLabel value="Celular do Gestor: " for="cellphone" />
                         <p:inputMask id="cellphone" style="width: 200px" value="#{agreementController.agreement.managerCellPhone}" required="false" mask="(99) 9999-9999?"/> 
                     </div>
+                    
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Nome do Encarregado: " for="nomeEnc" />
+                        <p:inputText id="nomeEnc" style="width: 200px" value="#{agreementController.agreement.contributorName}" required="true" requiredMessage="Nome do encarregado necessário"/> 
+                    </div>
+                    
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Email do Encarregado: " for="emailEnc" />
+                        <p:inputText id="emailEnc" style="width: 200px" value="#{agreementController.agreement.contributorEmail}" required="true" requiredMessage="Email do encarregado necessário"/> 
+                    </div>
+                    
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Cargo do Encarregado: " for="cargoEnc" />
+                        <p:inputText id="cargoEnc" style="width: 200px" value="#{agreementController.agreement.contributorPosition}" required="true" requiredMessage="Cargo do encarregado necessário"/> 
+                    </div>
 
                     <br class="clear" />
                     <br/>

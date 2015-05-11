@@ -111,46 +111,46 @@
 
                 <br class="clear" />
                 <br/>
-                <p:fieldset legend="Dados do responsável" toggleable="true" collapsed="false">
+                <p:fieldset legend="Dados do Gestor do Sistema" toggleable="true" collapsed="false">
                     <br class="clear" />
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Nome do responsável: " for="nomeResp" />
-                        <p:inputText id="nomeResp" style="width: 200px" value="#{agreementController.agreement.managerName}" readonly="true" required="true" requiredMessage="Nome do responsável necessário"/> 
+                        <p:outputLabel value="Nome do Gestor: " for="nomeResp" />
+                        <p:inputText id="nomeResp" style="width: 200px" value="#{agreementController.agreement.managerName}" required="true" requiredMessage="Nome do Gestor necessário"/> 
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Entidade do responsável: " for="entityResp" />
-                        <p:inputText id="entityResp" style="width: 200px" value="#{agreementController.agreement.managerEntity}" required="true" requiredMessage="Entidade do responsável necessária"/> 
+                        <p:outputLabel value="Entidade do Gestor: " for="entityResp" />
+                        <p:inputText id="entityResp" style="width: 200px" value="#{agreementController.agreement.managerEntity}" required="true" requiredMessage="Entidade do Gestor necessária"/> 
                     </div>
                     
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Número do parlamentar: " for="parlamentNumberI" />
-                        <p:keyboard id="parlamentNumberI" keypadOnly="true" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" requiredMessage="Número do parlamentar necessária"/> 
+                        <p:keyboard id="parlamentNumberI" keypadOnly="true" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" /> 
                     </div>
                     
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
                         <p:outputLabel value="Estado do parlamentar (Sigla): " for="parlamentState" />
-                        <p:inputText id="parlamentState" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" maxlength="2"/> 
+                        <p:inputText id="parlamentState" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" maxlength="2" /> 
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Email do responsável: " for="emailResp" />
-                        <p:inputText id="emailResp" style="width: 200px" value="#{agreementController.agreement.managerEmail}" readonly="true" required="true" requiredMessage="Email do responsável necessário"/> 
+                        <p:outputLabel value="Email do Gestor: " for="emailResp" />
+                        <p:inputText id="emailResp" style="width: 200px" value="#{agreementController.agreement.managerEmail}" required="true" requiredMessage="Email do Gestor necessário"/> 
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="CPF do responsável: " for="cpf" />
-                        <p:inputMask id="cpf" style="width: 200px" value="#{agreementController.agreement.managerCpf}" readonly="true" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"> 
+                        <p:outputLabel value="CPF do Gestor: " for="cpf" />
+                        <p:inputMask id="cpf" style="width: 200px" value="#{agreementController.agreement.managerCpf}" mask="999.999.999-99" required="true" requiredMessage="CPF é necessário"> 
                             <f:validator for="cpf" validatorId="cpfValidator" />
                         </p:inputMask>
                     </div>
@@ -158,15 +158,33 @@
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Telefone do responsável: " for="phone" />
+                        <p:outputLabel value="Telefone do Gestor: " for="phone" />
                         <p:inputMask id="phone" style="width: 200px" value="#{agreementController.agreement.managerPhone}" required="false" mask="(99) 9999-9999" />
                     </div>
 
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
-                        <p:outputLabel value="Celular do responsável: " for="cellphone" />
+                        <p:outputLabel value="Celular do Gestor: " for="cellphone" />
                         <p:inputMask id="cellphone" style="width: 200px" value="#{agreementController.agreement.managerCellPhone}" required="false" mask="(99) 9999-9999?"/> 
+                    </div>
+                    
+                    <br class="clear" />
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Nome do Encarregado: " for="nomeEnc" />
+                        <p:inputText id="nomeEnc" style="width: 200px" value="#{agreementController.agreement.contributorName}" required="true" requiredMessage="Nome do encarregado necessário"/> 
+                    </div>
+                    
+                    <br class="clear" />
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Email do Encarregado: " for="emailEnc" />
+                        <p:inputText id="emailEnc" style="width: 200px" value="#{agreementController.agreement.contributorEmail}" required="true" requiredMessage="Email do encarregado necessário"/> 
+                    </div>
+                    
+                    <br class="clear" />
+                    <div class="grid_4 alpha" >
+                        <p:outputLabel value="Cargo do Encarregado: " for="cargoEnc" />
+                        <p:inputText id="cargoEnc" style="width: 200px" value="#{agreementController.agreement.contributorPosition}" required="true" requiredMessage="Cargo do encarregado necessário"/> 
                     </div>
 
                     <br class="clear" />
