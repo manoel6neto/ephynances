@@ -7,6 +7,8 @@ import br.com.physisbrasil.web.ephynances.ejb.UserBean;
 import br.com.physisbrasil.web.ephynances.model.Agreement;
 import br.com.physisbrasil.web.ephynances.model.Payment;
 import br.com.physisbrasil.web.ephynances.model.User;
+import br.com.physisbrasil.web.ephynances.servlet.AbstractFilter;
+import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -17,8 +19,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -60,8 +60,12 @@ public class ChartController extends BaseController {
 
     private Map<String, Integer> months;
 
+    private User logUser;
+
     @PostConstruct
     public void init() {
+
+        logUser = (User) JsfUtil.getSessionAttribute(AbstractFilter.USER_KEY);
 
         //clearCache
         userBean.clearCache();
@@ -74,11 +78,41 @@ public class ChartController extends BaseController {
         }
 
         agreements = agreementBean.findAll("assignmentDate", false);
+        if (logUser.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
+            List<Agreement> tempRemove = new ArrayList<Agreement>();
+            for (Agreement tempA : agreements) {
+                if (!tempA.getUser().equals(logUser)) {
+                    tempRemove.add(tempA);
+                }
+            }
+
+            agreements.removeAll(tempRemove);
+        }
+
+        //Get Top Five
         if (agreements.size() > 5) {
             agreements = agreements.subList(0, 5);
         }
 
         payments = paymentBean.findAll("paymentDate", false);
+        if (logUser.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
+            List<Payment> tempRemovePayment = new ArrayList<Payment>();
+            for (Payment tempP : payments) {
+                if (tempP.getAgreementInstallment() != null) {
+                    if (!tempP.getAgreementInstallment().getAgreement().getUser().equals(logUser)) {
+                        tempRemovePayment.add(tempP);
+                    }
+                } else {
+                    if (!tempP.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getUser().equals(logUser)) {
+                        tempRemovePayment.add(tempP);
+                    }
+                }
+            }
+            
+            payments.removeAll(tempRemovePayment);
+        }
+
+        //Get Top Five
         if (payments.size() > 5) {
             payments = payments.subList(0, 5);
         }
@@ -168,7 +202,35 @@ public class ChartController extends BaseController {
         paymentSeries.setLabel("Pagamentos");
 
         List<Agreement> contractList = agreementBean.findAll();
+        User logged = (User) JsfUtil.getSessionAttribute(AbstractFilter.USER_KEY);
+        if (logged.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
+            List<Agreement> removeNotSeller = new ArrayList<Agreement>();
+            for (Agreement agree : contractList) {
+                if (!agree.getUser().equals(logged)) {
+                    removeNotSeller.add(agree);
+                }
+            }
+
+            contractList.removeAll(removeNotSeller);
+        }
+
         List<Payment> paymentList = paymentBean.findAll();
+        if (logged.getProfileRule().equalsIgnoreCase(User.getRULER_SELLER())) {
+            List<Payment> removeNotSeller = new ArrayList<Payment>();
+            for (Payment paym : paymentList) {
+                if (paym.getAgreementInstallment() != null) {
+                    if (!paym.getAgreementInstallment().getAgreement().getUser().equals(logged)) {
+                        removeNotSeller.add(paym);
+                    }
+                } else {
+                    if (!paym.getSubAgreementInstallment().getAgreementInstallment().getAgreement().getUser().equals(logged)) {
+                        removeNotSeller.add(paym);
+                    }
+                }
+            }
+
+            paymentList.removeAll(removeNotSeller);
+        }
 
         Calendar c;
         Calendar atual = Calendar.getInstance();
@@ -424,5 +486,13 @@ public class ChartController extends BaseController {
     public String formatDate(Date dateToFormat) {
         DateFormat outputFormatter = new SimpleDateFormat("dd/MM/yyyy");
         return outputFormatter.format(dateToFormat);
+    }
+
+    public User getLogUser() {
+        return logUser;
+    }
+
+    public void setLogUser(User logUser) {
+        this.logUser = logUser;
     }
 }
