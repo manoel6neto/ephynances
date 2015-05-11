@@ -486,7 +486,7 @@ public class AgreementController extends BaseController {
 
                                     AgreementInstallment tInstall = new AgreementInstallment();
                                     tInstall.setAgreement(agreement);
-                                    tInstall.setValue(agreement.getTotalPrice().divide(new BigDecimal(qntInstallments), RoundingMode.HALF_DOWN));
+                                    tInstall.setValue(agreement.getTotalPrice().divide(new BigDecimal(qntInstallments), RoundingMode.DOWN));
                                     tInstall.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
                                     calen.set(Calendar.DATE, calen.get(Calendar.MONTH) + i);
                                     tInstall.setDueDate(calen.getTime());
