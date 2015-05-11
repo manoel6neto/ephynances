@@ -15,6 +15,7 @@ import br.com.physisbrasil.web.ephynances.util.Utils;
 import br.com.physisbrasil.web.ephynances.util.ValidaCpf;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -73,6 +74,8 @@ public class AgreementController extends BaseController {
     private boolean disableQuantCnpjs;
 
     private Map<String, String> statesCapital;
+
+    private Integer qntInstallments;
 
     @PostConstruct
     public void init() {
@@ -146,9 +149,16 @@ public class AgreementController extends BaseController {
                 put("Rio Grande do Sul", "PORTO ALEGRE");
             }
         ;
-    }
+        }
 
     ;
+        
+        //Initialize how many installments has the agreement
+        if ((Integer) getFlash("qntInstallments") != null) {
+            qntInstallments = (Integer) getFlash("qntInstallments");
+        } else {
+            qntInstallments = 3;
+        }
     }
 
     public void getListFilteredBySeller(Long userId) {
@@ -209,7 +219,9 @@ public class AgreementController extends BaseController {
 
             }
 
+            qntInstallments = 3;
             putFlash("userAgreement", getAgreementUser());
+            putFlash("qntInstallments", qntInstallments);
             return "/agreement/create";
         }
 
@@ -465,6 +477,28 @@ public class AgreementController extends BaseController {
                             configurationBean.edit(config);
                             configurationBean.clearCache();
 
+                            try {
+                                //Add Installments scarfolder
+                                Calendar calen;
+                                for (int i = 1; i <= qntInstallments; i++) {
+                                    calen = Calendar.getInstance();
+                                    calen.setTime(agreement.getAssignmentDate());
+
+                                    AgreementInstallment tInstall = new AgreementInstallment();
+                                    tInstall.setAgreement(agreement);
+                                    tInstall.setValue(agreement.getTotalPrice().divide(new BigDecimal(qntInstallments), RoundingMode.HALF_DOWN));
+                                    tInstall.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
+                                    calen.set(Calendar.DATE, calen.get(Calendar.MONTH) + i);
+                                    tInstall.setDueDate(calen.getTime());
+
+                                    agreementInstallmentBean.create(tInstall);
+                                    agreementInstallmentBean.clearCache();
+                                }
+                            } catch (Exception e) {
+                                JsfUtil.addErrorMessage("Falha ao gerar parcelas automaticamente. Necessário cadastro manual.");
+                            }
+
+                            agreementBean.clearCache();
                             JsfUtil.addSuccessMessage("Contrato cadastrado com sucesso.");
                         }
 
@@ -556,7 +590,7 @@ public class AgreementController extends BaseController {
                     }
                 }
             }
-            
+
             return total.setScale(2);
         } catch (Exception e) {
             return new BigDecimal(0).setScale(2);
@@ -912,5 +946,21 @@ public class AgreementController extends BaseController {
         String formatado = nf.format(value);
 
         return formatado;
+    }
+
+    public Map<String, String> getStatesCapital() {
+        return statesCapital;
+    }
+
+    public void setStatesCapital(Map<String, String> statesCapital) {
+        this.statesCapital = statesCapital;
+    }
+
+    public Integer getQntInstallments() {
+        return qntInstallments;
+    }
+
+    public void setQntInstallments(Integer qntInstallments) {
+        this.qntInstallments = qntInstallments;
     }
 }

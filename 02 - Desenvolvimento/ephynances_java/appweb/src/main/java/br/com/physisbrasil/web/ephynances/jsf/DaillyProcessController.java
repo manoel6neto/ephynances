@@ -104,7 +104,7 @@ public class DaillyProcessController extends BaseController {
                                             // Calculando o atraso
                                             Calendar c = Calendar.getInstance();
                                             c.setTime(d);
-                                            c.set(Calendar.DATE, c.get(Calendar.DATE) - 15);
+                                            c.set(Calendar.DATE, c.get(Calendar.DATE) - 45);
 
                                             //Comparando com a data atual (se maior contrato atrasado)
                                             if (installment.getLiberationDate() == null) {

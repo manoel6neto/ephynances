@@ -87,6 +87,14 @@
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
+                        <p:outputLabel value="Parcelas: " for="parcelas" />
+                        <p:inputText id="parcelas" style="width: 200px" value="#{agreementController.qntInstallments}" required="true" requiredMessage="Informe a quantidade de parcelas" maxlength="2"/> 
+                        <p:watermark for="parcelas" value="3"/>
+                    </div>
+                    
+                    <br class="clear" />
+                    <br/>
+                    <div class="grid_4 alpha" >
                         <p:outputLabel value="Data assinatura do contrato: " for="assignmentDate" />
                         <p:calendar id="assignmentDate" locale="pt_BR" size="37" style="width: 200px;" value="#{agreementController.agreement.assignmentDate}" mask="99/99/9999" pattern="dd/MM/yyyy" />
                     </div>
