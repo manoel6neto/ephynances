@@ -57,7 +57,7 @@
                                  rows="15" paginator="true"  paginatorPosition="bottom" 
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
                                  currentPageReportTemplate="{startRecord} - {endRecord} de {totalRecords}"
-                                 emptyMessage="Nenhuma parcela encontrada!" sortBy="#{item.dueDate}">
+                                 emptyMessage="Nenhuma parcela encontrada!" sortBy="#{item.dueDate}" >
 
                         <p:column style="text-align: center" headerText="Vencimento" sortBy="#{item.dueDate}" >                       
                             <h:outputText value="#{agreementInstallmentController.formatDate(item.dueDate)}" />
@@ -67,7 +67,7 @@
                             <h:outputText value="#{agreementInstallmentController.formatValueToReais(item.value.setScale(2))}" />
                         </p:column>
                         
-                        <p:column style="text-align: center" headerText="Status" sortBy="#{item.status}" >                       
+                        <p:column style="text-align: center" headerText="Status" sortBy="#{item.status}" filterBy="#{item.status}">                       
                             <h:outputText value="#{item.status}" />
                         </p:column>
                         
