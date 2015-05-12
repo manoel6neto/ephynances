@@ -549,7 +549,7 @@ public class AgreementController extends BaseController {
         telefones.add("557388462781");//Eliumar
         telefones.add("557388466588");//Dai
         telefones.add("557391934769");//Allan
-        //telefones.add("557391192425");//Thomas-testes
+        telefones.add("557391192425");//Thomas
 
         String baseWebServiceUrl = "http://www.mpgateway.com/v_2_00/smspush/enviasms.aspx?CREDENCIAL=";
 
@@ -766,6 +766,13 @@ public class AgreementController extends BaseController {
         String USERNAME = "root";
         String PASSWORD = "Physis_2013";
         String DATABASE = "physis_esicar";
+        
+        //Mafra
+//        String HOSTNAME = "192.168.0.103";
+//        String USERNAME = "root";
+//        String PASSWORD = "A7cbdd82@1";
+//        String DATABASE = "physi971_wp";
+        
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
         String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
@@ -819,8 +826,6 @@ public class AgreementController extends BaseController {
                         rs.close();
 
                         if (id != 0) {
-                            //Salvar as outras tabelas
-
                             // gestor //
                             if (tipoGestor.equalsIgnoreCase("P")) {
                                 sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor, nivel_gestor, numero_parlamentar, estado_parlamentar) VALUES ('%s', %s, %s, %s, %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor, agreement.getAgreementSubType().substring(0, 1), agreement.getParlamentNumber(), agreement.getParlamentState());
@@ -839,7 +844,7 @@ public class AgreementController extends BaseController {
                             // fim gestor //
                             if (id_gestor != 0) {
                                 //Insert Colaborador
-                                sql = String.format("INSERT INTO encarregado (nome, email, id_gestor) VALUES ('%s', '%s', %s)", agreement.getContributorName(), agreement.getContributorEmail(), id_gestor);
+                                sql = String.format("INSERT INTO encarregado (nome, email, funcao, id_gestor) VALUES ('%s', '%s', '%s', %s)", agreement.getContributorName(), agreement.getContributorEmail(), agreement.getContributorPosition(), id_gestor);
                                 stmt.executeUpdate(sql);
                                 
                                 // cnpj_siconv && usuario_cnpj //

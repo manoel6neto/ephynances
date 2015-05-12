@@ -83,7 +83,7 @@
                         <p:outputLabel value="Valor do contrato (R$): " for="valorTotal" />
                         <pe:inputNumber id="valorTotal" symbol="R$ " style="width: 200px" value="#{agreementController.agreement.totalPrice}" required="true" requiredMessage="Informe o valor total do contrato em reais" /> 
                     </div>
-                    
+
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
@@ -91,7 +91,7 @@
                         <p:inputText id="parcelas" style="width: 200px" value="#{agreementController.qntInstallments}" required="true" requiredMessage="Informe a quantidade de parcelas" maxlength="2"/> 
                         <p:watermark for="parcelas" value="3"/>
                     </div>
-                    
+
                     <br class="clear" />
                     <br/>
                     <div class="grid_4 alpha" >
@@ -133,20 +133,22 @@
                         <p:outputLabel value="Entidade do Gestor: " for="entityResp" />
                         <p:inputText id="entityResp" style="width: 200px" value="#{agreementController.agreement.managerEntity}" required="true" requiredMessage="Entidade do Gestor necessária"/> 
                     </div>
-                    
-                    <br class="clear" />
-                    <br/>
-                    <div class="grid_4 alpha" >
-                        <p:outputLabel value="Número do parlamentar: " for="parlamentNumberI" />
-                        <p:keyboard id="parlamentNumberI" keypadOnly="true" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" /> 
-                    </div>
-                    
-                    <br class="clear" />
-                    <br/>
-                    <div class="grid_4 alpha" >
-                        <p:outputLabel value="Estado do parlamentar (Sigla): " for="parlamentState" />
-                        <p:inputText id="parlamentState" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" maxlength="2" /> 
-                    </div>
+
+                    <h:panelGroup id="panelParlamentar" rendered="#{agreementController.checkIsType('PARLAMENTAR')}">
+                        <br class="clear" />
+                        <br/>
+                        <div class="grid_4 alpha" >
+                            <p:outputLabel value="Número do parlamentar: " for="parlamentNumberI" />
+                            <p:keyboard id="parlamentNumberI" keypadOnly="true" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" /> 
+                        </div>
+
+                        <br class="clear" />
+                        <br/>
+                        <div class="grid_4 alpha" >
+                            <p:outputLabel value="Estado do parlamentar (Sigla): " for="parlamentState" />
+                            <p:inputText id="parlamentState" style="width: 200px" value="#{agreementController.agreement.parlamentNumber}" required="false" maxlength="2" /> 
+                        </div>
+                    </h:panelGroup>
 
                     <br class="clear" />
                     <br/>
@@ -177,27 +179,29 @@
                         <p:outputLabel value="Celular do Gestor: " for="cellphone" />
                         <p:inputMask id="cellphone" style="width: 200px" value="#{agreementController.agreement.managerCellPhone}" required="false" mask="(99) 9999-9999?"/> 
                     </div>
-                    
-                    <br class="clear" />
-                    <br/>
-                    <div class="grid_4 alpha" >
-                        <p:outputLabel value="Nome do Encarregado: " for="nomeEnc" />
-                        <p:inputText id="nomeEnc" style="width: 200px" value="#{agreementController.agreement.contributorName}" required="true" requiredMessage="Nome do encarregado necessário"/> 
-                    </div>
-                    
-                    <br class="clear" />
-                    <br/>
-                    <div class="grid_4 alpha" >
-                        <p:outputLabel value="Email do Encarregado: " for="emailEnc" />
-                        <p:inputText id="emailEnc" style="width: 200px" value="#{agreementController.agreement.contributorEmail}" required="true" requiredMessage="Email do encarregado necessário"/> 
-                    </div>
-                    
-                    <br class="clear" />
-                    <br/>
-                    <div class="grid_4 alpha" >
-                        <p:outputLabel value="Cargo do Encarregado: " for="cargoEnc" />
-                        <p:inputText id="cargoEnc" style="width: 200px" value="#{agreementController.agreement.contributorPosition}" required="true" requiredMessage="Cargo do encarregado necessário"/> 
-                    </div>
+
+                    <h:panelGroup id="panelEncarregado" rendered="#{agreementController.checkIsType('MUNICIPAL')}" >
+                        <br class="clear" />
+                        <br/>
+                        <div class="grid_4 alpha" >
+                            <p:outputLabel value="Nome do Encarregado: " for="nomeEnc" />
+                            <p:inputText id="nomeEnc" style="width: 200px" value="#{agreementController.agreement.contributorName}" required="true" requiredMessage="Nome do encarregado necessário"/> 
+                        </div>
+
+                        <br class="clear" />
+                        <br/>
+                        <div class="grid_4 alpha" >
+                            <p:outputLabel value="Email do Encarregado: " for="emailEnc" />
+                            <p:inputText id="emailEnc" style="width: 200px" value="#{agreementController.agreement.contributorEmail}" required="true" requiredMessage="Email do encarregado necessário"/> 
+                        </div>
+
+                        <br class="clear" />
+                        <br/>
+                        <div class="grid_4 alpha" >
+                            <p:outputLabel value="Cargo do Encarregado: " for="cargoEnc" />
+                            <p:inputText id="cargoEnc" style="width: 200px" value="#{agreementController.agreement.contributorPosition}" required="true" requiredMessage="Cargo do encarregado necessário"/> 
+                        </div>
+                    </h:panelGroup>
 
                     <br class="clear" />
                     <br/>
