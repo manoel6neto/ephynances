@@ -46,6 +46,7 @@ public class SecurityFilter extends AbstractFilter implements Filter {
                 && !req.getRequestURI().contains("/rest/")
                 && !req.getRequestURI().contains("/resources/")
                 && !req.getRequestURI().contains("/routines/")
+                && !req.getRequestURI().contains("dailyProcess.xhtml")
                 && !req.getRequestURI().contains("/upload/images/")
                 && !req.getRequestURI().contains("/activation/")) {
             if (debug) {
