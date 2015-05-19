@@ -863,22 +863,21 @@ public class UserController extends BaseController {
 
     public void insertSellerEsicar(Long userId) {
         //Propriedades de conexao
-//        String HOSTNAME = "localhost";
-//        String USERNAME = "root";
-//        String PASSWORD = "Physis_2013";
-//        String DATABASE = "physis_esicar";
-        String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-        //String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
-//        String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
-
-        //Mafra
-        String HOSTNAME = "192.168.0.103";
+        String HOSTNAME = "localhost";
         String USERNAME = "root";
-        String PASSWORD = "A7cbdd82@1";
-        String DATABASE = "physi971_wp";
-        String URLESICAR = "http://192.168.0.103/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+        String PASSWORD = "Physis_2013";
+        String DATABASE = "physis_esicar";
+        String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
+        String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
 
+//        //Mafra
+//        String HOSTNAME = "192.168.0.103";
+//        String USERNAME = "root";
+//        String PASSWORD = "A7cbdd82@1";
+//        String DATABASE = "physi971_wp";
+//        String URLESICAR = "http://192.168.0.103/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+//        String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
         Connection conn;
         Statement stmt;
 
@@ -971,7 +970,7 @@ public class UserController extends BaseController {
                                 idCad = rs.getInt("id_usuario");
                             }
                             rs.close();
-                            
+
                             //Insert
                             sql = String.format("INSERT INTO usuario_realizou_cadastro (id_usuario_cadastrado, id_usuario_cadastrou) VALUES (%s, %s)", id, idCad);
                             stmt.executeUpdate(sql);

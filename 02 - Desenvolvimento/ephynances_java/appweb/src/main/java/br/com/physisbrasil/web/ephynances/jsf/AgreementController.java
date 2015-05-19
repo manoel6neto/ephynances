@@ -762,21 +762,20 @@ public class AgreementController extends BaseController {
 
     public void insertGestorEsicar(Long agreementId, String tipoGestor) {
         //Propriedades de conexao
-//        String HOSTNAME = "localhost";
-//        String USERNAME = "root";
-//        String PASSWORD = "Physis_2013";
-//        String DATABASE = "physis_esicar";
+        String HOSTNAME = "localhost";
+        String USERNAME = "root";
+        String PASSWORD = "Physis_2013";
+        String DATABASE = "physis_esicar";
 
         //Mafra
-        String HOSTNAME = "192.168.0.103";
-        String USERNAME = "root";
-        String PASSWORD = "A7cbdd82@1";
-        String DATABASE = "physi971_wp";
-        String URLESICAR = "http://192.168.0.103/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
-
+//        String HOSTNAME = "192.168.0.103";
+//        String USERNAME = "root";
+//        String PASSWORD = "A7cbdd82@1";
+//        String DATABASE = "physi971_wp";
+//        String URLESICAR = "http://192.168.0.103/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
-//        String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+        String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
 
         Connection conn;
         Statement stmt;
@@ -855,9 +854,8 @@ public class AgreementController extends BaseController {
                                 //Insert usuario_realiza_cadastro
                                 sql = String.format("INSERT INTO usuario_realizou_cadastro (id_usuario_cadastrado, id_usuario_cadastrou) VALUES (%s, %s)", id, idCad);
                                 stmt.executeUpdate(sql);
-                                
-                                /// ---------------- //
 
+                                /// ---------------- //
                                 //Insert Colaborador
                                 sql = String.format("INSERT INTO encarregado (nome, email, funcao, id_gestor) VALUES ('%s', '%s', '%s', %s)", agreement.getContributorName(), agreement.getContributorEmail(), agreement.getContributorPosition(), id_gestor);
                                 stmt.executeUpdate(sql);
