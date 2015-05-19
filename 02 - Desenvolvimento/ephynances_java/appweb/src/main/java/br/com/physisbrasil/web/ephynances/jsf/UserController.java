@@ -15,6 +15,7 @@ import br.com.physisbrasil.web.ephynances.model.HistoryProponentUser;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
 import br.com.physisbrasil.web.ephynances.model.State;
 import br.com.physisbrasil.web.ephynances.model.User;
+import br.com.physisbrasil.web.ephynances.servlet.AbstractFilter;
 import br.com.physisbrasil.web.ephynances.util.Criptografia;
 import br.com.physisbrasil.web.ephynances.util.JsfUtil;
 import br.com.physisbrasil.web.ephynances.util.Utils;
@@ -260,8 +261,8 @@ public class UserController extends BaseController {
                     activationBean.clearCache();
 
                     Configuration config = configurationBean.findAll().get(0);
-                    Utils.sendEmail(user.getEmail(), user.getName(),  String.format("<html><div align='center' style=\"background-image: url('%s'); width: 542px; height: 549px; margin-left: 250px;\"><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=%s'><img src='%s' width='331' height='40' style=\"margin-top: 320px;\"/></a></div></html>", "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bg_ativar_1.png", activation.getToken(), "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bt_ativar_1.png"),
-                             config.getSmtpServer(), config.getUserName(), "Ativação e-Phynance", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis e-Phynance");
+                    Utils.sendEmail(user.getEmail(), user.getName(), String.format("<html><div align='center' style=\"background-image: url('%s'); width: 542px; height: 549px; margin-left: 250px;\"><a href='http://esicar.physisbrasil.com.br:8080/ephynances/activation/active.xhtml?token=%s'><img src='%s' width='331' height='40' style=\"margin-top: 320px;\"/></a></div></html>", "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bg_ativar_1.png", activation.getToken(), "http://esicar.physisbrasil.com.br:8080/ephynances/resources/img/bt_ativar_1.png"),
+                            config.getSmtpServer(), config.getUserName(), "Ativação e-Phynance", config.getUserName(), config.getPassword(), config.getSmtpPort(), "Ativador Physis e-Phynance");
 
                     JsfUtil.addSuccessMessage("Usuário cadastrado com sucesso!");
                 }
@@ -862,14 +863,21 @@ public class UserController extends BaseController {
 
     public void insertSellerEsicar(Long userId) {
         //Propriedades de conexao
-        String HOSTNAME = "localhost";
-        String USERNAME = "root";
-        String PASSWORD = "Physis_2013";
-        String DATABASE = "physis_esicar";
+//        String HOSTNAME = "localhost";
+//        String USERNAME = "root";
+//        String PASSWORD = "Physis_2013";
+//        String DATABASE = "physis_esicar";
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+        //String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
+//        String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+
+        //Mafra
+        String HOSTNAME = "192.168.0.103";
+        String USERNAME = "root";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
+        String URLESICAR = "http://192.168.0.103/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
-        String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
-        //String URLESICAR = "http://192.168.0.103/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
 
         Connection conn;
         Statement stmt;
@@ -911,7 +919,7 @@ public class UserController extends BaseController {
 
                     if (stmt.executeUpdate(sql) == 1) {
                         //ler o id
-                        sql = "SELECT id_usuario FROM usuario WHERE login = " + tempUser.getCpf().replace(".", "").replace("-", "");
+                        sql = String.format("SELECT id_usuario FROM usuario WHERE login = '%s' AND id_nivel = %s", tempUser.getCpf().replace(".", "").replace("-", ""), nivel);
                         rs = stmt.executeQuery(sql);
                         while (rs.next()) {
                             id = rs.getInt("id_usuario");
@@ -945,6 +953,28 @@ public class UserController extends BaseController {
                             if (HttpURLConnection.HTTP_OK != connect.getResponseCode()) {
                                 JsfUtil.addErrorMessage("Falha ao solicitar ativação no esicar");
                             }
+
+                            //Adiciona registro em usuario_realizou_cadastro
+                            User logged = (User) JsfUtil.getSessionAttribute(AbstractFilter.USER_KEY);
+                            //Get id do usuário realizando o cadastro
+                            int nivelCad;
+                            int idCad = 1;
+                            if (logged.getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
+                                nivelCad = 1;
+                            } else {
+                                nivelCad = 4;
+                            }
+
+                            sql = String.format("SELECT id_usuario FROM usuario WHERE login = '%s' AND id_nivel = %s", logged.getCpf().replace(".", "").replace("-", ""), nivelCad);
+                            rs = stmt.executeQuery(sql);
+                            while (rs.next()) {
+                                idCad = rs.getInt("id_usuario");
+                            }
+                            rs.close();
+                            
+                            //Insert
+                            sql = String.format("INSERT INTO usuario_realizou_cadastro (id_usuario_cadastrado, id_usuario_cadastrou) VALUES (%s, %s)", id, idCad);
+                            stmt.executeUpdate(sql);
                         }
                     }
 

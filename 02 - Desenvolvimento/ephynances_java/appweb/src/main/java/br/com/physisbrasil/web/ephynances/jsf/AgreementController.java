@@ -762,21 +762,21 @@ public class AgreementController extends BaseController {
 
     public void insertGestorEsicar(Long agreementId, String tipoGestor) {
         //Propriedades de conexao
-        String HOSTNAME = "localhost";
-        String USERNAME = "root";
-        String PASSWORD = "Physis_2013";
-        String DATABASE = "physis_esicar";
-        
-        //Mafra
-//        String HOSTNAME = "192.168.0.103";
+//        String HOSTNAME = "localhost";
 //        String USERNAME = "root";
-//        String PASSWORD = "A7cbdd82@1";
-//        String DATABASE = "physi971_wp";
-        
+//        String PASSWORD = "Physis_2013";
+//        String DATABASE = "physis_esicar";
+
+        //Mafra
+        String HOSTNAME = "192.168.0.103";
+        String USERNAME = "root";
+        String PASSWORD = "A7cbdd82@1";
+        String DATABASE = "physi971_wp";
+        String URLESICAR = "http://192.168.0.103/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+
         String JDBC_DRIVER = "com.mysql.jdbc.Driver";
         String DBURL = "jdbc:mysql://" + HOSTNAME + "/" + DATABASE;
-        String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
-        //String URLESICAR = "http://192.168.0.103/esicar/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
+//        String URLESICAR = "http://esicar.physisbrasil.com.br/esicar/index.php/confirma_email/finaliza_cadastro_importacao?id=";
 
         Connection conn;
         Statement stmt;
@@ -818,7 +818,7 @@ public class AgreementController extends BaseController {
 
                     if (stmt.executeUpdate(sql) == 1) {
                         //ler o id
-                        sql = "SELECT id_usuario FROM usuario WHERE login = " + agreement.getManagerCpf().replace(".", "").replace("-", "");
+                        sql = String.format("SELECT id_usuario FROM usuario WHERE login = '%s' AND id_nivel = %s", agreement.getManagerCpf().replace(".", "").replace("-", ""), 2);
                         rs = stmt.executeQuery(sql);
                         while (rs.next()) {
                             id = rs.getInt("id_usuario");
@@ -843,10 +843,25 @@ public class AgreementController extends BaseController {
                             rs.close();
                             // fim gestor //
                             if (id_gestor != 0) {
+                                //Preparando usuario_realiza_cadastro
+                                int idCad = 1;
+                                sql = String.format("SELECT id_usuario FROM usuario WHERE login = '%s' AND id_nivel = %s", agreement.getUser().getCpf().replace(".", "").replace("-", ""), 4);
+                                rs = stmt.executeQuery(sql);
+                                while (rs.next()) {
+                                    idCad = rs.getInt("id_usuario");
+                                }
+                                rs.close();
+
+                                //Insert usuario_realiza_cadastro
+                                sql = String.format("INSERT INTO usuario_realizou_cadastro (id_usuario_cadastrado, id_usuario_cadastrou) VALUES (%s, %s)", id, idCad);
+                                stmt.executeUpdate(sql);
+                                
+                                /// ---------------- //
+
                                 //Insert Colaborador
                                 sql = String.format("INSERT INTO encarregado (nome, email, funcao, id_gestor) VALUES ('%s', '%s', '%s', %s)", agreement.getContributorName(), agreement.getContributorEmail(), agreement.getContributorPosition(), id_gestor);
                                 stmt.executeUpdate(sql);
-                                
+
                                 // cnpj_siconv && usuario_cnpj //
                                 for (ProponentSiconv prop : agreement.getProponents()) {
                                     //insert

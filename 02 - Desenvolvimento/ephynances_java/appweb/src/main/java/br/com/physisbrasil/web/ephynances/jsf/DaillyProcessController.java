@@ -95,18 +95,24 @@ public class DaillyProcessController extends BaseController {
                             if (contract.getAgreementInstallments() != null) {
                                 if (contract.getAgreementInstallments().size() > 0) {
                                     boolean hasPendingPayment = false;
+                                    boolean needAlertPendingPayment = false;
                                     boolean hasPendingSubAgreementInstallment = false;
                                     for (AgreementInstallment installment : contract.getAgreementInstallments()) {
                                         if (installment.getPayment() == null) {
-                                            //Data atual para verificar o prazo de 15 dias
+                                            //Data atual para verificar o prazo de 45 dias
                                             Date d = new Date(System.currentTimeMillis());
 
-                                            // Calculando o atraso
+                                            // Calculando o atraso mudar status
                                             Calendar c = Calendar.getInstance();
                                             c.setTime(d);
                                             c.set(Calendar.DATE, c.get(Calendar.DATE) - 45);
+                                            
+                                            // Calculando o atraso para alertar o vendedor
+                                            Calendar sc = Calendar.getInstance();
+                                            sc.setTime(d);
+                                            sc.set(Calendar.DATE, c.get(Calendar.DATE) - 15);
 
-                                            //Comparando com a data atual (se maior contrato atrasado)
+                                            //Comparando com a data atual - 45 (se maior contrato atrasado)
                                             if (installment.getLiberationDate() == null) {
                                                 if (installment.getDueDate().before(c.getTime())) {
                                                     installment.setStatus(AgreementInstallment.getSTATUS_ATRASADO());
@@ -122,6 +128,25 @@ public class DaillyProcessController extends BaseController {
                                                     agreementInstallmentBean.clearCache();
 
                                                     hasPendingPayment = true;
+                                                }
+                                            }
+                                            
+                                            //Comparando com a data atual - 15 (se maior alertar contrato perto de ficar atrasado)
+                                            if (installment.getLiberationDate() == null) {
+                                                if (installment.getDueDate().before(sc.getTime())) {
+                                                    installment.setStatus(AgreementInstallment.getSTATUS_ATRASADO());
+                                                    agreementInstallmentBean.edit(installment);
+                                                    agreementInstallmentBean.clearCache();
+
+                                                    needAlertPendingPayment = true;
+                                                }
+                                            } else {
+                                                if (installment.getLiberationDate().before(sc.getTime())) {
+                                                    installment.setStatus(AgreementInstallment.getSTATUS_ATRASADO());
+                                                    agreementInstallmentBean.edit(installment);
+                                                    agreementInstallmentBean.clearCache();
+
+                                                    needAlertPendingPayment = true;
                                                 }
                                             }
 
@@ -159,6 +184,11 @@ public class DaillyProcessController extends BaseController {
                                                 }
                                             }
                                         }
+                                    }
+                                    
+                                    //Mandando aviso de contrato entrando em atraso
+                                    if (needAlertPendingPayment) {
+                                        sendEmailToSeller("Contrato de número: " + contract.getPhysisAgreementNumber() + " com parcelas em atraso de 15 dias ou mais.", contract.getUser());
                                     }
 
                                     //Mudando status do contrato
