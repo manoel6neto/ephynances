@@ -133,7 +133,7 @@ public class Agreement implements BaseModel {
     @Size(max = 200)
     private String managerName;
     
-    @Column(name = "parlament_number", length = 20, nullable = true)
+    @Column(name = "parlament_number", length = 200, nullable = true)
     private String parlamentNumber;
     
     @Column(name = "parlament_state", length = 2, nullable = true)
