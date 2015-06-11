@@ -37,16 +37,16 @@ public class Agreement implements BaseModel {
             add(getTYPE_MUNICIPAL());
             add(getTYPE_PARLAMENTAR());
             add(getTYPE_PRIVADO());
-            add(getTYPE_CONSORCIO());
-            add(getTYPE_ESTADUAL());
+            add(getTYPE_ESTADUAL_COMPLETO());
+            add(getTYPE_ESTADUAL_INCOMPLETO());
         }
     };
 
     private static final String TYPE_MUNICIPAL = "MUNICIPAL";
     private static final String TYPE_PARLAMENTAR = "PARLAMENTAR";
     private static final String TYPE_PRIVADO = "PRIVADO";
-    private static final String TYPE_CONSORCIO = "CONSÓRCIO";
-    private static final String TYPE_ESTADUAL = "ESTADUAL";
+    private static final String TYPE_ESTADUAL_INCOMPLETO = "ESTADUAL INCOMPLETO";
+    private static final String TYPE_ESTADUAL_COMPLETO = "ESTADUAL COMPLETO";
 
     private static final String STATE_ATIVO = "Ativo";
     private static final String STATE_INCOMPLETO = "Incompleto";
@@ -417,20 +417,20 @@ public class Agreement implements BaseModel {
         return TYPE_PARLAMENTAR;
     }
 
-    public static String getTYPE_CONSORCIO() {
-        return TYPE_CONSORCIO;
-    }
-
     public static String getTYPE_PRIVADO() {
         return TYPE_PRIVADO;
     }
     
-    public static String getTYPE_ESTADUAL() {
-        return TYPE_ESTADUAL;
-    }
-
     public static String getSTATE_ALERTA() {
         return STATE_ALERTA;
+    }
+
+    public static String getTYPE_ESTADUAL_INCOMPLETO() {
+        return TYPE_ESTADUAL_INCOMPLETO;
+    }
+
+    public static String getTYPE_ESTADUAL_COMPLETO() {
+        return TYPE_ESTADUAL_COMPLETO;
     }
 
     public Date getAssignmentDate() {

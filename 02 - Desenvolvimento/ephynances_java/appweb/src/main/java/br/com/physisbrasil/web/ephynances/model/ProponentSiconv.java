@@ -28,6 +28,10 @@ import javax.persistence.Table;
             query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.municipio = :municipio AND p.agreement IS NULL"),
     @NamedQuery(name = "ProponentSiconv.findBySphereStateAll",
             query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.agreement IS NULL"),
+    @NamedQuery(name = "ProponentSiconv.findBySphereStateUser",
+            query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.user = :user AND p.agreement IS NULL"),
+    @NamedQuery(name = "ProponentSiconv.findByStateUser",
+            query = "SELECT p FROM ProponentSiconv p WHERE (p.esferaAdministrativa = 'ESTADUAL' OR p.esferaAdministrativa = 'MUNICIPAL' OR p.esferaAdministrativa = 'EMPRESA PUBLICA SOCIEDADE ECONOMIA MISTA') AND p.municipioUfNome = :municipioUfNome AND p.user = :user AND p.agreement IS NULL"),
     @NamedQuery(name = "ProponentSiconv.findBySphereStateCityNotNULL",
             query = "SELECT p FROM ProponentSiconv p WHERE p.esferaAdministrativa = :esferaAdministrativa AND p.municipioUfNome = :municipioUfNome AND p.municipio = :municipio")
 })

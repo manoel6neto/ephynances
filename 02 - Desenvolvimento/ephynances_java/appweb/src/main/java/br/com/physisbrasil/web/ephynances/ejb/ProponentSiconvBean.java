@@ -2,6 +2,7 @@ package br.com.physisbrasil.web.ephynances.ejb;
 
 import br.com.physisbrasil.web.ephynances.dao.DAO;
 import br.com.physisbrasil.web.ephynances.model.ProponentSiconv;
+import br.com.physisbrasil.web.ephynances.model.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -124,6 +125,39 @@ public class ProponentSiconvBean extends DAO<ProponentSiconv> {
 
         namedQuery.setParameter("esferaAdministrativa", esferaAdministrativa);
         namedQuery.setParameter("municipioUfNome", municipioUfNome);
+
+        List<ProponentSiconv> proponentsSiconv;
+        try {
+            proponentsSiconv = namedQuery.getResultList();
+        } catch (Exception e) {
+            proponentsSiconv = null;
+        }
+
+        return proponentsSiconv;
+    }
+    
+    public List<ProponentSiconv> findBySphereStateUser(String esferaAdministrativa, String municipioUfNome, User user) {
+        TypedQuery<ProponentSiconv> namedQuery = getEntityManager().createNamedQuery("ProponentSiconv.findBySphereStateUser", ProponentSiconv.class);
+
+        namedQuery.setParameter("esferaAdministrativa", esferaAdministrativa);
+        namedQuery.setParameter("municipioUfNome", municipioUfNome);
+        namedQuery.setParameter("user", user);
+
+        List<ProponentSiconv> proponentsSiconv;
+        try {
+            proponentsSiconv = namedQuery.getResultList();
+        } catch (Exception e) {
+            proponentsSiconv = null;
+        }
+
+        return proponentsSiconv;
+    }
+    
+    public List<ProponentSiconv> findByStateUser(String municipioUfNome, User user) {
+        TypedQuery<ProponentSiconv> namedQuery = getEntityManager().createNamedQuery("ProponentSiconv.findByStateUser", ProponentSiconv.class);
+
+        namedQuery.setParameter("municipioUfNome", municipioUfNome);
+        namedQuery.setParameter("user", user);
 
         List<ProponentSiconv> proponentsSiconv;
         try {

@@ -73,8 +73,6 @@ public class AgreementController extends BaseController {
 
     private boolean disableQuantCnpjs;
 
-    private Map<String, String> statesCapital;
-
     private Integer qntInstallments;
 
     @PostConstruct
@@ -118,41 +116,6 @@ public class AgreementController extends BaseController {
 
         disableQuantCnpjs = false;
 
-        statesCapital = new HashMap<String, String>() {
-            {
-                put("Acre", "RIO BRANCO");
-                put("Amapá", "MACAPÁ");
-                put("Amazonas", "MANAUS");
-                put("Pará", "BELÉM");
-                put("Rondônia", "PORTO VELHO");
-                put("Roraima", "BOA VISTA");
-                put("Tocantins", "PALMAS");
-                put("Alagoas", "MACEIÓ");
-                put("Bahia", "SALVADOR");
-                put("Ceará", "FORTALEZA");
-                put("Maranhão", "SÃO LUÍS");
-                put("Paraíba", "JOÃO PESSOA");
-                put("Piauí", "TERESINA");
-                put("Pernambuco", "RECIFE");
-                put("Rio Grande do Norte", "NATAL");
-                put("Sergipe", "ARACAJU");
-                put("São Paulo", "SÃO PAULO");
-                put("Minas Gerais", "BELO HORIZONTE");
-                put("Rio de Janeiro", "RIO DE JANEIRO");
-                put("Espírito Santo", "VITÓRIA");
-                put("Goiás", "GOIANIA");
-                put("Distrito Federal", "BRASÍLIA");
-                put("Mato Grosso", "CUIABÁ");
-                put("Mato Grosso do Sul", "CAMPO GRANDE");
-                put("Paraná", "CURITÍBA");
-                put("Santa Catarina", "FLORIANÓPOLIS");
-                put("Rio Grande do Sul", "PORTO ALEGRE");
-            }
-        ;
-        }
-
-    ;
-        
         //Initialize how many installments has the agreement
         if ((Integer) getFlash("qntInstallments") != null) {
             qntInstallments = (Integer) getFlash("qntInstallments");
@@ -453,19 +416,19 @@ public class AgreementController extends BaseController {
                                     proponentSiconvBean.edit(propSiconv);
                                     proponentSiconvBean.clearCache();
                                 }
-                            } else if (agreement.getAgreementType().equalsIgnoreCase("ESTADUAL")) {
-                                for (ProponentSiconv propSiconv : proponentSiconvBean.findBySphereStateAll(proponentSiconv.getEsferaAdministrativa(), proponentSiconv.getMunicipioUfNome())) {
+                            } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL_INCOMPLETO())) {
+                                for (ProponentSiconv propSiconv : proponentSiconvBean.findBySphereStateUser(proponentSiconv.getEsferaAdministrativa(), proponentSiconv.getMunicipioUfNome(), userBean.find(agreementUser.getId()))) {
+                                    propSiconv.setAgreement(agreement);
+                                    proponentSiconvBean.edit(propSiconv);
+                                    proponentSiconvBean.clearCache();
+                                }
+                            } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL_COMPLETO())) {
+                                for (ProponentSiconv propSiconv : proponentSiconvBean.findByStateUser(proponentSiconv.getMunicipioUfNome(), userBean.find(agreementUser.getId()))) {
                                     propSiconv.setAgreement(agreement);
                                     proponentSiconvBean.edit(propSiconv);
                                     proponentSiconvBean.clearCache();
                                 }
                             } else if (agreement.getAgreementType().equalsIgnoreCase("PRIVADO")) {
-                                proponentSiconv.setAgreement(agreement);
-                                proponentSiconvBean.edit(proponentSiconv);
-                                proponentSiconvBean.clearCache();
-
-                                //salvar proponentes do datatable
-                            } else if (agreement.getAgreementType().equalsIgnoreCase("CONSÓRCIO")) {
                                 proponentSiconv.setAgreement(agreement);
                                 proponentSiconvBean.edit(proponentSiconv);
                                 proponentSiconvBean.clearCache();
@@ -687,9 +650,7 @@ public class AgreementController extends BaseController {
         if (agreement != null) {
             if (!agreement.getAgreementType().equals("")) {
                 for (ProponentSiconv prop : agreementUser.getProponents()) {
-                    if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_CONSORCIO())) {
-                        type = "CONSORCIO PUBLICO";
-                    } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL())) {
+                    if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL_COMPLETO()) || agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL_INCOMPLETO())) {
                         type = "ESTADUAL";
                     } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_MUNICIPAL())) {
                         type = "MUNICIPAL";
@@ -723,25 +684,16 @@ public class AgreementController extends BaseController {
                     } else {
                         disableQuantCnpjs = false;
                     }
-                } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_CONSORCIO())) {
-                    agreement.setCnpjAmount(1);
-                    disableQuantCnpjs = true;
                 } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PARLAMENTAR())) {
                     agreement.setCnpjAmount(0);
                     disableQuantCnpjs = true;
-                } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL())) {
-                    List<ProponentSiconv> tempProp = proponentSiconvBean.findBySphereStateAll(proponentSiconv.getEsferaAdministrativa(), proponentSiconv.getMunicipioUfNome());
-                    if (getUsuarioLogado().getProfileRule().equalsIgnoreCase(User.getRULER_ADMIN())) {
-                        agreement.setCnpjAmount(tempProp.size());
-                    } else {
-                        List<ProponentSiconv> tempPropNotAdmin = new ArrayList<ProponentSiconv>();
-                        for (ProponentSiconv p : tempProp) {
-                            if (!p.getMunicipio().equalsIgnoreCase(statesCapital.get(p.getMunicipioUfNome()))) {
-                                tempPropNotAdmin.add(p);
-                            }
-                        }
-                        agreement.setCnpjAmount(tempPropNotAdmin.size());
-                    }
+                } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL_INCOMPLETO())) {
+                    List<ProponentSiconv> tempProp = proponentSiconvBean.findBySphereStateUser(proponentSiconv.getEsferaAdministrativa(), proponentSiconv.getMunicipioUfNome(), userBean.find(agreementUser.getId()));
+                    agreement.setCnpjAmount(tempProp.size());
+                    disableQuantCnpjs = true;
+                } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL_COMPLETO())) {
+                    List<ProponentSiconv> tempProp = proponentSiconvBean.findByStateUser(proponentSiconv.getMunicipioUfNome(), userBean.find(agreementUser.getId()));
+                    agreement.setCnpjAmount(tempProp.size());
                     disableQuantCnpjs = true;
                 }
             } else {
@@ -807,7 +759,7 @@ public class AgreementController extends BaseController {
                         usuarioSistema = "M";
                     } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PARLAMENTAR())) {
                         usuarioSistema = "P";
-                    } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL())) {
+                    } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL_COMPLETO()) || agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL_INCOMPLETO())) {
                         usuarioSistema = "E";
                     }
 
@@ -968,14 +920,6 @@ public class AgreementController extends BaseController {
         String formatado = nf.format(value);
 
         return formatado;
-    }
-
-    public Map<String, String> getStatesCapital() {
-        return statesCapital;
-    }
-
-    public void setStatesCapital(Map<String, String> statesCapital) {
-        this.statesCapital = statesCapital;
     }
 
     public Integer getQntInstallments() {
