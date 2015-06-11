@@ -807,7 +807,7 @@ public class AgreementController extends BaseController {
                         usuarioSistema = "M";
                     } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PARLAMENTAR())) {
                         usuarioSistema = "P";
-                    } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_PRIVADO())) {
+                    } else if (agreement.getAgreementType().equalsIgnoreCase(Agreement.getTYPE_ESTADUAL())) {
                         usuarioSistema = "E";
                     }
 

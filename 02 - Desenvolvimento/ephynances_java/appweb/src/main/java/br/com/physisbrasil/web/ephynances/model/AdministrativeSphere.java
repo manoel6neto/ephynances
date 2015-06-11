@@ -22,6 +22,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class AdministrativeSphere implements BaseModel {
 
     private static final String SPHERE_MUNICIPAL = "MUNICIPAL";
+    private static final String SPHERE_ESTADUAL_COMPLETA = "ESTADUAL COMPLETA";
+    private static final String SPHERE_ESTADUAL_INCOMPLETA = "ESTADUAL INCOMPLETA";
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,6 +68,14 @@ public class AdministrativeSphere implements BaseModel {
 
     public static String getSPHERE_MUNICIPAL() {
         return SPHERE_MUNICIPAL;
+    }
+
+    public static String getSPHERE_ESTADUAL_COMPLETA() {
+        return SPHERE_ESTADUAL_COMPLETA;
+    }
+
+    public static String getSPHERE_ESTADUAL_INCOMPLETA() {
+        return SPHERE_ESTADUAL_INCOMPLETA;
     }
 
     @Override

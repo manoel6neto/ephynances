@@ -31,7 +31,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -146,41 +145,6 @@ public class UserController extends BaseController {
         proponentsFiltered = new ArrayList<ProponentSiconv>();
         citiesFiltered = new ArrayList<String>();
         //putFlash("user", null);
-
-        statesCapital = new HashMap<String, String>() {
-            {
-                put("Acre", "RIO BRANCO");
-                put("Amapá", "MACAPÁ");
-                put("Amazonas", "MANAUS");
-                put("Pará", "BELÉM");
-                put("Rondônia", "PORTO VELHO");
-                put("Roraima", "BOA VISTA");
-                put("Tocantins", "PALMAS");
-                put("Alagoas", "MACEIÓ");
-                put("Bahia", "SALVADOR");
-                put("Ceará", "FORTALEZA");
-                put("Maranhão", "SÃO LUÍS");
-                put("Paraíba", "JOÃO PESSOA");
-                put("Piauí", "TERESINA");
-                put("Pernambuco", "RECIFE");
-                put("Rio Grande do Norte", "NATAL");
-                put("Sergipe", "ARACAJU");
-                put("São Paulo", "SÃO PAULO");
-                put("Minas Gerais", "BELO HORIZONTE");
-                put("Rio de Janeiro", "RIO DE JANEIRO");
-                put("Espírito Santo", "VITÓRIA");
-                put("Goiás", "GOIANIA");
-                put("Distrito Federal", "BRASÍLIA");
-                put("Mato Grosso", "CUIABÁ");
-                put("Mato Grosso do Sul", "CAMPO GRANDE");
-                put("Paraná", "CURITÍBA");
-                put("Santa Catarina", "FLORIANÓPOLIS");
-                put("Rio Grande do Sul", "PORTO ALEGRE");
-            }
-        ;
-    }
-
-    ;
     }
 
     public String create() {
@@ -625,16 +589,22 @@ public class UserController extends BaseController {
     public void updateCityCnpj() {
         if (selectedAdministrativeSphere != null) {
             if (selectedState != null) {
-                citiesFiltered = proponentSiconvBean.findCitiesNamesBySphereState(selectedAdministrativeSphere.getName(), selectedState.getName());
-                citiesFiltered.sort(null);
-                if (user.getProfileRule().equals(getRULER_SELLER()) || user.getProfileRule().equals(getRULER_CONTRIBUTOR()) || user.getProfileRule().equals(getRULER_ADMIN_GESTOR())) {
-                    citiesFiltered.remove(statesCapital.get(selectedState.getName()));
-                }
                 if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
+                    citiesFiltered = proponentSiconvBean.findCitiesNamesBySphereState(selectedAdministrativeSphere.getName(), selectedState.getName());
+                    citiesFiltered.sort(null);
+                } else if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_ESTADUAL_INCOMPLETA())) {
+                    citiesFiltered = proponentSiconvBean.findCitiesNamesBySphereState("ESTADUAL", selectedState.getName());
+                    citiesFiltered.sort(null);
+                }
+                if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL()) || selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_ESTADUAL_COMPLETA())) {
                     proponentsFiltered = new ArrayList<ProponentSiconv>();
                 } else {
                     if (selectNameCity != null) {
-                        proponentsFiltered = proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity);
+                        if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
+                            proponentsFiltered = proponentSiconvBean.findBySphereStateCity(selectedAdministrativeSphere.getName(), selectedState.getName(), selectNameCity);
+                        } else if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_ESTADUAL_INCOMPLETA())) {
+                            proponentsFiltered = proponentSiconvBean.findBySphereStateCity("ESTADUAL", selectedState.getName(), selectNameCity);
+                        }
                     }
                 }
             }
@@ -645,7 +615,7 @@ public class UserController extends BaseController {
         try {
             if (user != null) {
                 if (user.getId() > 0) {
-                    if (selectNameCity != null && selectedAdministrativeSphere != null && selectedState != null) {
+                    if (selectedAdministrativeSphere != null && selectedState != null) {
                         if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
                             if (quantidadeMunicipiosDisponiveis == 0) {
                                 JsfUtil.addErrorMessage("Você atingiu o limite de municípios!");
@@ -672,9 +642,30 @@ public class UserController extends BaseController {
                                 proponentsFiltered = null;
                                 insertSellerEsicar(user.getId());
                             }
+                        } else if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_ESTADUAL_COMPLETA())) {
+                            for (ProponentSiconv prop : proponentSiconvBean.findByState(selectedState.getName())) {
+                                prop.setUser(user);
+                                proponentSiconvBean.edit(prop);
+
+                                //Historico
+                                HistoryProponentUser historyProponentUser = new HistoryProponentUser();
+                                historyProponentUser.setCnpj(prop.getCnpj());
+                                historyProponentUser.setInsertDate(new Date(System.currentTimeMillis()));
+                                historyProponentUser.setNameSeller(user.getName());
+                                historyProponentUser.setUfAcronym(prop.getMunicipioUfSigla());
+                                historyProponentUser.setUfMunicipio(prop.getMunicipio());
+                                historyProponentUserBean.create(historyProponentUser);
+                            }
+                            proponentSiconvBean.clearCache();
+                            selectedProponents = null;
+                            selectNameCity = null;
+                            selectedState = null;
+                            selectedAdministrativeSphere = null;
+                            proponentsFiltered = null;
+                            insertSellerEsicar(user.getId());
                         } else {
                             if (selectedProponents != null && selectedProponents.size() > 0) {
-                                if (selectedProponents.size() > quantidadeCnjsDisponiveis) {
+                                if (selectedProponents.size() > quantidadeCnjsDisponiveis && !selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_ESTADUAL_INCOMPLETA())) {
                                     JsfUtil.addErrorMessage("Você não possui quantidade de cnpjs suficiente. Necessários: " + selectedProponents.size() + ", disponíveis:  " + quantidadeCnjsDisponiveis);
                                 } else {
                                     for (ProponentSiconv prop : selectedProponents) {
@@ -715,7 +706,7 @@ public class UserController extends BaseController {
         try {
             if (user != null) {
                 if (user.getId() > 0) {
-                    if (selectNameCity != null && selectedAdministrativeSphere != null && selectedState != null) {
+                    if (selectedAdministrativeSphere != null && selectedState != null) {
                         if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_MUNICIPAL())) {
                             if (quantidadeMunicipiosDisponiveis == 0) {
                                 JsfUtil.addErrorMessage("Você atingiu o limite de municípios!");
@@ -743,9 +734,31 @@ public class UserController extends BaseController {
                                 setSellerExternal(user.getId());
                                 insertSellerEsicar(user.getId());
                             }
+                        } else if (selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_ESTADUAL_COMPLETA())) {
+                            for (ProponentSiconv prop : proponentSiconvBean.findByState(selectedState.getName())) {
+                                prop.setUser(user);
+                                proponentSiconvBean.edit(prop);
+
+                                //Historico
+                                HistoryProponentUser historyProponentUser = new HistoryProponentUser();
+                                historyProponentUser.setCnpj(prop.getCnpj());
+                                historyProponentUser.setInsertDate(new Date(System.currentTimeMillis()));
+                                historyProponentUser.setNameSeller(user.getName());
+                                historyProponentUser.setUfAcronym(prop.getMunicipioUfSigla());
+                                historyProponentUser.setUfMunicipio(prop.getMunicipio());
+                                historyProponentUserBean.create(historyProponentUser);
+                            }
+                            proponentSiconvBean.clearCache();
+                            selectedProponents = null;
+                            selectNameCity = null;
+                            selectedState = null;
+                            selectedAdministrativeSphere = null;
+                            proponentsFiltered = null;
+                            setSellerExternal(user.getId());
+                            insertSellerEsicar(user.getId());
                         } else {
                             if (selectedProponents != null && selectedProponents.size() > 0) {
-                                if (selectedProponents.size() > quantidadeCnjsDisponiveis) {
+                                if (selectedProponents.size() > quantidadeCnjsDisponiveis && !selectedAdministrativeSphere.getName().equals(AdministrativeSphere.getSPHERE_ESTADUAL_INCOMPLETA())) {
                                     JsfUtil.addErrorMessage("Você não possui quantidade de cnpjs suficiente. Necessários: " + selectedProponents.size() + ", disponíveis:  " + quantidadeCnjsDisponiveis);
                                 } else {
                                     for (ProponentSiconv prop : selectedProponents) {

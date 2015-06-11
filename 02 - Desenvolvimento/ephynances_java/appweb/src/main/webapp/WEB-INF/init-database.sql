@@ -24,10 +24,7 @@ values (1, 'Acre', 'AC'), (1, 'Amapá', 'AP'), (1, 'Amazonas', 'AM'), (1, 'Pará
 (5, 'Paraná', 'PR'), (5, 'Santa Catarina', 'SC'), (5, 'Rio Grande do Sul', 'RS');
 
 insert into `administrative_sphere`(name)
-values ('CONSORCIO PUBLICO'),
-('EMPRESA PUBLICA SOCIEDADE ECONOMIA MISTA'),
-('ESTADUAL'),
-('FEDERAL'),
+values ('ESTADUAL COMPLETA'),
+('ESTADUAL INCOMPLETA'),
 ('MUNICIPAL'),
-('ORGANISMO INTERNACIONAL'),
 ('PRIVADA');
