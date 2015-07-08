@@ -948,7 +948,11 @@ public class UserController extends BaseController {
 
                             //Esferas
                             for (AdministrativeSphere sphere : tempUser.getAdministrativeSpheres()) {
-                                sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
+                                if (sphere.getName().equalsIgnoreCase(AdministrativeSphere.getSPHERE_ESTADUAL_COMPLETA()) || sphere.getName().equalsIgnoreCase(AdministrativeSphere.getSPHERE_ESTADUAL_INCOMPLETA())) {
+                                    sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + "ESTADUAL" + "')";
+                                } else {
+                                    sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
+                                }
                                 stmt.executeUpdate(sql);
                             }
 
@@ -1016,7 +1020,11 @@ public class UserController extends BaseController {
 
                         //Esferas
                         for (AdministrativeSphere sphere : tempUser.getAdministrativeSpheres()) {
-                            sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
+                            if (sphere.getName().equalsIgnoreCase(AdministrativeSphere.getSPHERE_ESTADUAL_COMPLETA()) || sphere.getName().equalsIgnoreCase(AdministrativeSphere.getSPHERE_ESTADUAL_INCOMPLETA())) {
+                                sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + "ESTADUAL" + "')";
+                            } else {
+                                sql = "INSERT INTO esfadm_direito_vendedor (id_vendedor, esfera_administrativa) VALUES (" + id + ", '" + sphere.getName() + "')";
+                            }
                             stmt.executeUpdate(sql);
                         }
 

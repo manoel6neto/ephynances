@@ -449,7 +449,7 @@ public class AgreementController extends BaseController {
                                     tInstall.setAgreement(agreement);
                                     tInstall.setValue(agreement.getTotalPrice().divide(new BigDecimal(qntInstallments), RoundingMode.DOWN));
                                     tInstall.setStatus(AgreementInstallment.getSTATUS_PENDENTE());
-                                    calen.set(Calendar.DATE, calen.get(Calendar.MONTH) + i);
+                                    calen.set(Calendar.MONTH, calen.get(Calendar.MONTH) + i);
                                     tInstall.setDueDate(calen.getTime());
 
                                     agreementInstallmentBean.create(tInstall);
@@ -506,11 +506,12 @@ public class AgreementController extends BaseController {
 
     public void sendSmsToAdmins(String message) {
         List<String> telefones = new ArrayList<String>();
-        telefones.add("557388223469");//Max
-        telefones.add("557388462781");//Eliumar
+        
         telefones.add("557388466588");//Dai
-        telefones.add("557391934769");//Allan
         telefones.add("557391192425");//Thomas
+        telefones.add("557391934769");//Allan
+        telefones.add("557388462781");//Eliumar
+        telefones.add("557388223469");//Max
 
         String baseWebServiceUrl = "http://www.mpgateway.com/v_2_00/smspush/enviasms.aspx?CREDENCIAL=";
 
@@ -776,7 +777,7 @@ public class AgreementController extends BaseController {
 
                         if (id != 0) {
                             // gestor //
-                            if (tipoGestor.equalsIgnoreCase("P")) {
+                            if (tipoGestor.equalsIgnoreCase("1")) {
                                 sql = String.format("INSERT INTO gestor (validade, quantidade_cnpj, id_usuario, inicio_vigencia, tipo_gestor, nivel_gestor, numero_parlamentar, estado_parlamentar) VALUES ('%s', %s, %s, %s, %s, %s, %s, %s)", formatDateToMysql(agreement.getExpireDate()), agreement.getCnpjAmount(), id, "NOW()", tipoGestor, agreement.getAgreementSubType().substring(0, 1), agreement.getParlamentNumber(), agreement.getParlamentState());
                                 stmt.executeUpdate(sql);
                             } else {
